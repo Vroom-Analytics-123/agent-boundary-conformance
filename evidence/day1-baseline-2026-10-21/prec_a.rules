@@ -1,0 +1,2 @@
+prefix_rule(pattern=["git"], decision="prompt")
+prefix_rule(pattern=["git", "status"], decision="allow")

@@ -1,0 +1,29 @@
+# Boundary Measurement — field definition & the path to primary verifier (2026-10-21)
+
+## The name
+**Boundary Measurement** — the discipline this work defines. It sits inside EffectGap (the research program) and names what the Agent Boundary Conformance experiment does. Related terms kept distinct: the *Agent Boundary Index* (the published measurements), *conformance testing* (the method), *EffectGap* (the program), *verified/contradicted/unknown* (the verdicts).
+
+## The definition (canonical wording — reuse verbatim)
+> Boundary measurement is the independent measurement of whether an AI agent's enforced limits match its stated limits. Every agent operates inside a boundary — permission rules, approval policies, sandboxes — that its operators believe implements their intentions. Boundary measurement tests that belief: it compares stated intent, the harness's native policy decisions, and observed effects, for each harness version, and publishes the divergence with reproducible, cryptographically verifiable evidence.
+>
+> It matters because agent autonomy is scaling faster than agent accountability. Today, the only parties who can say whether an agent's controls work are the vendors who built them and the developers who hope they configured them correctly. An independent measurement discipline is the missing institution — the same role crash testing created for cars, penetration testing for networks, and SOC 2 for SaaS. Whoever maintains the trusted measurements becomes the referee every vendor, buyer, auditor, and insurer has to reckon with.
+
+## Why the "make a mark" odds are genuinely better than startup base rates (and where they aren't)
+Higher than usual, for structural reasons — not optimism:
+- **The seat is empty.** No incumbent publishes intent↔decision↔effect measurements; the neighbouring fields (scanning, red-teaming, runtime governance) are occupied, this one is not. Field-definition is winner-take-most: the first credible, sustained publisher becomes the citation.
+- **The machinery is proven.** Transparency logs, event sourcing, property-based testing, signed attestations all run at internet scale elsewhere; we are composing, not inventing, the risky parts.
+- **Demand-side pull already exists.** A funder RFP (Foresight, Coordination & Accountability) is literally soliciting this category; insurers are publishing agent-economy underwriting research; vendors are racing on governance messaging without credible neutral evidence.
+- **Timing.** The field is months old; harness permission systems are churning (Codex profiles, Claude auto modes), and churn is what makes per-version measurement permanently necessary.
+Conditional on execution, avan's subjective estimates: producing the field's reference measurement and being a recognized citation by end of 2027: **~50%**; becoming *the* primary verifier (the UL position below): **~15–25%**; massive commercial outcome: **~5%** (unchanged — it rides on the verifier position plus a standards/procurement event). The binding constraint on all of these is not idea quality; it is sustained public execution over 4+ quarters. The plan's gates exist to protect that stamina, not to slow it down.
+
+## The primary-verifier path ("the UL for agents")
+Underwriters Laboratories didn't sell testing — it sold *the mark that others require*. The verifier position is built in this order:
+1. **Measurement of record (2026–27):** the corpus + transparency-anchored Index, published quarterly, embarrassing results included. Referees become referees by being right in public, repeatedly.
+2. **Day-one presence on every release:** automated runs against each new Codex/Claude (and later Cursor/Gemini/OpenCode) version within hours of release, with measured decision diffs. Vendors get embargoed early access to their own results — the standard verifier relationship: they may dispute, they may fix, they may not suppress.
+3. **Governance that makes neutrality credible:** published methodology, witness-cosigned log, an advisory circle drawn from the prior-art research community, and a public disputes/corrections record. A verifier's only asset is that nobody believes it can be bought.
+4. **The schema becomes the interchange:** the intent/decision/effect evidence format contributed into OWASP and emitted by other tools; when third parties produce *our format*, the position is structural.
+5. **The mark (2027, only after 1–4):** a published conformance suite + "Boundary Verified" attestation for specific harness versions/configurations — signed, logged, revocable, with the full evidence bundle public. Certification before credibility would be the fastest way to destroy both.
+6. **The requirement moment:** insurers, enterprise procurement, or a platform's own marketplace begins asking for the attestation. We don't control when this happens; steps 1–5 are how we are the obvious answer when it does.
+
+## What Anish says in rooms (30-second version)
+"We founded a measurement discipline, not another scanner. Agents run inside permission boundaries nobody independently verifies — we compare what operators intended, what the harness actually decides, and what observably happens, per version, and we publish the divergence with cryptographic proof attached. The work runs as EffectGap, an open research program; the measurements are the Agent Boundary Index. Vendors grade their own homework today. We're building the referee."

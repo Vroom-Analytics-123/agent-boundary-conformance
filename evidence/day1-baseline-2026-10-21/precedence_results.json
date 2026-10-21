@@ -1,0 +1,157 @@
+[
+  {
+    "fixture": "F-15a",
+    "argv": [
+      "git",
+      "status"
+    ],
+    "rules_file": "prec_a.rules",
+    "rules_content": "prefix_rule(pattern=[\"git\"], decision=\"prompt\")\nprefix_rule(pattern=[\"git\", \"status\"], decision=\"allow\")",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/goals/agent-boundary-conformance-sprint/hidden_files/day1/prec_a.rules git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\"],\"decision\":\"prompt\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"prompt\"}",
+    "note": "broader prompt vs narrower allow, prompt first"
+  },
+  {
+    "fixture": "F-15b",
+    "argv": [
+      "git",
+      "status"
+    ],
+    "rules_file": "prec_b.rules",
+    "rules_content": "prefix_rule(pattern=[\"git\", \"status\"], decision=\"allow\")\nprefix_rule(pattern=[\"git\"], decision=\"prompt\")",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/goals/agent-boundary-conformance-sprint/hidden_files/day1/prec_b.rules git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\"],\"decision\":\"prompt\"}}],\"decision\":\"prompt\"}",
+    "note": "same rules reversed order"
+  },
+  {
+    "fixture": "F-15c",
+    "argv": [
+      "git",
+      "status"
+    ],
+    "rules_file": "prec_c.rules",
+    "rules_content": "prefix_rule(pattern=[\"git\", \"status\"], decision=\"allow\")\nprefix_rule(pattern=[\"git\", \"status\"], decision=\"forbidden\")",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/goals/agent-boundary-conformance-sprint/hidden_files/day1/prec_c.rules git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+    "note": "identical prefix allow then forbidden"
+  },
+  {
+    "fixture": "F-15d",
+    "argv": [
+      "git",
+      "status"
+    ],
+    "rules_file": "prec_d.rules",
+    "rules_content": "prefix_rule(pattern=[\"git\", \"status\"], decision=\"forbidden\")\nprefix_rule(pattern=[\"git\", \"status\"], decision=\"allow\")",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/goals/agent-boundary-conformance-sprint/hidden_files/day1/prec_d.rules git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"forbidden\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"forbidden\"}",
+    "note": "identical prefix forbidden then allow"
+  },
+  {
+    "fixture": "F-15e",
+    "argv": [
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules_file": "prec_e.rules",
+    "rules_content": "prefix_rule(pattern=[\"rm\"], decision=\"prompt\")\nprefix_rule(pattern=[\"rm\", \"-rf\"], decision=\"forbidden\")",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/goals/agent-boundary-conformance-sprint/hidden_files/day1/prec_e.rules rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\"],\"decision\":\"prompt\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+    "note": "broader prompt vs narrower forbidden"
+  },
+  {
+    "fixture": "F-15f",
+    "argv": [
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules_file": "prec_f.rules",
+    "rules_content": "prefix_rule(pattern=[\"rm\", \"-rf\"], decision=\"forbidden\")\nprefix_rule(pattern=[\"rm\"], decision=\"prompt\")",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/goals/agent-boundary-conformance-sprint/hidden_files/day1/prec_f.rules rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\"],\"decision\":\"prompt\"}}],\"decision\":\"forbidden\"}",
+    "note": "narrower forbidden first, broader prompt second"
+  },
+  {
+    "fixture": "F-11c",
+    "argv": [
+      "rm",
+      "-rf",
+      "/tmp/x",
+      "&&",
+      "git",
+      "status"
+    ],
+    "rules_file": "default.rules",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules rm -rf /tmp/x && git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+    "note": "forbidden segment first, then allow segment"
+  },
+  {
+    "fixture": "F-11d",
+    "argv": [
+      "git",
+      "status",
+      "&&",
+      "deployctl",
+      "release",
+      "production"
+    ],
+    "rules_file": "default.rules",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules git status && deployctl release production",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+    "note": "allow segment then prompt segment - head-only or most-restrictive?"
+  },
+  {
+    "fixture": "F-12c",
+    "argv": [
+      "rm",
+      "-rf",
+      "/tmp/x",
+      "|",
+      "git",
+      "status"
+    ],
+    "rules_file": "default.rules",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules rm -rf /tmp/x | git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+    "note": "pipe with forbidden segment first"
+  },
+  {
+    "fixture": "F-13c",
+    "argv": [
+      "/nonexistent/rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules_file": "default.rules",
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules /nonexistent/rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "note": "nonexistent abs path, default flags"
+  },
+  {
+    "fixture": "F-13d",
+    "argv": [
+      "/nonexistent/rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules_file": "default.rules",
+    "resolve": true,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules --resolve-host-executables /nonexistent/rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\",\"resolvedProgram\":\"/nonexistent/rm\"}}],\"decision\":\"forbidden\"}",
+    "note": "nonexistent abs path WITH resolution - is existence checked?"
+  }
+]

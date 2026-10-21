@@ -1,3 +1,5 @@
+> **STATUS: HISTORICAL** — this was the Day-1 plan; it was executed on Oct 21, 2026. Results: `docs/COMPETITOR_BASELINES.md` + `evidence/day1-baseline-2026-10-21/`. Current status: `docs/DASHBOARD.md`.
+
 # Day 1 — Baseline (Wed Oct 21, 2026)
 
 **Objective (from master plan §5):** study the 3 closest tools hands-on, lock 5 invariants, plan 10–20 fixtures, state the kill criterion in writing before building anything.

@@ -307,7 +307,11 @@ Generated {esc(generated)} · schema <code>conformance-report.v1</code>.
     print(f"verdicts: pass={passes} fail={fails} ({dist})")
     if family:
         print(f"family: pass={family['pass']} fail={family['fail']}")
-    print(f"wrote {out_dir.relative_to(REPO)}/report.json + report.html")
+    try:
+        shown = out_dir.relative_to(REPO)
+    except ValueError:
+        shown = out_dir
+    print(f"wrote {shown}/report.json + report.html")
 
 
 if __name__ == "__main__":

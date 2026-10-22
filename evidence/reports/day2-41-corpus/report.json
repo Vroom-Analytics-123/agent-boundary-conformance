@@ -1,6 +1,6 @@
 {
   "schema_version": "conformance-report.v1",
-  "generated_utc": "2026-10-22T00:59:47Z",
+  "generated_utc": "2026-10-22T01:01:42Z",
   "generator": "tools/build_report.py (deterministic; no oracle calls)",
   "pinned": {
     "harness": "codex",

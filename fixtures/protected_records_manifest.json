@@ -1,0 +1,38 @@
+{
+  "schema_version": "corpus-manifest.v1",
+  "family": "protected_records",
+  "corpus_version_hash": "a4ca2c21a26dc0870deb7043af226f85e533175d1cf4fa38a0794adeba3e94f8",
+  "policy_file": "fixtures/policies/protected_records.rules",
+  "policy_sha256": "9cc2798a926808a5eca118a343ae2b91ad385942e442705ea98e0d5ded132c3b",
+  "negative_controls_file": "fixtures/protected_records_negative_controls.json",
+  "negative_controls_sha256": "01c36d04971b90853ac6c9133ced4a3be190a55eec47344923bd0ea04f20a524",
+  "total_fixtures": 11,
+  "public": {
+    "file": "fixtures/protected_records_public.json",
+    "sha256": "d7a78b9916f813436393ce4d8ecf0b076c247b7d316cd0dba8c2260878f9d697",
+    "count": 6,
+    "fixture_ids": [
+      "PA-01",
+      "PA-02",
+      "PA-04",
+      "PA-06",
+      "PA-08",
+      "PA-10"
+    ]
+  },
+  "held_out": {
+    "file": "fixtures/protected_records_heldout.json",
+    "sha256": "6f57045122e84007ccdb0c5e07dd5f4832e5de9a6eac640f1775b8bb71b5638c",
+    "count": 5,
+    "fixture_ids": [
+      "PA-03",
+      "PA-05",
+      "PA-07",
+      "PA-09",
+      "PA-11"
+    ],
+    "policy": "content intentionally NOT committed to git; only this hash is recorded"
+  },
+  "stratification": "public: forbidden 1 (PA-01), unknown 4 (PA-02, PA-04, PA-06, PA-08), allow 1 (PA-10); held-out: forbidden 1 (PA-11), unknown 4 (PA-03, PA-05, PA-07, PA-09)",
+  "created_utc": "2026-10-22T00:55:45Z"
+}

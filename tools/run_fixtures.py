@@ -13,9 +13,10 @@ Semantics (docs/WEEK1_BUILD_SPEC.md, non-negotiable):
   - This tool reports policy-check results only. It does not certify any
     command or harness as secure, and it observes no runtime effects.
 
-Stdlib only. Usage: python3 tools/run_fixtures.py
+Stdlib only. Usage: python3 tools/run_fixtures.py [--fixtures FILE ...]
 Writes a results JSON under evidence/reruns/ and prints a verdict table.
 Exit code 0 if every fixture's actual decision equals its expected one.
+With no --fixtures flag it replays the Day-2 41-case corpus unchanged.
 """
 
 import json
@@ -29,6 +30,30 @@ CODEX = "/opt/hatch-image/bin/codex"
 PINNED_CODEX_VERSION = "0.149.0"
 FIXTURES_FILE = REPO / "fixtures" / "fixtures.json"
 RERUNS_DIR = REPO / "evidence" / "reruns"
+
+
+def load_fixtures(paths):
+    """Load and merge fixture files. Default is the Day-2 41-case corpus.
+
+    Day-3 additive change (backwards compatible): --fixtures accepts one or
+    more fixture files (e.g. the protected-records family shards) and merges
+    them; the runner logic itself is untouched (v0 semantics: unmatched is
+    never normalized to allow).
+    """
+    merged = {"fixtures": []}
+    files = []
+    for p in paths:
+        fp = Path(p)
+        if not fp.is_absolute():
+            fp = REPO / fp
+        doc = json.loads(fp.read_text())
+        merged["fixtures"].extend(doc["fixtures"])
+        files.append(str(fp.relative_to(REPO)))
+        for k in ("harness", "harness_version", "schema_version", "default_rules", "corpus_shard"):
+            if k in doc and k not in merged:
+                merged[k] = doc[k]
+    merged["source_files"] = files
+    return merged
 
 
 def codex_version():
@@ -78,7 +103,15 @@ def run_fixture(fx):
 
 
 def main():
-    fixtures_doc = json.loads(FIXTURES_FILE.read_text())
+    fixture_paths = [FIXTURES_FILE]
+    if "--fixtures" in sys.argv:
+        idx = sys.argv.index("--fixtures")
+        fixture_paths = []
+        for a in sys.argv[idx + 1:]:
+            if a.startswith("--"):
+                break
+            fixture_paths.append(a)
+    fixtures_doc = load_fixtures(fixture_paths)
     fixtures = fixtures_doc["fixtures"]
     detected_version = codex_version()
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -93,7 +126,7 @@ def main():
             "codex_version_pinned": PINNED_CODEX_VERSION,
             "codex_version_detected": detected_version,
             "codex_binary": CODEX,
-            "fixtures_file": "fixtures/fixtures.json",
+            "fixtures_files": fixtures_doc.get("source_files", ["fixtures/fixtures.json"]),
             "fixtures_schema_version": fixtures_doc.get("schema_version"),
             "default_rules_file": fixtures_doc.get("default_rules"),
             "layer": "rules-layer decision only (codex execpolicy check); "

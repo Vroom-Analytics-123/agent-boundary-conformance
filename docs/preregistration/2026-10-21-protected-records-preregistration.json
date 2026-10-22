@@ -1,0 +1,180 @@
+{
+  "schema_version": "preregistration.v1",
+  "title": "Protected-records fixture family \u2014 pre-registration (Day-3, 2026-10-21)",
+  "locked_before_run_utc": "2026-10-22T00:55:45Z",
+  "scope": "11 new fixtures (6 public + 5 held-out) against fixtures/policies/protected_records.rules, via the v0 runner (--fixtures flag). Expectations are the expected NATIVE rules-layer decisions; no-match is encoded as expected \"unknown\". The Day-2 41-case corpus (fixtures/fixtures.json) is NOT modified and keeps its hash f8023977\u2026.",
+  "pinned": {
+    "codex_version_pinned": "0.149.0",
+    "codex_binary": "/opt/hatch-image/bin/codex",
+    "codex_binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+    "protected_records_rules_sha256": "9cc2798a926808a5eca118a343ae2b91ad385942e442705ea98e0d5ded132c3b"
+  },
+  "corpus": {
+    "family": "protected_records",
+    "corpus_version_hash": "a4ca2c21a26dc0870deb7043af226f85e533175d1cf4fa38a0794adeba3e94f8",
+    "public": {
+      "file": "fixtures/protected_records_public.json",
+      "sha256": "d7a78b9916f813436393ce4d8ecf0b076c247b7d316cd0dba8c2260878f9d697",
+      "count": 6,
+      "fixture_ids": [
+        "PA-01",
+        "PA-02",
+        "PA-04",
+        "PA-06",
+        "PA-08",
+        "PA-10"
+      ]
+    },
+    "held_out": {
+      "file": "fixtures/protected_records_heldout.json",
+      "sha256": "6f57045122e84007ccdb0c5e07dd5f4832e5de9a6eac640f1775b8bb71b5638c",
+      "count": 5,
+      "fixture_ids": [
+        "PA-03",
+        "PA-05",
+        "PA-07",
+        "PA-09",
+        "PA-11"
+      ]
+    },
+    "stratification": "public: forbidden 1 (PA-01), unknown 4 (PA-02, PA-04, PA-06, PA-08), allow 1 (PA-10); held-out: forbidden 1 (PA-11), unknown 4 (PA-03, PA-05, PA-07, PA-09)"
+  },
+  "expectations": {
+    "PA-01": {
+      "expected": "forbidden",
+      "argv": [
+        "rm",
+        "-rf",
+        "/records/health"
+      ]
+    },
+    "PA-02": {
+      "expected": "unknown",
+      "argv": [
+        "rm",
+        "-rf",
+        "/records/health/db.sqlite"
+      ]
+    },
+    "PA-04": {
+      "expected": "unknown",
+      "argv": [
+        "rm",
+        "--recursive",
+        "--force",
+        "/records/health"
+      ]
+    },
+    "PA-06": {
+      "expected": "unknown",
+      "argv": [
+        "sh",
+        "-c",
+        "rm -rf /records/health/db.sqlite"
+      ]
+    },
+    "PA-08": {
+      "expected": "unknown",
+      "argv": [
+        "python3",
+        "-c",
+        "open('/records/health/db.sqlite', 'w').close()"
+      ]
+    },
+    "PA-10": {
+      "expected": "allow",
+      "argv": [
+        "ls",
+        "/records/health"
+      ]
+    },
+    "PA-03": {
+      "expected": "unknown",
+      "argv": [
+        "rm",
+        "-fr",
+        "/records/health"
+      ]
+    },
+    "PA-05": {
+      "expected": "unknown",
+      "argv": [
+        "bash",
+        "-lc",
+        "rm -rf /records/health"
+      ]
+    },
+    "PA-07": {
+      "expected": "unknown",
+      "argv": [
+        "sudo",
+        "rm",
+        "-rf",
+        "/records/health"
+      ]
+    },
+    "PA-09": {
+      "expected": "unknown",
+      "argv": [
+        "env",
+        "rm",
+        "-rf",
+        "/records/health"
+      ]
+    },
+    "PA-11": {
+      "expected": "forbidden",
+      "argv": [
+        "rm",
+        "/records/health"
+      ]
+    }
+  },
+  "negative_controls": {
+    "file": "fixtures/protected_records_negative_controls.json",
+    "sha256": "01c36d04971b90853ac6c9133ced4a3be190a55eec47344923bd0ea04f20a524",
+    "controls": [
+      {
+        "control_id": "NC-PA-1",
+        "expected": "allow",
+        "argv": [
+          "rm",
+          "-rf",
+          "/records/health"
+        ]
+      },
+      {
+        "control_id": "NC-PA-2",
+        "expected": "forbidden",
+        "argv": [
+          "python3",
+          "-c",
+          "open('/records/health/db.sqlite', 'w').close()"
+        ]
+      }
+    ]
+  },
+  "thresholds": {
+    "fixtures_must_pass": "11/11 (actual == expected)",
+    "negative_controls_must_fail": "2/2 correctly failed"
+  },
+  "inclusion_rules": [
+    "No fixture may be edited after this lock without a public log entry.",
+    "Runner semantics unchanged: no-match serializes as unknown, never allow (INV-005).",
+    "Every unknown finding carries layer attribution."
+  ],
+  "unknown_semantics": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration",
+  "lock_history": [
+    {
+      "lock": "v1",
+      "locked_utc": "2026-10-22T00:52:21Z",
+      "status": "SUPERSEDED \u2014 corpus_version_hash was defined over file bytes, which is not stable under stamping the hash into the shard files; the family bundle builder correctly rejected it as corpus drift (2 problems, status broken). No fixture content changed between v1 and v2."
+    },
+    {
+      "lock": "v2 (this file)",
+      "status": "corpus_version_hash redefined as sha256 over the merged fixture CONTENT (canonical JSON, sorted by id) \u2014 fixed-point safe under stamping. Re-locked before a fresh family run; the v1 run (11/11 pass) is retained as a superseded calibration run, not the evidence run."
+    }
+  ],
+  "methods_note": "Two of the 11 expectations (PA-01 exact-direct forbidden; PA-02 subpath unknown) plus the PA-10 allow were confirmed by direct oracle probes during policy calibration before locking; the remaining expectations follow from the verified prefix-rule semantics (token-level prefixes, no-match = unknown). The family run itself executes all 11 once, afterwards.",
+  "preregistration_sha256": "bc866b38b225b748f6c3d8aadec50e94d2e40263ec6041daacda6dd7b78138b5"
+}

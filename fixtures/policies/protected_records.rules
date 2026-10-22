@@ -1,0 +1,10 @@
+# Sample policy: protected health-records path.
+# A developer's stated intent: deletion/modification under /records/health is
+# forbidden (prefix rules), while read-only listing stays allowed.
+# NOTE (documented limit, REPRO Day 3): prefix_rule matches argv TOKEN
+# prefixes, not path prefixes. ["rm","-rf","/records/health"] matches only a
+# literal third token "/records/health" — subpaths, trailing slashes, or
+# flag insertions do not match.
+prefix_rule(pattern=["ls", "/records/health"], decision="allow")
+prefix_rule(pattern=["rm", "-rf", "/records/health"], decision="forbidden")
+prefix_rule(pattern=["rm", "/records/health"], decision="forbidden")

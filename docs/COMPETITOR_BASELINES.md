@@ -179,6 +179,57 @@ was found. Per-fixture: not run; the fixture form (rules + argv → native decis
 has no corresponding input — recorded as **not tested** in the matrix, with this
 concept note, per the update rule.
 
+## 7. Upstream Codex issue reports — third-party prior art (THIRD-PARTY, not reproduced)
+
+Both issues below were read directly from the GitHub issue pages on
+2026-10-21/22 and are reported here as the reporters stated them. They are
+**not** reproduced by us (no runtime execution in week 1; we measure the
+rules layer only). They narrow our novelty claim: the contribution is the
+rigorous, repeatable, versioned measurement protocol — developer-owned intent
++ explicit layer model + pinned native-oracle tests + portable evidence +
+independent replay + version-to-version regression — never the discovery of
+shell-wrapper brittleness itself.
+
+- **openai/codex#44964** — "Managed requirements.toml prompt/forbidden rules
+  do not fire for non-trivial or nested shell scripts; agent's default zsh -c
+  style bypasses an admin rm rule" (opened 2026-09-12; open/closed status not
+  confirmed from the fetched page text; no maintainer response visible).
+  The reporter, from managed-deployment session logs, deployed a
+  `requirements.toml` rule routing all `rm`/`rmdir`/`trash`/`unlink` commands
+  to a human reviewer. The rule fired only for a bare `rm` (approval requested
+  and denied). It did **not** fire when (B) the command was a non-trivial
+  shell script — the agent's default style for anything non-trivial — because
+  such a script "is treated as a single command without splitting," so the
+  `rm` inside was invisible to the rule (16 files permanently deleted with no
+  prompt, no reviewer consulted); nor when (C) the command was a nested shell
+  (`bash -lc 'rm …'` inside the app's own `/bin/zsh -c` wrapper is unwrapped
+  only one level deep, so the inner script is never split — 2 more files
+  deleted with no prompt). The reporter's conclusion: "a `prompt`/`forbidden`
+  rule on `rm` is defeated by (B) any non-trivial script … and (C) one level
+  of shell nesting," and "prefix rules cannot currently serve as a control in
+  `requirements.toml`; the filesystem permission profile is the only wall."
+  This is the **restrictive-side** precedent for the wrapper-brittleness class
+  our INV-004 fixtures probe at the rules layer. Source:
+  https://github.com/openai/codex/issues/44964
+- **openai/codex#30868** — "Execpolicy rules cannot express stable
+  shell-wrapped test command prefixes" (opened 2026-07-01; open/closed status
+  not confirmed from the fetched page text; no maintainer response visible).
+  The same underlying mechanism (unsplit shell-script argument,
+  argv-element prefix matching) from the **allow side**: when Codex runs
+  `["/bin/zsh", "-lc", "NODE_ENV=test pnpm exec playwright test …"]`, the
+  third argv element must match as a whole, and the environment assignment
+  means Codex does not split it — so a stable allow rule like
+  `prefix_rule(pattern=["pnpm", "exec", "playwright", "test"],
+  decision="allow")` fails on the shell-wrapped form. The only reliably
+  matching rule is the overbroad `["/bin/zsh", "-lc"]` allow, which
+  "effectively allows any shell command that goes through that wrapper."
+  Result: repeated approval prompts for logically identical runs, pushing
+  users toward approval fatigue or overly broad permissions. This is a
+  usability/permissions-fuzz failure, not a protective bypass — cited here as
+  independent evidence that the wrapper-opacity mechanism was reported
+  upstream, in both directions, before our measurements. Source:
+  https://github.com/openai/codex/issues/30868
+
 ## Day-1 bottom line
 
 - No baseline run today does intent→native-decision conformance. The gap hypothesis

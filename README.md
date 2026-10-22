@@ -8,7 +8,7 @@
 
 ## 👀 Review this repo in 5 minutes
 
-1. **See the result** — the chart below. 41 probe commands were replayed against Codex's own policy checker. Wherever the rulebook answers, we agree with it (41/41). The finding is how often it *doesn't answer*.
+1. **See the result** — the chart below. 41 probe commands were replayed against Codex's own policy checker. Measurement validity 41/41 — every native decision reproduced exactly. But measurement is not protection: intent coverage is a separate judgment (10 satisfied · 23 unresolved · 8 not applicable, of 41 — separate denominator). A correctly reported unknown is a successful measurement, never a satisfied protective intent. The finding is how often the rulebook *doesn't answer*.
 2. **Run it yourself** — one command, ~10 seconds: `python3 tools/run_fixtures.py` (needs the pinned `codex` CLI, v0.149.0). It prints the verdict table and writes raw evidence JSON to `evidence/reruns/`.
 3. **Skim the evidence** — `evidence/day1-baseline-2026-10-21/` holds the frozen Day-1 raw outputs; `docs/COMPETITOR_BASELINES.md` shows the same tests run against the closest existing tools.
 4. **Read the one-page status** — [docs/DASHBOARD.md](docs/DASHBOARD.md): objectives, the 5 invariants in plain English, the grants pipeline, the publish queue, and what's waiting on the founder.
@@ -18,7 +18,7 @@
 ![Decision breakdown across the 41-case probe corpus](docs/assets/decisions_donut.png)
 
 - **allow 6 · prompt 4 · forbidden 9 · unknown 22.** The 22 "unknowns" are cases where the written policy gives **no decision at all** — mostly ordinary variants (`rm -fr`, `rm --recursive --force`) and disguised forms (`bash -lc`, `env`, `sudo`, `timeout`, `xargs`) of the forbidden command.
-- Six independent runs agree 41/41, byte-identical — the chart is read from the sealed Day-6 bundle, not hand-typed. An 11-case protected-records family passes 11/11 (allow 1 · forbidden 2 · unknown 8); 4/4 negative controls stay healthy.
+- Six independent runs agree byte-identically on the native decisions — the chart is read from the sealed Day-6 bundle, not hand-typed. Measurement validity 41/41; intent coverage 10 satisfied · 23 unresolved · 8 not applicable (of 41), under a separate denominator. An 11-case protected-records family: measurement 11/11 PASS, intent 3 satisfied · 8 unresolved (of 11); 4/4 negative controls stay healthy.
 - **"Unknown" is NOT a bypass.** It means the rules layer doesn't decide it; the agent's approval prompts and sandbox still govern what happens. That distinction is the credibility of this entire project and appears in every output.
 - The corpus is deliberately weighted toward tricky variants to map coverage — **54% unknown is a property of this probe set, never a real-world rate.**
 
@@ -63,8 +63,8 @@ Key verified mechanics: when several rules match one command, the **strictest de
 | [docs/WEEK1_BUILD_SPEC.md](docs/WEEK1_BUILD_SPEC.md) | CURRENT | The sprint spec + locked kill criterion |
 | [docs/EXPLAINER.md](docs/EXPLAINER.md) | CURRENT | **Start here if the idea is new to you** — the full plain-language foundation: policy, declarative policy, why defaults aren't enough, conformance, the test setup, and the references |
 | [security/invariants.yaml](security/invariants.yaml) | CURRENT (draft v0 — INV-004 decided Oct 21: Option A) | The 5 promises under test |
-| [schemas/](schemas/) | CURRENT | Versioned schemas: invariant/finding/evidence-bundle v1 + serialization guards |
-| [docs/preregistration/](docs/preregistration/) | CURRENT | Hash-locked pre-registration of the Day-2 run (corpus, thresholds, inclusion rules) |
+| [schemas/](schemas/) | CURRENT | Versioned schemas: invariant v1, finding v1 + v2 (dual-verdict extension), evidence-bundle v1 + serialization guards |
+| [docs/preregistration/](docs/preregistration/) | CURRENT | Hash-locked pre-registration of the Day-2 run (corpus, thresholds, inclusion rules). Correction Oct 21: Day 1 was exploratory; Day 2 pre-registered a CONFIRMATION/replication of the explored hypothesis, not initial discovery (held-out: stratified alternation) |
 | [docs/daily/](docs/daily/) | DAILY LOG | One brief per sprint day; each is a snapshot of its day |
 | [evidence/reports/day6-scorecard/](evidence/reports/day6-scorecard/) | CURRENT | The Boundary Scorecard (PRE-FIX): `scorecard.json`/`scorecard.html` + `tier-matrix.json` — the shareable-first export |
 | [evidence/reports/day2-41-corpus/](evidence/reports/day2-41-corpus/) | CURRENT | Standalone deterministic report of the 41-case corpus (`report.json`/`report.html`) |

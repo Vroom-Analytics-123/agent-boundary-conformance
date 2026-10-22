@@ -7,7 +7,7 @@ We are founding a discipline called **Boundary Measurement**: independently chec
 ## Objectives (with target dates)
 | # | Objective | Status | Target |
 |---|---|---|---|
-| 1 | Prove the measurement works (7-day sprint, Codex first) | **COMPLETE — verdict NARROW** (see below). Six agreeing 41/41 runs, sealed bundles, negative controls 4/4 healthy, baselines re-run | Verdict delivered (Oct 21, under continuous execution) |
+| 1 | Prove the measurement works (7-day sprint, Codex first) | **COMPLETE — verdict NARROW** (see below). Six agreeing runs (measurement validity 41/41 each; intent coverage 10 satisfied · 23 unresolved · 8 not applicable of 41 — separate denominator), sealed bundles, negative controls 4/4 healthy, baselines re-run | Verdict delivered (Oct 21, under continuous execution) |
 | 2 | Fund it (grants) | Drafts written; Foresight checkpoint Oct 28 with the NARROW verdict in hand (narrowed novelty language only); submissions wait for Anish's per-item approval | Foresight by Sat Oct 31 · BlueDot/Manifund early Nov |
 | 3 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Scorecard built and sealed (PRE-FIX, shareable-first, not published); launch post draft refreshed by the polish pass; needs Anish's publish tap | Early Nov |
 | 4 | First paying design partners (hosted evidence pilots) | Interview script + lists drafted | Pilots Jan–Mar 2027 |

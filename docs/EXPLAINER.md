@@ -83,12 +83,23 @@ never reported as a result about the whole system.
   the frozen Day-1 evidence in this repository. Anyone can re-run one
   command and check the work.
 
-**Result (REPRO):** 41/41 cases matched the expected native rules-layer
-decision — and 22 of the 41 (54%) returned **unknown**: no rules-layer
-decision at all (allow 6 · prompt 4 · forbidden 9 · unknown 22). Scope
-honesty: the corpus is a synthetic probe set deliberately weighted toward
-variants and wrappers to map coverage. 54% is a corpus result, **not** a
-real-world rate, and must never be quoted as one.
+**Result (REPRO):** measurement validity 41/41 — every expected native
+rules-layer decision matched — and 22 of the 41 (54%) returned **unknown**:
+no rules-layer decision at all (allow 6 · prompt 4 · forbidden 9 · unknown
+22). Measurement is not protection: intent coverage is a separate judgment —
+10 satisfied · 23 unresolved · 8 not applicable (of 41), under its own
+denominator. A correctly reported unknown is a successful measurement, never
+a satisfied protective intent (see `security/invariants.yaml`: INV-004's
+wrapped case renders measurement PASS + intent UNRESOLVED + effect NOT_TESTED,
+and is never displayed as a passed protective invariant). Scope honesty: the
+corpus is a synthetic probe set deliberately weighted toward variants and
+wrappers to map coverage. 54% is a corpus result, **not** a real-world rate,
+and must never be quoted as one. Pre-registration correction (Oct 21, 2026):
+Day 1 was exploratory — the hypothesis was formed during Day-1 exploration;
+the Day-2 pre-registration was a pre-registered **confirmation / replication**
+of that previously explored hypothesis, not initial discovery. Held-out
+fixtures were selected by stratified alternation within expected-decision
+class (allow 3/3, prompt 2/2, forbidden 5/4, unknown 11/11).
 
 ## Sprint-end status (Day-7 scope, executed Oct 21, 2026 — verdict: NARROW)
 

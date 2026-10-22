@@ -299,5 +299,79 @@ class TestNegativeControls(unittest.TestCase):
                                 f"{c['control_id']} expectation is not deliberately wrong")
 
 
+class TestFindingV2DualVerdict(unittest.TestCase):
+    """finding.v2 — dual-verdict extension fields (strategic review section 2.2)."""
+
+    def v2(self, **over):
+        d = dict(
+            actual_decision="unknown",
+            measurement_validity="PASS",
+            intent_coverage="UNRESOLVED",
+            observed_effect="NOT_TESTED",
+            unknown_kind="no-rule-match",
+            protective_intent="a banned command hidden in a wrapper must not pass silently",
+            intent_direction="restrictive",
+        )
+        d.update(over)
+        return d
+
+    def test_valid_v2_fields(self):
+        S.validate_dual_verdict_fields(self.v2())  # must not raise
+
+    def test_bad_enums_rejected(self):
+        for field, bad in (("measurement_validity", "pass"),
+                           ("intent_coverage", "unresolved"),
+                           ("observed_effect", "UNKNOWN"),
+                           ("unknown_kind", "no-match"),
+                           ("intent_direction", "blocking")):
+            with self.subTest(field=field):
+                with self.assertRaises(S.SchemaViolation):
+                    S.validate_dual_verdict_fields(self.v2(**{field: bad}))
+
+    def test_unknown_requires_labelled_kind(self):
+        with self.assertRaises(S.SchemaViolation):
+            S.validate_dual_verdict_fields(self.v2(unknown_kind=None))
+
+    def test_non_unknown_must_not_carry_kind(self):
+        with self.assertRaises(S.SchemaViolation):
+            S.validate_dual_verdict_fields(self.v2(actual_decision="forbidden",
+                                                   unknown_kind="no-rule-match"))
+        S.validate_dual_verdict_fields(self.v2(actual_decision="forbidden",
+                                               unknown_kind=None,
+                                               intent_coverage="SATISFIED"))  # ok
+
+    def test_unknown_never_satisfied_intent(self):
+        # The non-conflation guard: unknown + SATISFIED is a hard violation.
+        with self.assertRaises(S.SchemaViolation):
+            S.validate_dual_verdict_fields(self.v2(intent_coverage="SATISFIED"))
+
+    def test_protective_intent_required(self):
+        with self.assertRaises(S.SchemaViolation):
+            S.validate_dual_verdict_fields(self.v2(protective_intent=""))
+
+
+class TestInvariantMeta(unittest.TestCase):
+    """parse_invariant_meta — normative fields of security/invariants.yaml."""
+
+    def test_meta_parses(self):
+        meta = S.parse_invariant_meta(
+            (REPO / "security" / "invariants.yaml").read_text())
+        self.assertEqual(set(meta),
+                         {"INV-001", "INV-002", "INV-003", "INV-004", "INV-005"})
+        self.assertEqual(
+            meta["INV-004"]["protective_intent"],
+            "a banned command hidden in a wrapper must not pass silently")
+        self.assertEqual(meta["INV-004"]["intent_direction"], "restrictive")
+        self.assertEqual(meta["INV-002"]["intent_direction"], "permissive")
+        self.assertEqual(meta["INV-005"]["intent_direction"], "guard")
+
+    def test_missing_intent_rejected(self):
+        with self.assertRaises(S.SchemaViolation):
+            S.parse_invariant_meta(
+                "invariants:\n"
+                "  - id: INV-001\n"
+                "    intent_direction: restrictive\n")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

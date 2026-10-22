@@ -334,3 +334,103 @@ def parse_invariants_yaml(text):
         if inv["expected"] is None or not inv["expected"]:
             raise SchemaViolation(f"invariant {inv['id']} has no expected list")
     return schema_version, [(i["id"], i["expected"]) for i in invariants]
+
+
+INVARIANT_DIRECTIONS = ("restrictive", "permissive", "guard")
+
+
+def parse_invariant_meta(text):
+    """Parse the dual-verdict normative fields of security/invariants.yaml.
+
+    Returns {invariant_id: {"protective_intent": str, "intent_direction": str}}.
+    intent_direction must be one of restrictive / permissive / guard.
+    protective_intent is required: an invariant without a stated normative
+    expectation cannot receive an intent_coverage judgment.
+
+    (Separate from parse_invariants_yaml so existing sealed-evidence tooling
+    keeps its exact-shape contract untouched.)
+    """
+    meta = {}
+    current = None
+    in_invariants = False
+    for raw in text.splitlines():
+        line = raw.rstrip("\n")
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped == "invariants:":
+            in_invariants = True
+            continue
+        if not in_invariants:
+            continue
+        m = re.match(r"^\s{2}-\s+id:\s+(\S+)\s*$", line)
+        if m:
+            current = {"id": m.group(1), "protective_intent": None,
+                       "intent_direction": None}
+            meta[current["id"]] = current
+            continue
+        if current is not None:
+            m2 = re.match(r"^\s{4}protective_intent:\s+\"(.*)\"\s*$", line)
+            if m2:
+                current["protective_intent"] = m2.group(1)
+                continue
+            m3 = re.match(r"^\s{4}intent_direction:\s+(\S+)\s*$", line)
+            if m3:
+                current["intent_direction"] = m3.group(1)
+    for inv_id, m in meta.items():
+        if not m["protective_intent"]:
+            raise SchemaViolation(f"invariant {inv_id} has no protective_intent")
+        if m["intent_direction"] not in INVARIANT_DIRECTIONS:
+            raise SchemaViolation(
+                f"invariant {inv_id} has bad intent_direction: "
+                f"{m['intent_direction']!r} (want one of {INVARIANT_DIRECTIONS})")
+    return meta
+
+
+# ---------------------------------------------------------------------------
+# finding.v2 — dual-verdict field validation (strategic review section 2.2)
+# ---------------------------------------------------------------------------
+
+MEASUREMENT_VALIDITY = ("PASS", "FAIL", "NOT_REPRODUCED")
+INTENT_COVERAGE = ("SATISFIED", "NOT_SATISFIED", "UNRESOLVED", "NOT_APPLICABLE")
+OBSERVED_EFFECT = ("BLOCKED", "OCCURRED", "NOT_OBSERVED", "NOT_TESTED")
+UNKNOWN_KINDS = ("no-rule-match", "insufficient-runtime-evidence",
+                 "unsupported-adapter")
+
+
+def validate_dual_verdict_fields(d):
+    """Validate the finding.v2 dual-verdict extension fields on a dict.
+
+    Raises SchemaViolation on any violation. The three unknown kinds must
+    stay distinct: unknown_kind is required iff actual_decision is unknown.
+    """
+    mv = d.get("measurement_validity")
+    if mv not in MEASUREMENT_VALIDITY:
+        raise SchemaViolation(f"bad measurement_validity: {mv!r}")
+    ic = d.get("intent_coverage")
+    if ic not in INTENT_COVERAGE:
+        raise SchemaViolation(f"bad intent_coverage: {ic!r}")
+    oe = d.get("observed_effect")
+    if oe not in OBSERVED_EFFECT:
+        raise SchemaViolation(f"bad observed_effect: {oe!r}")
+    if d.get("intent_direction") not in INVARIANT_DIRECTIONS:
+        raise SchemaViolation(f"bad intent_direction: {d.get('intent_direction')!r}")
+    if not d.get("protective_intent"):
+        raise SchemaViolation("protective_intent is required on a v2 finding")
+    uk = d.get("unknown_kind")
+    if d.get("actual_decision") == "unknown":
+        if uk not in UNKNOWN_KINDS:
+            raise SchemaViolation(
+                f"unknown finding requires a labelled unknown_kind "
+                f"(one of {UNKNOWN_KINDS}), got {uk!r}")
+    elif uk is not None:
+        raise SchemaViolation(
+            f"unknown_kind must be absent when actual_decision is "
+            f"{d.get('actual_decision')!r}, got {uk!r}")
+    # Non-conflation guard: a correctly reported unknown is a successful
+    # measurement, never a satisfied protective intent.
+    if d.get("actual_decision") == "unknown" and ic == "SATISFIED":
+        raise SchemaViolation(
+            "unknown actual_decision with intent_coverage SATISFIED: a "
+            "correctly reported unknown is measurement PASS, never a "
+            "satisfied protective intent")

@@ -38,7 +38,7 @@ class TestScorecardV1(unittest.TestCase):
         cls.tier_matrix = json.loads((cls.tmp / "tier-matrix.json").read_text())
 
     def test_schema_versions(self):
-        self.assertEqual(self.scorecard["schema_version"], "scorecard.v1")
+        self.assertEqual(self.scorecard["schema_version"], "scorecard.v2")
         self.assertEqual(self.tier_matrix["schema_version"], "tier-matrix.v1")
 
     def test_pre_fix_labelled(self):
@@ -86,6 +86,60 @@ class TestScorecardV1(unittest.TestCase):
         sem = self.scorecard["semantics"]
         self.assertIn("bypass", sem["unknown"])
         self.assertIn("layer_attribution", sem)
+        self.assertIn("dual_verdict", sem)
+        self.assertIn("preregistration_correction", sem)
+        self.assertIn("Day 1 was EXPLORATORY", sem["preregistration_correction"])
+
+    def test_dual_verdict_separate_denominators(self):
+        c = self.scorecard["codex_t1"]["corpus"]
+        mv = c["measurement_validity"]
+        icv = c["intent_coverage"]
+        self.assertEqual(mv["denominator"], 41)
+        self.assertEqual(mv["counts"]["PASS"], 41)
+        self.assertEqual(icv["denominator"], 41)
+        self.assertEqual(icv["counts"]["SATISFIED"], 10)
+        self.assertEqual(icv["counts"]["UNRESOLVED"], 23)
+        self.assertEqual(icv["counts"]["NOT_APPLICABLE"], 8)
+        self.assertEqual(c["observed_effect"]["counts"]["NOT_TESTED"], 41)
+        self.assertEqual(c["unknowns"]["kinds"]["no-rule-match"], 22)
+        # Rows carry the finding.v2 extension fields.
+        for r in self.scorecard["codex_t1"]["stated_vs_actual"]:
+            self.assertIn(r["measurement_validity"], ("PASS", "FAIL", "NOT_REPRODUCED"))
+            self.assertIn(r["intent_coverage"],
+                          ("SATISFIED", "NOT_SATISFIED", "UNRESOLVED", "NOT_APPLICABLE"))
+            self.assertEqual(r["observed_effect"], "NOT_TESTED")
+            if r["invariant"] == "INV-004":
+                self.assertNotEqual(r["intent_coverage"], "SATISFIED")
+
+    def test_acceptance_case_f07(self):
+        acc = self.scorecard["codex_t1"]["acceptance_case_f07"]
+        self.assertEqual(acc["fixture_id"], "F-07")
+        self.assertEqual(acc["measurement_validity"], "PASS")
+        self.assertEqual(acc["intent_coverage"], "UNRESOLVED")
+        self.assertEqual(acc["observed_effect"], "NOT_TESTED")
+        self.assertIn("NEVER displayed as a passed protective invariant",
+                      acc["not_a_passed_protective_invariant"])
+
+    def test_family_dual_verdict(self):
+        f = self.scorecard["protected_records_family"]
+        self.assertEqual(f["measurement_validity"]["counts"]["PASS"], 11)
+        self.assertEqual(f["intent_coverage"]["counts"]["SATISFIED"], 3)
+        self.assertEqual(f["intent_coverage"]["counts"]["UNRESOLVED"], 8)
+
+    def test_t2_unknown_kind_labelled(self):
+        for t in self.scorecard["five_harness_tier_matrix"]:
+            if t["tier"] == "T2":
+                self.assertEqual(t["unknown_kind"], "unsupported-adapter")
+            else:
+                self.assertIsNone(t["unknown_kind"])
+
+    def test_no_conflated_headline(self):
+        html_text = (self.tmp / "scorecard.html").read_text()
+        # The old conflated headline must be gone: 41/41 is a measurement
+        # result, never "stated intentions match" phrased as protection.
+        self.assertNotIn("stated intentions match", html_text)
+        self.assertIn("separate denominators", html_text)
+        self.assertIn("Acceptance case F-07", html_text)
 
     def test_deterministic_regeneration(self):
         other = Path(tempfile.mkdtemp(prefix="scorecard-test-2-"))

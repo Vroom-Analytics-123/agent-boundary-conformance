@@ -1,6 +1,6 @@
 {
   "schema_version": "tier-matrix.v1",
-  "generated_utc": "2026-10-22T05:16:29Z",
+  "generated_utc": "2026-10-22T06:34:54Z",
   "sources": {
     "manifests": [
       "adapters/codex.v0.manifest.json",
@@ -12,7 +12,7 @@
     "tier_assignments": "docs/HARNESS_TIERS.md",
     "framework": "docs/FRAMEWORK.md"
   },
-  "note": "A harness is described by its tier, never as generically 'supported'. No T2 harness has measured verdicts: no decision oracle exists, so verdicts would be evaluations from documented semantics, never interrogations. T2 is the ceiling until a vendor ships a deterministic offline evaluate-a-command entrypoint at a pinned version.",
+  "note": "A harness is described by its tier, never as generically 'supported'. No T2 harness has measured verdicts: no decision oracle exists, so verdicts would be evaluations from documented semantics, never interrogations. T2 is the ceiling until a vendor ships a deterministic offline evaluate-a-command entrypoint at a pinned version. A T2 'no decision' is the labelled unknown kind unsupported-adapter \u2014 distinct from a T1 no-rule-match.",
   "harnesses": [
     {
       "harness": "codex",
@@ -25,7 +25,8 @@
       "tier_evidence": "codex execpolicy check returns the harness's own rules-layer decision offline and deterministically; 41-case corpus replays byte-identically across 4 independent runs (REPRO).",
       "manifest": "adapters/codex.v0.manifest.json",
       "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "41-case corpus replayed against the native oracle; verdicts are measured (REPRO)"
+      "measured_verdicts": "41-case corpus replayed against the native oracle; verdicts are measured (REPRO)",
+      "unknown_kind": null
     },
     {
       "harness": "claude-code",
@@ -38,7 +39,8 @@
       "tier_evidence": "No native offline decision oracle exists, but allow/ask/deny matching semantics (order, wildcards, precedence, deny-always-wins) are documented precisely enough to compute evaluations \u2014 labelled evaluation, never interrogation. (INFERENCE on DOC+REPRO)",
       "manifest": "adapters/claude-code.manifest.json",
       "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "unknown_kind": "unsupported-adapter"
     },
     {
       "harness": "cursor",
@@ -51,7 +53,8 @@
       "tier_evidence": "Permission tokens, first-token+glob matching, and deny-precedence are documented precisely enough for evaluation in Allowlist mode; the default Auto-review mode's classifier is stochastic and staff-confirmed to drop hook asks, so it cannot be an oracle. (INFERENCE on DOC+THIRD-PARTY)",
       "manifest": "adapters/cursor.manifest.json",
       "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "unknown_kind": "unsupported-adapter"
     },
     {
       "harness": "gemini-cli",
@@ -64,7 +67,8 @@
       "tier_evidence": "Locally reproduced --help proves no decision oracle exists, while the TOML policy engine (prefix/regex/argsPattern, priority tiers, mode scoping, documented precedence) is specified precisely enough to evaluate \u2014 labelled evaluation. (INFERENCE on REPRO+DOC)",
       "manifest": "adapters/gemini-cli.manifest.json",
       "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "unknown_kind": "unsupported-adapter"
     },
     {
       "harness": "opencode",
@@ -77,7 +81,8 @@
       "tier_evidence": "No offline oracle exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x \u2014 evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO)",
       "manifest": "adapters/opencode.manifest.json",
       "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "unknown_kind": "unsupported-adapter"
     }
   ]
 }

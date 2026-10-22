@@ -19,7 +19,10 @@ the harness's own decision engine is the thing under inspection.
 We wrote two sample policies for Codex (codex-cli 0.149.0): three command
 rules, plus a protected-records policy for a health-records directory. 41
 probe cases replayed against Codex's own checker; six independent runs agree
-byte-identically. Wherever the rulebook answers, we agree (41/41 pass). The
+byte-identically. Wherever the rulebook answers, we reproduce its decision
+exactly (measurement validity 41/41) — but measurement is not protection:
+intent coverage is a separate judgment (10 satisfied · 23 unresolved · 8 not
+applicable, of 41). The
 finding is how often it doesn't answer: 22 of 41 native decisions are
 explicit unknowns — ordinary variants (`rm -fr`) and wrapped forms
 (`bash -lc`) the written rules never address. Unknown is reported with its

@@ -12,6 +12,7 @@ Revision-2 semantics are enforced at the serialization layer, in code
 |---|---|---|
 | invariant | `invariant.v1` | A developer's stated security expectation (`security/invariants.yaml` v0 fields, versioned) |
 | finding | `finding.v1` | One fixture's native decision vs its invariant: pass/fail/unknown + layer attribution |
+| finding | `finding.v2` | finding.v1 **plus the dual-verdict extension**: `measurement_validity` (PASS/FAIL/NOT_REPRODUCED), `intent_coverage` (SATISFIED/NOT_SATISFIED/UNRESOLVED/NOT_APPLICABLE), `observed_effect` (BLOCKED/OCCURRED/NOT_OBSERVED/NOT_TESTED), labelled `unknown_kind`. Sealed bundles REMAIN v1 (Merkle roots never rewritten); v2 is adjudicated in the reporting layer (`tools/dual_verdict.py`, surfaced in `scorecard.v2`) |
 | evidence-bundle | `evidence-bundle.v1` | A sealed run: findings, Merkle root, pinned hashes, negative-control outcome |
 
 ## Non-negotiable rules encoded (INV-005, INV-004)

@@ -82,6 +82,20 @@ coverage gaps has no standing to report anyone else's.
   attributed by layer, signed evidence, cross-version — narrowed after GuardFall
   (Adversa AI, Jun 2026) ended the "first to measure guard-vs-shell divergence"
   claim. Cite the narrowed claim, not the broad one.
+- Upstream prior art narrows it further: two third-party Codex issue reports,
+  read directly from GitHub and **not reproduced by us** (THIRD-PARTY), document
+  the same shell-wrapper brittleness class before our measurements —
+  openai/codex#44964 (Sep 2026: managed `prompt`/`forbidden` rules on `rm`
+  silently not firing for non-trivial or nested shell scripts, with
+  author-reported actual deletions in that environment) and openai/codex#30868
+  (Jul 2026: `prefix_rule` cannot express stable shell-wrapped test-command
+  prefixes, pushing users toward overbroad `["/bin/zsh", "-lc"]` allows).
+  See `docs/COMPETITOR_BASELINES.md` §7 for what each actually claims. Our
+  contribution claim is therefore the rigorous, repeatable, versioned
+  **measurement protocol** — developer-owned intent + explicit layer model +
+  pinned native-oracle tests + portable evidence + independent replay +
+  version-to-version regression — never the discovery of shell-wrapper
+  brittleness itself.
 
 ## 7. Signatures and witnessing are honest placeholders
 

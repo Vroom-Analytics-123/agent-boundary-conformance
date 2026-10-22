@@ -30,9 +30,13 @@ Four artifacts, all harness-neutral:
    configuration + corpus-version hash, so any third party can replay a
    measurement and check it byte-for-byte.
 4. **Conformance protocol** — pre-registration of corpus and expectations
-   before a run; public / held-out corpus split; negative controls in every
-   run (a run that passes its negative controls is broken); two-sided
-   verdicts (over-blocking legitimate work is a failure, not a safety win);
+   before a run (a pre-registered *confirmation* of the explored hypothesis,
+   not initial discovery); public / held-out corpus split; negative controls
+   in every run (a run that passes its negative controls is broken);
+   two-sided verdicts (over-blocking legitimate work is a failure, not a
+   safety win); dual-verdict judgments per fixture — measurement validity vs
+   intent coverage, orthogonal, separate denominators, three labelled unknown
+   kinds (`schemas/finding.v2.schema.json`, `tools/dual_verdict.py`);
    minimized counterexamples in public reports; vendor embargo with
    published responses.
 

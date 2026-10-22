@@ -81,6 +81,16 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   pinned configuration") — never allow, never a bypass/evasion/hole.
 - No runtime probe under a pinned approval policy + sandbox mode was run in
   week 1. Nothing here says what any command would actually do when executed.
+- 2026-10-22 (Evidence Upgrade C — effect-closure pilot): a pre-registered
+  decision→approval→effect pilot (16 cases, pinned `approval_policy=never` +
+  `sandbox_mode=workspace-write`, throwaway targets under a job-created
+  sandbox, `docs/effect-pilot/PREREGISTRATION.md` locked before any case
+  execution) was attempted and **blocked before any case execution**: the
+  pinned `codex exec` cannot complete a model turn in this environment
+  without authentication (no `~/.codex/auth.json`, no `OPENAI_API_KEY`;
+  requests time out). It produced **no Layer-2/3 measurements** — everything
+  above stands unchanged. The blocked result, per-case table (16/16 blocked),
+  and standalone unsigned evidence are in `docs/effect-pilot/`.
 
 ## 5. Baseline comparison — honest scope
 

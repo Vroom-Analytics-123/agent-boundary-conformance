@@ -1,0 +1,83 @@
+{
+  "schema_version": "tier-matrix.v1",
+  "generated_utc": "2026-10-22T05:16:29Z",
+  "sources": {
+    "manifests": [
+      "adapters/codex.v0.manifest.json",
+      "adapters/claude-code.manifest.json",
+      "adapters/cursor.manifest.json",
+      "adapters/gemini-cli.manifest.json",
+      "adapters/opencode.manifest.json"
+    ],
+    "tier_assignments": "docs/HARNESS_TIERS.md",
+    "framework": "docs/FRAMEWORK.md"
+  },
+  "note": "A harness is described by its tier, never as generically 'supported'. No T2 harness has measured verdicts: no decision oracle exists, so verdicts would be evaluations from documented semantics, never interrogations. T2 is the ceiling until a vendor ships a deterministic offline evaluate-a-command entrypoint at a pinned version.",
+  "harnesses": [
+    {
+      "harness": "codex",
+      "tier": "T1",
+      "oracle_type": "native-offline",
+      "reimplements_matching": false,
+      "evidence_class": "REPRO",
+      "version_pin": "codex-cli 0.149.0",
+      "policy_surface": "execpolicy Starlark rules files (prefix_rule pattern/decision), e.g. fixtures/policies/default.rules",
+      "tier_evidence": "codex execpolicy check returns the harness's own rules-layer decision offline and deterministically; 41-case corpus replays byte-identically across 4 independent runs (REPRO).",
+      "manifest": "adapters/codex.v0.manifest.json",
+      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
+      "measured_verdicts": "41-case corpus replayed against the native oracle; verdicts are measured (REPRO)"
+    },
+    {
+      "harness": "claude-code",
+      "tier": "T2",
+      "oracle_type": "config-evaluation",
+      "reimplements_matching": true,
+      "evidence_class": "DOC",
+      "version_pin": "@anthropic-ai/claude-code@2.1.307 (npm registry metadata, 2026-10-21; CLI not installed on this machine; evaluation pinned to vendor docs retrieved 2026-10-21)",
+      "policy_surface": "settings.json permissions: { allow[], ask[], deny[], disableBypassPermissionsMode, disableAutoMode, additionalDirectories }, defaultMode, sandbox, hooks ($schema: https://json.schemastore.org/claude-code-settings.json)",
+      "tier_evidence": "No native offline decision oracle exists, but allow/ask/deny matching semantics (order, wildcards, precedence, deny-always-wins) are documented precisely enough to compute evaluations \u2014 labelled evaluation, never interrogation. (INFERENCE on DOC+REPRO)",
+      "manifest": "adapters/claude-code.manifest.json",
+      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+    },
+    {
+      "harness": "cursor",
+      "tier": "T2",
+      "oracle_type": "config-evaluation",
+      "reimplements_matching": true,
+      "evidence_class": "DOC",
+      "version_pin": "docs-2026-10-21 (real CLI not installed on this machine; distributed via curl https://cursor.com/install, not npm \u2014 npm 'cursor-agent@1.0.3' is an unrelated third-party package per its package.json; evaluation pinned to vendor docs retrieved 2026-10-21)",
+      "policy_surface": "permissions: { allow[], deny[] } with tokens Shell(commandBase) (first token of the command line; globs; optional command:args syntax), Read(pathOrGlob), Write(pathOrGlob), WebFetch(domainOrPattern), Mcp(server:tool)",
+      "tier_evidence": "Permission tokens, first-token+glob matching, and deny-precedence are documented precisely enough for evaluation in Allowlist mode; the default Auto-review mode's classifier is stochastic and staff-confirmed to drop hook asks, so it cannot be an oracle. (INFERENCE on DOC+THIRD-PARTY)",
+      "manifest": "adapters/cursor.manifest.json",
+      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+    },
+    {
+      "harness": "gemini-cli",
+      "tier": "T2",
+      "oracle_type": "config-evaluation",
+      "reimplements_matching": true,
+      "evidence_class": "DOC",
+      "version_pin": "@google/gemini-cli@0.65.0 (npm registry metadata + local --help/--version reproduction in scratch dir, 2026-10-21; version pin is load-bearing \u2014 tools.exclude and --allowed-tools already deprecated toward the policy engine)",
+      "policy_surface": "~/.gemini/policies/*.toml (user), adminPolicyPaths (admin), --policy/--admin-policy flags. [[rule]]: toolName, commandPrefix (string|array), commandRegex, argsPattern, decision = allow|deny|ask_user, priority, modes, interactive. Tiers: Admin > User > Default REGARDLESS of priority number. confirmationRequired takes precedence over allowed + core. tools.sandbox OFF by default.",
+      "tier_evidence": "Locally reproduced --help proves no decision oracle exists, while the TOML policy engine (prefix/regex/argsPattern, priority tiers, mode scoping, documented precedence) is specified precisely enough to evaluate \u2014 labelled evaluation. (INFERENCE on REPRO+DOC)",
+      "manifest": "adapters/gemini-cli.manifest.json",
+      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+    },
+    {
+      "harness": "opencode",
+      "tier": "T2",
+      "oracle_type": "config-evaluation",
+      "reimplements_matching": true,
+      "evidence_class": "DOC",
+      "version_pin": "opencode-ai@1.19.3 (npm installer stub; CLI not installed on this machine; adapter pins 1.x 'permission' semantics \u2014 the 1.x/2.x schema break is load-bearing: 2.x uses an ordered 'permissions' list of {action, resource, effect})",
+      "policy_surface": "permission key: 'allow'|'ask'|'deny' globally, per tool-key, or per tool-key as {pattern: effect} objects. Per-agent permission overrides merged with AGENT RULES TAKING PRECEDENCE; markdown agent frontmatter permission: blocks. Tool keys: read/edit/glob/grep/list/shell/task/external_directory/webfetch/websearch/lsp/skill/question/doom_loop. Pattern matching: simple wildcards (* = zero+ chars, ? = exactly one, else literal; ~/ $HOME expansion). LAST MATCHING RULE WINS (order-dependent \u2014 unlike Claude/Cursor deny-first).",
+      "tier_evidence": "No offline oracle exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x \u2014 evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO)",
+      "manifest": "adapters/opencode.manifest.json",
+      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
+      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier."
+    }
+  ]
+}

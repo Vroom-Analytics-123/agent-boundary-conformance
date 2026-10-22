@@ -1,0 +1,51 @@
+# Added Day 6: the test suite is stable (24 passed + subtests), so per the
+# week-1 spec the repo gets CI. Everything here is offline and deterministic:
+# no oracle binary, no network, stdlib only.
+#
+# Note: the Day-2/3/4 sealed bundles are NOT re-verified on disk here on
+# purpose. Their pinned binary_path (/opt/hatch-image/bin/codex) no longer
+# holds the pinned bits on this disk after the environment's Day-4 binary
+# swap; they remain valid evidence OF THEIR PINNED RUNS (Merkle roots intact)
+# but on-disk re-verification is blocked until a pinned binary is restored.
+# Only bundles pinned to the vendored binary verify on disk today.
+name: boundary-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: test suite
+        run: python3 -m pytest tests/ -q
+
+      - name: verify current sealed bundle (offline)
+        # Day-6 bundle is pinned to the vendored codex 0.149.0 recipe;
+        # exit 0 = valid, exit 2 = broken/failed verification.
+        run: python3 tools/verify_bundle.py evidence/day6-2026-10-26/bundle.json
+
+      - name: scorecard regenerates deterministically from the repo alone
+        run: |
+          python3 tools/build_scorecard.py \
+            --bundle evidence/day6-2026-10-26/bundle.json \
+            --family-bundle evidence/day3-2026-10-21/bundle-protected.json \
+            --out /tmp/day6-scorecard-ci
+          python3 - <<'EOF'
+          import json
+          committed = json.load(open("evidence/reports/day6-scorecard/scorecard.json"))
+          fresh = json.load(open("/tmp/day6-scorecard-ci/scorecard.json"))
+          for d in (committed, fresh):
+              d.pop("generated_utc", None)
+              d["reproduce_command"] = d["reproduce_command"].rsplit(" --out ", 1)[0]
+          assert committed == fresh, "scorecard.json is not a deterministic function of the repo"
+          print("scorecard.json deterministic: OK")
+          EOF

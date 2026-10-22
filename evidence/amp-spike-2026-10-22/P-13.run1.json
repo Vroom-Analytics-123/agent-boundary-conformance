@@ -1,0 +1,13 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "xyzzyplugh --frobnicate"
+  },
+  "action": "ask",
+  "matchedEntry": {
+    "tool": "Bash",
+    "action": "ask"
+  },
+  "matchIndex": 27,
+  "source": "built-in"
+}

@@ -1,0 +1,18 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "rm -rf /tmp/x"
+  },
+  "action": "reject",
+  "matchedEntry": {
+    "tool": "Bash",
+    "matches": {
+      "cmd": [
+        "rm -rf *"
+      ]
+    },
+    "action": "reject"
+  },
+  "matchIndex": 6,
+  "source": "user"
+}

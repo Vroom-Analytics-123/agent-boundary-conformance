@@ -1,0 +1,18 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "rm --recursive --force /tmp/x"
+  },
+  "action": "reject",
+  "matchedEntry": {
+    "tool": "Bash",
+    "matches": {
+      "cmd": [
+        "rm --recursive --force *"
+      ]
+    },
+    "action": "reject"
+  },
+  "matchIndex": 9,
+  "source": "user"
+}

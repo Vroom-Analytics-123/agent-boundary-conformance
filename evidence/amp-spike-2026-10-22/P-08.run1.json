@@ -1,0 +1,16 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "env FOO=bar rm -rf /tmp/x"
+  },
+  "action": "ask",
+  "matchedEntry": {
+    "tool": "Bash",
+    "matches": {
+      "cmd": "/(^|\\s)(\\/(?!dev\\/(null|zero|stdout|stderr|stdin))[^\\s]*|\\.\\.\\/)(?![^\\s]*\\.(log|txt|md|json|yml|yaml)$)/"
+    },
+    "action": "ask"
+  },
+  "matchIndex": 26,
+  "source": "built-in"
+}

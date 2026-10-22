@@ -11,3 +11,8 @@ fixtures/protected_records_heldout.json
 # part of the reproducible workflow; the committed recipe + pinned sha256 in
 # VENDORED.md reproduces the identical bytes.
 tools/vendor/codex/**/bin/codex
+tools/vendor/amp/**/bin/amp
+
+# Amp spike scratch: fetched installer workdir, fake HOME, raw probe runs
+# (committed copies live under evidence/amp-spike-2026-10-22/).
+.amp-spike/

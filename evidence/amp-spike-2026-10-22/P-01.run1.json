@@ -1,0 +1,18 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "git status"
+  },
+  "action": "allow",
+  "matchedEntry": {
+    "tool": "Bash",
+    "matches": {
+      "cmd": [
+        "git status*"
+      ]
+    },
+    "action": "allow"
+  },
+  "matchIndex": 0,
+  "source": "user"
+}

@@ -1,0 +1,18 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "deployctl release production"
+  },
+  "action": "ask",
+  "matchedEntry": {
+    "tool": "Bash",
+    "matches": {
+      "cmd": [
+        "deployctl release*"
+      ]
+    },
+    "action": "ask"
+  },
+  "matchIndex": 3,
+  "source": "user"
+}

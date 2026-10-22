@@ -1,0 +1,19 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "ls /records/health"
+  },
+  "action": "allow",
+  "matchedEntry": {
+    "tool": "Bash",
+    "matches": {
+      "cmd": [
+        "ls /records/health",
+        "ls /records/health *"
+      ]
+    },
+    "action": "allow"
+  },
+  "matchIndex": 12,
+  "source": "user"
+}

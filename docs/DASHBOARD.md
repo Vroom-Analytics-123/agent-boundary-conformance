@@ -24,7 +24,7 @@ Our sample rulebook has 3 rules: `git status` → allowed · `deployctl release`
 1. **INV-001 — Deploying to production must always ask first.** `deployctl release production` → prompt. ✅ PASS
 2. **INV-002 — Normal safe work must stay allowed.** `git status` → allow. ✅ PASS (if a "fix" ever breaks this, the fix is wrong)
 3. **INV-003 — Destructive deletes are banned.** `rm -rf /tmp/x` → forbidden. ✅ PASS
-4. **INV-004 — A banned command hidden in a wrapper must not pass silently.** `bash -lc "rm -rf /"` → the rulebook gives NO answer (it can't see inside wrappers). ⏳ **DECISION PENDING (Anish):** report this as an explicit, clearly-explained "unknown" (Option A, recommended) — or demand prompt/forbidden anyway, which the tool structurally cannot do, making this promise permanently red (Option B).
+4. **INV-004 — A banned command hidden in a wrapper must not pass silently.** `bash -lc "rm -rf /"` → the rulebook gives NO answer (it can't see inside wrappers). ✅ **DECIDED Oct 21 (Anish): Option A** — reported as an explicit "unknown" with layer attribution (no rules-layer decision; runtime governed by approval policy + sandbox). Option B rejected: the tool structurally cannot demand prompt/forbidden for wrapped payloads.
 5. **INV-005 — Our own honesty guard.** Anything the rulebook doesn't mention (e.g. `curl https://example.com`) must be reported as "unknown" — never quietly treated as "allowed" by our own tool. ✅ PASS
 
 ## The tests, explained
@@ -47,7 +47,7 @@ Our sample rulebook has 3 rules: `git status` → allowed · `deployctl release`
 **Where it would publish — NOT yet decided (Anish picks):** proposed = X/Twitter (build-in-public thread) + LinkedIn (same text), with the GitHub repo as the evidence link once public. Hacker News "Show HN" is reserved for the Scorecard launch, not this post.
 
 ## Waiting on Anish (the complete list — everything else runs without him)
-1. **INV-004:** Option A or B (above).
+1. ~~**INV-004:** Option A or B~~ — ✅ decided Oct 21: Option A.
 2. **Post #1:** approve / edit / hold + pick the channel(s).
 3. **Invitation lists:** approve names + texts (researchers who wrote the field's key papers — replication asks + advisory circle).
 4. **Create one GitHub repo** (private) for plans + publish queue + memory dumps — suggested name `agent-boundary-program`. The moment it exists, the plans, drafts, and a first memory dump get pushed there.

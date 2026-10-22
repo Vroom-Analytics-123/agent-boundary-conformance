@@ -265,7 +265,12 @@ class TestCorpusSplitAndPrereg(unittest.TestCase):
             counts.setdefault(fixtures[fid], [0, 0])[1] += 1
         self.assertEqual(counts,
                          {"allow": [3, 3], "prompt": [2, 2],
-                          "forbidden": [5, 4], "unknown": [11, 11]})
+                          "forbidden": [6, 4], "unknown": [10, 11]})
+        # Post-Day-5-fix stratification (2026-10-22, founder-approved): S-03's
+        # expected decision moved unknown -> forbidden with the new
+        # [rm, --recursive, --force] rule; S-02 (held-out) keeps its
+        # pre-registered unknown expectation. Pre-fix stratification was
+        # forbidden 5/4, unknown 11/11.
 
     def test_prereg_hash_locks_corpus(self):
         pr = json.loads(

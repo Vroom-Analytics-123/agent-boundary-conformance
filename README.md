@@ -2,22 +2,23 @@
 
 **Boundary Measurement** is the independent measurement of whether an AI agent's *enforced* limits match its *stated* limits. Think of it as a **building inspector** for agent policies: the inspector doesn't declare the building safe or unsafe — she checks the building against the code its owner filed, item by item, and writes down what matches and what doesn't. This repo is the first instrument: a local-first tester that takes a developer's written security rules for a coding agent, asks the agent's **own native policy checker** what it actually decides, and reports **pass / fail / unknown** with replayable evidence. It is not a scanner, not a firewall, and it never certifies anything as "secure."
 
-**Status (Oct 21, 2026):** sprint complete — verdict **NARROW**. The repo stands as a Codex-T1 conformance *method* with its limitations on its face, not as an Index. All evidence below is pre-fix and labelled as such (the Day-5 proposed fix awaits the founder's approval). The full living status lives in **[docs/DASHBOARD.md](docs/DASHBOARD.md)** — start there.
+**Status (Oct 22, 2026):** sprint complete — verdict **NARROW**. The repo stands as a Codex-T1 conformance *method* with its limitations on its face, not as an Index. The Day-5 fix is **approved and applied** (Oct 22): post-fix evidence is sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`) and the Boundary Scorecard v3 is labelled POST-FIX; the pre-fix v2 scorecard is kept alongside as history. The full living status lives in **[docs/DASHBOARD.md](docs/DASHBOARD.md)** — start there.
 
 ---
 
 ## 👀 Review this repo in 5 minutes
 
-1. **See the result** — the chart below. 41 probe commands were replayed against Codex's own policy checker. Measurement validity 41/41 — every native decision reproduced exactly. But measurement is not protection: intent coverage is a separate judgment (10 satisfied · 23 unresolved · 8 not applicable, of 41 — separate denominator). A correctly reported unknown is a successful measurement, never a satisfied protective intent. The finding is how often the rulebook *doesn't answer*.
+1. **See the result** — the chart below. 41 probe commands were replayed against Codex's own policy checker. Post-fix measurement validity 40/41 (the single FAIL is S-02's bookkeeping artifact: a held-out case whose expectation was frozen — its native decision was reproduced exactly). But measurement is not protection: intent coverage is a separate judgment (12 satisfied · 21 unresolved · 8 not applicable, of 41 — separate denominator). A correctly reported unknown is a successful measurement, never a satisfied protective intent. The finding is how often the rulebook *doesn't answer*.
 2. **Run it yourself** — one command, ~10 seconds: `python3 tools/run_fixtures.py` (needs the pinned `codex` CLI, v0.149.0). It prints the verdict table and writes raw evidence JSON to `evidence/reruns/`.
 3. **Skim the evidence** — `evidence/day1-baseline-2026-10-21/` holds the frozen Day-1 raw outputs; `docs/COMPETITOR_BASELINES.md` shows the same tests run against the closest existing tools.
 4. **Read the one-page status** — [docs/DASHBOARD.md](docs/DASHBOARD.md): objectives, the 5 invariants in plain English, the grants pipeline, the publish queue, and what's waiting on the founder.
 
-## The sprint result (PRE-FIX evidence — the Day-5 fix is unapproved, unapplied)
+## The sprint result (pre-fix baseline; post-fix evidence sealed Oct 22 — see below)
 
 ![Decision breakdown across the 41-case probe corpus](docs/assets/decisions_donut.png)
 
-- **allow 6 · prompt 4 · forbidden 9 · unknown 22.** The 22 "unknowns" are cases where the written policy gives **no decision at all** — mostly ordinary variants (`rm -fr`, `rm --recursive --force`) and disguised forms (`bash -lc`, `env`, `sudo`, `timeout`, `xargs`) of the forbidden command.
+- **allow 6 · prompt 4 · forbidden 9 · unknown 22** (pre-fix). The 22 "unknowns" are cases where the written policy gives **no decision at all** — mostly ordinary variants (`rm -fr`, `rm --recursive --force`) and disguised forms (`bash -lc`, `env`, `sudo`, `timeout`, `xargs`) of the forbidden command.
+- **Post-fix (Oct 22, founder-approved):** the two spelling variants now decide **forbidden** — allow 6 · prompt 4 · forbidden 11 · unknown 20. Sealed bundle `evidence/postfix-2026-10-22/bundle.json` (Merkle root `5a974fe6…`); scorecard v3 POST-FIX at `evidence/reports/day6-scorecard-v3-postfix/`. Wrapped/disguised forms stay unknown per INV-004 Option A.
 - Six independent runs agree byte-identically on the native decisions — the chart is read from the sealed Day-6 bundle, not hand-typed. Measurement validity 41/41; intent coverage 10 satisfied · 23 unresolved · 8 not applicable (of 41), under a separate denominator. An 11-case protected-records family: measurement 11/11 PASS, intent 3 satisfied · 8 unresolved (of 11); 4/4 negative controls stay healthy.
 - **"Unknown" is NOT a bypass.** It means the rules layer doesn't decide it; the agent's approval prompts and sandbox still govern what happens. That distinction is the credibility of this entire project and appears in every output.
 - The corpus is deliberately weighted toward tricky variants to map coverage — **54% unknown is a property of this probe set, never a real-world rate.**
@@ -66,7 +67,9 @@ Key verified mechanics: when several rules match one command, the **strictest de
 | [schemas/](schemas/) | CURRENT | Versioned schemas: invariant v1, finding v1 + v2 (dual-verdict extension), evidence-bundle v1 + serialization guards |
 | [docs/preregistration/](docs/preregistration/) | CURRENT | Hash-locked pre-registration of the Day-2 run (corpus, thresholds, inclusion rules). Correction Oct 21: Day 1 was exploratory; Day 2 pre-registered a CONFIRMATION/replication of the explored hypothesis, not initial discovery (held-out: stratified alternation) |
 | [docs/daily/](docs/daily/) | DAILY LOG | One brief per sprint day; each is a snapshot of its day |
-| [evidence/reports/day6-scorecard/](evidence/reports/day6-scorecard/) | CURRENT | The Boundary Scorecard (PRE-FIX): `scorecard.json`/`scorecard.html` + `tier-matrix.json` — the shareable-first export |
+| [evidence/reports/day6-scorecard-v3-postfix/](evidence/reports/day6-scorecard-v3-postfix/) | **CURRENT** | The Boundary Scorecard v3 (POST-FIX): `scorecard.json`/`scorecard.html` + `tier-matrix.json` — the shareable-first export |
+| [evidence/postfix-2026-10-22/](evidence/postfix-2026-10-22/) | **CURRENT** | Sealed post-fix evidence: `bundle.json` (41-case corpus, Merkle root `5a974fe6…`) + `bundle-protected.json` (11-case family, Merkle root `29768240…`); both verify clean, unsigned/unwitnessed |
+| [evidence/reports/day6-scorecard/](evidence/reports/day6-scorecard/) | HISTORY (pre-fix) | The Boundary Scorecard v2 (PRE-FIX) — kept as the pre-fix baseline |
 | [evidence/reports/day2-41-corpus/](evidence/reports/day2-41-corpus/) | CURRENT | Standalone deterministic report of the 41-case corpus (`report.json`/`report.html`) |
 | [docs/DAY1_BASELINE_PLAN.md](docs/DAY1_BASELINE_PLAN.md) | HISTORICAL | The Day-1 plan (executed Oct 21) |
 | [docs/DAY1_INVARIANT_REVIEW_PREP.md](docs/DAY1_INVARIANT_REVIEW_PREP.md) | HISTORICAL | Prep for the founder's invariant review |

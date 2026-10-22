@@ -26,6 +26,8 @@ coverage gaps has no standing to report anyone else's.
   The 22-of-41 unknown share is a property of that weighting, **not** a
   real-world usage rate. Quoting "54% of commands get no rules-layer decision"
   without this sentence is misuse.
+  (Post-fix, 2026-10-22: 20-of-41 unknown — S-02/S-03 now decide forbidden.
+  The weighting caveat is unchanged.)
 - 20 of the 41 cases are held out (only their sha256 is committed) so tuning
   to the public shard is detectable — but the corpus is still 41 cases, one
   policy file, one pinned version. It is a probe set, not a benchmark.
@@ -38,6 +40,38 @@ coverage gaps has no standing to report anyone else's.
   applied. The scorecard says so on its face (`fix_status.applied: false`).
 - Do not cite this repo's numbers as "the fixed policy" — cite them as the
   pre-fix baseline they are.
+
+### Addendum (2026-10-22) — the Day-5 fix is now APPLIED; post-fix evidence sealed
+
+The founder approved the fix ("Start the evidence upgrades", Oct 22, 2026).
+What changed, all on the pinned oracle (codex-cli 0.149.0, sha256 `bbc3341e…`,
+vendored):
+
+- `fixtures/policies/default.rules` gained the two forbidden prefix rules
+  (sha256 `9b83f89f…`); corpus expectations re-locked BEFORE the after-run
+  (pre-registration `docs/preregistration/2026-10-22-preregistration.json`,
+  corpus `2dc43a86…`).
+- **Post-fix sealed bundle:** `evidence/postfix-2026-10-22/bundle.json`
+  (Merkle root `5a974fe6…`, status valid, signature/witness unsigned/unwitnessed)
+  and `evidence/postfix-2026-10-22/bundle-protected.json` (Merkle root
+  `29768240…`). Prior sealed bundles are untouched.
+- **Post-fix scorecard v3:** `evidence/reports/day6-scorecard-v3-postfix/`,
+  labelled POST-FIX, alongside (not replacing) the pre-fix v2.
+- Results, actuals: S-02/S-03 flipped unknown → forbidden (the two intended
+  cells); the other 39 cells byte-identical; protected family 11/11 pass
+  unchanged; wrapped forms stay unknown per INV-004 Option A; negative
+  controls healthy (4/4 and 2/2 fail as designed).
+- **Held-out bookkeeping (read before citing):** S-02 sits in the held-out
+  shard, whose content is untouched by policy — its pre-registered expectation
+  was deliberately frozen at "unknown", so its runner verdict reads "fail"
+  while its actual decision (forbidden) is verifier-confirmed and its
+  intent_coverage moved UNRESOLVED → SATISFIED. That is an independent
+  held-out confirmation of the fix with zero retuning, not a regression.
+- Dual verdicts: intent SATISFIED 10 → 12, UNRESOLVED 23 → 21; measurement
+  PASS 41 → 40 with the single S-02 bookkeeping FAIL described above.
+
+Cite post-fix numbers from the post-fix bundle/scorecard, pre-fix numbers
+from the pre-fix bundle/scorecard v2 — never mix them.
 
 ## 4. Rules layer only — no runtime verdicts
 
@@ -109,7 +143,7 @@ coverage gaps has no standing to report anyone else's.
 |---|---|
 | Single harness | A T2→T1 promotion: vendor ships a deterministic offline policy-evaluation entrypoint at a pinned version; corpus rerun sealed |
 | Corpus artifact | A second corpus sampled from real policy files / observed command traffic, pre-registered before running |
-| Pre-fix | Founder approves the Day-5 diff → apply, re-lock, rerun 41 cases, re-seal, re-issue scorecard |
+| Pre-fix | LIFTED 2026-10-22: founder approved the Day-5 diff → applied, re-locked, reran 41 cases + 11-case family + precedence checks, re-sealed (`evidence/postfix-2026-10-22/`), re-issued scorecard v3 POST-FIX |
 | Rules-layer only | Runtime probes under pinned approval_policy + sandbox_mode, labelled as layer-2 evidence |
 | Snyk not tested | Founder supplies a token from his own account (or explicitly deprioritizes Snyk) |
 | Unsigned/unwitnessed | Key-based bundle signatures + independent witness re-runs |

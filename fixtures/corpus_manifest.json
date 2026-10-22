@@ -1,12 +1,12 @@
 {
   "schema_version": "corpus-manifest.v1",
-  "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc",
+  "corpus_version_hash": "2dc43a8690b50a329455b896d17fed736f5f7e4b8c1e63d19ad4c6615bc0a2e9",
   "fixtures_file": "fixtures/fixtures.json",
-  "fixtures_sha256": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc",
+  "fixtures_sha256": "2dc43a8690b50a329455b896d17fed736f5f7e4b8c1e63d19ad4c6615bc0a2e9",
   "total_fixtures": 41,
   "public": {
     "file": "fixtures/corpus_public.json",
-    "sha256": "71cb09e675bdb68c8588855143234b3828d3e05bc23bc316e36d9c0051635048",
+    "sha256": "9aab1a699dbf3f9c01fa06740564c1454a0438c7bf59ff7cd4c5b26b6f6e0f0f",
     "count": 21,
     "fixture_ids": [
       "F-01",
@@ -60,6 +60,6 @@
     ],
     "policy": "content intentionally NOT committed to git; only this hash is recorded"
   },
-  "stratification": "alternating within expected-decision class: allow 3/3, prompt 2/2, forbidden 5/4, unknown 11/11",
+  "stratification": "alternating within expected-decision class at lock: allow 3/3, prompt 2/2, forbidden 6/4, unknown 10/11. Post-Day-5-fix (2026-10-22, founder-approved): S-03's expected decision moved unknown -> forbidden with the new [rm, --recursive, --force] rule; S-02 (held-out) keeps its pre-registered unknown expectation \u2014 its actual decision flipped unknown -> forbidden without retuning.",
   "created_utc": "2026-10-22T00:30:00Z"
 }

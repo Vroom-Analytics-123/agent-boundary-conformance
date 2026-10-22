@@ -1,7 +1,7 @@
 {
   "schema_version": "fixtures.v1",
   "corpus_shard": "public",
-  "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc",
+  "corpus_version_hash": "2dc43a8690b50a329455b896d17fed736f5f7e4b8c1e63d19ad4c6615bc0a2e9",
   "parent_file": "fixtures/fixtures.json",
   "fixture_ids": [
     "F-01",
@@ -294,11 +294,11 @@
         "--force",
         "/tmp/x"
       ],
-      "expected": "unknown",
+      "expected": "forbidden",
       "id": "S-03",
       "kind": "supplementary_probe",
       "maps_to": "INV-003",
-      "note": "Day-1 supplementary probe: long-flag form of the forbidden command does not match the literal prefix rule.",
+      "note": "Day-5 fix (2026-10-22, founder-approved): [rm, --recursive, --force] forbidden prefix rule added to fixtures/policies/default.rules; the long-flag form now matches and the expected decision is forbidden.",
       "resolve_host_executables": false,
       "rules": "fixtures/policies/default.rules"
     },

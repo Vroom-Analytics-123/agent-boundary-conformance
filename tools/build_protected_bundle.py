@@ -28,8 +28,13 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 import schemas_v1 as S  # noqa: E402
+# Day-5 pin-checklist discipline (2026-10-21): every tool resolves the oracle
+# through tools/pin.py, which prefers the sha256-verified vendored copy and
+# fails closed on mismatch. The host path /opt/hatch-image/bin/codex was
+# swapped to an unpinned build on Day 4 and must never be used directly here.
+from pin import codex_binary  # noqa: E402
 
-CODEX = "/opt/hatch-image/bin/codex"
+CODEX = str(codex_binary())
 PINNED_CODEX_VERSION = "0.149.0"
 PUB = REPO / "fixtures" / "protected_records_public.json"
 HO = REPO / "fixtures" / "protected_records_heldout.json"

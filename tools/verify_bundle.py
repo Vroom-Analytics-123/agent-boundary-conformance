@@ -89,7 +89,20 @@ def main():
         if pr.get("preregistration_sha256") != prereg.get("sha256"):
             problems.append("pre-registration hash in bundle != hash in prereg file")
     pinned = bundle.get("pinned", {})
-    corpus_now = sha256_file(REPO / "fixtures" / "fixtures.json")
+    # 6a. Corpus check is family-aware: the protected_records family bundle
+    # commits to the canonical family corpus hash (merged public + held-out
+    # fixture content, sorted by id), not to fixtures/fixtures.json. The
+    # verifier previously checked fixtures.json for every bundle, which made
+    # every valid family bundle "fail" this check (pre-existing blind spot,
+    # found 2026-10-22 during the post-fix re-verification).
+    if bundle.get("family") == "protected_records":
+        pub = json.loads((REPO / "fixtures" / "protected_records_public.json").read_text())
+        ho = json.loads((REPO / "fixtures" / "protected_records_heldout.json").read_text())
+        merged = sorted(pub["fixtures"] + ho["fixtures"], key=lambda f: f["id"])
+        canon = json.dumps(merged, sort_keys=True, separators=(",", ":")).encode()
+        corpus_now = hashlib.sha256(canon).hexdigest()
+    else:
+        corpus_now = sha256_file(REPO / "fixtures" / "fixtures.json")
     if corpus_now != bundle.get("corpus", {}).get("corpus_version_hash"):
         problems.append("corpus file on disk != bundle corpus_version_hash")
     if pinned.get("binary_sha256") != sha256_file(Path(pinned.get("binary_path", ""))):

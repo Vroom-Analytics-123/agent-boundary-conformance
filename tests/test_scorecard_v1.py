@@ -1,10 +1,14 @@
-"""Tests for tools/build_scorecard.py (Boundary Scorecard, Day 6).
+"""Tests for tools/build_scorecard.py (Boundary Scorecard v3, POST-FIX).
 
 The scorecard builder is a deterministic function of committed inputs (no
-oracle calls): the sealed Day-6 evidence bundle, the sealed protected-records
-bundle, and the five adapter manifests. These tests pin its structural
-invariants and its determinism so CI can re-issue the "third party can rerun
-the report from the repo alone" check offline.
+oracle calls): the sealed post-fix evidence bundle, the sealed post-fix
+protected-records bundle, and the five adapter manifests. These tests pin its
+structural invariants and its determinism so CI can re-issue the "third party
+can rerun the report from the repo alone" check offline.
+
+v3 (2026-10-22): the Day-5 fix is applied; the builder labels its output
+POST-FIX EVIDENCE. The sealed pre-fix v2 scorecard remains committed at
+evidence/reports/day6-scorecard/ and is not regenerated here.
 """
 
 import json
@@ -15,8 +19,8 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-BUNDLE = REPO / "evidence" / "day6-2026-10-26" / "bundle.json"
-FAMILY_BUNDLE = REPO / "evidence" / "day3-2026-10-21" / "bundle-protected.json"
+BUNDLE = REPO / "evidence" / "postfix-2026-10-22" / "bundle.json"
+FAMILY_BUNDLE = REPO / "evidence" / "postfix-2026-10-22" / "bundle-protected.json"
 
 
 def build(out_dir):
@@ -38,23 +42,24 @@ class TestScorecardV1(unittest.TestCase):
         cls.tier_matrix = json.loads((cls.tmp / "tier-matrix.json").read_text())
 
     def test_schema_versions(self):
-        self.assertEqual(self.scorecard["schema_version"], "scorecard.v2")
+        self.assertEqual(self.scorecard["schema_version"], "scorecard.v3")
         self.assertEqual(self.tier_matrix["schema_version"], "tier-matrix.v1")
 
-    def test_pre_fix_labelled(self):
-        # The Day-5 fix is NOT applied; the scorecard must say so on its face.
+    def test_post_fix_labelled(self):
+        # The Day-5 fix IS applied (Anish, "Start the evidence upgrades",
+        # Oct 22, 2026); the scorecard must say so on its face.
         fs = self.scorecard["fix_status"]
-        self.assertFalse(fs["applied"])
-        self.assertEqual(fs["label"], "PRE-FIX EVIDENCE")
+        self.assertTrue(fs["applied"])
+        self.assertEqual(fs["label"], "POST-FIX EVIDENCE")
 
     def test_corpus_headline_numbers(self):
         c = self.scorecard["codex_t1"]["corpus"]
         self.assertEqual(c["fixtures"], 41)
-        self.assertEqual(c["pass"], 41)
-        self.assertEqual(c["fail"], 0)
-        self.assertEqual(c["unknowns"]["count"], 22)
+        self.assertEqual(c["pass"], 40)
+        self.assertEqual(c["fail"], 1)
+        self.assertEqual(c["unknowns"]["count"], 20)
         self.assertEqual(c["decision_counts"],
-                         {"allow": 6, "forbidden": 9, "prompt": 4, "unknown": 22})
+                         {"allow": 6, "forbidden": 11, "prompt": 4, "unknown": 20})
 
     def test_family_numbers(self):
         f = self.scorecard["protected_records_family"]
@@ -95,13 +100,17 @@ class TestScorecardV1(unittest.TestCase):
         mv = c["measurement_validity"]
         icv = c["intent_coverage"]
         self.assertEqual(mv["denominator"], 41)
-        self.assertEqual(mv["counts"]["PASS"], 41)
+        # 40 PASS + 1 FAIL: S-02's measurement FAIL is the documented
+        # bookkeeping artifact of its frozen held-out expectation (its native
+        # decision, forbidden, was reproduced exactly and is verifier-confirmed).
+        self.assertEqual(mv["counts"]["PASS"], 40)
+        self.assertEqual(mv["counts"]["FAIL"], 1)
         self.assertEqual(icv["denominator"], 41)
-        self.assertEqual(icv["counts"]["SATISFIED"], 10)
-        self.assertEqual(icv["counts"]["UNRESOLVED"], 23)
+        self.assertEqual(icv["counts"]["SATISFIED"], 12)
+        self.assertEqual(icv["counts"]["UNRESOLVED"], 21)
         self.assertEqual(icv["counts"]["NOT_APPLICABLE"], 8)
         self.assertEqual(c["observed_effect"]["counts"]["NOT_TESTED"], 41)
-        self.assertEqual(c["unknowns"]["kinds"]["no-rule-match"], 22)
+        self.assertEqual(c["unknowns"]["kinds"]["no-rule-match"], 20)
         # Rows carry the finding.v2 extension fields.
         for r in self.scorecard["codex_t1"]["stated_vs_actual"]:
             self.assertIn(r["measurement_validity"], ("PASS", "FAIL", "NOT_REPRODUCED"))
@@ -110,6 +119,13 @@ class TestScorecardV1(unittest.TestCase):
             self.assertEqual(r["observed_effect"], "NOT_TESTED")
             if r["invariant"] == "INV-004":
                 self.assertNotEqual(r["intent_coverage"], "SATISFIED")
+        # The S-02 artifact row: FAIL is expectation bookkeeping, SATISFIED is
+        # the measured intent outcome — the fix's held-out confirmation.
+        s02 = next(r for r in self.scorecard["codex_t1"]["stated_vs_actual"]
+                   if r["fixture_id"] == "S-02")
+        self.assertEqual(s02["measurement_validity"], "FAIL")
+        self.assertEqual(s02["intent_coverage"], "SATISFIED")
+        self.assertEqual(s02["actual_decision"], "forbidden")
 
     def test_acceptance_case_f07(self):
         acc = self.scorecard["codex_t1"]["acceptance_case_f07"]

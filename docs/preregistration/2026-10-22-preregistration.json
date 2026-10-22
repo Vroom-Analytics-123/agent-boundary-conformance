@@ -1,18 +1,18 @@
 {
   "schema_version": "preregistration.v1",
   "title": "Agent Boundary Conformance \u2014 Day-2 run pre-registration",
-  "locked_before_run_utc": "2026-10-22T00:30:03Z",
+  "locked_before_run_utc": "2026-10-22T16:04:57Z",
   "scope": "Day-2 run: replay the hash-locked 41-case corpus against the pinned native oracle (codex execpolicy check), formalize schemas v1, seal a hash-stamped evidence bundle. Revision-2 semantics throughout.",
   "pinned": {
     "harness": "codex",
     "codex_version_pinned": "0.149.0",
     "codex_version_detected": "codex-cli 0.149.0",
-    "codex_binary": "/opt/hatch-image/bin/codex",
+    "codex_binary": "/home/hatch/workspace/agent-boundary-conformance/tools/vendor/codex/0.149.0/bin/codex",
     "codex_binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
     "invariants_file": "security/invariants.yaml",
-    "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+    "invariants_sha256": "9ebcf7755fc5415d8f8e1fd18a7d39340c1157078ff969002754f796733b699b",
     "invariants_schema": "boundary.v0",
-    "default_rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+    "default_rules_sha256": "9b83f89f15ff93b05ca9e23ae2b8500fa78f23e907d24c0e1690394d88f9d38f",
     "precedence_rules_sha256": {
       "evidence/day1-baseline-2026-10-21/prec_a.rules": "42c4d9caaaec7c38d21e411173eeea2e1e5c1358b6d38a27784c92b565c9d584",
       "evidence/day1-baseline-2026-10-21/prec_b.rules": "06f7b24e510a9ea2bc08dc431f78f406cf5813614bad1e310d7caa220c71b593",
@@ -24,12 +24,12 @@
   },
   "corpus": {
     "fixtures_file": "fixtures/fixtures.json",
-    "fixtures_sha256": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc",
-    "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc",
+    "fixtures_sha256": "2dc43a8690b50a329455b896d17fed736f5f7e4b8c1e63d19ad4c6615bc0a2e9",
+    "corpus_version_hash": "2dc43a8690b50a329455b896d17fed736f5f7e4b8c1e63d19ad4c6615bc0a2e9",
     "total_fixtures": 41,
     "public": {
       "file": "fixtures/corpus_public.json",
-      "sha256": "71cb09e675bdb68c8588855143234b3828d3e05bc23bc316e36d9c0051635048",
+      "sha256": "9aab1a699dbf3f9c01fa06740564c1454a0438c7bf59ff7cd4c5b26b6f6e0f0f",
       "count": 21,
       "fixture_ids": [
         "F-01",
@@ -298,7 +298,7 @@
       },
       {
         "id": "S-03",
-        "expected": "unknown",
+        "expected": "forbidden",
         "resolve_host_executables": false
       },
       {
@@ -330,8 +330,8 @@
     "expected_decision_counts": {
       "allow": 6,
       "prompt": 4,
-      "forbidden": 9,
-      "unknown": 22
+      "forbidden": 10,
+      "unknown": 21
     }
   },
   "negative_controls": {
@@ -377,5 +377,5 @@
     "Held-out shard content is never published or quoted; only its hash and aggregate counts appear."
   ],
   "unknown_semantics": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
-  "preregistration_sha256": "8ea9eac32fde3fb04d375dcbd27a292502a42f981da4cd6ffa1a820e5e931bd6"
+  "preregistration_sha256": "87506f32a0a1d80e912bfb00183c3099e8a013194f860c64e09e5c17aa84ec26"
 }

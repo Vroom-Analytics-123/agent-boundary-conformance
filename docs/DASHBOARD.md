@@ -1,5 +1,5 @@
 # Boundary Measurement — Program Dashboard
-*Canonical status page. Last updated: Wed Oct 21, 2026, 23:15 PDT (America/Los_Angeles) — sprint complete, verdict NARROW. Dates below are TARGETS we aim at, not gates — work runs continuously and pulls forward.*
+*Canonical status page. Last updated: Thu Oct 22, 2026, 09:10 PDT (America/Los_Angeles) — Day-5 fix approved + applied; post-fix evidence sealed (bundle `5a974fe6…`, scorecard v3 POST-FIX). Sprint verdict NARROW stands. Dates below are TARGETS we aim at, not gates — work runs continuously and pulls forward.*
 
 ## What this is, in one paragraph
 We are founding a discipline called **Boundary Measurement**: independently checking whether an AI coding agent's enforced limits match the limits its operator stated — comparing (1) stated intent, (2) what the agent's own rulebook actually decides, and (3) what observably happens — for each version of each agent tool, and publishing the differences with replayable, cryptographically verifiable evidence. The research program is **FinePrint**; the public measurements will be the **Agent Boundary Index**. The long-term position we are building toward is the independent verifier for agents (the "UL for agents"): the referee vendors, buyers, auditors, and insurers rely on.
@@ -9,7 +9,7 @@ We are founding a discipline called **Boundary Measurement**: independently chec
 |---|---|---|---|
 | 1 | Prove the measurement works (7-day sprint, Codex first) | **COMPLETE — verdict NARROW** (see below). Six agreeing runs (measurement validity 41/41 each; intent coverage 10 satisfied · 23 unresolved · 8 not applicable of 41 — separate denominator), sealed bundles, negative controls 4/4 healthy, baselines re-run | Verdict delivered (Oct 21, under continuous execution) |
 | 2 | Fund it (grants) | Drafts written; Foresight checkpoint Oct 28 with the NARROW verdict in hand (narrowed novelty language only); submissions wait for Anish's per-item approval | Foresight by Sat Oct 31 · BlueDot/Manifund early Nov |
-| 3 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Scorecard built and sealed (PRE-FIX, shareable-first, not published); launch post draft refreshed by the polish pass; needs Anish's publish tap | Early Nov |
+| 3 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Scorecard v3 built and sealed (POST-FIX, shareable-first, not published); pre-fix v2 kept alongside; launch post draft refreshed by the polish pass; needs Anish's publish tap | Early Nov |
 | 4 | First paying design partners (hosted evidence pilots) | Interview script + lists drafted | Pilots Jan–Mar 2027 |
 | 5 | Become the primary verifier (quarterly Index, vendor day-one runs, evidence standard) | Governance + methodology drafted; NARROW deliberately defers any Index claim — the repo stands as the Codex-T1 method | Through 2027 |
 
@@ -18,7 +18,7 @@ We are founding a discipline called **Boundary Measurement**: independently chec
 The locked Day-7 kill test was met in its narrow form — it does **not** bless a public multi-harness Index. The honest continuation:
 1. This repo stands as a Codex-T1 conformance **method** (pre-registered corpus, pinned oracle, sealed Merkle bundles, negative controls, schema-enforced unknown semantics) with its limitations on its face (`docs/LIMITATIONS.md`) — not as an Index.
 2. Next evidence gate for any Index claim: a T2→T1 promotion. Amp is the leading candidate (only vendor besides OpenAI with a shipped permission-test command).
-3. The single pending decision remains Anish's: approve/reject the Day-5 fix diff → apply, re-lock pre-registration, rerun 41 cases, re-seal, re-issue the scorecard without the PRE-FIX banner.
+3. ~~The single pending decision remains Anish's: approve/reject the Day-5 fix diff → apply, re-lock pre-registration, rerun 41 cases, re-seal, re-issue the scorecard without the PRE-FIX banner.~~ — ✅ **decided Oct 22: APPROVED** ("Start the evidence upgrades"). Applied, re-locked, rerun (41 cases + 11-case family + precedence checks, pinned oracle), re-sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`), scorecard v3 POST-FIX issued. The NARROW verdict itself is unchanged: the repo is a Codex-T1 conformance **method**, not an Index.
 4. Oct 28 Foresight checkpoint: NARROW is not a clean kill-test pass. Any filing uses the narrowed novelty language only — and nothing is submitted without his explicit per-item approval.
 Full reasoning: `docs/daily/2026-10-27.md`.
 
@@ -30,6 +30,15 @@ Full reasoning: `docs/daily/2026-10-27.md`.
 - **Precedence re-verified 6/6** — when rules conflict, most-restrictive-wins, order- and specificity-independent.
 - **Framework tiers:** Codex T1 measured (native oracle, pinned codex-cli 0.149.0); Claude Code / Cursor / Gemini CLI / OpenCode T2 (config evaluation from documented semantics — **no measured verdicts yet**). [Five-harness tier graphic](docs/assets/tier_matrix.png).
 - **Boundary Scorecard exported** — `evidence/reports/day6-scorecard/` (`scorecard.json` + `scorecard.html` + `tier-matrix.json`), shareable-first but NOT published, with the PRE-FIX banner (the Day-5 fix diff is unapproved and unapplied). Determinism verified on a clean checkout.
+
+### Post-fix addendum (Oct 22, 2026) — the Day-5 fix is applied; history above preserved
+
+- **41 test cases re-run post-fix:** S-02/S-03 flipped unknown → forbidden (the two intended cells); the other 39 cells byte-identical to the pre-fix run. Decisions now: allow 6 · prompt 4 · forbidden 11 · **unknown 20**. Sealed post-fix bundle `evidence/postfix-2026-10-22/bundle.json` (Merkle root `5a974fe6729b8203319bb7c493a27f89bb501c663ca68bd2f02676045c32060e`, status valid, unsigned/unwitnessed); 40/41 runner pass.
+- **S-02 bookkeeping (held-out):** S-02 is in the held-out shard — its pre-registered expectation was deliberately frozen at "unknown" (content untouched, hash only), so its runner verdict reads "fail" while its actual decision (forbidden) is verifier-confirmed and its intent_coverage moved UNRESOLVED → SATISFIED: an independent held-out confirmation of the fix, not a regression.
+- **Dual verdicts post-fix:** intent SATISFIED 10 → 12, UNRESOLVED 23 → 21; measurement PASS 41 → 40 with the single S-02 bookkeeping FAIL above.
+- **Protected-records family 11/11 pass, unchanged** (sealed `evidence/postfix-2026-10-22/bundle-protected.json`, Merkle root `297682409437277982ab27eac9f5c87773c91c17466d7c348b8904e8c95e6daf`); **precedence 6/6** (both rule orders); **negative controls healthy** (4/4 corpus, 2/2 family — all fail as designed).
+- **Boundary Scorecard v3 (POST-FIX)** — `evidence/reports/day6-scorecard-v3-postfix/`, alongside (not replacing) the pre-fix v2. Regeneration check: byte-identical modulo timestamp/path. Full suite: 50 passed.
+- Tooling hardened during the run per the Day-5 pin checklist: `tools/make_preregistration.py` and `tools/build_protected_bundle.py` now resolve the oracle through `tools/pin.py` (fail-closed on the vendored pinned binary; the host path had been swapped to an unpinned build on Day 4); `tools/verify_bundle.py` is family-aware for the corpus-hash check.
 - **Competitor check (same corpus, re-run REPRO):** harness-eval 8.0.1 (92 rules, 0 mention `execpolicy`, no argv/policy input) and agent-security-harness 4.28.1 (zero `execpolicy`/`codex` in its modules) **cannot express** any fixture — REPRO interface evidence, not a hand-me-down. Native Codex is the oracle itself: it produces the decisions but never compares them against stated intent — which is exactly the job none of the baselines do. Snyk Agent Scan 0.6.9 still hard-blocked without `SNYK_TOKEN` (cell stays **not tested**); OWASP harness concept review only. Unrun cells say "not tested."
 - **Limitations published in-repo** — `docs/LIMITATIONS.md` (single harness · corpus artifact · pre-fix · rules-layer only · baseline scope · modest novelty · unsigned/unwitnessed · what would lift each).
 
@@ -66,7 +75,7 @@ Lives in the program repo's publish queue (`agent-boundary-program/publish-queue
 
 ## Waiting on Anish (the complete list — everything else runs without him)
 1. ~~**INV-004:** Option A or B~~ — ✅ decided Oct 21: Option A.
-2. **Day-5 fix diff:** approve or reject (`docs/drafts/day5-fix.diff`). Approval triggers: apply, re-lock pre-registration, 41-case rerun on the pinned oracle, new sealed bundle, scorecard re-issue without PRE-FIX.
+2. ~~**Day-5 fix diff:** approve or reject (`docs/drafts/day5-fix.diff`). Approval triggers: apply, re-lock pre-registration, 41-case rerun on the pinned oracle, new sealed bundle, scorecard re-issue without PRE-FIX.~~ — ✅ approved + applied Oct 22 (see post-fix addendum above).
 3. **Foresight Oct 28 checkpoint:** NARROW verdict in hand — proceed (narrowed novelty language only) or hold; nothing submitted without his explicit per-item approval.
 4. **Repo-public call:** the repo is limitation-honest and shareable-first, but goes nowhere without his explicit per-item approval.
 5. **Post #1:** approve / edit / hold + pick the channel(s).

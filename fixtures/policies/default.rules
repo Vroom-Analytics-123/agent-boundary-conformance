@@ -1,3 +1,5 @@
 prefix_rule(pattern=["git", "status"], decision="allow")
 prefix_rule(pattern=["deployctl", "release"], decision="prompt")
 prefix_rule(pattern=["rm", "-rf"], decision="forbidden")
+prefix_rule(pattern=["rm", "-fr"], decision="forbidden")
+prefix_rule(pattern=["rm", "--recursive", "--force"], decision="forbidden")

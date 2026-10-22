@@ -1,3 +1,14 @@
+# Day-5 fix proposal — ✅ APPROVED + APPLIED (Oct 22, 2026)
+
+> **Status update 2026-10-22:** Anish approved this proposal ("Start the evidence
+> upgrades"). The diff below is APPLIED to `fixtures/policies/default.rules`
+> (rules sha256 `9b83f89f…`); S-03's corpus expectation updated to forbidden
+> (S-02's held-out expectation deliberately frozen — see the post-fix addendum
+> in `docs/LIMITATIONS.md`); pre-registration re-locked BEFORE the after-run;
+> post-fix bundle sealed at `evidence/postfix-2026-10-22/bundle.json`
+> (Merkle root `5a974fe6…`); scorecard v3 POST-FIX issued. The original
+> proposal text below is preserved as history.
+
 # Day-5 fix proposal — AWAITING APPROVAL (NOT APPLIED)
 
 **Status: PROPOSED ONLY.** The diff below is prepared, not applied.

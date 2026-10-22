@@ -1,0 +1,18 @@
+{
+ "schema": "cursor-allowlist.v1",
+ "scope": "Precedence-probe translation, Cursor CLI Allowlist-mode native config.",
+ "translated_from": "evidence/day1-baseline-2026-10-21/prec_f.rules",
+ "translation_date_utc": "2026-10-22",
+ "translator": "avan (manual, rule-by-rule)",
+ "notes": [
+  "prec_f: [rm,-rf]->forbidden + [rm]->prompt (untranslatable, dropped) -> identical to prec_e",
+  "prompt has no Cursor Allowlist verb: prompt-intent rules are dropped, never forced into allow or deny.",
+  "Deny takes precedence over allow regardless of order."
+ ],
+ "permissions": {
+  "allow": [],
+  "deny": [
+   "Shell(rm:-rf*)"
+  ]
+ }
+}

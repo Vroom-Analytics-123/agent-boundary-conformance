@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "shell": {
+      "rm /records/health*": "deny",
+      "rm -rf /records/health*": "deny",
+      "ls /records/health*": "allow"
+    }
+  }
+}

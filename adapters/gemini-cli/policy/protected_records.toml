@@ -1,0 +1,34 @@
+# Gemini CLI TOML policy — User-tier translation of fixtures/policies/protected_records.rules
+# Pinned harness: @google/gemini-cli@0.65.0 (route: T2 config-evaluation)
+#
+# Developer intent: deletion under /records/health is forbidden; read-only
+# listing stays allowed. LOSSY TRANSLATION (recorded as ceiling in TEST_LOG.md):
+# Codex's prefix_rule matches argv TOKEN prefixes, so "rm -rf /records/health/db.sqlite"
+# (third token differs) does NOT match the ["rm","-rf","/records/health"] rule.
+# Gemini's commandPrefix is a STRING prefix on the command argument, so
+# "rm -rf /records/health/db.sqlite" DOES match commandPrefix "rm -rf /records/health".
+# The Gemini translation is therefore WIDER than the Codex rule it mirrors:
+# subpath deletions that are unknown at the Codex rules layer are denied here
+# as a side effect of string-prefix matching (including over-match forms such as
+# "rm -rf /records/healthx", which the developer's intent does not cover).
+
+# prefix_rule(pattern=["ls", "/records/health"], decision="allow")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "ls /records/health"
+decision = "allow"
+priority = 100
+
+# prefix_rule(pattern=["rm", "-rf", "/records/health"], decision="forbidden")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "rm -rf /records/health"
+decision = "deny"
+priority = 999
+
+# prefix_rule(pattern=["rm", "/records/health"], decision="forbidden")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "rm /records/health"
+decision = "deny"
+priority = 999

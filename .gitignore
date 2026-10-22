@@ -16,3 +16,14 @@ tools/vendor/amp/**/bin/amp
 # Amp spike scratch: fetched installer workdir, fake HOME, raw probe runs
 # (committed copies live under evidence/amp-spike-2026-10-22/).
 .amp-spike/
+
+# Claude Code wave (2026-10-22): held-out per-case detail is local-only,
+# never committed (fixtures/HELDOUT_POLICY.md).
+adapters/claude-code/results_heldout.local.json
+
+# Gemini CLI wave (2026-10-22): held-out per-case detail is local-only,
+# never committed (fixtures/HELDOUT_POLICY.md).
+adapters/gemini-cli/results_heldout.local.json
+# Cursor wave (2026-10-22): held-out per-case detail is local-only,
+# never committed (fixtures/HELDOUT_POLICY.md).
+adapters/cursor/results_heldout.local.json

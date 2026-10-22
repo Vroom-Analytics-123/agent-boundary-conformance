@@ -24,12 +24,34 @@ never a bypass/evasion/hole; unmatched serializes as **unknown**, never allow.
 | Cursor (CLI via cursor.com/install; docs pinned 2026-10-21) | **T2** | config-evaluation | Permission tokens, first-token+glob matching, and deny-precedence are documented precisely enough for evaluation in Allowlist mode; the default Auto-review mode's classifier is stochastic and staff-confirmed to drop hook asks, so it cannot be an oracle. (INFERENCE on DOC+THIRD-PARTY). Manifest: `adapters/cursor.manifest.json`. |
 | Gemini CLI (@google/gemini-cli@0.65.0) | **T2** | config-evaluation | Locally reproduced `--help` proves no decision oracle exists, while the TOML policy engine (prefix/regex/argsPattern, priority tiers, mode scoping, documented precedence) is specified precisely enough to evaluate — labelled evaluation. (INFERENCE on REPRO+DOC). Manifest: `adapters/gemini-cli.manifest.json`. |
 | OpenCode (opencode-ai@1.19.3; 1.x semantics pinned) | **T2** | config-evaluation | No offline oracle exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x — evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO). Manifest: `adapters/opencode.manifest.json`. |
+| GitHub Copilot CLI (@github/copilot@1.0.103) | **T2-config** | config-evaluation | Install is not auth-walled but every live evaluation route sits behind `/login` (account/subscription wall, named). Offline binary inspection found no oracle-like entrypoint; semantics evaluatable from docs only. Assessment: `adapters/copilot-assessment.md`. |
+| Muse Code — Meta (muse-stable 1.4.11; terminal coding agent) | **T3** | none located | No deterministic offline decision oracle in the CLI surface or official docs; surface and defaults recorded, no verdicts. Assessment: `adapters/muse-code-assessment.md`. (Bonus assessment outside the wave's original list; this is the `muse` terminal agent, not the Muse personal assistant.) |
 
-No harness landed at T3: all four non-Codex surfaces have decision semantics
-documented precisely enough for honest T2 evaluation. T2 is the ceiling until
-a vendor ships a deterministic offline "evaluate this command against this
-policy" entrypoint — the `codex execpolicy check` equivalent — at a pinned
-version. That is the stated T2→T1 promotion condition for all four.
+**Revision — empirical wave (2026-10-22):** the five T2 harnesses were measured
+through their best honest routes (no account/login anywhere). Claude Code
+2.1.307 (85/85 doc-cited engine tests; 21 public + 6 protected cases),
+Cursor 2026.10.19-6bbf2c4 (38/38 tests; 27 public cases; Allowlist mode only —
+default Auto-review unevaluatable), Gemini CLI 0.65.0 (33/33 tests; 21 public +
+6 protected; `--debug-policy` refuted at the pinned version), OpenCode 1.19.3
+(43/43 tests; 27 public cases; last-match-wins demonstrated empirically — 3
+order flips of 27). Each result is labelled T2-evaluation (never interrogated);
+full evidence in `adapters/<harness>/` and the consolidated report at
+`docs/harness-testing-2026-10-22.md`. **No harness changed tiers.** The evidence
+*behind* each T2 assignment upgraded from documented-semantics to
+measured-evaluation; the tier definitions and the T2→T1 promotion condition
+(native offline decision entrypoint at a pinned version) are unchanged. Muse
+Code is the first harness to land at T3 since Pi — the "no harness landed T3"
+line above is superseded. Amp's T1 candidacy is a separate spike (awaiting the
+founder's decision); it is not part of this revision.
+
+Muse Code is the first harness to land at T3 since the Day-1 survey (Pi):
+the "no harness landed T3" claim from 2026-10-21 was superseded by the
+2026-10-22 empirical wave. T2 remains the ceiling until a vendor ships a
+deterministic offline "evaluate this command against this policy" entrypoint
+— the `codex execpolicy check` equivalent — at a pinned version. That is the
+stated T2→T1 promotion condition for the T2 set (Amp's promotion is a separate
+spike result awaiting the founder's decision, not an automatic consequence of
+this wave).
 
 ## Evidence behind each assignment
 

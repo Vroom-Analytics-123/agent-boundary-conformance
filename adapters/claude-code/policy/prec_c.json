@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_comment": "native form of prec_c.rules: identical-scope allow + deny -> deny wins",
+  "permissions": {
+    "allow": [
+      "Bash(git status *)"
+    ],
+    "ask": [],
+    "deny": [
+      "Bash(git status *)"
+    ]
+  }
+}

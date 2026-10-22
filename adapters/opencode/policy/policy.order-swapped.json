@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "shell": {
+      "rm --recursive --force*": "deny",
+      "rm -fr*": "deny",
+      "rm -rf*": "deny",
+      "deployctl release*": "ask",
+      "git status*": "allow"
+    }
+  }
+}

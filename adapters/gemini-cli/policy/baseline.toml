@@ -1,0 +1,49 @@
+# Gemini CLI TOML policy — User-tier translation of fixtures/policies/default.rules
+# Pinned harness: @google/gemini-cli@0.65.0 (route: T2 config-evaluation)
+#
+# Tool-call model: run_shell_command with command = argv joined by single spaces.
+# Translation notes (lossy points are recorded in TEST_LOG.md):
+#  - Codex prefix_rule matches argv TOKEN prefixes; Gemini commandPrefix matches the
+#    command STRING prefix. E.g. "/bin/rm -rf /tmp/x" matches neither layer's rm
+#    prefix, but the failure modes differ (Codex: unknown; Gemini: Default-tier ask_user).
+#  - Codex resolves conflicting matches by most-restrictive; Gemini by
+#    highest final_priority (tier base + toml_priority/1000), first-match-wins.
+#    All baseline rules are User tier; within-tier ordering is by toml priority.
+#  - Built-in Default-tier rules (vendor: "write tools like run_shell_command
+#    default to ask_user") are NOT in this file; the engine loads them
+#    programmatically as final-priority ~1.xxx fallback.
+
+# prefix_rule(pattern=["git", "status"], decision="allow")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "git status"
+decision = "allow"
+priority = 100
+
+# prefix_rule(pattern=["deployctl", "release"], decision="prompt")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "deployctl release"
+decision = "ask_user"
+priority = 100
+
+# prefix_rule(pattern=["rm", "-rf"], decision="forbidden")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "rm -rf"
+decision = "deny"
+priority = 999
+
+# prefix_rule(pattern=["rm", "-fr"], decision="forbidden")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "rm -fr"
+decision = "deny"
+priority = 999
+
+# prefix_rule(pattern=["rm", "--recursive", "--force"], decision="forbidden")
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "rm --recursive --force"
+decision = "deny"
+priority = 999

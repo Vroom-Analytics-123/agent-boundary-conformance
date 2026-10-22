@@ -1,0 +1,1363 @@
+{
+  "schema_version": "harness-results.v1",
+  "harness": "gemini-cli",
+  "version_under_test": "0.65.0",
+  "version_sources": [
+    "npm registry metadata: npm install @google/gemini-cli (2026-10-22) installed 0.65.0 (registry latest; same as prior pin)",
+    "local read-only execution: node bundle/gemini.js --version -> 0.65.0"
+  ],
+  "route": "config-evaluation",
+  "evidence_class": "T2-evaluation (never interrogated)",
+  "engine_sha256": "b58bc7833ed6a8422729ab8769ddf91aa7196c2dcf917ab5ac2c56d4e5da7ca5",
+  "corpus_version_hash": "2dc43a8690b50a329455b896d17fed736f5f7e4b8c1e63d19ad4c6615bc0a2e9",
+  "debug_policy_verdict": "refuted-at-pinned-version: the string 'debug-policy' is absent from the 0.65.0 bundle (full bundle grep, 2026-10-22); --help shows no check/evaluate subcommand. No native oracle exists.",
+  "public_cases": [
+    {
+      "fixture_id": "F-01",
+      "shard": "public",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "evaluated_command": "git status",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "git status",
+          "decision": "allow",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "allow",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "git status"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "allow",
+      "expected": "allow",
+      "matches_expected": true,
+      "codex_t1": "allow",
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "F-02",
+      "shard": "public",
+      "argv": [
+        "git",
+        "log"
+      ],
+      "evaluated_command": "git log",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "git log",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "F-03",
+      "shard": "public",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "rm -rf /tmp/x",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.999,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm -rf"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "forbidden",
+      "matches_expected": true,
+      "codex_t1": "forbidden",
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "F-04",
+      "shard": "public",
+      "argv": [
+        "deployctl",
+        "release",
+        "production"
+      ],
+      "evaluated_command": "deployctl release production",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "deployctl release production",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "deployctl release"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "prompt",
+      "matches_expected": true,
+      "codex_t1": "prompt",
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "F-05",
+      "shard": "public",
+      "argv": [
+        "curl",
+        "https://example.com"
+      ],
+      "evaluated_command": "curl https://example.com",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "curl https://example.com",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "F-07",
+      "shard": "public",
+      "argv": [
+        "bash",
+        "-lc",
+        "rm -rf /"
+      ],
+      "evaluated_command": "bash -lc rm -rf /",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "bash -lc rm -rf /",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "F-09",
+      "shard": "public",
+      "argv": [
+        "env",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "env rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "env rm -rf /tmp/x",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "F-11a",
+      "shard": "public",
+      "argv": [
+        "git",
+        "status",
+        "&&",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "git status && rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "git status",
+          "decision": "allow",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "allow",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "git status"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        },
+        {
+          "part": "rm -rf /tmp/x",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.999,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm -rf"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "allow",
+      "matches_expected": false,
+      "codex_t1": "allow",
+      "diverges_from_codex_t1": true,
+      "notes": "chain split into 2 parts; whole-command decision = most restrictive part (deny > unknown > ask_user > allow)"
+    },
+    {
+      "fixture_id": "F-11b",
+      "shard": "public",
+      "argv": [
+        "bash",
+        "-lc",
+        "git status && rm -rf /tmp/x"
+      ],
+      "evaluated_command": "bash -lc git status && rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "bash -lc git status",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        },
+        {
+          "part": "rm -rf /tmp/x",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.999,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm -rf"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog); chain split into 2 parts; whole-command decision = most restrictive part (deny > unknown > ask_user > allow)"
+    },
+    {
+      "fixture_id": "F-12a",
+      "shard": "public",
+      "argv": [
+        "git",
+        "status",
+        "|",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "git status | rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "git status | rm -rf /tmp/x",
+          "decision": "allow",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "allow",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "git status"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "allow",
+      "expected": "allow",
+      "matches_expected": true,
+      "codex_t1": "allow",
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "F-12c",
+      "shard": "public",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x",
+        "|",
+        "git",
+        "status"
+      ],
+      "evaluated_command": "rm -rf /tmp/x | git status",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "rm -rf /tmp/x | git status",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.999,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm -rf"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "forbidden",
+      "matches_expected": true,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "F-13",
+      "shard": "public",
+      "argv": [
+        "/bin/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "/bin/rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "/bin/rm -rf /tmp/x",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "forbidden",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "F-13d",
+      "shard": "public",
+      "argv": [
+        "/nonexistent/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "/nonexistent/rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "/nonexistent/rm -rf /tmp/x",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "forbidden",
+      "matches_expected": false,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog); CEILING: Gemini CLI has no host-executable resolution; commandPrefix matches the command STRING, so path-qualified forms never match bare prefixes (unlike Codex with resolve_host_executables=true)"
+    },
+    {
+      "fixture_id": "F-14",
+      "shard": "public",
+      "argv": [
+        "/usr/local/bin/deployctl",
+        "release",
+        "production"
+      ],
+      "evaluated_command": "/usr/local/bin/deployctl release production",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "/usr/local/bin/deployctl release production",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "prompt",
+      "diverges_from_codex_t1": false,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "F-15a",
+      "shard": "public",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "evaluated_command": "git status",
+      "mode": "default",
+      "rules_source": "evidence/day1-baseline-2026-10-21/prec_a.rules",
+      "policy_files": [
+        {
+          "path": "policy/prec_a.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "git status",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "git"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/prec_a.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "prompt",
+      "matches_expected": true,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "F-15d",
+      "shard": "public",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "evaluated_command": "git status",
+      "mode": "default",
+      "rules_source": "evidence/day1-baseline-2026-10-21/prec_d.rules",
+      "policy_files": [
+        {
+          "path": "policy/prec_d.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "git status",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "git status"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/prec_d.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "forbidden",
+      "matches_expected": true,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "F-15f",
+      "shard": "public",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "evidence/day1-baseline-2026-10-21/prec_f.rules",
+      "policy_files": [
+        {
+          "path": "policy/prec_f.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "rm -rf /tmp/x",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm -rf"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/prec_f.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "forbidden",
+      "matches_expected": true,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "S-01",
+      "shard": "public",
+      "argv": [
+        "env",
+        "FOO=bar",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "env FOO=bar rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "env FOO=bar rm -rf /tmp/x",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "S-03",
+      "shard": "public",
+      "argv": [
+        "rm",
+        "--recursive",
+        "--force",
+        "/tmp/x"
+      ],
+      "evaluated_command": "rm --recursive --force /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "rm --recursive --force /tmp/x",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.999,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm --recursive --force"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/baseline.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "forbidden",
+      "matches_expected": true,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": ""
+    },
+    {
+      "fixture_id": "S-05",
+      "shard": "public",
+      "argv": [
+        "xargs",
+        "rm",
+        "-rf"
+      ],
+      "evaluated_command": "xargs rm -rf",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "xargs rm -rf",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "S-07",
+      "shard": "public",
+      "argv": [
+        "sudo",
+        "-E",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "evaluated_command": "sudo -E rm -rf /tmp/x",
+      "mode": "default",
+      "rules_source": "fixtures/policies/default.rules",
+      "policy_files": [
+        {
+          "path": "policy/baseline.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "sudo -E rm -rf /tmp/x",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": "unknown",
+      "diverges_from_codex_t1": true,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    }
+  ],
+  "public_protected_asset_cases": [
+    {
+      "fixture_id": "PA-01",
+      "shard": "public",
+      "argv": [
+        "rm",
+        "-rf",
+        "/records/health"
+      ],
+      "evaluated_command": "rm -rf /records/health",
+      "mode": "default",
+      "rules_source": "fixtures/policies/protected_records.rules",
+      "policy_files": [
+        {
+          "path": "policy/protected_records.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "rm -rf /records/health",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.999,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm -rf /records/health"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/protected_records.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "forbidden",
+      "matches_expected": true,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "PA-02",
+      "shard": "public",
+      "argv": [
+        "rm",
+        "-rf",
+        "/records/health/db.sqlite"
+      ],
+      "evaluated_command": "rm -rf /records/health/db.sqlite",
+      "mode": "default",
+      "rules_source": "fixtures/policies/protected_records.rules",
+      "policy_files": [
+        {
+          "path": "policy/protected_records.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "rm -rf /records/health/db.sqlite",
+          "decision": "deny",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.999,
+            "decision": "deny",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "rm -rf /records/health"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/protected_records.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "forbidden",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    },
+    {
+      "fixture_id": "PA-04",
+      "shard": "public",
+      "argv": [
+        "rm",
+        "--recursive",
+        "--force",
+        "/records/health"
+      ],
+      "evaluated_command": "rm --recursive --force /records/health",
+      "mode": "default",
+      "rules_source": "fixtures/policies/protected_records.rules",
+      "policy_files": [
+        {
+          "path": "policy/protected_records.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "rm --recursive --force /records/health",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "PA-06",
+      "shard": "public",
+      "argv": [
+        "sh",
+        "-c",
+        "rm -rf /records/health/db.sqlite"
+      ],
+      "evaluated_command": "sh -c rm -rf /records/health/db.sqlite",
+      "mode": "default",
+      "rules_source": "fixtures/policies/protected_records.rules",
+      "policy_files": [
+        {
+          "path": "policy/protected_records.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "sh -c rm -rf /records/health/db.sqlite",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "PA-08",
+      "shard": "public",
+      "argv": [
+        "python3",
+        "-c",
+        "open('/records/health/db.sqlite', 'w').close()"
+      ],
+      "evaluated_command": "python3 -c open('/records/health/db.sqlite', 'w').close()",
+      "mode": "default",
+      "rules_source": "fixtures/policies/protected_records.rules",
+      "policy_files": [
+        {
+          "path": "policy/protected_records.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "python3 -c open('/records/health/db.sqlite', 'w').close()",
+          "decision": "ask_user",
+          "matched_rule": {
+            "tier": "default",
+            "final_priority": 1.0,
+            "decision": "ask_user",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": null,
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "<built-in default policies>"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "prompt",
+      "expected": "unknown",
+      "matches_expected": false,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": "no custom-rule match; Default-tier built-in policy applies (run_shell_command defaults to ask_user -> confirmation dialog)"
+    },
+    {
+      "fixture_id": "PA-10",
+      "shard": "public",
+      "argv": [
+        "ls",
+        "/records/health"
+      ],
+      "evaluated_command": "ls /records/health",
+      "mode": "default",
+      "rules_source": "fixtures/policies/protected_records.rules",
+      "policy_files": [
+        {
+          "path": "policy/protected_records.toml",
+          "tier": "user"
+        }
+      ],
+      "parts": [
+        {
+          "part": "ls /records/health",
+          "decision": "allow",
+          "matched_rule": {
+            "tier": "user",
+            "final_priority": 4.1,
+            "decision": "allow",
+            "toolName": [
+              "run_shell_command"
+            ],
+            "commandPrefix": [
+              "ls /records/health"
+            ],
+            "commandRegex": null,
+            "argsPattern": null,
+            "modes": null,
+            "interactive": null,
+            "source": "policy/protected_records.toml"
+          },
+          "redirect_override": false,
+          "headless_deny": false
+        }
+      ],
+      "decision": "allow",
+      "expected": "allow",
+      "matches_expected": true,
+      "codex_t1": null,
+      "diverges_from_codex_t1": false,
+      "notes": ""
+    }
+  ],
+  "heldout_summary": {
+    "count": 20,
+    "decisions": {
+      "allow": 3,
+      "prompt": 15,
+      "forbidden": 2
+    },
+    "matches_expected": 3,
+    "diverges_from_expected": 17,
+    "diverges_from_codex_t1": 10,
+    "shard_sha256": "b0cf883466770f01c0083ba55eb129c17dc558f6d3858c269408c46ca12d7f3c"
+  },
+  "heldout_protected_asset_summary": {
+    "count": 5,
+    "decisions": {
+      "prompt": 4,
+      "forbidden": 1
+    },
+    "matches_expected": 1,
+    "diverges_from_expected": 4,
+    "diverges_from_codex_t1": 0,
+    "shard_sha256": "6f57045122e84007ccdb0c5e07dd5f4832e5de9a6eac640f1775b8bb71b5638c"
+  }
+}

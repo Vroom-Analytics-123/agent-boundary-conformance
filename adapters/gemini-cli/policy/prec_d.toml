@@ -1,0 +1,17 @@
+# Gemini CLI TOML translation of evidence/day1-baseline-2026-10-21/prec_d.rules
+# User tier. All rules at priority 100: within-tier conflict resolution is
+# exercised as documented (highest final_priority wins; ties keep rule order).
+# Codex semantics on the same inputs are most-restrictive-wins — the corpus
+# expected values encode Codex semantics; divergences here are the finding.
+
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "git status"
+decision = "deny"
+priority = 100
+
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "git status"
+decision = "allow"
+priority = 100

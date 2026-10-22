@@ -1,0 +1,34 @@
+# Gemini CLI TOML policy — modes=["yolo"] CEILING PROBE (not baseline)
+# Pinned harness: @google/gemini-cli@0.65.0 (route: T2 config-evaluation)
+#
+# Documented semantics probed:
+#  - YOLO mode cannot be enabled from settings.json (CLI flag only:
+#    --yolo / --approval-mode=yolo), but TOML rules CAN be scoped
+#    modes=["yolo"] to re-impose ask_user/deny inside YOLO
+#    (source: geminicli.com/docs/reference/configuration/ — general.defaultApprovalMode).
+#  - Built-in Default-tier policies: "In yolo mode, a high-priority rule allows
+#    all tools" (source: geminicli.com/docs/reference/policy-engine, Default policies).
+#    The engine models this as a Default-tier rule, toolName="*", decision=allow,
+#    toml priority 999 -> final_priority 1.999. User-tier rules (base 4) still win.
+#
+# This file is evaluated together with baseline.toml under mode="yolo" only,
+# as a ceiling probe. The baseline translation in baseline.toml is mode-agnostic
+# and carries no modes scoping.
+
+# Exception inside YOLO: always ask before git commit or PR creation
+# (worked example adapted from allen.hutchison.org policy-engine guide).
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = ["git commit", "gh pr create"]
+decision = "ask_user"
+priority = 900
+modes = ["yolo"]
+
+# Exception inside YOLO: never run docker commands automatically
+# (worked example adapted from allen.hutchison.org policy-engine guide).
+[[rule]]
+toolName = "run_shell_command"
+commandPrefix = "docker"
+decision = "deny"
+priority = 999
+modes = ["yolo"]

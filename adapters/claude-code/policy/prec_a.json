@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_comment": "native form of evidence/day1-baseline-2026-10-21/prec_a.rules: broader ask [git] before narrower allow [git,status]",
+  "permissions": {
+    "allow": [
+      "Bash(git status *)"
+    ],
+    "ask": [
+      "Bash(git *)"
+    ],
+    "deny": []
+  }
+}

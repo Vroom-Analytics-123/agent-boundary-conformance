@@ -15,8 +15,9 @@ The building-inspector framing: an inspector doesn't declare a building
 safe. She checks it against the code its owner filed — item by item, what
 matches and what doesn't. That's what this project does for agent policies:
 the harness's own decision engine is the thing under inspection. We call the
-program Bouncer: it works the door for AI agents — the owner's rules are the
-list; Bouncer checks whether the agent is actually on it.
+program FinePrint: your agent's rules are the headline; FinePrint reads the
+fine print — what the machine actually enforces — and shows you where the
+two don't match, with the missing clauses drafted.
 
 We wrote two sample policies for Codex (codex-cli 0.149.0): three command
 rules, plus a protected-records policy for a health-records directory. 41

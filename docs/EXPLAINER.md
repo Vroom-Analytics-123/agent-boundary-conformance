@@ -46,8 +46,15 @@ Conformance asks one narrow question: **does the system behave the way it
 was specified to behave?** Not "is the agent smart," not "is this setup
 safe" in the abstract — just: the intent was stated, a policy was written to
 express it, the engine renders decisions; *do the decisions match the
-intent?* It is the smoke-detector test: not whether fires are bad, but
-whether the installed alarm actually goes off. This project compares three
+intent?* Think of a **building inspector**: the inspector does not declare
+the building safe or unsafe. She checks the building against the code its
+owner filed — this stairwell must hold this load, this wall must be
+fire-rated — and writes down, item by item, what matches and what does not.
+This project is the inspector for an agent's policy: the rulebook is the
+code, the harness's own decision engine is what gets inspected, and the
+report is pass / fail / unknown per item, with evidence. (For grant and
+safety audiences the variant phrasing is IAEA/arms-control-style
+verification — same mechanics, different register.) This project compares three
 things — stated intent, written policy, and the engine's actual decision
 for each command — and reports **pass / fail / unknown** (the engine gave
 no decision at all), with the evidence attached and the layer named:
@@ -82,6 +89,30 @@ decision at all (allow 6 · prompt 4 · forbidden 9 · unknown 22). Scope
 honesty: the corpus is a synthetic probe set deliberately weighted toward
 variants and wrappers to map coverage. 54% is a corpus result, **not** a
 real-world rate, and must never be quoted as one.
+
+## Sprint-end status (Day-7 scope, executed Oct 21, 2026 — verdict: NARROW)
+
+The Day-1 measurement above was the first of six: the 41-case corpus was
+re-run five more times against the pinned oracle, byte-identical every
+time (allow 6 · prompt 4 · forbidden 9 · unknown 22), plus an 11-case
+protected-records family (11/11 pass: allow 1 · forbidden 2 · unknown 8),
+4/4 negative controls healthy, and precedence re-verified 6/6
+(most-restrictive-wins, order-independent). The same corpus was run
+against the closest open-source tools: harness-eval and
+agent-security-harness **cannot express** these tests at all (re-run
+REPRO); Snyk Agent Scan and the OWASP harness were not tested
+(documented gaps, never silent omissions). The locked Day-7 kill test
+returned **NARROW**: the method is proven on the Codex T1 evidence, but a
+public multi-harness Index is not earned on one measured harness — so the
+repo stands as a Codex-T1 conformance *method* with its limitations on
+its face (`docs/LIMITATIONS.md`), not as an Index. Full reasoning:
+`docs/daily/2026-10-27.md`. The project also became a harness-neutral
+framework (founder's direction, Oct 21): Codex is T1 (native oracle);
+Claude Code, Cursor, Gemini CLI, and OpenCode are T2 (config evaluation,
+no measured verdicts yet) — see `docs/FRAMEWORK.md` and
+`docs/assets/tier_matrix.png`. The Day-5 proposed fix to the sample
+policy is AWAITING the founder's approval and was NOT applied; all
+results above are pre-fix, labelled as such.
 
 ## What the results point to
 

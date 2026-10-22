@@ -6,6 +6,14 @@ durable asset: it must be valuable on its own, with zero adapters, because
 its schemas, protocol, and evidence format are what other tools, vendors,
 and standards bodies can adopt.*
 
+## Where this fits (cross-links)
+
+- The plain-language foundation and the building-inspector metaphor: [docs/EXPLAINER.md](docs/EXPLAINER.md)
+- The living status page (verdict NARROW, objectives, what's waiting on the founder): [docs/DASHBOARD.md](docs/DASHBOARD.md)
+- The tier assignments with the evidence behind each harness: [docs/HARNESS_TIERS.md](docs/HARNESS_TIERS.md) — the five-harness graphic is [docs/assets/tier_matrix.png](docs/assets/tier_matrix.png)
+- The evidence the tiers are measured against: [evidence/](evidence/) — sealed bundles under `evidence/day*-2026-10-*`, daily briefs in [docs/daily/](docs/daily/)
+- The narrowed novelty claim this framework supports: [docs/SCIENTIFIC_REVIEW_ADDENDUM.md](docs/SCIENTIFIC_REVIEW_ADDENDUM.md)
+
 ## What the framework is
 
 Four artifacts, all harness-neutral:

@@ -44,3 +44,53 @@ When effect observation lands: model invocations and their transitive effects (w
 3. **Interop over isolation.** Bundles emit **in-toto attestation format** and the reporter adds **SARIF export**, so evidence plugs into the existing supply-chain tooling (GitHub artifact attestations, SLSA verifiers) instead of demanding a new ecosystem. Distribution beats purity.
 4. **Coverage-guided divergence mining.** The fuzzer's feedback signal is decision-surface coverage (which rules matched, which config branches were exercised) — borrow the coverage-guided fuzzing lesson (AFL lineage) rather than blind generation; minimization stays delta-debugging (Zeller) / shrinking (QuickCheck/Hypothesis).
 5. **Replication bounties (Phase 2).** Small paid bounties for independent replications of Index numbers. Credibility is the product; buying verification is cheaper than buying marketing.
+
+## 8. Adopted ideas from the Oct 21 novel-ideas research note (addendum, 2026-10-21 — nothing in §§1–7 rewritten)
+
+Source: `~/workspace/research_notes/boundary-novel-ideas-2026-10-21.md`
+(research subagent, Oct 21, 2026). Verdict key: *adopt-now* = cheap and
+load-bearing, taken into the design pass. The other verdicts (Phase 1 /
+Phase 2 / reject) stay in the research note; they are not adopted here.
+
+1. **C3 — RFC 3161 trusted timestamping (adopt-now).** `BundleSealed` gains
+   an optional `tsa_token` field; verification treats TSA time as one of
+   three time evidences (TSA token / log inclusion / witness-cosigned
+   checkpoint), any one sufficient, more being better. Rationale: the public
+   log + witness roadmap is Phase 1 and depends on others' infrastructure;
+   a TSA token costs one HTTP round-trip today and gives a legally legible,
+   third-party time assertion ("this root existed at this time") that
+   survives even compromise of our own signing keys. The token is worth
+   what the TSA is worth — use a reputable one and record which.
+2. **S1 — The confused deputy as the formal frame for invariants
+   (adopt-now).** The coding agent is Hardy's confused deputy (ACM OSR
+   1988): ambient authority + designation and authority arriving by
+   separate channels. An invariant is therefore a statement about
+   *designated authority* — "for asset A, authority may only be exercised
+   when the action designates A through the declared channel and the
+   decision is D." Schemas v2 gain a `principal` / `designation` field
+   pair; the field doc gains the frame. This is the reviewer-proof
+   vocabulary feeding addendum upgrade 2 (formal semantics for the
+   expectation layer). Rhetorical caution adopted with it: we claim a
+   measurement frame, not a capability model.
+3. **S4 — Information-flow labels on assets, schema fields now
+   (adopt-now).** Labels (e.g. `no-egress`, `no-flow-to-network`) enter
+   the invariant schema while the schemas are young; flow checking over
+   effect traces is Phase 2 (with the effect-closure stage). A scoped
+   fixed label lattice over declared assets stays tractable; full IFC is
+   a research swamp and stays out.
+4. **S5 — TOCTOU: name the decision→effect race, bind decisions to bytes
+   (adopt-now).** The threat model names the check/use gap (policy, target
+   path, or harness binary can change between decision and effect), and
+   three disciplines are adopted: (a) every `DecisionObserved` binds the
+   hashes of the exact bytes evaluated (policy, config, binary — moved
+   from per-run to per-decision); (b) effect probes re-hash at observation
+   time and flag drift as its own finding class (`decision-basis-drifted`);
+   (c) the stochastic/classifier layer re-checks at decision time and
+   never caches across a version boundary.
+5. **D1 — Bitemporal data model for the Index (adopt-now, discipline
+   first).** Every measurement fact carries `valid_from`/`valid_to`
+   (harness-version interval) and `recorded_at`/`superseded_at` — valid
+   time vs transaction time — so corrections are new assertions, never
+   edits, and "what did the Index claim on date X about harness version
+   Y" is a query, not archaeology. Discipline first (plain tables in the
+   existing SQLite core); XTDB/Datomic adoption optional and later.

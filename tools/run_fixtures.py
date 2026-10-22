@@ -25,9 +25,15 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pin import PINNED_CODEX_VERSION, codex_binary  # noqa: E402
+
 REPO = Path(__file__).resolve().parent.parent
-CODEX = "/opt/hatch-image/bin/codex"
-PINNED_CODEX_VERSION = "0.149.0"
+# Pinned oracle, resolved through tools/pin.py: the sha256-verified vendored
+# binary is preferred; the host path is only a fallback. Resolution verifies
+# the pin and fails closed on mismatch (Day-5 binary-vendoring step).
+CODEX = str(codex_binary())
+PINNED_CODEX_VERSION = PINNED_CODEX_VERSION
 FIXTURES_FILE = REPO / "fixtures" / "fixtures.json"
 RERUNS_DIR = REPO / "evidence" / "reruns"
 

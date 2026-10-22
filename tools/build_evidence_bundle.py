@@ -27,9 +27,13 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 import schemas_v1 as S  # noqa: E402
+from pin import PINNED_CODEX_VERSION, codex_binary  # noqa: E402
 
-CODEX = "/opt/hatch-image/bin/codex"
-PINNED_CODEX_VERSION = "0.149.0"
+# Pinned oracle, resolved through tools/pin.py: the sha256-verified vendored
+# binary is preferred; the host path is only a fallback. Resolution verifies
+# the pin and fails closed on mismatch (Day-5 binary-vendoring step).
+CODEX = str(codex_binary())
+PINNED_CODEX_VERSION = PINNED_CODEX_VERSION
 
 FIXTURES = REPO / "fixtures" / "fixtures.json"
 MANIFEST = REPO / "fixtures" / "corpus_manifest.json"

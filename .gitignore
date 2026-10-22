@@ -5,3 +5,9 @@ __pycache__/
 # Held-out corpus shards: content never committed; only hashes are recorded.
 fixtures/corpus_heldout.json
 fixtures/protected_records_heldout.json
+
+# Vendored oracle binaries: >100 MB blows up git history and GitHub rejects
+# blobs > 100 MB. The binary IS vendored on disk (tools/vendor/...) and is
+# part of the reproducible workflow; the committed recipe + pinned sha256 in
+# VENDORED.md reproduces the identical bytes.
+tools/vendor/codex/**/bin/codex

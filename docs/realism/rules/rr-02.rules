@@ -1,0 +1,5 @@
+# Candidate rr-02 — source: https://iflow.bot/local-multi-agent-codex-macbook/
+# Author's 'Layer 5: Rules for dangerous commands' — verbatim Starlark, including
+# the alternation-list pattern syntax.
+prefix_rule(pattern=["git","reset","--hard"], decision="prompt", justification="Hard resets can destroy local work.")
+prefix_rule(pattern=[["npm","pnpm","yarn","bun"],"install"], decision="prompt", justification="Dependency installs can change lockfiles and supply-chain surface.")

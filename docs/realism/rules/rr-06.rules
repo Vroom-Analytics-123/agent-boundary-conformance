@@ -1,0 +1,4 @@
+# Candidate rr-06 — source: https://thinkingraven.com/research/agent-capabilities-2026
+# Research report (checked 13 Oct 2026) illustrating the canonical read-only-GitHub-CLI
+# allow pattern; the pattern itself is a documented real-world config idiom.
+prefix_rule(pattern = ["gh", "pr", ["view", "list"]], decision = "allow")

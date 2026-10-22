@@ -33,6 +33,7 @@ import schemas_v1 as S  # noqa: E402
 # fails closed on mismatch. The host path /opt/hatch-image/bin/codex was
 # swapped to an unpinned build on Day 4 and must never be used directly here.
 from pin import codex_binary  # noqa: E402
+import bundle_signing  # noqa: E402
 
 CODEX = str(codex_binary())
 PINNED_CODEX_VERSION = "0.149.0"
@@ -266,7 +267,12 @@ def main():
 
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "bundle-protected.json"
-    out_path.write_text(json.dumps(bundle, indent=2) + "\n")
+    if "--sign" in sys.argv:
+        # Ed25519 detached signature at build time (docs/SIGNING.md).
+        # signature_state=signed; witness_state stays honestly unwitnessed.
+        bundle_signing.sign_new_bundle(bundle, out_path)
+    else:
+        out_path.write_text(json.dumps(bundle, indent=2) + "\n")
 
     print(f"bundle {bundle_id}: status={status} pass={passes} fail={fails}")
     print(f"negative controls healthy: {all(c['healthy'] for c in nc_results)} "

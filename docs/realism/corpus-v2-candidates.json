@@ -1,0 +1,450 @@
+{
+  "schema_version": "corpus-v2-candidates.v1",
+  "mined_utc": "2026-10-22T16:15:58Z",
+  "oracle": {
+    "version": "0.149.0",
+    "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827"
+  },
+  "confirmation": "37/37 REPRO decisions independently re-measured 2026-10-22 via tools/pin.py pinned oracle; identical.",
+  "note": "Candidate fixtures for a future corpus-v2. NOT part of the sealed Day-2 corpus and NOT part of the held-out split. Expectations are deliberately absent: every decision below is REPRO-measured, never hand-asserted. Owner review must set expectations before adoption.",
+  "candidates": [
+    {
+      "candidate_id": "rr-01",
+      "source_url": "https://azukiazusa.dev/en/blog/codex-sandbox-agent-authorization/",
+      "source_kind": "blog",
+      "real_world_confidence": "medium",
+      "rules_file": "docs/realism/rules/rr-01.rules",
+      "notes": "Snippet mostly mirrors the official Rules docs example; the git-add rule is quoted from the author's own Codex TUI screenshot (auto-saved 'don't ask again' rule), i.e. real usage of the mechanism.",
+      "commands": [
+        {
+          "argv": [
+            "npm",
+            "install",
+            "react"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "install",
+            "--save-dev",
+            "vitest"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "add",
+            "."
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "test"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "uninstall",
+            "react"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "rr-02",
+      "source_url": "https://iflow.bot/local-multi-agent-codex-macbook/",
+      "source_kind": "blog",
+      "real_world_confidence": "medium",
+      "rules_file": "docs/realism/rules/rr-02.rules",
+      "notes": "Author's 'Layer 5: Rules for dangerous commands' \u2014 presented as their own recommended ruleset; verbatim Starlark given, including the alternation-list pattern syntax.",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "reset",
+            "--hard",
+            "HEAD"
+          ],
+          "measured_decision": "prompt",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "install"
+          ],
+          "measured_decision": "prompt",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "pnpm",
+            "install"
+          ],
+          "measured_decision": "prompt",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "bun",
+            "install",
+            "--frozen-lockfile"
+          ],
+          "measured_decision": "prompt",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "reset",
+            "--soft"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "rr-03",
+      "source_url": "https://computingforgeeks.com/codex-cli-cheat-sheet/",
+      "source_kind": "blog",
+      "real_world_confidence": "medium",
+      "rules_file": "docs/realism/rules/rr-03.rules",
+      "notes": "Cheat-sheet author's recommended ~/.codex/rules/default.rules; rationale for prompt-vs-forbidden on delete is the author's own (agents need to clean build dirs). Docs-style rather than deployed-in-repo, hence medium.",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "push",
+            "origin",
+            "main"
+          ],
+          "measured_decision": "forbidden",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "rm",
+            "-rf",
+            "build"
+          ],
+          "measured_decision": "prompt",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "ls",
+            "-la"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "push",
+            "--force"
+          ],
+          "measured_decision": "forbidden",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "rm",
+            "-r",
+            "build"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "rr-04",
+      "source_url": "https://dev.to/nlsmdn/a-single-source-of-truth-for-ai-agent-permissions-claude-codex-gemini-opencode-1khl",
+      "source_kind": "blog",
+      "real_world_confidence": "high",
+      "rules_file": "docs/realism/rules/rr-04.rules",
+      "notes": "A real user's live, generated ruleset (syncs Claude/Codex/Gemini/OpenCode from one TOML source; repo linked from article). Exact Codex lines reconstructed via the author's published mapping function \u2014 mechanical, no invention of patterns or decisions.",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "status"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "log",
+            "--oneline"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "diff",
+            "HEAD"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "push",
+            "origin",
+            "main"
+          ],
+          "measured_decision": "forbidden",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "reset",
+            "--hard"
+          ],
+          "measured_decision": "forbidden",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "clean",
+            "-fd"
+          ],
+          "measured_decision": "forbidden",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "heroku",
+            "logs",
+            "--tail"
+          ],
+          "measured_decision": "prompt",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "pull"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "rr-05",
+      "source_url": "https://codex.danielvaughan.com/2026/05/04/codex-cli-smart-approvals-adaptive-command-policies-prefix-rules/",
+      "source_kind": "blog",
+      "real_world_confidence": "medium",
+      "rules_file": "docs/realism/rules/rr-05.rules",
+      "notes": "Author's illustrative 'Team: Shared Project Rules' .codex/rules/team.rules; also cites real debugging usage of execpolicy check. Treated as illustrative rather than deployed.",
+      "commands": [
+        {
+          "argv": [
+            "npm",
+            "test"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "run",
+            "ci"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "docker",
+            "build",
+            "-t",
+            "foo",
+            "."
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "docker",
+            "compose",
+            "up"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "run",
+            "deploy"
+          ],
+          "measured_decision": "forbidden",
+          "matched_rules": 2,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "run",
+            "publish",
+            "--tag",
+            "latest"
+          ],
+          "measured_decision": "forbidden",
+          "matched_rules": 2,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "npm",
+            "run",
+            "deploy:production"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "git",
+            "push"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        }
+      ]
+    },
+    {
+      "candidate_id": "rr-06",
+      "source_url": "https://thinkingraven.com/research/agent-capabilities-2026",
+      "source_kind": "docs",
+      "real_world_confidence": "medium",
+      "rules_file": "docs/realism/rules/rr-06.rules",
+      "notes": "Research report (checked 13 Oct 2026) illustrating canonical read-only-GitHub-CLI allow pattern; the pattern itself (gh pr view/list) is a documented real-world config idiom, but this instance is report-written rather than user-deployed.",
+      "commands": [
+        {
+          "argv": [
+            "gh",
+            "pr",
+            "view",
+            "42"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "gh",
+            "pr",
+            "list",
+            "--limit",
+            "20"
+          ],
+          "measured_decision": "allow",
+          "matched_rules": 1,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "gh",
+            "pr",
+            "create",
+            "--title",
+            "x"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "gh",
+            "issue",
+            "view",
+            "1"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        },
+        {
+          "argv": [
+            "gh",
+            "repo",
+            "clone",
+            "u",
+            "r"
+          ],
+          "measured_decision": "unknown",
+          "matched_rules": 0,
+          "parsed": true
+        }
+      ]
+    }
+  ]
+}

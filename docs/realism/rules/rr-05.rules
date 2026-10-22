@@ -1,0 +1,5 @@
+# Candidate rr-05 — source: https://codex.danielvaughan.com/2026/05/04/codex-cli-smart-approvals-a
+# Author's illustrative 'Team: Shared Project Rules' .codex/rules/team.rules.
+prefix_rule(pattern=["npm",["test","run","ci"]], decision="allow", justification="Standard dev scripts are safe")
+prefix_rule(pattern=["docker",["build","compose"]], decision="allow", justification="Containerised builds are isolated")
+prefix_rule(pattern=["npm","run",["deploy","publish"]], decision="forbidden", justification="Deployments require human-initiated CI")

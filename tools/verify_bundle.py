@@ -24,6 +24,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 import schemas_v1 as S  # noqa: E402
+import ed25519  # noqa: E402
 
 
 def sha256_file(p: Path) -> str:
@@ -32,6 +33,74 @@ def sha256_file(p: Path) -> str:
         for chunk in iter(lambda: f.read(65536), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def _sig_paths(bundle_path: Path):
+    return (bundle_path.with_suffix(bundle_path.suffix + ".sig"),
+            bundle_path.with_suffix(bundle_path.suffix + ".sig.json"))
+
+
+def check_detached_signature(bundle_path: Path, bundle: dict, problems: list,
+                             strict: bool):
+    """Verify a detached Ed25519 signature over the exact bundle bytes.
+
+    strict=True (bundle claims signature_state="signed"): missing/invalid
+    signature is a verification problem. strict=False (unsigned bundle with
+    a post-seal attestation alongside): only an INVALID signature is a
+    problem; a valid one is reported informationally.
+    """
+    sig_path, meta_path = _sig_paths(bundle_path)
+    data = bundle_path.read_bytes()
+    if strict:
+        sig_block = bundle.get("signature") or {}
+        pubkey_hex = sig_block.get("public_key", "")
+        try:
+            pub = bytes.fromhex(pubkey_hex)
+        except ValueError:
+            pub = b""
+        if len(pub) != 32:
+            problems.append("signature_state=signed but bundle has no valid "
+                            "public key in its signature block")
+            return
+        if not sig_path.exists():
+            problems.append(f"signature_state=signed but detached signature "
+                            f"missing: {sig_path.name}")
+            return
+        sig = sig_path.read_bytes()
+        if len(sig) != 64 or not ed25519.checkvalid(sig, data, pub):
+            problems.append("signature_state=signed but detached Ed25519 "
+                            "signature is INVALID over the bundle bytes")
+            return
+        if meta_path.exists():
+            meta = json.loads(meta_path.read_text())
+            if meta.get("bundle_sha256") != hashlib.sha256(data).hexdigest():
+                problems.append("signature metadata bundle_sha256 != actual "
+                                "bundle bytes hash")
+                return
+            if meta.get("public_key") != pubkey_hex:
+                problems.append("signature metadata public_key != bundle "
+                                "signature block public_key")
+                return
+        print(f"signature: VALID (Ed25519, fingerprint "
+              f"{hashlib.sha256(pub).hexdigest()[:16]}...)")
+    else:
+        if not sig_path.exists():
+            print("signature_state=unsigned (no detached signature)")
+            return
+        meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}
+        pubkey_hex = meta.get("public_key", "")
+        try:
+            pub = bytes.fromhex(pubkey_hex)
+        except ValueError:
+            pub = b""
+        sig = sig_path.read_bytes()
+        if len(pub) != 32 or len(sig) != 64 or not ed25519.checkvalid(sig, data, pub):
+            problems.append(f"detached signature alongside unsigned bundle is "
+                            f"INVALID: {sig_path.name}")
+            return
+        print(f"signature: detached post-seal attestation VALID "
+              f"(fingerprint {hashlib.sha256(pub).hexdigest()[:16]}...; "
+              f"bundle signature_state honestly remains 'unsigned')")
 
 
 def main():
@@ -120,6 +189,16 @@ def main():
     want_status = "broken" if problems else "valid"
     if declared != want_status:
         problems.append(f"declared status {declared!r} but checks say {want_status!r}")
+
+    # 8. Detached Ed25519 signature (docs/SIGNING.md).
+    bundle_path = Path(sys.argv[1])
+    state = bundle.get("signature_state")
+    if state == "signed":
+        check_detached_signature(bundle_path, bundle, problems, strict=True)
+    elif state == "unsigned":
+        check_detached_signature(bundle_path, bundle, problems, strict=False)
+    else:
+        problems.append(f"bad signature_state: {state!r}")
 
     n = len(findings)
     passes = sum(1 for f in findings if f.get("verdict") == "pass")

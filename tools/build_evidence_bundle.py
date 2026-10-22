@@ -13,7 +13,14 @@ any INV-005 serialization violation, any unknown without layer attribution,
 any passing negative control, or any hash drift vs the pre-registration
 marks the bundle "broken".
 
-Usage: python3 tools/build_evidence_bundle.py <rerun-json> [--out-dir DIR]
+Optional --sign: attach a DETACHED Ed25519 signature at build time (see
+docs/SIGNING.md). The new bundle gets signature_state="signed" (the signature
+block carries algorithm, public key and fingerprint; the 64 signature bytes
+live in the detached <bundle>.sig file, never inside the bundle).
+witness_state stays "unwitnessed" — signing is not witnessing. --sign fails
+closed if the project key is absent.
+
+Usage: python3 tools/build_evidence_bundle.py <rerun-json> [--out-dir DIR] [--sign]
 Stdlib only.
 """
 
@@ -28,6 +35,7 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 import schemas_v1 as S  # noqa: E402
 from pin import PINNED_CODEX_VERSION, codex_binary  # noqa: E402
+import bundle_signing  # noqa: E402
 
 # Pinned oracle, resolved through tools/pin.py: the sha256-verified vendored
 # binary is preferred; the host path is only a fallback. Resolution verifies
@@ -263,7 +271,12 @@ def main():
 
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "bundle.json"
-    out_path.write_text(json.dumps(bundle, indent=2) + "\n")
+    if "--sign" in sys.argv:
+        # Ed25519 detached signature at build time (docs/SIGNING.md).
+        # signature_state=signed; witness_state stays honestly unwitnessed.
+        bundle_signing.sign_new_bundle(bundle, out_path)
+    else:
+        out_path.write_text(json.dumps(bundle, indent=2) + "\n")
 
     shard_counts = {}
     for f in findings:

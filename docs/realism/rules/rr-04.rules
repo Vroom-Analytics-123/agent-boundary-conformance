@@ -1,0 +1,11 @@
+# Candidate rr-04 — source: https://dev.to/nlsmdn/a-single-source-of-truth-for-ai-agent-permission
+# A real user's live, generated ruleset (sync.py maps allow->"allow", deny->"forbidden",
+# ask->"prompt", pattern tokens split on spaces). Codex lines reconstructed via the
+# author's published mapping function.
+prefix_rule(pattern=["git","status"], decision="allow")
+prefix_rule(pattern=["git","log"], decision="allow")
+prefix_rule(pattern=["git","diff"], decision="allow")
+prefix_rule(pattern=["git","push"], decision="forbidden")
+prefix_rule(pattern=["git","reset","--hard"], decision="forbidden")
+prefix_rule(pattern=["git","clean","-fd"], decision="forbidden")
+prefix_rule(pattern=["heroku"], decision="prompt")

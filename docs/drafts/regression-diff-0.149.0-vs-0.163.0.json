@@ -1,0 +1,693 @@
+{
+  "tool": "tools/diff_codex_versions.py (Agent Boundary Regression Check demo)",
+  "run_utc": "2026-10-22T18:15:29Z",
+  "binary_a": {
+    "path": "tools/vendor/codex/0.149.0/bin/codex",
+    "label": "codex-cli 0.149.0"
+  },
+  "binary_b": {
+    "path": "/home/hatch/.cache/codex-versions/0.163.0/package/vendor/x86_64-unknown-linux-musl/bin/codex",
+    "label": "codex-cli 0.163.0"
+  },
+  "fixtures_file": "/home/hatch/workspace/agent-boundary-conformance/fixtures/fixtures.json",
+  "summary": {
+    "fixtures": 41,
+    "changed": 0,
+    "unchanged": 41,
+    "unparseable_native_output": 0
+  },
+  "changed": [],
+  "rows": [
+    {
+      "id": "F-01",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "allow",
+      "decision_b": "allow",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-02",
+      "argv": [
+        "git",
+        "log"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-02b",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "allow",
+      "decision_b": "allow",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-02c",
+      "argv": [
+        "git",
+        "log",
+        "--oneline"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-03",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-04",
+      "argv": [
+        "deployctl",
+        "release",
+        "production"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "prompt",
+      "decision_b": "prompt",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-05",
+      "argv": [
+        "curl",
+        "https://example.com"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-06",
+      "argv": [
+        "frobnicate",
+        "--force"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-07",
+      "argv": [
+        "bash",
+        "-lc",
+        "rm -rf /"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-08",
+      "argv": [
+        "sh",
+        "-c",
+        "rm -rf /tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-09",
+      "argv": [
+        "env",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-10",
+      "argv": [
+        "sudo",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-11a",
+      "argv": [
+        "git",
+        "status",
+        "&&",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "allow",
+      "decision_b": "allow",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-11b",
+      "argv": [
+        "bash",
+        "-lc",
+        "git status && rm -rf /tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-11c",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x",
+        "&&",
+        "git",
+        "status"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-11d",
+      "argv": [
+        "git",
+        "status",
+        "&&",
+        "deployctl",
+        "release",
+        "production"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "allow",
+      "decision_b": "allow",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-12a",
+      "argv": [
+        "git",
+        "status",
+        "|",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "allow",
+      "decision_b": "allow",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-12b",
+      "argv": [
+        "bash",
+        "-c",
+        "curl https://example.com | sh"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-12c",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x",
+        "|",
+        "git",
+        "status"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-13",
+      "argv": [
+        "/bin/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-13R",
+      "argv": [
+        "/bin/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-13c",
+      "argv": [
+        "/nonexistent/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-13d",
+      "argv": [
+        "/nonexistent/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-14",
+      "argv": [
+        "/usr/local/bin/deployctl",
+        "release",
+        "production"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-14R",
+      "argv": [
+        "/usr/local/bin/deployctl",
+        "release",
+        "production"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "prompt",
+      "decision_b": "prompt",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-14b",
+      "argv": [
+        "/bin/git",
+        "status"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-14bR",
+      "argv": [
+        "/bin/git",
+        "status"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "allow",
+      "decision_b": "allow",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-15a",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "rules": "evidence/day1-baseline-2026-10-21/prec_a.rules",
+      "decision_a": "prompt",
+      "decision_b": "prompt",
+      "matched_rules_a": 2,
+      "matched_rules_b": 2,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-15b",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "rules": "evidence/day1-baseline-2026-10-21/prec_b.rules",
+      "decision_a": "prompt",
+      "decision_b": "prompt",
+      "matched_rules_a": 2,
+      "matched_rules_b": 2,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-15c",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "rules": "evidence/day1-baseline-2026-10-21/prec_c.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 2,
+      "matched_rules_b": 2,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-15d",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "rules": "evidence/day1-baseline-2026-10-21/prec_d.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 2,
+      "matched_rules_b": 2,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-15e",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "evidence/day1-baseline-2026-10-21/prec_e.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 2,
+      "matched_rules_b": 2,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "F-15f",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "evidence/day1-baseline-2026-10-21/prec_f.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 2,
+      "matched_rules_b": 2,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-01",
+      "argv": [
+        "env",
+        "FOO=bar",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-02",
+      "argv": [
+        "rm",
+        "-fr",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-03",
+      "argv": [
+        "rm",
+        "--recursive",
+        "--force",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "forbidden",
+      "decision_b": "forbidden",
+      "matched_rules_a": 1,
+      "matched_rules_b": 1,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-04",
+      "argv": [
+        "timeout",
+        "5",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-05",
+      "argv": [
+        "xargs",
+        "rm",
+        "-rf"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-06",
+      "argv": [
+        "./rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-07",
+      "argv": [
+        "sudo",
+        "-E",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    },
+    {
+      "id": "S-08",
+      "argv": [
+        "command",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "rules": "fixtures/policies/default.rules",
+      "decision_a": "unknown",
+      "decision_b": "unknown",
+      "matched_rules_a": 0,
+      "matched_rules_b": 0,
+      "changed": false,
+      "evidence_class": "REPRO",
+      "notes": []
+    }
+  ]
+}

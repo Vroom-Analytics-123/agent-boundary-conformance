@@ -141,11 +141,22 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   version-to-version regression — never the discovery of shell-wrapper
   brittleness itself.
 
-## 7. Signatures and witnessing are honest placeholders
+## 7. Signatures implemented; witnessing still an honest placeholder
 
+- **Update 2026-10-22 (grant-strengthening pack):** Ed25519 bundle signing is
+  now implemented (`tools/ed25519.py` pure-Python, RFC 8032 vectors;
+  `tools/signing.py`; `--sign` in both bundle builders; `docs/SIGNING.md`
+  publishes the project public key + fingerprint; the private key lives
+  outside all repos). New `--sign` bundles get `signature_state="signed"`;
+  `witness_state` stays `"unwitnessed"` — signing is not witnessing.
 - Sealed bundles record `signature_state: "unsigned"` and
   `witness_state: "unwitnessed"` as first-class states, not silent gaps.
-  Tamper-evidence today is Merkle-root + pre-registration hash-locking only.
+  The two post-fix sealed bundles (sealed before signing existed) carry
+  detached post-seal Ed25519 attestations (`.sig` + `.sig.json` alongside;
+  bundle bytes untouched, `signature_state` honestly remains `"unsigned"`).
+- Tamper-evidence today is Merkle-root + pre-registration hash-locking +
+  detached Ed25519 signatures. Independent witness re-runs are still the
+  open item (see §8).
 
 ## 8. What would change these limitations
 
@@ -156,4 +167,4 @@ from the pre-fix bundle/scorecard v2 — never mix them.
 | Pre-fix | LIFTED 2026-10-22: founder approved the Day-5 diff → applied, re-locked, reran 41 cases + 11-case family + precedence checks, re-sealed (`evidence/postfix-2026-10-22/`), re-issued scorecard v3 POST-FIX |
 | Rules-layer only | Runtime probes under pinned approval_policy + sandbox_mode, labelled as layer-2 evidence |
 | Snyk not tested | Founder supplies a token from his own account (or explicitly deprioritizes Snyk) |
-| Unsigned/unwitnessed | Key-based bundle signatures + independent witness re-runs |
+| Unwitnessed | Independent witness re-runs (signing done 2026-10-22; see docs/SIGNING.md) |

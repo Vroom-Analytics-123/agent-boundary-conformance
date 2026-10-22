@@ -1,0 +1,4 @@
+# Candidate rr-03 — source: https://computingforgeeks.com/codex-cli-cheat-sheet/
+# Cheat-sheet author's recommended ~/.codex/rules/default.rules.
+prefix_rule(pattern=["git","push"], decision="forbidden", justification="No direct pushes, open a pull request instead")
+prefix_rule(pattern=["rm","-rf"], decision="prompt", justification="Destructive delete needs a human")

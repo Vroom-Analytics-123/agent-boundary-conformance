@@ -1,0 +1,6 @@
+# Candidate rr-01 — source: https://azukiazusa.dev/en/blog/codex-sandbox-agent-authorization/
+# Real-world provenance: the git-add rule is quoted from the author's own Codex
+# TUI screenshot (auto-saved 'don't ask again' rule); npm-install mirrors the
+# official Rules docs example.
+prefix_rule(pattern=["npm","install"], decision="allow", justification="Allow normal npm install runs")
+prefix_rule(pattern=["git","add"], decision="allow")

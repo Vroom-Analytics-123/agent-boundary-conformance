@@ -27,3 +27,7 @@ Underwriters Laboratories didn't sell testing — it sold *the mark that others 
 
 ## What Anish says in rooms (30-second version)
 "We founded a measurement discipline, not another scanner. Agents run inside permission boundaries nobody independently verifies — we compare what operators intended, what the harness actually decides, and what observably happens, per version, and we publish the divergence with cryptographic proof attached. The work runs as EffectGap, an open research program; the measurements are the Agent Boundary Index. Vendors grade their own homework today. We're building the referee."
+
+
+## Revision note (Oct 21, 2026 — scientific review)
+`docs/SCIENTIFIC_REVIEW_ADDENDUM.md` is now the authority on novelty wording. Its hard search found adjacent measured work (notably GuardFall's guard-vs-shell divergence measurements in open-source agents, and Michael & Roesner's permission-system survey), so any broad "first to measure" / "no equivalent" phrasing is withdrawn. What stands is the precise intersection in the addendum's §b: deterministic, offline conformance measurement of a pinned native *declarative* policy engine against developer-declared invariants, unknowns explicit with layer attribution, sealed as verifiable evidence, repeated across versions. The addendum also settles cohesion: tester + EffectGap + Index + hosted evidence = this program; AnswerGraph is a methodological sibling (shared evidence format, never the verdict path); Emberlane is a future measured subject, not a program component.

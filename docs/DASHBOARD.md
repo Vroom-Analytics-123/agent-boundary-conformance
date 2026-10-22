@@ -7,7 +7,7 @@ We are founding a discipline called **Boundary Measurement**: independently chec
 ## Objectives (with target dates)
 | # | Objective | Status | Target |
 |---|---|---|---|
-| 1 | Prove the measurement works (7-day sprint, Codex first) | IN PROGRESS — Day 1 done, harness v0 working | Verdict Tue Oct 27 |
+| 1 | Prove the measurement works (7-day sprint, Codex first) | IN PROGRESS — Day 2 in flight: schemas v1 formalized, corpus hash-locked pre-run (public 21 / held-out 20), negative controls armed | Verdict Tue Oct 27 |
 | 2 | Fund it (grants) | Drafts written; submissions wait for the sprint verdict | Foresight by Sat Oct 31 · BlueDot/Manifund early Nov |
 | 3 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Drafts ready; needs Objective 1 = "go" + Anish's publish tap | Early Nov |
 | 4 | First paying design partners (hosted evidence pilots) | Interview script + lists drafted | Pilots Jan–Mar 2027 |

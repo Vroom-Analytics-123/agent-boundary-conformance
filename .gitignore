@@ -1,3 +1,6 @@
 __pycache__/
 .DS_Store
 *.tmp
+
+# Held-out corpus shard: content never committed; only its hash is recorded.
+fixtures/corpus_heldout.json

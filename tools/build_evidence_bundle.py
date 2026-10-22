@@ -272,7 +272,11 @@ def main():
     print(f"shard breakdown: {shard_counts}")
     for p in problems:
         print(f"PROBLEM: {p}")
-    print(f"wrote {out_path.relative_to(REPO)}")
+    try:
+        print(f"wrote {out_path.relative_to(REPO)}")
+    except ValueError:
+        # --out-dir given as a relative path that pathlib cannot relativize
+        print(f"wrote {out_path.absolute()}")
     return 0 if status == "valid" else 2
 
 

@@ -41,7 +41,11 @@ Our sample rulebook has 3 rules: `git status` → allowed · `deployctl release`
 | Paid pilots | $10–40K each | Phase 1, after public launch | Jan–Mar 2027 |
 
 ## Publish queue (nothing here is public yet)
-**Post #1 — "Day 1 build-in-public" (DRAFT, awaiting Anish's approval).** Full text:
+**Post #1 — "Day 2 build-in-public" (DRAFT, awaiting Anish's approval).**
+Second-generation draft at `docs/drafts/2026-10-22-public-post-draft.md`
+(supersedes the Day-1 wording; now cites 3 agreeing 41/41 runs + hash-stamped
+evidence). The Day-1 text below is kept for the record; the current draft is
+the file above.
 > Day 1 of building a conformance tester for coding agents, in public. We wrote a 3-rule policy for Codex (allow `git status`, prompt on deploys, forbid `rm -rf`) and replayed 41 probe cases against Codex's own policy checker (codex-cli 0.149.0). The direct commands decided exactly as written. But 22 of 41 cases — mostly ordinary variants and wrapped forms of the forbidden command — got no rules-layer decision at all. Our tester reports those as "unknown", never as "allow". Unknown doesn't mean the command would run — approval policy and the sandbox decide that. It means your written policy, by itself, doesn't decide it. That gap is what we're measuring. Code + rerunnable evidence tomorrow, once the repo is public.
 
 **Where it would publish — NOT yet decided (Anish picks):** proposed = X/Twitter (build-in-public thread) + LinkedIn (same text), with the GitHub repo as the evidence link once public. Hacker News "Show HN" is reserved for the Scorecard launch, not this post.

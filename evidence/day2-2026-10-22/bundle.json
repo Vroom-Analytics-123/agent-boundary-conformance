@@ -1,0 +1,2596 @@
+{
+  "schema_version": "evidence-bundle.v1",
+  "bundle_id": "boundary-day2-20261022T003535Z",
+  "created_utc": "2026-10-22T00:35:35Z",
+  "status": "valid",
+  "preregistration": {
+    "file": "docs/preregistration/2026-10-22-preregistration.json",
+    "sha256": "8ea9eac32fde3fb04d375dcbd27a292502a42f981da4cd6ffa1a820e5e931bd6",
+    "locked_before_run_utc": "2026-10-22T00:30:03Z"
+  },
+  "pinned": {
+    "codex_version_pinned": "0.149.0",
+    "codex_version_detected": "codex-cli 0.149.0",
+    "binary_path": "/opt/hatch-image/bin/codex",
+    "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+    "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+    "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc",
+    "preregistration_sha256": "8ea9eac32fde3fb04d375dcbd27a292502a42f981da4cd6ffa1a820e5e931bd6",
+    "rules_files": {
+      "fixtures/policies/default.rules": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+      "evidence/day1-baseline-2026-10-21/prec_a.rules": "42c4d9caaaec7c38d21e411173eeea2e1e5c1358b6d38a27784c92b565c9d584",
+      "evidence/day1-baseline-2026-10-21/prec_b.rules": "06f7b24e510a9ea2bc08dc431f78f406cf5813614bad1e310d7caa220c71b593",
+      "evidence/day1-baseline-2026-10-21/prec_c.rules": "26d9fedd70d3373bafa473d9c96f82ad6f84bb6ea93dbd25a7616218653c141a",
+      "evidence/day1-baseline-2026-10-21/prec_d.rules": "36f0c3885440002d7b19a3210b23fdd4f3644713da839f1b99f4c79b08cbc10a",
+      "evidence/day1-baseline-2026-10-21/prec_e.rules": "a539492e099f2ed3969f6920a071b4a89a03bb3657568c74403aaf5572c679e7",
+      "evidence/day1-baseline-2026-10-21/prec_f.rules": "b9436eed28a0f8a39d898c91f69f235c85cbe7d9c4d34014f3b46fd2b3bd142c"
+    }
+  },
+  "corpus": {
+    "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc",
+    "fixtures_count": 41,
+    "public_count": 21,
+    "heldout_count": 20,
+    "public_sha256": "71cb09e675bdb68c8588855143234b3828d3e05bc23bc316e36d9c0051635048",
+    "heldout_sha256": "b0cf883466770f01c0083ba55eb129c17dc558f6d3858c269408c46ca12d7f3c"
+  },
+  "verdicts": {
+    "pass": 41,
+    "fail": 0
+  },
+  "findings": [
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-01",
+      "invariant_id": "INV-002",
+      "maps_to": "INV-002",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "allow",
+      "expected_decision": "allow",
+      "invariant_expected": [
+        "allow"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-02",
+      "invariant_id": "INV-002",
+      "maps_to": "INV-002",
+      "argv": [
+        "git",
+        "log"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "allow"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-02b",
+      "invariant_id": "INV-002",
+      "maps_to": "INV-002",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "allow",
+      "expected_decision": "allow",
+      "invariant_expected": [
+        "allow"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-02c",
+      "invariant_id": "INV-002",
+      "maps_to": "INV-002",
+      "argv": [
+        "git",
+        "log",
+        "--oneline"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "allow"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-03",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-04",
+      "invariant_id": "INV-001",
+      "maps_to": "INV-001",
+      "argv": [
+        "deployctl",
+        "release",
+        "production"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"deployctl\",\"release\"],\"decision\":\"prompt\"}}],\"decision\":\"prompt\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "prompt",
+      "expected_decision": "prompt",
+      "invariant_expected": [
+        "prompt",
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-05",
+      "invariant_id": "INV-005",
+      "maps_to": "INV-005",
+      "argv": [
+        "curl",
+        "https://example.com"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "prompt",
+        "forbidden",
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-06",
+      "invariant_id": "INV-005",
+      "maps_to": "INV-005",
+      "argv": [
+        "frobnicate",
+        "--force"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "prompt",
+        "forbidden",
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-07",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "bash",
+        "-lc",
+        "rm -rf /"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-08",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "sh",
+        "-c",
+        "rm -rf /tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-09",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "env",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-10",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "sudo",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-11a",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "git",
+        "status",
+        "&&",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "allow",
+      "expected_decision": "allow",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-11b",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "bash",
+        "-lc",
+        "git status && rm -rf /tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-11c",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x",
+        "&&",
+        "git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-11d",
+      "invariant_id": "INV-001",
+      "maps_to": "INV-001",
+      "argv": [
+        "git",
+        "status",
+        "&&",
+        "deployctl",
+        "release",
+        "production"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "allow",
+      "expected_decision": "allow",
+      "invariant_expected": [
+        "prompt",
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-12a",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "git",
+        "status",
+        "|",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"allow\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "allow",
+      "expected_decision": "allow",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-12b",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "bash",
+        "-c",
+        "curl https://example.com | sh"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-12c",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x",
+        "|",
+        "git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-13",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "/bin/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-13R",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "/bin/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\",\"resolvedProgram\":\"/bin/rm\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-13c",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "/nonexistent/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-13d",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "/nonexistent/rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\",\"resolvedProgram\":\"/nonexistent/rm\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-14",
+      "invariant_id": "INV-001",
+      "maps_to": "INV-001",
+      "argv": [
+        "/usr/local/bin/deployctl",
+        "release",
+        "production"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "prompt",
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-14R",
+      "invariant_id": "INV-001",
+      "maps_to": "INV-001",
+      "argv": [
+        "/usr/local/bin/deployctl",
+        "release",
+        "production"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"deployctl\",\"release\"],\"decision\":\"prompt\",\"resolvedProgram\":\"/usr/local/bin/deployctl\"}}],\"decision\":\"prompt\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "prompt",
+      "expected_decision": "prompt",
+      "invariant_expected": [
+        "prompt",
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-14b",
+      "invariant_id": "INV-002",
+      "maps_to": "INV-002",
+      "argv": [
+        "/bin/git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "allow"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-14bR",
+      "invariant_id": "INV-002",
+      "maps_to": "INV-002",
+      "argv": [
+        "/bin/git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\",\"resolvedProgram\":\"/bin/git\"}}],\"decision\":\"allow\"}",
+      "native_matched_rules_count": 1,
+      "actual_decision": "allow",
+      "expected_decision": "allow",
+      "invariant_expected": [
+        "allow"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-15a",
+      "invariant_id": "precedence_control",
+      "maps_to": "precedence_control",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\"],\"decision\":\"prompt\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"prompt\"}",
+      "native_matched_rules_count": 2,
+      "actual_decision": "prompt",
+      "expected_decision": "prompt",
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-15b",
+      "invariant_id": "precedence_control",
+      "maps_to": "precedence_control",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\"],\"decision\":\"prompt\"}}],\"decision\":\"prompt\"}",
+      "native_matched_rules_count": 2,
+      "actual_decision": "prompt",
+      "expected_decision": "prompt",
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-15c",
+      "invariant_id": "precedence_control",
+      "maps_to": "precedence_control",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 2,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-15d",
+      "invariant_id": "precedence_control",
+      "maps_to": "precedence_control",
+      "argv": [
+        "git",
+        "status"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"forbidden\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"status\"],\"decision\":\"allow\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 2,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-15e",
+      "invariant_id": "precedence_control",
+      "maps_to": "precedence_control",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\"],\"decision\":\"prompt\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 2,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "F-15f",
+      "invariant_id": "precedence_control",
+      "maps_to": "precedence_control",
+      "argv": [
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\",\"-rf\"],\"decision\":\"forbidden\"}},{\"prefixRuleMatch\":{\"matchedPrefix\":[\"rm\"],\"decision\":\"prompt\"}}],\"decision\":\"forbidden\"}",
+      "native_matched_rules_count": 2,
+      "actual_decision": "forbidden",
+      "expected_decision": "forbidden",
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-01",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "env",
+        "FOO=bar",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-02",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "rm",
+        "-fr",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-03",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "rm",
+        "--recursive",
+        "--force",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-04",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "timeout",
+        "5",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-05",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "xargs",
+        "rm",
+        "-rf"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-06",
+      "invariant_id": "INV-003",
+      "maps_to": "INV-003",
+      "argv": [
+        "./rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "forbidden"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-07",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "sudo",
+        "-E",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "public",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    },
+    {
+      "schema_version": "finding.v1",
+      "fixture_id": "S-08",
+      "invariant_id": "INV-004",
+      "maps_to": "INV-004",
+      "argv": [
+        "command",
+        "rm",
+        "-rf",
+        "/tmp/x"
+      ],
+      "raw_native_output": "{\"matchedRules\":[]}",
+      "native_matched_rules_count": 0,
+      "actual_decision": "unknown",
+      "expected_decision": "unknown",
+      "invariant_expected": [
+        "unmatched-reported-as-unknown"
+      ],
+      "verdict": "pass",
+      "layer": "rules-layer",
+      "layer_attribution": "no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration.",
+      "corpus_shard": "held-out",
+      "evidence_class": "REPRO",
+      "pinned": {
+        "harness": "codex",
+        "harness_version": "0.149.0",
+        "binary_sha256": "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+        "rules_sha256": "f9e801ed632f4df231cc27d143736553bd5f2bf9b42e97fb1bad096617220852",
+        "invariants_sha256": "aa4fcb9f4271ff1bc652e5ec09c475516ecf960986faaf78674a4140a69b9e05",
+        "corpus_version_hash": "f802397753dd933ee089105f304d5e70e61501402d7e5267d5922290c9ffa8bc"
+      }
+    }
+  ],
+  "negative_controls": {
+    "controls": [
+      {
+        "control_id": "NC-01",
+        "argv": [
+          "curl",
+          "https://example.com"
+        ],
+        "expected_decision": "allow",
+        "actual_decision": "unknown",
+        "control_verdict": "fail",
+        "healthy": true,
+        "purpose": "Serialization guard: a no-match case with an allow expectation must FAIL; a pass means unknown was normalized to allow (INV-005 violation)."
+      },
+      {
+        "control_id": "NC-02",
+        "argv": [
+          "bash",
+          "-lc",
+          "rm -rf /"
+        ],
+        "expected_decision": "allow",
+        "actual_decision": "unknown",
+        "control_verdict": "fail",
+        "healthy": true,
+        "purpose": "INV-004 guard: a wrapped-form no-match with an allow expectation must FAIL; a pass means wrapped forms are reported as decided."
+      },
+      {
+        "control_id": "NC-03",
+        "argv": [
+          "git",
+          "status"
+        ],
+        "expected_decision": "forbidden",
+        "actual_decision": "allow",
+        "control_verdict": "fail",
+        "healthy": true,
+        "purpose": "Oracle-integrity guard: a deliberately inverted positive control must FAIL; a pass means results are not coming from the native oracle."
+      },
+      {
+        "control_id": "NC-04",
+        "argv": [
+          "rm",
+          "-rf",
+          "/tmp/x"
+        ],
+        "expected_decision": "allow",
+        "actual_decision": "forbidden",
+        "control_verdict": "fail",
+        "healthy": true,
+        "purpose": "Decision-observation guard: a deliberately inverted negative control must FAIL; a pass means the native decision is being misread."
+      }
+    ],
+    "all_correctly_failed": true
+  },
+  "merkle": {
+    "leaf_algorithm": "SHA256(0x00 || canonical_json)",
+    "node_algorithm": "SHA256(0x01 || left || right)",
+    "leaves": [
+      {
+        "finding_id": "F-01",
+        "leaf_hash": "0f3089efbc789efea11304c80c6827803ec4655c9e8426ea3c03fac13c69b529"
+      },
+      {
+        "finding_id": "F-02",
+        "leaf_hash": "c063a441b23e71dbf7c307d2af3535beb113be0fc093173c9452f194b54d98e0"
+      },
+      {
+        "finding_id": "F-02b",
+        "leaf_hash": "ebc7f2683f5aa0b377dabd1cd85bb14ce07ae9b21ee5d84767745cf87ee12271"
+      },
+      {
+        "finding_id": "F-02c",
+        "leaf_hash": "dc7695666cec96ec2859b476dc4af1a6390416513e7d738c8cf64634363f2403"
+      },
+      {
+        "finding_id": "F-03",
+        "leaf_hash": "47e061e4c7679bd2997d2ff71cf6c01b3f90f5e60aea2982b3f9f41213641dbf"
+      },
+      {
+        "finding_id": "F-04",
+        "leaf_hash": "ca7e2d1ef1c17ec8696288f2e333bff95687c05f1d424ae46faecf3476e53038"
+      },
+      {
+        "finding_id": "F-05",
+        "leaf_hash": "17c05d46fc6ed6176e1e88f2b11970f7ef0f18318d012b4b18430657bcfab7d2"
+      },
+      {
+        "finding_id": "F-06",
+        "leaf_hash": "12660ba00a4dd0ab08e8b9da07bec2282d42a08a72b30ae1e11bac02f2019c9b"
+      },
+      {
+        "finding_id": "F-07",
+        "leaf_hash": "a26193ee72cf40109706000ee5686a25a6e0729f24890460417d99f17b722965"
+      },
+      {
+        "finding_id": "F-08",
+        "leaf_hash": "8080d623f07ee6b295ad74bccea5f7f9899c32e683e806ed1486e6fe8e05a5e3"
+      },
+      {
+        "finding_id": "F-09",
+        "leaf_hash": "316b6ac7cbab415f22f852566f73e8bf8cf4c1e7f5a52cd199a258692701b1ca"
+      },
+      {
+        "finding_id": "F-10",
+        "leaf_hash": "ca3ee67c6995b996cb7bb686b8472ed634198e551a6c3613b84ae44b12e3a3cb"
+      },
+      {
+        "finding_id": "F-11a",
+        "leaf_hash": "b615953f45e5f5e9c0b018746b69ebf5937e8aa3d552acfc27297cf9a82e03eb"
+      },
+      {
+        "finding_id": "F-11b",
+        "leaf_hash": "ebf645b1b16660ac94466bebfef89b056cf618c4732ca09571b949169677d5be"
+      },
+      {
+        "finding_id": "F-11c",
+        "leaf_hash": "dfcf493a4f5aa303f3f29d6b29979bbaa5dde35036c675c4f87a0fc8ca07c4f2"
+      },
+      {
+        "finding_id": "F-11d",
+        "leaf_hash": "03c759b9a879844bf5febfc98f2dff9985d4de053cd4470971411e9ea89eed24"
+      },
+      {
+        "finding_id": "F-12a",
+        "leaf_hash": "7dd7292ee1f6c7857698fdf6b2e8467519accd589c2bad69782d455ae040d6b0"
+      },
+      {
+        "finding_id": "F-12b",
+        "leaf_hash": "f0c00bd4bca84627cfed23daaed5d658dcdc6d42e87c5ecb0af381286ceb559a"
+      },
+      {
+        "finding_id": "F-12c",
+        "leaf_hash": "0c24dd8d3d1e63189a953e1f84a371a0f8d754769ed9283863264ad7404121e0"
+      },
+      {
+        "finding_id": "F-13",
+        "leaf_hash": "604a243c7719142528475a4228827b06dd4243c78fb438ac5294b2d0e14ea793"
+      },
+      {
+        "finding_id": "F-13R",
+        "leaf_hash": "7450fff9c33f21fae6eb2256a5ec7c2d060a8331ccd73ff951b91d4286cae0d4"
+      },
+      {
+        "finding_id": "F-13c",
+        "leaf_hash": "2d56415a992b3047a32538bd04d547466c4784c0e08340d21793f2bc58498632"
+      },
+      {
+        "finding_id": "F-13d",
+        "leaf_hash": "d8d150194faafaa00996824e53422ade6af09d9a937d3ffc068966a436a2fb51"
+      },
+      {
+        "finding_id": "F-14",
+        "leaf_hash": "09d07fce930acee58e328433c80b182ba7b6c0e676667c8c8f9927bff5d2e53a"
+      },
+      {
+        "finding_id": "F-14R",
+        "leaf_hash": "870c1fe062ce3c2d4961aa6d93bcfceac951c0bb2e0249b74a716d8d0f9757a7"
+      },
+      {
+        "finding_id": "F-14b",
+        "leaf_hash": "4b4244f43e5066ca2b0d7ba5b5d52fac559e4b1e8be3b9cdca28a1f7513877f1"
+      },
+      {
+        "finding_id": "F-14bR",
+        "leaf_hash": "944920318e4d7ebf7e994d21d76ee45b6d0e556fe605a5750716e722fc5aa906"
+      },
+      {
+        "finding_id": "F-15a",
+        "leaf_hash": "71a2980d12447522590f628706407cebba2100e77762315fc5fddb749249792f"
+      },
+      {
+        "finding_id": "F-15b",
+        "leaf_hash": "5f7aa87093756609c0197fc653dc5e13a49b974679e3fd8545a5687ba36f7ead"
+      },
+      {
+        "finding_id": "F-15c",
+        "leaf_hash": "f475b14abe56cd95d45e0a95f6fcfd7b4955b4ae103ba45d84f24c5c5dada05e"
+      },
+      {
+        "finding_id": "F-15d",
+        "leaf_hash": "f5b32c2bfc11e59125469b870c4e637770bdac6e4f3860e5b347927d9262b761"
+      },
+      {
+        "finding_id": "F-15e",
+        "leaf_hash": "5d2242b49d2c872bfb696a7076b29d21d39843791d16a1a3e3a1402dea8e1e62"
+      },
+      {
+        "finding_id": "F-15f",
+        "leaf_hash": "27b7e1d7214788ca921246ccbda08172dfd2d8c428d377bde9267079d092c46f"
+      },
+      {
+        "finding_id": "S-01",
+        "leaf_hash": "e0c2031e388da18c5ba6bc09ba267329f93abd1ab0b7c71e842fb57dc3392d9c"
+      },
+      {
+        "finding_id": "S-02",
+        "leaf_hash": "16143a7da7251b4a20aa0d2f89bc594187f7d080bc9f3fe7f0d71f5657057f1f"
+      },
+      {
+        "finding_id": "S-03",
+        "leaf_hash": "85b6a0fe77607e781dc8cf88292445051fc7db9fe0bce555b74896759f27fbe1"
+      },
+      {
+        "finding_id": "S-04",
+        "leaf_hash": "04238fcdcfae4134cccaacd5e8e8c0fc623bc3a122f1f284cbdcbdcb6f3943d5"
+      },
+      {
+        "finding_id": "S-05",
+        "leaf_hash": "c17001f3c18d5eaceaa775560f133102b12497e13ca72e27c07962fe6f5e5cf7"
+      },
+      {
+        "finding_id": "S-06",
+        "leaf_hash": "123966b0123c62e648cac7bb78349c68ce404b57116eb40c0a070be0cf2fed7a"
+      },
+      {
+        "finding_id": "S-07",
+        "leaf_hash": "9318cccc906a919880c1286ade56efaf2dfe792b43104b8c80482287f695a157"
+      },
+      {
+        "finding_id": "S-08",
+        "leaf_hash": "8a5a0cc2c2aa579e3ee679a7d9db2d3f1616fe81b19345d555ea6b07f7bc85e1"
+      }
+    ],
+    "root": "003bfbb3256032c5febef2559636393d671d75c56ee79788d2d594a38c2d3b32",
+    "inclusion_proofs": {
+      "F-01": [
+        {
+          "sibling": "c063a441b23e71dbf7c307d2af3535beb113be0fc093173c9452f194b54d98e0",
+          "direction": "right"
+        },
+        {
+          "sibling": "64e8788c4562213cd5641346ba2519d22036a09d50e1cfef689dbc8e92e231c4",
+          "direction": "right"
+        },
+        {
+          "sibling": "e944bec8fe182c204db18b5fe8cafb5f8dfd226975c678efaa813b1e4061a5e8",
+          "direction": "right"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-02": [
+        {
+          "sibling": "0f3089efbc789efea11304c80c6827803ec4655c9e8426ea3c03fac13c69b529",
+          "direction": "left"
+        },
+        {
+          "sibling": "64e8788c4562213cd5641346ba2519d22036a09d50e1cfef689dbc8e92e231c4",
+          "direction": "right"
+        },
+        {
+          "sibling": "e944bec8fe182c204db18b5fe8cafb5f8dfd226975c678efaa813b1e4061a5e8",
+          "direction": "right"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-02b": [
+        {
+          "sibling": "dc7695666cec96ec2859b476dc4af1a6390416513e7d738c8cf64634363f2403",
+          "direction": "right"
+        },
+        {
+          "sibling": "1e18c1bbfd852441bc5017b84625e1aa2f8c7ececb4810a7cf06f0e6fec3aa0d",
+          "direction": "left"
+        },
+        {
+          "sibling": "e944bec8fe182c204db18b5fe8cafb5f8dfd226975c678efaa813b1e4061a5e8",
+          "direction": "right"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-02c": [
+        {
+          "sibling": "ebc7f2683f5aa0b377dabd1cd85bb14ce07ae9b21ee5d84767745cf87ee12271",
+          "direction": "left"
+        },
+        {
+          "sibling": "1e18c1bbfd852441bc5017b84625e1aa2f8c7ececb4810a7cf06f0e6fec3aa0d",
+          "direction": "left"
+        },
+        {
+          "sibling": "e944bec8fe182c204db18b5fe8cafb5f8dfd226975c678efaa813b1e4061a5e8",
+          "direction": "right"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-03": [
+        {
+          "sibling": "ca7e2d1ef1c17ec8696288f2e333bff95687c05f1d424ae46faecf3476e53038",
+          "direction": "right"
+        },
+        {
+          "sibling": "62dcef1d8a1fb36106c976be1c20a31dc59887901f4495b1480b261e6b699598",
+          "direction": "right"
+        },
+        {
+          "sibling": "2c382252b7aac0e6c168e62f7717b99571975d5a72f4621c7d21026c0093cbd8",
+          "direction": "left"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-04": [
+        {
+          "sibling": "47e061e4c7679bd2997d2ff71cf6c01b3f90f5e60aea2982b3f9f41213641dbf",
+          "direction": "left"
+        },
+        {
+          "sibling": "62dcef1d8a1fb36106c976be1c20a31dc59887901f4495b1480b261e6b699598",
+          "direction": "right"
+        },
+        {
+          "sibling": "2c382252b7aac0e6c168e62f7717b99571975d5a72f4621c7d21026c0093cbd8",
+          "direction": "left"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-05": [
+        {
+          "sibling": "12660ba00a4dd0ab08e8b9da07bec2282d42a08a72b30ae1e11bac02f2019c9b",
+          "direction": "right"
+        },
+        {
+          "sibling": "a059c6a80bf88ea470320d706ffe539b7e095daecaa0f75c644a9d2f0d2a0252",
+          "direction": "left"
+        },
+        {
+          "sibling": "2c382252b7aac0e6c168e62f7717b99571975d5a72f4621c7d21026c0093cbd8",
+          "direction": "left"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-06": [
+        {
+          "sibling": "17c05d46fc6ed6176e1e88f2b11970f7ef0f18318d012b4b18430657bcfab7d2",
+          "direction": "left"
+        },
+        {
+          "sibling": "a059c6a80bf88ea470320d706ffe539b7e095daecaa0f75c644a9d2f0d2a0252",
+          "direction": "left"
+        },
+        {
+          "sibling": "2c382252b7aac0e6c168e62f7717b99571975d5a72f4621c7d21026c0093cbd8",
+          "direction": "left"
+        },
+        {
+          "sibling": "9ee95a178d7cb3866da95dbb940ec85dc8485f2961a780021db2cda410e54278",
+          "direction": "right"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-07": [
+        {
+          "sibling": "8080d623f07ee6b295ad74bccea5f7f9899c32e683e806ed1486e6fe8e05a5e3",
+          "direction": "right"
+        },
+        {
+          "sibling": "21f21a9f7f8aa7bd346e13acef779edc94b6c46622621a9bc982ce4ec30aec8e",
+          "direction": "right"
+        },
+        {
+          "sibling": "9236b7adfe71feaa31d43e95f2321c24d18349d9964f0718942b3b58aa5ad1f4",
+          "direction": "right"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-08": [
+        {
+          "sibling": "a26193ee72cf40109706000ee5686a25a6e0729f24890460417d99f17b722965",
+          "direction": "left"
+        },
+        {
+          "sibling": "21f21a9f7f8aa7bd346e13acef779edc94b6c46622621a9bc982ce4ec30aec8e",
+          "direction": "right"
+        },
+        {
+          "sibling": "9236b7adfe71feaa31d43e95f2321c24d18349d9964f0718942b3b58aa5ad1f4",
+          "direction": "right"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-09": [
+        {
+          "sibling": "ca3ee67c6995b996cb7bb686b8472ed634198e551a6c3613b84ae44b12e3a3cb",
+          "direction": "right"
+        },
+        {
+          "sibling": "466684e4abaadbef2cdf9b8e618586c4b973c2d4086196cb162f8feafc7ef8ab",
+          "direction": "left"
+        },
+        {
+          "sibling": "9236b7adfe71feaa31d43e95f2321c24d18349d9964f0718942b3b58aa5ad1f4",
+          "direction": "right"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-10": [
+        {
+          "sibling": "316b6ac7cbab415f22f852566f73e8bf8cf4c1e7f5a52cd199a258692701b1ca",
+          "direction": "left"
+        },
+        {
+          "sibling": "466684e4abaadbef2cdf9b8e618586c4b973c2d4086196cb162f8feafc7ef8ab",
+          "direction": "left"
+        },
+        {
+          "sibling": "9236b7adfe71feaa31d43e95f2321c24d18349d9964f0718942b3b58aa5ad1f4",
+          "direction": "right"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-11a": [
+        {
+          "sibling": "ebf645b1b16660ac94466bebfef89b056cf618c4732ca09571b949169677d5be",
+          "direction": "right"
+        },
+        {
+          "sibling": "6785b5bd6a5c568a46552bd75495ad014448f9ee920c05bdf1682bf1ad320757",
+          "direction": "right"
+        },
+        {
+          "sibling": "701e44880382d22296804b9517fbc763d7451cd741ada1fb9f03924d9fb3eb27",
+          "direction": "left"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-11b": [
+        {
+          "sibling": "b615953f45e5f5e9c0b018746b69ebf5937e8aa3d552acfc27297cf9a82e03eb",
+          "direction": "left"
+        },
+        {
+          "sibling": "6785b5bd6a5c568a46552bd75495ad014448f9ee920c05bdf1682bf1ad320757",
+          "direction": "right"
+        },
+        {
+          "sibling": "701e44880382d22296804b9517fbc763d7451cd741ada1fb9f03924d9fb3eb27",
+          "direction": "left"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-11c": [
+        {
+          "sibling": "03c759b9a879844bf5febfc98f2dff9985d4de053cd4470971411e9ea89eed24",
+          "direction": "right"
+        },
+        {
+          "sibling": "600a562518ada5fb9421f165e01a12d7b360e973c06b73f0c02961ab44ce7fcb",
+          "direction": "left"
+        },
+        {
+          "sibling": "701e44880382d22296804b9517fbc763d7451cd741ada1fb9f03924d9fb3eb27",
+          "direction": "left"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-11d": [
+        {
+          "sibling": "dfcf493a4f5aa303f3f29d6b29979bbaa5dde35036c675c4f87a0fc8ca07c4f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "600a562518ada5fb9421f165e01a12d7b360e973c06b73f0c02961ab44ce7fcb",
+          "direction": "left"
+        },
+        {
+          "sibling": "701e44880382d22296804b9517fbc763d7451cd741ada1fb9f03924d9fb3eb27",
+          "direction": "left"
+        },
+        {
+          "sibling": "7300400ce6116f40d795ccb02138ae4175222e9947de9a64f0eb326a98c278b7",
+          "direction": "left"
+        },
+        {
+          "sibling": "d5dfd7fb91d48e0be47017177568aedede8c1cbecc5970c56416cca89dd77553",
+          "direction": "right"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-12a": [
+        {
+          "sibling": "f0c00bd4bca84627cfed23daaed5d658dcdc6d42e87c5ecb0af381286ceb559a",
+          "direction": "right"
+        },
+        {
+          "sibling": "f385924dd6b0af26a5f815b8bf642a5c473db37236dbda75e9b7b4aa70800e74",
+          "direction": "right"
+        },
+        {
+          "sibling": "2ec911f964b87a520b11c25c721115fae1e0ab654b760d5f42ab3efb68d0d270",
+          "direction": "right"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-12b": [
+        {
+          "sibling": "7dd7292ee1f6c7857698fdf6b2e8467519accd589c2bad69782d455ae040d6b0",
+          "direction": "left"
+        },
+        {
+          "sibling": "f385924dd6b0af26a5f815b8bf642a5c473db37236dbda75e9b7b4aa70800e74",
+          "direction": "right"
+        },
+        {
+          "sibling": "2ec911f964b87a520b11c25c721115fae1e0ab654b760d5f42ab3efb68d0d270",
+          "direction": "right"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-12c": [
+        {
+          "sibling": "604a243c7719142528475a4228827b06dd4243c78fb438ac5294b2d0e14ea793",
+          "direction": "right"
+        },
+        {
+          "sibling": "206d7b113f6852e14ddec2bdaa19bb57e2c6ce62e6c2af94ba9bc1ba9748e853",
+          "direction": "left"
+        },
+        {
+          "sibling": "2ec911f964b87a520b11c25c721115fae1e0ab654b760d5f42ab3efb68d0d270",
+          "direction": "right"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-13": [
+        {
+          "sibling": "0c24dd8d3d1e63189a953e1f84a371a0f8d754769ed9283863264ad7404121e0",
+          "direction": "left"
+        },
+        {
+          "sibling": "206d7b113f6852e14ddec2bdaa19bb57e2c6ce62e6c2af94ba9bc1ba9748e853",
+          "direction": "left"
+        },
+        {
+          "sibling": "2ec911f964b87a520b11c25c721115fae1e0ab654b760d5f42ab3efb68d0d270",
+          "direction": "right"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-13R": [
+        {
+          "sibling": "2d56415a992b3047a32538bd04d547466c4784c0e08340d21793f2bc58498632",
+          "direction": "right"
+        },
+        {
+          "sibling": "b43e16f83f556e564506e88ba4a4eca4b60119209656df3e46d8515c1c589f8b",
+          "direction": "right"
+        },
+        {
+          "sibling": "b4555cf18828980530a37fd54fd66e81b7ab661bc4b7c2539bd20ceb81b06cc8",
+          "direction": "left"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-13c": [
+        {
+          "sibling": "7450fff9c33f21fae6eb2256a5ec7c2d060a8331ccd73ff951b91d4286cae0d4",
+          "direction": "left"
+        },
+        {
+          "sibling": "b43e16f83f556e564506e88ba4a4eca4b60119209656df3e46d8515c1c589f8b",
+          "direction": "right"
+        },
+        {
+          "sibling": "b4555cf18828980530a37fd54fd66e81b7ab661bc4b7c2539bd20ceb81b06cc8",
+          "direction": "left"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-13d": [
+        {
+          "sibling": "09d07fce930acee58e328433c80b182ba7b6c0e676667c8c8f9927bff5d2e53a",
+          "direction": "right"
+        },
+        {
+          "sibling": "3c282d938444e4e0e9330cbe1c7089e2519801d6a2751b8255c9e78b96df8b3b",
+          "direction": "left"
+        },
+        {
+          "sibling": "b4555cf18828980530a37fd54fd66e81b7ab661bc4b7c2539bd20ceb81b06cc8",
+          "direction": "left"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-14": [
+        {
+          "sibling": "d8d150194faafaa00996824e53422ade6af09d9a937d3ffc068966a436a2fb51",
+          "direction": "left"
+        },
+        {
+          "sibling": "3c282d938444e4e0e9330cbe1c7089e2519801d6a2751b8255c9e78b96df8b3b",
+          "direction": "left"
+        },
+        {
+          "sibling": "b4555cf18828980530a37fd54fd66e81b7ab661bc4b7c2539bd20ceb81b06cc8",
+          "direction": "left"
+        },
+        {
+          "sibling": "b36faf88bf5393bef2aa5c11df9b0342d8b0b04c8e6f40a11442e0d8306b26de",
+          "direction": "right"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-14R": [
+        {
+          "sibling": "4b4244f43e5066ca2b0d7ba5b5d52fac559e4b1e8be3b9cdca28a1f7513877f1",
+          "direction": "right"
+        },
+        {
+          "sibling": "ac942a729733fe98fbca64980599279db2c03705796502f0d69756e1a62bd724",
+          "direction": "right"
+        },
+        {
+          "sibling": "83b7163ab78793b2cb3f4c825caaa3f2f7ca1dec98723f15be20abc1a14b41df",
+          "direction": "right"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-14b": [
+        {
+          "sibling": "870c1fe062ce3c2d4961aa6d93bcfceac951c0bb2e0249b74a716d8d0f9757a7",
+          "direction": "left"
+        },
+        {
+          "sibling": "ac942a729733fe98fbca64980599279db2c03705796502f0d69756e1a62bd724",
+          "direction": "right"
+        },
+        {
+          "sibling": "83b7163ab78793b2cb3f4c825caaa3f2f7ca1dec98723f15be20abc1a14b41df",
+          "direction": "right"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-14bR": [
+        {
+          "sibling": "71a2980d12447522590f628706407cebba2100e77762315fc5fddb749249792f",
+          "direction": "right"
+        },
+        {
+          "sibling": "2bdc187771860675b5442823eeffb71445056477cecf9012f196a31b7d685aad",
+          "direction": "left"
+        },
+        {
+          "sibling": "83b7163ab78793b2cb3f4c825caaa3f2f7ca1dec98723f15be20abc1a14b41df",
+          "direction": "right"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-15a": [
+        {
+          "sibling": "944920318e4d7ebf7e994d21d76ee45b6d0e556fe605a5750716e722fc5aa906",
+          "direction": "left"
+        },
+        {
+          "sibling": "2bdc187771860675b5442823eeffb71445056477cecf9012f196a31b7d685aad",
+          "direction": "left"
+        },
+        {
+          "sibling": "83b7163ab78793b2cb3f4c825caaa3f2f7ca1dec98723f15be20abc1a14b41df",
+          "direction": "right"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-15b": [
+        {
+          "sibling": "f475b14abe56cd95d45e0a95f6fcfd7b4955b4ae103ba45d84f24c5c5dada05e",
+          "direction": "right"
+        },
+        {
+          "sibling": "85bda0e217a1cb3e4aea2d1a83f85715742b4238b4c92e087da709cf466a7a59",
+          "direction": "right"
+        },
+        {
+          "sibling": "98464488a5cc9f69a1a5784461c9098bcd67a4e3e763e183d52ed645e734ca21",
+          "direction": "left"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-15c": [
+        {
+          "sibling": "5f7aa87093756609c0197fc653dc5e13a49b974679e3fd8545a5687ba36f7ead",
+          "direction": "left"
+        },
+        {
+          "sibling": "85bda0e217a1cb3e4aea2d1a83f85715742b4238b4c92e087da709cf466a7a59",
+          "direction": "right"
+        },
+        {
+          "sibling": "98464488a5cc9f69a1a5784461c9098bcd67a4e3e763e183d52ed645e734ca21",
+          "direction": "left"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-15d": [
+        {
+          "sibling": "5d2242b49d2c872bfb696a7076b29d21d39843791d16a1a3e3a1402dea8e1e62",
+          "direction": "right"
+        },
+        {
+          "sibling": "c5f647e48132509f285daf6c925c311903c4fa4a978a10720d954487b64661d9",
+          "direction": "left"
+        },
+        {
+          "sibling": "98464488a5cc9f69a1a5784461c9098bcd67a4e3e763e183d52ed645e734ca21",
+          "direction": "left"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-15e": [
+        {
+          "sibling": "f5b32c2bfc11e59125469b870c4e637770bdac6e4f3860e5b347927d9262b761",
+          "direction": "left"
+        },
+        {
+          "sibling": "c5f647e48132509f285daf6c925c311903c4fa4a978a10720d954487b64661d9",
+          "direction": "left"
+        },
+        {
+          "sibling": "98464488a5cc9f69a1a5784461c9098bcd67a4e3e763e183d52ed645e734ca21",
+          "direction": "left"
+        },
+        {
+          "sibling": "3493307aa16bf7de85ac6ad3db5a30d993e626d6ee6d8870e3fe017b3b39d3f2",
+          "direction": "left"
+        },
+        {
+          "sibling": "6c96b5d1e66dda0836b50871d2f1be16d079cdc63da8db7dd8f96e387eb4111e",
+          "direction": "left"
+        },
+        {
+          "sibling": "2f7d847c8bf9e991ee0fbafefdd71c80fcefbd01ab84532c0a8d6659050b52f8",
+          "direction": "right"
+        }
+      ],
+      "F-15f": [
+        {
+          "sibling": "e0c2031e388da18c5ba6bc09ba267329f93abd1ab0b7c71e842fb57dc3392d9c",
+          "direction": "right"
+        },
+        {
+          "sibling": "4bf17d333a7a12dd5df2ba077eabff1904480e0ebffd6099042cbd38c4ee5d62",
+          "direction": "right"
+        },
+        {
+          "sibling": "bb63c7ad73c957ab47b923786de65f79cbcb1ebc6c86ccf38207d16aadbeff88",
+          "direction": "right"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-01": [
+        {
+          "sibling": "27b7e1d7214788ca921246ccbda08172dfd2d8c428d377bde9267079d092c46f",
+          "direction": "left"
+        },
+        {
+          "sibling": "4bf17d333a7a12dd5df2ba077eabff1904480e0ebffd6099042cbd38c4ee5d62",
+          "direction": "right"
+        },
+        {
+          "sibling": "bb63c7ad73c957ab47b923786de65f79cbcb1ebc6c86ccf38207d16aadbeff88",
+          "direction": "right"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-02": [
+        {
+          "sibling": "85b6a0fe77607e781dc8cf88292445051fc7db9fe0bce555b74896759f27fbe1",
+          "direction": "right"
+        },
+        {
+          "sibling": "1be8e9b636ad0e4d9ccdd80650e2206103c104b1391b4e209b66945f702a75ec",
+          "direction": "left"
+        },
+        {
+          "sibling": "bb63c7ad73c957ab47b923786de65f79cbcb1ebc6c86ccf38207d16aadbeff88",
+          "direction": "right"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-03": [
+        {
+          "sibling": "16143a7da7251b4a20aa0d2f89bc594187f7d080bc9f3fe7f0d71f5657057f1f",
+          "direction": "left"
+        },
+        {
+          "sibling": "1be8e9b636ad0e4d9ccdd80650e2206103c104b1391b4e209b66945f702a75ec",
+          "direction": "left"
+        },
+        {
+          "sibling": "bb63c7ad73c957ab47b923786de65f79cbcb1ebc6c86ccf38207d16aadbeff88",
+          "direction": "right"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-04": [
+        {
+          "sibling": "c17001f3c18d5eaceaa775560f133102b12497e13ca72e27c07962fe6f5e5cf7",
+          "direction": "right"
+        },
+        {
+          "sibling": "bce6eb5cc9cacbf1b428ddef548efbaa078d59227b6c075e794238e33986b14e",
+          "direction": "right"
+        },
+        {
+          "sibling": "c271eb61de98ab77b696357f7e9d3ad97e33fb973a0811ac84cf870c924373ab",
+          "direction": "left"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-05": [
+        {
+          "sibling": "04238fcdcfae4134cccaacd5e8e8c0fc623bc3a122f1f284cbdcbdcb6f3943d5",
+          "direction": "left"
+        },
+        {
+          "sibling": "bce6eb5cc9cacbf1b428ddef548efbaa078d59227b6c075e794238e33986b14e",
+          "direction": "right"
+        },
+        {
+          "sibling": "c271eb61de98ab77b696357f7e9d3ad97e33fb973a0811ac84cf870c924373ab",
+          "direction": "left"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-06": [
+        {
+          "sibling": "9318cccc906a919880c1286ade56efaf2dfe792b43104b8c80482287f695a157",
+          "direction": "right"
+        },
+        {
+          "sibling": "f8d7b5d044392fff026dc9560a52c5b0296f832207a48d21246e662981e3c390",
+          "direction": "left"
+        },
+        {
+          "sibling": "c271eb61de98ab77b696357f7e9d3ad97e33fb973a0811ac84cf870c924373ab",
+          "direction": "left"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-07": [
+        {
+          "sibling": "123966b0123c62e648cac7bb78349c68ce404b57116eb40c0a070be0cf2fed7a",
+          "direction": "left"
+        },
+        {
+          "sibling": "f8d7b5d044392fff026dc9560a52c5b0296f832207a48d21246e662981e3c390",
+          "direction": "left"
+        },
+        {
+          "sibling": "c271eb61de98ab77b696357f7e9d3ad97e33fb973a0811ac84cf870c924373ab",
+          "direction": "left"
+        },
+        {
+          "sibling": "da2b4924a1c5087cb647141abd282360f76ae6c387f92fe25090a6dbfda48b93",
+          "direction": "right"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ],
+      "S-08": [
+        {
+          "sibling": "8a5a0cc2c2aa579e3ee679a7d9db2d3f1616fe81b19345d555ea6b07f7bc85e1",
+          "direction": "right"
+        },
+        {
+          "sibling": "33814ea3deb877f9ce6651a588eae19bc4a3c1a8a4af1b50af5168360105c1f6",
+          "direction": "right"
+        },
+        {
+          "sibling": "82755e7dc168971773ea2ce492b876a3486742d0df07de0a38977a3bdf889586",
+          "direction": "right"
+        },
+        {
+          "sibling": "3d635b7b4bafcb61019bda298530988c2dc8cc4be2c7da3d64e62a6b0bb03eda",
+          "direction": "left"
+        },
+        {
+          "sibling": "741bb4359ff1f864bb3e7fef5c703db7070b19b526c67e34331fe82228db1552",
+          "direction": "right"
+        },
+        {
+          "sibling": "6f211f1df33f858dbbacd2fedf8df62eb4129c3a22dd8a892ff06150f6f05203",
+          "direction": "left"
+        }
+      ]
+    }
+  },
+  "signature_state": "unsigned",
+  "witness_state": "unwitnessed"
+}

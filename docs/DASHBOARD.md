@@ -2,7 +2,7 @@
 *Canonical status page. Last updated: Wed Oct 21, 2026, 23:15 PDT (America/Los_Angeles) — sprint complete, verdict NARROW. Dates below are TARGETS we aim at, not gates — work runs continuously and pulls forward.*
 
 ## What this is, in one paragraph
-We are founding a discipline called **Boundary Measurement**: independently checking whether an AI coding agent's enforced limits match the limits its operator stated — comparing (1) stated intent, (2) what the agent's own rulebook actually decides, and (3) what observably happens — for each version of each agent tool, and publishing the differences with replayable, cryptographically verifiable evidence. The research program is **EffectGap**; the public measurements will be the **Agent Boundary Index**. The long-term position we are building toward is the independent verifier for agents (the "UL for agents"): the referee vendors, buyers, auditors, and insurers rely on.
+We are founding a discipline called **Boundary Measurement**: independently checking whether an AI coding agent's enforced limits match the limits its operator stated — comparing (1) stated intent, (2) what the agent's own rulebook actually decides, and (3) what observably happens — for each version of each agent tool, and publishing the differences with replayable, cryptographically verifiable evidence. The research program is **FinePrint**; the public measurements will be the **Agent Boundary Index**. The long-term position we are building toward is the independent verifier for agents (the "UL for agents"): the referee vendors, buyers, auditors, and insurers rely on.
 
 ## Objectives (with target dates)
 | # | Objective | Status | Target |

@@ -23,7 +23,7 @@ Hand-writing 15 fixtures proves a point; it doesn't scale and it isn't research.
 - Sequencing: NOT week 1 (hand corpus first, to validate the semantics the fuzzer will search against). Phase 1–2 research track; the corpus design (EG-3/EG-5) anticipates it.
 
 ## 4. Effect closure (the graph algorithm, stage 2)
-When effect observation lands: model invocations and their transitive effects (writes, spawns, network, hooks) as a directed graph; compute the **effect closure** per approved action (petgraph reachability) and compare closure vs the approval record — the operational form of the Transitive Effects paper's formalism. Divergence at this layer = CONTRADICTED candidates in EffectGap semantics.
+When effect observation lands: model invocations and their transitive effects (writes, spawns, network, hooks) as a directed graph; compute the **effect closure** per approved action (petgraph reachability) and compare closure vs the approval record — the operational form of the Transitive Effects paper's formalism. Divergence at this layer = CONTRADICTED candidates in FinePrint semantics.
 
 ## 5. Explicit non-goals (credibility protection)
 - **No token, no proprietary blockchain, no consensus network.** They add no verification property that Merkle trees + signatures + an existing public log don't already provide, and they tax credibility with AI-safety funders and enterprise buyers alike.

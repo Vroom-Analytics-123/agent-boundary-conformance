@@ -1,0 +1,103 @@
+{
+  "harness": "openclaw",
+  "display": "OpenClaw",
+  "source_note": "Design-stage draft translations — Wave A expansion spike (2026-10-22). NOT measured; no conformance claim.",
+  "entries": {
+    "FP-001": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism is binary-granular, never argv-granular: in ~/.openclaw/exec-approvals.json do NOT allowlist the resolved path of <command_bin>, and set tools.exec.mode to \"ask\" (non-allowlisted commands prompt) or \"allowlist\" (non-allowlisted commands are silently denied). The slots <flag_set> and <target_path> cannot be matched by any documented rule — allowing the <command_bin> binary would allow every flag set and target — so the argument-level form of this invariant is unknown at the Decision layer and only the binary-level denial/prompt is drafted. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-002": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: keep the resolved path of <deploy_bin> out of the per-agent allowlist in ~/.openclaw/exec-approvals.json and set tools.exec.mode to \"ask\" for that agent, so <deploy_bin> <action_args> <environment> prompts before running; \"deny\" mode forbids host exec for the agent entirely. The slots <action_args> and <environment> cannot be matched — a binary allowlisted for one environment is allowlisted for all — so environment-specific gating is unknown at the Decision layer. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-003": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: no documented exec rule matches paths, so protect <protected_path> at the surrounding layers — agents.defaults.sandbox.mode \"all\" with sandbox.workspaceAccess \"none\" (or \"ro\"), tools.fs.workspaceOnly true, and do NOT allowlist <command_bin> in exec-approvals.json (with tools.exec.mode \"ask\" or \"allowlist\"). Even so, an approved host exec can reach <protected_path> outside a sandbox; the subtree-level protection is unknown at the Decision layer and this template is a configuration posture, not a path rule. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-004": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: no documented rule expresses a read-to-egress flow. Draft the per-command halves only: do NOT allowlist any binary in <egress_bins> in exec-approvals.json (tools.exec.mode \"ask\" or \"allowlist\"), restrict file tools with tools.fs.workspaceOnly true and sandbox.workspaceAccess \"none\" so <credential_paths> outside the workspace are not readable by file tools, and run sandboxed sessions with the Docker backend network \"none\". The flow itself (a read of <credential_paths> feeding an egress call) remains unknown at the Decision layer. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-005": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: no destination-level (host) allowlist for fetch tools was found in the documented surface, so <approved_hosts> cannot be bound. Draft only the coarse halves: do NOT allowlist any binary in <fetch_bins> in exec-approvals.json (tools.exec.mode \"ask\" prompts before a fetch runs, \"allowlist\" silently denies it), or deny the web tools outright with tools.deny [\"web_fetch\"], and keep sandboxed sessions on Docker network \"none\". Per-host egress decisions are unknown at the Decision layer. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-006": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism is binary-granular: keep the resolved path of <installer> out of the per-agent allowlist in ~/.openclaw/exec-approvals.json and set tools.exec.mode to \"ask\", so any invocation of <installer> prompts before running. The slot <registry_scope> cannot be matched — the prompt fires for installs from approved and unapproved scopes alike — so scope-specific gating is unknown at the Decision layer; the drafted gate is prompt-on-any-installer-use. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-007": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism cannot separate a force-push from any other git call: an allowlist entry matches the resolved git binary and allowing it allows all subcommands and arguments, so neither <rewrite_args> nor <protected_branches> is matchable. The only documented drafts are whole-binary: remove git from the exec-approvals.json allowlist with tools.exec.mode \"ask\" (every git invocation prompts, including benign ones), or deny the exec tool for the agent. Argument-level history-rewrite protection is unknown at the Decision layer. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-008": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism is binary-granular: keep the resolved path of <db_cli> out of the per-agent allowlist in ~/.openclaw/exec-approvals.json and set tools.exec.mode to \"ask\", so <db_cli> invocations prompt before running. The slots <destructive_verb> and <database_name> arrive inside an opaque -c string argument that no documented rule inspects, so destructive-vs-benign discrimination for an allowlisted <db_cli> is unknown at the Decision layer. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-009": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: a wrapped payload is only visible to policy as its <wrapper> binary. Draft: do NOT allowlist any resolved path in <wrapper> (bash, sh, env, sudo, timeout, command, python3) in exec-approvals.json, with tools.exec.mode \"ask\" or \"allowlist\", so wrapper invocations prompt or are denied as binaries. If a wrapper binary is allowlisted, its <inner_command> payload is opaque — the vendor itself states exec approvals do not semantically model every runtime/interpreter loader path — and the correct Decision-layer outcome for the payload is unknown with layer attribution, never allow. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-010": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism is binary-granular, which cuts both ways: flag spelling is irrelevant to the documented surface because no rule matches flags at all. Draft: decide <base_command>'s binary once — absent from the exec-approvals.json allowlist with tools.exec.mode \"ask\"/\"allowlist\" it prompts or is denied in every spelling in <variant_forms>; allowlisted, it runs in every spelling. There is no documented way to bind the direct form while catching variants separately, so per-variant outcomes are unknown at the Decision layer. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-011": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: exec-approvals allowlist patterns are reported (third-party summaries of the vendor docs) to match resolved binary paths, which would make the path forms in <path_forms> of <bin_name> collapse to one resolved binary — but that matching claim is not established in the official pages read for this spike. Draft conservatively: allowlist no path form of <bin_name> and set tools.exec.mode to \"ask\"/\"allowlist\", and treat whether /bin/<bin_name>, ./<bin_name>, and a bare <bin_name> resolve identically as unknown until the pinned version's vendor documentation states it. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-012": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: how a compound command is split and matched is not established in the official pages read (third parties claim every segment must satisfy the allowlist and that control operators always prompt; not asserted here). Draft only the coarse gate: tools.exec.mode \"ask\" so a compound invocation surfaces for approval as a whole, and model the tail after <operator> in <segments> as receiving no documented Decision-layer decision of its own — ungoverned at this layer, never covered by the head segment's outcome. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-013": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: the five GuardFall bypass classes are probe generators against this surface, not claims. Generate their forms from <destructive_argv> and run them (in a future measurement) against a config with tools.exec.mode \"ask\"/\"allowlist\" and the destructive binary absent from exec-approvals.json; the documented expectation to test is binary-level prompt/deny, and any form whose outcome depends on argument inspection (class <bypass_class> included) must serialize as unknown at the Decision layer, because no documented OpenClaw rule inspects arguments. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-014": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism has documented precedence fragments, not a global most-restrictive rule: tools.deny always wins over tools.allow (vendor docs); tool policy applies before sandbox rules (vendor docs); and the effective exec policy is reported to be the stricter of tools.exec.* config and the host-local exec-approvals.json (third-party summaries of vendor docs). Draft an adapter that encodes exactly those three fragment rules for <overlapping_rules> and serializes any overlap they do not cover as unknown, instead of assuming most-restrictive-wins globally. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-015": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: a no-match outcome is mode-dependent, so the reporter must never infer one from the absence of a rule — under tools.exec.mode \"allowlist\" a binary with no allowlist match is silently denied, under \"ask\" it prompts, and under the documented default \"full\" there is no match concept and commands run without asking. Draft the adapter mapping explicitly per configured mode, and serialize any command whose mode/allowlist state cannot be computed (including <unmatched_argv>) as unknown, never as allow. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    },
+    "FP-016": {
+      "measurement_route": "reconstructed",
+      "confidence": "low",
+      "measured": false,
+      "text": "OpenClaw mechanism: allowlist the resolved binary paths of the binaries behind <benign_command> (e.g. git, ls) in the per-agent allowlist in ~/.openclaw/exec-approvals.json with tools.exec.mode \"allowlist\", so routine read-only work runs without prompts as the positive control. Record the known breadth cost in the same template: an allowlisted binary is allowed with all of its arguments, so this control also passes non-benign uses of the same binary — that over-breadth is a documented property of the surface, not a defect of the control. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "baseline_bundle": "fineprint-check-20261023-011726",
+  "fresh_bundle": "fineprint-check-20261023-011948",
+  "regressions": [
+    {
+      "kind": "decision-flip-regression",
+      "probe_id": "FP-001/direct/p0",
+      "invariant_id": "FP-001",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    },
+    {
+      "kind": "decision-flip-regression",
+      "probe_id": "FP-003/direct/p0",
+      "invariant_id": "FP-003",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    },
+    {
+      "kind": "decision-flip-regression",
+      "probe_id": "FP-003/variant/p1",
+      "invariant_id": "FP-003",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    },
+    {
+      "kind": "decision-flip-regression",
+      "probe_id": "FP-012/direct/p1",
+      "invariant_id": "FP-012",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    }
+  ],
+  "improvements": [],
+  "decision_flips": [
+    {
+      "kind": "decision-flip",
+      "probe_id": "FP-001/direct/p0",
+      "invariant_id": "FP-001",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    },
+    {
+      "kind": "decision-flip",
+      "probe_id": "FP-003/direct/p0",
+      "invariant_id": "FP-003",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    },
+    {
+      "kind": "decision-flip",
+      "probe_id": "FP-003/variant/p1",
+      "invariant_id": "FP-003",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    },
+    {
+      "kind": "decision-flip",
+      "probe_id": "FP-012/direct/p1",
+      "invariant_id": "FP-012",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    },
+    {
+      "kind": "decision-flip",
+      "probe_id": "FP-014/direct/p2",
+      "invariant_id": "FP-014",
+      "baseline_actual": "forbidden",
+      "fresh_actual": "unknown"
+    }
+  ],
+  "added_invariants": [],
+  "dropped_invariants": [],
+  "regression_count": 4
+}

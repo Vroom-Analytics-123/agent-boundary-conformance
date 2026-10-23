@@ -1,0 +1,10 @@
+{
+  "baseline_bundle": "fineprint-check-20261023-011726",
+  "fresh_bundle": "fineprint-check-20261023-012035",
+  "regressions": [],
+  "improvements": [],
+  "decision_flips": [],
+  "added_invariants": [],
+  "dropped_invariants": [],
+  "regression_count": 0
+}

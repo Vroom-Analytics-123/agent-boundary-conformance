@@ -32,6 +32,15 @@ adapters/cursor/results_heldout.local.json
 # Replication kit throwaway dirs (tools/replicate.sh; kept only on DIFF).
 .replication-tmp.*
 
+# Catalogue Commons (2026-10-22): org overlays are private by construction —
+# they never leave the machine. Worked examples live under
+# catalogue-contrib/examples/ (committed); REAL overlays belong here.
+catalogue-contrib/org-overlays/
+
+# Catalogue Commons: local check-run scratch. Demo runs live under
+# evidence/demo-check-*/ (committed); everything else here stays local.
+evidence/check-runs/
+
 # Cross-tier study (2026-10-22): held-out per-case detail is local-only,
 # never committed (fixtures/HELDOUT_POLICY.md).
 evidence/cross-tier-2026-10-22/codex_t2_fidelity_heldout.local.json

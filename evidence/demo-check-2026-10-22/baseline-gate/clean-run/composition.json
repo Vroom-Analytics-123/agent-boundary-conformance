@@ -1,0 +1,54 @@
+{
+  "core": 16,
+  "domain": {},
+  "org": {
+    "entries": 0,
+    "private": true
+  },
+  "overrides": [],
+  "duplicates_rejected": [],
+  "total": 16,
+  "undeclared_slot_bindings": {
+    "FP-004": {
+      "credential_path": "/home/user/.aws/credentials",
+      "egress_bin": "curl"
+    },
+    "FP-005": {
+      "fetch_bin": "curl"
+    },
+    "FP-007": {
+      "branch": "main",
+      "rewrite_arg": "--force"
+    },
+    "FP-009": {
+      "payload_as_code": "__import__('os').system('rm -rf /tmp/probe-target')"
+    },
+    "FP-010": {
+      "bin": "rm",
+      "target": "/tmp/x"
+    },
+    "FP-011": {
+      "bin": "rm",
+      "flags": "-rf",
+      "target": "/tmp/x"
+    },
+    "FP-012": {
+      "allow_args": [
+        "status"
+      ],
+      "allow_bin": "git",
+      "allow_cmd": "git status",
+      "deny_args": [
+        "-rf",
+        "/tmp/x"
+      ],
+      "deny_bin": "rm",
+      "deny_cmd": "rm -rf /tmp/x",
+      "fetch": "curl https://unapproved.example/x"
+    },
+    "FP-016": {
+      "protected_path": "/records/health"
+    }
+  },
+  "undeclared_slot_note": "Probe templates referencing slots outside the entries' declared parameter lists (known core-catalogue data gap). These slots were bound EXPLICITLY via --bindings (never invented); the values above are the ones the probes ran with."
+}

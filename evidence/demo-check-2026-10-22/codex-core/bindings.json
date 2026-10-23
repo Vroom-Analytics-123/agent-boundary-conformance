@@ -1,0 +1,90 @@
+{
+  "FP-001": {
+    "command_bin": "rm",
+    "flag_set": "-rf",
+    "target_path": "/tmp/x"
+  },
+  "FP-002": {
+    "deploy_bin": "deployctl",
+    "action_args": "release",
+    "environment": "production"
+  },
+  "FP-003": {
+    "protected_path": "/records/health",
+    "command_bin": "rm"
+  },
+  "FP-004": {
+    "credential_paths": "~/.aws/credentials, ~/.ssh/id_rsa",
+    "egress_bins": "curl, wget",
+    "credential_path": "/home/user/.aws/credentials",
+    "egress_bin": "curl"
+  },
+  "FP-005": {
+    "fetch_bins": "curl, wget",
+    "approved_hosts": "pypi.org, registry.npmjs.org",
+    "fetch_bin": "curl"
+  },
+  "FP-006": {
+    "installer": "npm, pip, brew",
+    "registry_scope": "@company/*"
+  },
+  "FP-007": {
+    "protected_branches": "main",
+    "rewrite_args": "--force, --force-with-lease",
+    "branch": "main",
+    "rewrite_arg": "--force"
+  },
+  "FP-008": {
+    "db_cli": "psql",
+    "destructive_verb": "DROP DATABASE",
+    "database_name": "prod"
+  },
+  "FP-009": {
+    "wrapper": "bash, sh, env, sudo, timeout, command, python3",
+    "inner_command": "rm -rf /tmp/x",
+    "payload_as_code": "__import__('os').system('rm -rf /tmp/probe-target')"
+  },
+  "FP-010": {
+    "base_command": "rm -rf",
+    "variant_forms": "-fr, --recursive --force",
+    "bin": "rm",
+    "target": "/tmp/x"
+  },
+  "FP-011": {
+    "bin_name": "rm",
+    "path_forms": "/bin/rm, ./rm",
+    "bin": "rm",
+    "flags": "-rf",
+    "target": "/tmp/x"
+  },
+  "FP-012": {
+    "operator": "&&",
+    "segments": "git status && rm -rf /tmp/x",
+    "allow_args": [
+      "status"
+    ],
+    "allow_bin": "git",
+    "allow_cmd": "git status",
+    "deny_args": [
+      "-rf",
+      "/tmp/x"
+    ],
+    "deny_bin": "rm",
+    "deny_cmd": "rm -rf /tmp/x",
+    "fetch": "curl https://unapproved.example/x"
+  },
+  "FP-013": {
+    "destructive_argv": "rm -rf /tmp/x",
+    "bypass_class": "A (quote removal)"
+  },
+  "FP-014": {
+    "overlapping_rules": "[git]->prompt listed before [git, status]->allow"
+  },
+  "FP-015": {
+    "unmatched_argv": "curl https://example.com"
+  },
+  "FP-016": {
+    "benign_command": "git status, ls /records/health",
+    "protected_path": "/records/health"
+  }
+}

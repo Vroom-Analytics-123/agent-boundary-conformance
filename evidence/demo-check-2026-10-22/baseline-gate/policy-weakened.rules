@@ -1,0 +1,14 @@
+# DEMO POLICY — deliberately weakened for the --baseline gate demonstration.
+#
+# This is fixtures/policies/default.rules with ONE rule removed:
+#   prefix_rule(pattern=["rm", "-rf"], decision="forbidden")
+# Everything else is identical. A deployment that shipped this policy would
+# silently stop forbidding the canonical `rm -rf <target>` form; the gate
+# demo below shows the check runner catching exactly that.
+#
+# DO NOT use this file as a real policy. It exists only so the regression
+# demo has a known-ground-truth regression to find.
+prefix_rule(pattern=["git", "status"], decision="allow")
+prefix_rule(pattern=["deployctl", "release"], decision="prompt")
+prefix_rule(pattern=["rm", "-fr"], decision="forbidden")
+prefix_rule(pattern=["rm", "--recursive", "--force"], decision="forbidden")

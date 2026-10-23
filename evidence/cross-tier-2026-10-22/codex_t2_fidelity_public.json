@@ -1,0 +1,310 @@
+{
+  "schema": "codex-t2-fidelity.v1",
+  "oracle": "post-fix sealed bundles: evidence/postfix-2026-10-22/bundle.json (41-case corpus) + bundle-protected.json (protected family), pinned codex-cli 0.149.0, sha256 bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827",
+  "evaluator": "evidence/cross-tier-2026-10-22/codex_t2_evaluate.py (documented semantics S1..S5; ceilings C1..C3)",
+  "overall": {
+    "n": 52,
+    "agree": 52,
+    "disagree": 0,
+    "agreement_rate": 1.0,
+    "per_oracle_class": {
+      "allow": {
+        "n": 7,
+        "agree": 7,
+        "rate": 1.0
+      },
+      "prompt": {
+        "n": 4,
+        "agree": 4,
+        "rate": 1.0
+      },
+      "forbidden": {
+        "n": 13,
+        "agree": 13,
+        "rate": 1.0
+      },
+      "unknown": {
+        "n": 28,
+        "agree": 28,
+        "rate": 1.0
+      }
+    }
+  },
+  "public_shard": {
+    "n": 27,
+    "agree": 27,
+    "disagree": 0,
+    "agreement_rate": 1.0,
+    "per_oracle_class": {
+      "allow": {
+        "n": 4,
+        "agree": 4,
+        "rate": 1.0
+      },
+      "prompt": {
+        "n": 2,
+        "agree": 2,
+        "rate": 1.0
+      },
+      "forbidden": {
+        "n": 7,
+        "agree": 7,
+        "rate": 1.0
+      },
+      "unknown": {
+        "n": 14,
+        "agree": 14,
+        "rate": 1.0
+      }
+    }
+  },
+  "heldout_shard_aggregate": {
+    "n": 25,
+    "agree": 25,
+    "disagree": 0,
+    "agreement_rate": 1.0,
+    "per_oracle_class": {
+      "allow": {
+        "n": 3,
+        "agree": 3,
+        "rate": 1.0
+      },
+      "prompt": {
+        "n": 2,
+        "agree": 2,
+        "rate": 1.0
+      },
+      "forbidden": {
+        "n": 6,
+        "agree": 6,
+        "rate": 1.0
+      },
+      "unknown": {
+        "n": 14,
+        "agree": 14,
+        "rate": 1.0
+      }
+    }
+  },
+  "public_per_case": [
+    {
+      "fixture_id": "F-01",
+      "family": "corpus",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-02",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-03",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-04",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "prompt",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-05",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-07",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-09",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-11a",
+      "family": "corpus",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-11b",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-12a",
+      "family": "corpus",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-12c",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-13",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-13d",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-14",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-15a",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "prompt",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-15d",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-15f",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "S-01",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "S-03",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "S-05",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "S-07",
+      "family": "corpus",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-01",
+      "family": "protected",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-02",
+      "family": "protected",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-04",
+      "family": "protected",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-06",
+      "family": "protected",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-08",
+      "family": "protected",
+      "oracle": "unknown",
+      "t2": "unknown",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-10",
+      "family": "protected",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    }
+  ],
+  "public_disagreements": [],
+  "missing_ground_truth": [],
+  "note": "Held-out per-case rows are local-only (codex_t2_fidelity_heldout.local.json, gitignored per fixtures/HELDOUT_POLICY.md); only aggregates appear here."
+}

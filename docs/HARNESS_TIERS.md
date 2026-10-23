@@ -3,6 +3,14 @@
 *Status: draft for the record. Nothing published. Per `docs/FRAMEWORK.md`, a
 harness is described by its tier, never as generically "supported."*
 
+**Plain names (founder direction, 2026-10-22).** User-facing text calls the
+offline side the **PAPER TEST** with grades **A · Oracle** (was T1),
+**B · Manual** (was T2), **C · No paper** (was T3), and the online side the
+**LIVE TEST** (observed effect). The T1/T2/T3 labels in the table and
+assignments below are the technical aliases (kept in schemas/manifests);
+the dated revision paragraphs beneath are the historical record and are
+left as written.
+
 ## Question order (answered for every harness)
 
 (a) Is there a deterministic, offline way to obtain the harness's OWN decision
@@ -20,6 +28,7 @@ never a bypass/evasion/hole; unmatched serializes as **unknown**, never allow.
 | Harness | Tier | Oracle type | One-line evidence |
 |---|---|---|---|
 | Codex (codex-cli 0.149.0) | **T1** | native-offline | `codex execpolicy check` returns the harness's own rules-layer decision offline and deterministically; 41-case corpus replays byte-identically across 4 independent runs (REPRO). Manifest: `adapters/codex.v0.manifest.json`. |
+| Amp (`amp` 0.0.1792680614-g8973a3) | **T1** | native-offline | `amp permissions test --json` returns the harness's own permission-engine decision offline and deterministically (no auth); full 41-case corpus + protected family replayed byte-identically in the promotion run (REPRO). Manifest: `adapters/amp.manifest.json`. First-match-wins, user rules precede built-ins; no-match → unknown (INV-005). |
 | Claude Code (@anthropic-ai/claude-code@2.1.307) | **T2** | config-evaluation | No native offline decision oracle exists, but allow/ask/deny matching semantics (deny→ask→allow first-match-wins, wildcard table, deny-always-wins) are documented precisely enough to compute evaluations — labelled evaluation, never interrogation. (INFERENCE on DOC+REPRO). Manifest: `adapters/claude-code.manifest.json`. |
 | Cursor (CLI via cursor.com/install; docs pinned 2026-10-21) | **T2** | config-evaluation | Permission tokens, first-token+glob matching, and deny-precedence are documented precisely enough for evaluation in Allowlist mode; the default Auto-review mode's classifier is stochastic and staff-confirmed to drop hook asks, so it cannot be an oracle. (INFERENCE on DOC+THIRD-PARTY). Manifest: `adapters/cursor.manifest.json`. |
 | Gemini CLI (@google/gemini-cli@0.65.0) | **T2** | config-evaluation | Locally reproduced `--help` proves no decision oracle exists, while the TOML policy engine (prefix/regex/argsPattern, priority tiers, mode scoping, documented precedence) is specified precisely enough to evaluate — labelled evaluation. (INFERENCE on REPRO+DOC). Manifest: `adapters/gemini-cli.manifest.json`. |
@@ -49,9 +58,22 @@ the "no harness landed T3" claim from 2026-10-21 was superseded by the
 2026-10-22 empirical wave. T2 remains the ceiling until a vendor ships a
 deterministic offline "evaluate this command against this policy" entrypoint
 — the `codex execpolicy check` equivalent — at a pinned version. That is the
-stated T2→T1 promotion condition for the T2 set (Amp's promotion is a separate
-spike result awaiting the founder's decision, not an automatic consequence of
-this wave).
+stated T2→T1 promotion condition for the T2 set.
+
+**Revision — Amp promotion (2026-10-22):** the founder approved Amp's T1
+promotion (decision: "do T1, T2 and T3 for all harnesses wherever possible").
+`adapters/amp.manifest.json` is now **active** (T1, oracle type
+native-offline), and the full 41-case corpus + protected family were run
+through the Amp oracle at the pinned version
+`0.0.1792680614-g8973a3` (sha256
+`89304a6e5bc739807062433a28bba5a98dc8dfbae05d8674df06a465103c8f3f`),
+sealed in `evidence/amp-2026-10-22/bundle.json`. This satisfies the
+T2→T1 promotion condition stated above — a vendor-shipped deterministic
+offline "evaluate this command against this policy" entrypoint at a pinned
+version. FinePrint is now a **two-oracle method** (Codex execpolicy +
+Amp permissions test). The spike's REPRO record stands
+(`docs/amp-spike-2026-10-22.md`); the "awaiting the founder's decision" line
+in the wave revision above is superseded.
 
 ## Evidence behind each assignment
 
@@ -79,6 +101,12 @@ this wave).
 - (a) NO: command surface (`run`, `mini`, `session`, `auth`, `models`, `mcp`, `plugin`, `service`, `serve`, `pair`, `api`, `reload`, `stats`, `acp`, `debug`, …) has no check/evaluate; `debug config` shows resolved config only.
 - (b) YES, at **1.x**: permission object with simple wildcards, **last matching rule wins** (order-dependent — the sharpest contrast with Claude/Cursor deny-first), per-agent overrides merged with agent rules taking precedence, documented defaults. Ceilings: 1.x/2.x schema break (adapter pins 1.x; 2.x is an ordered `permissions` list — needs a separate pass), unspecified "parsed commands" normalization, session-state `always` approvals, runtime `--auto`.
 - Key quirk: last-match-wins + permissive defaults — `{"shell": {"*": "ask", "git *": "allow"}}` behaves oppositely if the lines are swapped, and a fresh install allows nearly everything. The *absence* of config is decision-relevant.
+
+### Amp — T1 (promoted 2026-10-22, founder decision)
+- Native oracle: `amp permissions test --json <Tool> --cmd "..." [--settings-file <policy.json>]` → JSON `{tool, arguments, action, matchedEntry?, matchIndex?, source?}` (REPRO, pinned binary 0.0.1792680614-g8973a3, sha256 `89304a6e5bc739807062433a28bba5a98dc8dfbae05d8674df06a465103c8f3f`; vendored at `tools/vendor/amp/0.0.1792680614-g8973a3/`, git-ignored).
+- 13 corpus-derived spike probes byte-identical across 2 runs; full 41-case corpus + protected family replayed byte-identically across 2 runs in the promotion run; Merkle-sealed bundle at `evidence/amp-2026-10-22/`.
+- ENV note: the pinned binary is vendored on disk with a recorded hash, so the sealed bundle remains re-verifiable here (unlike the Codex pin, which was replaced post-run).
+- Built-in permission ruleset is version-pinned but not vendor-published; only observable via `test` matchedEntry echoes (open question in the manifest).
 
 ## Cross-cutting findings (method-level, not per-harness)
 

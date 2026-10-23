@@ -1,1 +1,89 @@
-{"draft":true,"draft_note":"DRAFT ONLY — pending founder tier decision. Do not reference from docs/HARNESS_TIERS.md until adopted. Produced by the Amp second-oracle spike (docs/amp-spike-2026-10-22.md), 2026-10-22.","evidence_class":"REPRO","evidence_emission":{"format":"finding.v1 (schemas/finding.v1.schema.json) + evidence-bundle.v1 (Merkle-sealed)","layer_attribution_required":true,"unknown_serialization":"unknown"},"harness":"amp","harness_version_pinned":"0.0.1792680614-g8973a3 (released 2026-10-22T14:50:14.000Z); binary sha256 89304a6e5bc739807062433a28bba5a98dc8dfbae05d8674df06a465103c8f3f","layer_vocabulary":{"ambiguous":[],"covered":["rules"],"notes":"The oracle decides the permission-rules layer only (user amp.permissions rules + Amp's built-in permission rules). Approval UX and sandbox confinement are separate layers, not measured by `amp permissions test`. Unknowns carry mandatory layer attribution: 'no rules-layer decision (action: null); outcome depends on approval UX + sandbox under the pinned configuration' (INV-004, Option A)."},"manifest_version":"adapter-manifest.v1","open_questions":[{"question":"Built-in permission ruleset is version-pinned but not published by the vendor; it is only observable via `test` matchedEntry echoes. A vendor-published policy spec would strengthen DOC backing.","would_resolve":"Vendor publishes the built-in permission rules (or they are fully enumerated by systematic probing at the pinned version)."},{"question":"`--context subagent` vs default thread context, workspace-vs-user settings layering, and the `delegate` action were not probed.","would_resolve":"Targeted probes at the pinned version for each dimension."},{"question":"Full tool list not enumerated (`amp tools list` requires login, which the spike did not perform).","would_resolve":"A login-free enumeration path, or a documented tool list at the pinned version."},{"question":"Binary released 2026-10-22; vendor ships frequently. The version pin + vendoring recipe is load-bearing for reproducibility.","would_resolve":"Re-pin and re-verify on each vendor release used for evidence; record sha256 per release."}],"oracle":{"deterministic_offline":true,"invocation":"amp permissions test --json <Tool> [--cmd \"...\"] [--path \"...\"] [--settings-file <policy.json>]","reimplements_matching":false,"type":"native-offline"},"policy_ingestion":{"config_files":["<settings.json> with `amp.permissions` array; --settings-file overrides the default location"],"decision_verbs":["allow","ask","reject","delegate"],"defaults":"Genuine no-match yields action: null (observed with an unknown tool; REPRO). For the Bash tool, Amp's built-in catch-all ask rule (built-in matchIndex 27) resolves unknown commands to ask — that is Amp's shipped default behavior, recorded as observed (REPRO), not a framework claim. Unmatched serializes as unknown per INV-005.","surface":"amp.permissions rules: {tool (glob), matches: {cmd|path: [glob|regex...]}, action: allow|reject|ask|delegate}. First matching rule in list order wins; user rules precede built-in rules (REPRO)."},"sources":[{"kind":"cli-output","reference":"amp --version (= 0.0.1792680614-g8973a3, released 2026-10-22T14:50:14.000Z) on the pinned binary","retrieved_utc":"2026-10-22"},{"kind":"cli-output","reference":"amp permissions test --help; amp permissions add --help (rule format, first-match-wins, prepend semantics)","retrieved_utc":"2026-10-22"},{"kind":"local-observation","reference":"evidence/amp-spike-2026-10-22/P-01..P-13.run1.json — 13 corpus-derived probes, byte-identical across 2 runs (cmp-verified)","retrieved_utc":"2026-10-22"},{"kind":"local-observation","reference":"Offline proof: AMP_URL=https://invalid.local:1 (unroutable) yields identical decisions; no API key/login used (amp tools list login demand observed and not crossed)","retrieved_utc":"2026-10-22"},{"kind":"vendor-doc","reference":"https://ampcode.com/docs/cli/settings (settings locations, --settings-file, amp.mcpPermissions first-match precedent); https://ampcode.com/docs/tools (default approval posture)","retrieved_utc":"2026-10-22"}],"spike_answers":{"a_native_oracle":"YES. `amp permissions test --json <Tool> --cmd \"...\" [--settings-file <policy>]` returns Amp's own permission-engine decision (action + matchedEntry + source: user|built-in) for a tool call under a given policy. Deterministic (13/13 byte-identical across 2 runs), offline (bogus-AMP_URL proof), no auth (login boundary verified at `amp tools list`, never crossed).","b_documented_semantics":"Not needed; (a) answered yes. Rule shape discovered empirically (not in the published settings schema); precedence first-match-wins + user-over-built-in verified empirically (REPRO).","c_surface_record":"Not applicable; harness is a T1 candidate."},"tier":"T1","tier_evidence":"amp permissions test returns the harness's own permission-engine decision offline and deterministically (no auth); 13 corpus-derived probes replay byte-identically across 2 runs (REPRO). Draft — pending founder decision."}
+{
+  "manifest_version": "adapter-manifest.v1",
+  "harness": "amp",
+  "tier": "T1",
+  "evidence_class": "REPRO",
+  "evidence_emission": {
+    "format": "finding.v1 (schemas/finding.v1.schema.json) + evidence-bundle.v1 (Merkle-sealed)",
+    "layer_attribution_required": true,
+    "unknown_serialization": "unknown"
+  },
+  "harness_version_pinned": "0.0.1792680614-g8973a3 (released 2026-10-22T14:50:14.000Z); binary sha256 89304a6e5bc739807062433a28bba5a98dc8dfbae05d8674df06a465103c8f3f",
+  "layer_vocabulary": {
+    "ambiguous": [],
+    "covered": [
+      "rules"
+    ],
+    "notes": "The oracle decides the permission-rules layer only (user amp.permissions rules + Amp's built-in permission rules). Approval UX and sandbox confinement are separate layers, not measured by `amp permissions test`. Unknowns carry mandatory layer attribution: 'no rules-layer decision (action: null); outcome depends on approval UX + sandbox under the pinned configuration' (INV-004, Option A)."
+  },
+  "open_questions": [
+    {
+      "question": "Built-in permission ruleset is version-pinned but not published by the vendor; it is only observable via `test` matchedEntry echoes. A vendor-published policy spec would strengthen DOC backing.",
+      "would_resolve": "Vendor publishes the built-in permission rules (or they are fully enumerated by systematic probing at the pinned version)."
+    },
+    {
+      "question": "`--context subagent` vs default thread context, workspace-vs-user settings layering, and the `delegate` action were not probed.",
+      "would_resolve": "Targeted probes at the pinned version for each dimension."
+    },
+    {
+      "question": "Full tool list not enumerated (`amp tools list` requires login, which the spike did not perform).",
+      "would_resolve": "A login-free enumeration path, or a documented tool list at the pinned version."
+    },
+    {
+      "question": "Binary released 2026-10-22; vendor ships frequently. The version pin + vendoring recipe is load-bearing for reproducibility.",
+      "would_resolve": "Re-pin and re-verify on each vendor release used for evidence; record sha256 per release."
+    }
+  ],
+  "oracle": {
+    "deterministic_offline": true,
+    "invocation": "amp permissions test --json <Tool> [--cmd \"...\"] [--path \"...\"] [--settings-file <policy.json>]",
+    "reimplements_matching": false,
+    "type": "native-offline"
+  },
+  "policy_ingestion": {
+    "config_files": [
+      "<settings.json> with `amp.permissions` array; --settings-file overrides the default location"
+    ],
+    "decision_verbs": [
+      "allow",
+      "ask",
+      "reject",
+      "delegate"
+    ],
+    "defaults": "Genuine no-match yields action: null (observed with an unknown tool; REPRO). For the Bash tool, Amp's built-in catch-all ask rule (built-in matchIndex 27) resolves unknown commands to ask \u2014 that is Amp's shipped default behavior, recorded as observed (REPRO), not a framework claim. Unmatched serializes as unknown per INV-005.",
+    "surface": "amp.permissions rules: {tool (glob), matches: {cmd|path: [glob|regex...]}, action: allow|reject|ask|delegate}. First matching rule in list order wins; user rules precede built-in rules (REPRO)."
+  },
+  "sources": [
+    {
+      "kind": "cli-output",
+      "reference": "amp --version (= 0.0.1792680614-g8973a3, released 2026-10-22T14:50:14.000Z) on the pinned binary",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "cli-output",
+      "reference": "amp permissions test --help; amp permissions add --help (rule format, first-match-wins, prepend semantics)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "local-observation",
+      "reference": "evidence/amp-spike-2026-10-22/P-01..P-13.run1.json \u2014 13 corpus-derived probes, byte-identical across 2 runs (cmp-verified)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "local-observation",
+      "reference": "Offline proof: AMP_URL=https://invalid.local:1 (unroutable) yields identical decisions; no API key/login used (amp tools list login demand observed and not crossed)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "https://ampcode.com/docs/cli/settings (settings locations, --settings-file, amp.mcpPermissions first-match precedent); https://ampcode.com/docs/tools (default approval posture)",
+      "retrieved_utc": "2026-10-22"
+    }
+  ],
+  "spike_answers": {
+    "a_native_oracle": "YES. `amp permissions test --json <Tool> --cmd \"...\" [--settings-file <policy>]` returns Amp's own permission-engine decision (action + matchedEntry + source: user|built-in) for a tool call under a given policy. Deterministic (13/13 byte-identical across 2 runs), offline (bogus-AMP_URL proof), no auth (login boundary verified at `amp tools list`, never crossed).",
+    "b_documented_semantics": "Not needed; (a) answered yes. Rule shape discovered empirically (not in the published settings schema); precedence first-match-wins + user-over-built-in verified empirically (REPRO).",
+    "c_surface_record": "Applicable: harness promoted to T1 by founder decision 2026-10-22 ('do T1, T2 and T3 for all harnesses wherever possible')."
+  },
+  "tier_evidence": "amp permissions test returns the harness's own permission-engine decision offline and deterministically (no auth); 13 corpus-derived probes replayed byte-identically across 2 runs in the 2026-10-22 spike (REPRO), and the full 41-case corpus + protected family replayed byte-identically in the T1 promotion run (evidence/amp-2026-10-22/). PROMOTED to T1 by founder decision 2026-10-22."
+}

@@ -1,0 +1,22 @@
+{
+  "amp.permissions": [
+    {
+      "tool": "Bash",
+      "matches": {
+        "cmd": [
+          "git*"
+        ]
+      },
+      "action": "ask"
+    },
+    {
+      "tool": "Bash",
+      "matches": {
+        "cmd": [
+          "git status*"
+        ]
+      },
+      "action": "allow"
+    }
+  ]
+}

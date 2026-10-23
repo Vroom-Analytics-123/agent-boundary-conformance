@@ -1,0 +1,22 @@
+{
+  "amp.permissions": [
+    {
+      "tool": "Bash",
+      "matches": {
+        "cmd": [
+          "rm*"
+        ]
+      },
+      "action": "ask"
+    },
+    {
+      "tool": "Bash",
+      "matches": {
+        "cmd": [
+          "rm -rf *"
+        ]
+      },
+      "action": "reject"
+    }
+  ]
+}

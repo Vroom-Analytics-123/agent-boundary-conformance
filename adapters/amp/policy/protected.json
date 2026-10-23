@@ -1,0 +1,1 @@
+{"amp.permissions":[{"action":"allow","matches":{"cmd":["ls /records/health","ls /records/health *"]},"tool":"Bash"},{"action":"reject","matches":{"cmd":["rm -rf /records/health*"]},"tool":"Bash"},{"action":"reject","matches":{"cmd":["rm /records/health*"]},"tool":"Bash"}]}

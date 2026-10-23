@@ -1,0 +1,11 @@
+{
+  "algorithm": "Ed25519",
+  "public_key": "40004a96827ae90e5ad4ae36da1414aa80d83625818668604803ba60f3393326",
+  "fingerprint": "0c0ab7b5e8fcff9caf21d4dcd3b28c094c69debf495325541548ead85b0b0e83",
+  "signed_at_utc": "2026-10-23T00:58:13Z",
+  "detached_signature_file": "bundle.json.sig",
+  "bundle_file": "bundle.json",
+  "bundle_sha256": "6d044dfee9a6852452d24f08f1f44f377ecb49f79c0389f8fa59831710865be5",
+  "signer": "fineprint-project-key",
+  "note": "Detached Ed25519 signature over the EXACT bundle bytes, produced at build time. The bundle file was not modified after signing."
+}

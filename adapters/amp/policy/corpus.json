@@ -1,0 +1,1 @@
+{"amp.permissions":[{"action":"allow","matches":{"cmd":["git status*"]},"tool":"Bash"},{"action":"ask","matches":{"cmd":["deployctl release*"]},"tool":"Bash"},{"action":"reject","matches":{"cmd":["rm -rf *"]},"tool":"Bash"},{"action":"reject","matches":{"cmd":["rm -fr *"]},"tool":"Bash"},{"action":"reject","matches":{"cmd":["rm --recursive --force *"]},"tool":"Bash"}]}

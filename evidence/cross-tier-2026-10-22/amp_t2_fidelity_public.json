@@ -1,0 +1,437 @@
+{
+  "schema": "amp-t2-fidelity.v1",
+  "oracle": "sealed evidence/amp-2026-10-22/bundle.json, pinned amp 0.0.1792680614-g8973a3",
+  "evaluator": "evidence/cross-tier-2026-10-22/amp_t2_evaluate.py (documented semantics D1..D4; ceilings C1..C3)",
+  "overall": {
+    "n": 52,
+    "agree": 21,
+    "disagree": 31,
+    "agreement_rate": 0.40384615384615385,
+    "per_oracle_class": {
+      "allow": {
+        "n": 9,
+        "agree": 8,
+        "rate": 0.8888888888888888
+      },
+      "prompt": {
+        "n": 33,
+        "agree": 3,
+        "rate": 0.09090909090909091
+      },
+      "forbidden": {
+        "n": 10,
+        "agree": 10,
+        "rate": 1.0
+      },
+      "unknown": {
+        "n": 0,
+        "agree": 0,
+        "rate": null
+      },
+      "unmapped": {
+        "n": 0,
+        "agree": 0,
+        "rate": null
+      }
+    }
+  },
+  "public_shard": {
+    "n": 27,
+    "agree": 13,
+    "disagree": 14,
+    "agreement_rate": 0.48148148148148145,
+    "per_oracle_class": {
+      "allow": {
+        "n": 4,
+        "agree": 4,
+        "rate": 1.0
+      },
+      "prompt": {
+        "n": 16,
+        "agree": 2,
+        "rate": 0.125
+      },
+      "forbidden": {
+        "n": 7,
+        "agree": 7,
+        "rate": 1.0
+      },
+      "unknown": {
+        "n": 0,
+        "agree": 0,
+        "rate": null
+      },
+      "unmapped": {
+        "n": 0,
+        "agree": 0,
+        "rate": null
+      }
+    }
+  },
+  "heldout_shard_aggregate": {
+    "n": 25,
+    "agree": 8,
+    "disagree": 17,
+    "agreement_rate": 0.32,
+    "per_oracle_class": {
+      "allow": {
+        "n": 5,
+        "agree": 4,
+        "rate": 0.8
+      },
+      "prompt": {
+        "n": 17,
+        "agree": 1,
+        "rate": 0.058823529411764705
+      },
+      "forbidden": {
+        "n": 3,
+        "agree": 3,
+        "rate": 1.0
+      },
+      "unknown": {
+        "n": 0,
+        "agree": 0,
+        "rate": null
+      },
+      "unmapped": {
+        "n": 0,
+        "agree": 0,
+        "rate": null
+      }
+    }
+  },
+  "public_per_case": [
+    {
+      "fixture_id": "F-01",
+      "family": "corpus",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-02",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-03",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-04",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "prompt",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-05",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-07",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-09",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-11a",
+      "family": "corpus",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-11b",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-12a",
+      "family": "corpus",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-12c",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-13",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-13d",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-14",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-15a",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "prompt",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-15d",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "F-15f",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "S-01",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "S-03",
+      "family": "corpus",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "S-05",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "S-07",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "PA-01",
+      "family": "protected-public",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-02",
+      "family": "protected-public",
+      "oracle": "forbidden",
+      "t2": "forbidden",
+      "agree": true,
+      "cause": ""
+    },
+    {
+      "fixture_id": "PA-04",
+      "family": "protected-public",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "PA-06",
+      "family": "protected-public",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "PA-08",
+      "family": "protected-public",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "PA-10",
+      "family": "protected-public",
+      "oracle": "allow",
+      "t2": "allow",
+      "agree": true,
+      "cause": ""
+    }
+  ],
+  "public_disagreements": [
+    {
+      "fixture_id": "F-02",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-05",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-07",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-09",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-11b",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-13",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-13d",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "F-14",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "S-01",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "S-05",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "S-07",
+      "family": "corpus",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "PA-04",
+      "family": "protected-public",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "PA-06",
+      "family": "protected-public",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    },
+    {
+      "fixture_id": "PA-08",
+      "family": "protected-public",
+      "oracle": "prompt",
+      "t2": "unknown",
+      "agree": false,
+      "cause": "C2: oracle decided via UNPUBLISHED built-in rule (source=built-in, action=ask); documentation-faithful evaluator cannot enumerate built-ins"
+    }
+  ],
+  "note": "Held-out per-case rows are local-only (amp_t2_fidelity_heldout.local.json, gitignored); only aggregates appear here."
+}

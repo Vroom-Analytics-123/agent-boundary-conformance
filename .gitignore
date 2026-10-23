@@ -1,4 +1,5 @@
 __pycache__/
+.pytest_cache/
 .DS_Store
 *.tmp
 
@@ -27,3 +28,11 @@ adapters/gemini-cli/results_heldout.local.json
 # Cursor wave (2026-10-22): held-out per-case detail is local-only,
 # never committed (fixtures/HELDOUT_POLICY.md).
 adapters/cursor/results_heldout.local.json
+
+# Replication kit throwaway dirs (tools/replicate.sh; kept only on DIFF).
+.replication-tmp.*
+
+# Cross-tier study (2026-10-22): held-out per-case detail is local-only,
+# never committed (fixtures/HELDOUT_POLICY.md).
+evidence/cross-tier-2026-10-22/codex_t2_fidelity_heldout.local.json
+evidence/cross-tier-2026-10-22/amp_t2_fidelity_heldout.local.json

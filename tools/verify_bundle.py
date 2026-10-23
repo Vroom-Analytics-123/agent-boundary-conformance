@@ -112,6 +112,24 @@ def main():
     if bundle.get("schema_version") != S.SCHEMA_BUNDLE:
         problems.append(f"bad schema_version: {bundle.get('schema_version')!r}")
 
+    # Amp bundles (evidence/amp-2026-10-22/) follow the same structural
+    # contract (RFC-6962 Merkle, INV-004/INV-005 enforcement, negative
+    # controls, detached signature) with a harness-scoped pinned block.
+    is_amp = bundle.get("pinned", {}).get("harness") == "amp"
+
+    def amp_ser(raw):
+        """INV-005 serializer for `amp permissions test --json` output:
+        genuine no-match (action: null, or unparseable) -> unknown, never
+        allow."""
+        try:
+            parsed = json.loads((raw or "").strip() or "null")
+        except (json.JSONDecodeError, AttributeError):
+            parsed = None
+        action = parsed.get("action") if isinstance(parsed, dict) else None
+        mapping = {"allow": "allow", "ask": "prompt", "reject": "forbidden",
+                   None: "unknown", "delegate": "unmapped"}
+        return mapping.get(action, "unknown")
+
     findings = bundle.get("findings", [])
     merkle = bundle.get("merkle", {})
     leaves = {l["finding_id"]: l["leaf_hash"] for l in merkle.get("leaves", [])}
@@ -132,8 +150,14 @@ def main():
     # 2-4. Per-finding semantic checks.
     for f in findings:
         fid = f["fixture_id"]
-        ser = S.serialize_native_decision(f.get("raw_native_output", ""))
-        if ser["decision"] == "unknown" and f.get("actual_decision") == "allow":
+        if is_amp:
+            ser_decision = amp_ser(f.get("raw_native_output", ""))
+            no_match = ser_decision == "unknown"
+        else:
+            ser = S.serialize_native_decision(f.get("raw_native_output", ""))
+            ser_decision = ser["decision"]
+            no_match = ser_decision == "unknown"
+        if no_match and f.get("actual_decision") == "allow":
             problems.append(f"{fid}: INV-005 violation — no-match serialized as allow")
         if f.get("actual_decision") == "unknown" and not f.get("layer_attribution"):
             problems.append(f"{fid}: INV-004 violation — unknown without layer_attribution")
@@ -153,7 +177,7 @@ def main():
     # 6. Corpus + pinned hashes vs files on disk.
     prereg = bundle.get("preregistration", {})
     prereg_path = REPO / prereg.get("file", "")
-    if prereg_path.exists():
+    if prereg_path.is_file():
         pr = json.loads(prereg_path.read_text())
         if pr.get("preregistration_sha256") != prereg.get("sha256"):
             problems.append("pre-registration hash in bundle != hash in prereg file")
@@ -164,7 +188,24 @@ def main():
     # verifier previously checked fixtures.json for every bundle, which made
     # every valid family bundle "fail" this check (pre-existing blind spot,
     # found 2026-10-22 during the post-fix re-verification).
-    if bundle.get("family") == "protected_records":
+    if is_amp:
+        # Amp bundle: per-finding family ("corpus" | "protected-public" |
+        # "protected-heldout"). Corpus family commits to fixtures/fixtures.json;
+        # the protected family commits to the merged public+heldout family hash.
+        fams = {f.get("family") for f in findings}
+        if any(fm == "corpus" for fm in fams):
+            corpus_now = sha256_file(REPO / "fixtures" / "fixtures.json")
+            if corpus_now != bundle.get("corpus", {}).get("corpus_version_hash"):
+                problems.append("corpus file on disk != bundle corpus_version_hash")
+        if any(fm and fm.startswith("protected") for fm in fams):
+            pub = json.loads((REPO / "fixtures" / "protected_records_public.json").read_text())
+            ho = json.loads((REPO / "fixtures" / "protected_records_heldout.json").read_text())
+            merged = sorted(pub["fixtures"] + ho["fixtures"], key=lambda f: f["id"])
+            canon = json.dumps(merged, sort_keys=True, separators=(",", ":")).encode()
+            if hashlib.sha256(canon).hexdigest() != bundle.get("corpus", {}).get(
+                    "family_protected_records", {}).get("merged_sha256"):
+                problems.append("protected family on disk != bundle merged hash")
+    elif bundle.get("family") == "protected_records":
         pub = json.loads((REPO / "fixtures" / "protected_records_public.json").read_text())
         ho = json.loads((REPO / "fixtures" / "protected_records_heldout.json").read_text())
         merged = sorted(pub["fixtures"] + ho["fixtures"], key=lambda f: f["id"])
@@ -174,8 +215,11 @@ def main():
         corpus_now = sha256_file(REPO / "fixtures" / "fixtures.json")
     if corpus_now != bundle.get("corpus", {}).get("corpus_version_hash"):
         problems.append("corpus file on disk != bundle corpus_version_hash")
-    if pinned.get("binary_sha256") != sha256_file(Path(pinned.get("binary_path", ""))):
-        problems.append("codex binary on disk != pinned binary_sha256")
+    bin_path = Path(pinned.get("binary_path", ""))
+    if not bin_path.is_absolute():
+        bin_path = REPO / bin_path
+    if pinned.get("binary_sha256") != sha256_file(bin_path):
+        problems.append(f"{'amp' if is_amp else 'codex'} binary on disk != pinned binary_sha256")
     rules_map = pinned.get("rules_files", {})
     for rel, h in rules_map.items():
         p = REPO / rel

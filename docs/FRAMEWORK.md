@@ -61,11 +61,26 @@ An adapter MUST declare, in a machine-readable manifest:
 
 ## Support tiers — what "supported" honestly means
 
+**Plain names (founder direction, 2026-10-22).** FinePrint runs two tests.
+The **PAPER TEST** asks the offline question: *what does the harness's
+rulebook decide for this command, without running anything?* The **LIVE
+TEST** asks the online question: *what observably happens when it runs?*
+The paper test is graded per harness — **A · Oracle** (the harness ships a
+native offline decision oracle), **B · Manual** (decisions are computed by
+hand from documented policy semantics and labelled evaluation, never
+interrogation), **C · No paper** (no decision interface exists to
+evaluate). The technical tier labels T1/T2/T3 in the table below are the
+machine-readable aliases for grades A/B/C; they stay in `schemas/` and
+`*.manifest.json`. The paper test is the measured side today (two native
+oracles: Codex, Amp); the live test is the effect-layer side — its pilot is
+pre-registered (`docs/effect-pilot/PREREGISTRATION.md`) and its execution is
+blocked on authentication, so observed effect stays NOT_TESTED until it runs.
+
 | Tier | Meaning | Evidence class |
 |---|---|---|
-| **T1 — Native oracle** | Decisions obtained from the harness's own checker/evaluator, offline and deterministic. | REPRO |
-| **T2 — Config evaluation** | Decisions computed from the harness's documented policy semantics (no native offline oracle exists); labelled as evaluation, not interrogation. | DOC + INFERENCE |
-| **T3 — Surface survey** | No decision interface exists to evaluate. The adapter records the policy surface, its defaults, and the absence of a decision oracle. No verdicts are issued. | DOC |
+| **T1 — Native oracle** (paper grade **A · Oracle**) | Decisions obtained from the harness's own checker/evaluator, offline and deterministic. | REPRO |
+| **T2 — Config evaluation** (paper grade **B · Manual**) | Decisions computed from the harness's documented policy semantics (no native offline oracle exists); labelled as evaluation, not interrogation. | DOC + INFERENCE |
+| **T3 — Surface survey** (paper grade **C · No paper**) | No decision interface exists to evaluate. The adapter records the policy surface, its defaults, and the absence of a decision oracle. No verdicts are issued. | DOC |
 
 A T3 result is a publishable finding, not a failure of the framework:
 "this harness offers its users no way to ask what their policy decides"
@@ -118,7 +133,7 @@ THIRD-PARTY unless noted. Nothing here changes the Day-7 kill criterion
 
 | Harness | Tier evidence | Oracle status |
 |---|---|---|
-| **Amp** (Amp Inc.; ex-Sourcegraph) | ADAPTER-CANDIDATE — top pick. `amp.permissions`: tool glob + arg matches, action allow/reject/ask/delegate, `delegate --to` helper by exit code | **Confirmed T1 candidate (spike 2026-10-22):** `amp permissions test` is a deterministic offline native decision oracle — 13/13 corpus probes REPRO'd byte-identically across two runs (verified offline with invalid server URL); first-match-wins precedence, user rules precede built-ins; no-match → unknown (INV-005). Promotion decision is the founder's; see `docs/amp-spike-2026-10-22.md` (REPRO) |
+| **Amp** (Amp Inc.; ex-Sourcegraph) | **T1** (promoted 2026-10-22, founder decision). `amp.permissions`: tool glob + arg matches, action allow/reject/ask/delegate, `delegate --to` helper by exit code | **T1 confirmed:** `amp permissions test` is a deterministic offline native decision oracle — 13/13 spike probes REPRO'd byte-identically across two runs (verified offline with invalid server URL); full 41-case corpus + protected family replayed byte-identically in the promotion run (pinned `0.0.1792680614-g8973a3`, sealed `evidence/amp-2026-10-22/`). First-match-wins precedence, user rules precede built-ins; no-match → unknown (INV-005). See `docs/amp-spike-2026-10-22.md` (REPRO) and `adapters/amp.manifest.json` (active) |
 | **Zed Agent** (Zed Industries, open source) | ADAPTER-CANDIDATE. `agent.tool_permissions`: default allow/confirm/deny + per-tool regex `always_allow`/`always_confirm`/`always_deny` (deny binds even when default is allow); documented deterministic semantics; evaluator inspectable in source | T2 (no CLI oracle shipped; T2 config evaluation straightforward; T1-via-source spike conceivable) (DOC) |
 | **Warp** (commercial terminal+agent) | ADAPTER-CANDIDATE. `settings.toml` regex `agent_mode_command_execution_allowlist`/`_denylist`; **denylist takes precedence** over allowlist and "Agent decides"; shipped defaults published | T2 (closed source; regex-vs-command-string + precedence fully documented) (DOC) |
 | **Goose** (Block → Agentic AI Foundation, Apache-2.0) | ADAPTER-CANDIDATE. YAML config: `GOOSE_MODE` + per-tool `AlwaysAllow`/`AskBefore`/`NeverAllow`; extension allowlist gates MCP installs | T2 at tool granularity (command-argument granularity not expressed) (DOC) |
@@ -150,12 +165,14 @@ THIRD-PARTY unless noted. Nothing here changes the Day-7 kill criterion
 
 ### Adapter-candidate #6 and the bench/wave lists
 
-- **Candidate adapter #6: Amp.** It displaces the "Copilot as candidate sixth"
-  placeholder in *priority* (not in scope): Amp is the only vendor besides
-  OpenAI with a shipped permission *test* command, making a T1 spike the
-  obvious next adapter bet. GitHub Copilot remains a candidate, but with the
-  least declarative surface of the set.
-- **T2 bench (ranked):** Amp (spike for T1) → Zed → Warp → Goose → Crush → Roo Code.
+- **Candidate adapter #6: Amp.** Promoted to **T1** 2026-10-22 (founder
+  decision); it displaced the "Copilot as candidate sixth" placeholder in
+  *priority* (not in scope): Amp is the only vendor besides OpenAI with a
+  shipped permission *test* command, which made the T1 spike — and then the
+  promotion — the obvious next adapter bet. GitHub Copilot remains a
+  candidate, but with the least declarative surface of the set.
+- **T2 bench (ranked):** Zed → Warp → Goose → Crush → Roo Code (Amp removed
+  on promotion to T1).
 - **T3 wave:** Pi, OpenClaw, Hermes Agent, Aider, Cline, Continue, Windsurf,
   Amazon Q Developer CLI, JetBrains Junie, Kiro (promotion candidate),
   Void, Trae, Qwen Code, Kilo Code.
@@ -171,7 +188,8 @@ THIRD-PARTY unless noted. Nothing here changes the Day-7 kill criterion
    harnesses already in our corpus — the delegation pattern *strengthens* the
    framework's premise that the harness policy layer is where coding-agent
    boundaries actually live.
-2. The real adapter gaps were elsewhere: the T2 bench above, led by Amp.
+2. The real adapter gaps were elsewhere: the T2 bench above (Amp led it until
+   its T1 promotion).
 3. Star counts (Pi 116,973; Hermes Agent 255,955; OpenClaw 392,702) are from
    GitHub repo pages fetched 2026-10-21; they measure attention, not deployed
    usage, and are used only as "meaningful adoption" triage signals.

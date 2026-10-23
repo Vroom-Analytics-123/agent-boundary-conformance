@@ -8,7 +8,8 @@ tests/test_scorecard_v1.py and the script's own assertions.
 
 Outputs (docs/assets/):
   decisions_donut.png  — native decision distribution, 41-case main corpus
-  tier_matrix.png      — the five-harness tier matrix
+  tier_matrix.png      — the paper-test grade matrix (living source:
+                         docs/assets/tier-matrix-current.json)
   three_layers.png     — the three layers Boundary Measurement compares
 """
 import json
@@ -85,69 +86,74 @@ def donut(counts, merkle, pin):
 
 
 def tier_matrix():
-    tm = json.loads((REPO / "evidence" / "reports" / "day6-scorecard" / "tier-matrix.json").read_text())
+    # Living source (naming hygiene, 2026-10-22): docs/assets/tier-matrix-current.json
+    # carries the current grade assignments. The day6-scorecard tier-matrix.json
+    # files are dated report artifacts and are left untouched.
+    tm = json.loads((ASSETS / "tier-matrix-current.json").read_text())
     hs = tm["harnesses"]
-    assert len(hs) == 5, [h["harness"] for h in hs]
+    assert len(hs) == 8, [h["harness"] for h in hs]
 
     rows = []
     for h in hs:
-        measured = "measured verdicts" if h["tier"] == "T1" else "no verdicts measured"
-        rows.append([h["harness"], h["tier"],
+        grade = "%s (%s)" % (h["grade"], h["tier"])
+        rows.append([h["harness"], grade,
                      h["oracle_type"].replace("-", " "),
-                     measured, h["evidence_class"]])
-    # Deterministic presentation order: T1 first, then T2 in framework order.
-    rows.sort(key=lambda r: (0 if r[1] == "T1" else 1, r[0] != "codex", r[0]))
+                     h["verdicts"], h["evidence_class"]])
+    # Deterministic presentation order: grade A first, then B, then C.
+    order = {"A": 0, "B": 1, "C": 2}
+    rows.sort(key=lambda r: (order[r[1][0]], r[0]))
 
-    fig, ax = plt.subplots(figsize=(9.6, 4.6), dpi=150)
+    fig, ax = plt.subplots(figsize=(10.8, 6.6), dpi=150)
     fig.patch.set_facecolor("white")
     ax.axis("off")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
 
-    ax.text(0.02, 0.94, "Five-harness tier matrix (Day 6, 2026-10-21)",
+    ax.text(0.02, 0.94, "Paper-test grades (Oct 22, 2026)",
             fontsize=14, fontweight="bold", color="#222222", ha="left", va="top")
-    ax.text(0.02, 0.86,
-            "A harness is described by its tier, never as generically 'supported'.",
+    ax.text(0.02, 0.885,
+            "A harness is described by its grade, never as generically 'supported'. "
+            "T1/T2/T3 are the technical aliases.",
             fontsize=10.5, color="#555555", ha="left", va="top")
 
-    cols = ["Harness", "Tier", "Oracle type", "Verdicts", "Evidence class"]
-    widths = [0.19, 0.09, 0.24, 0.26, 0.18]
+    cols = ["Harness", "Paper-test grade", "Oracle type", "Verdicts", "Evidence class"]
+    widths = [0.13, 0.18, 0.17, 0.22, 0.26]
     x0 = 0.02
-    y_top = 0.78
-    rh = 0.095
+    y_top = 0.82
+    rh = 0.075
 
     def cell(x, y, w, h, text, **kw):
         ax.add_patch(plt.Rectangle((x, y), w, h, fill=kw.pop("fill", True),
                                    facecolor=kw.pop("facecolor", "white"),
                                    edgecolor="#cccccc", linewidth=1))
         ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
-                fontsize=kw.pop("fontsize", 10.5), color=kw.pop("color", "#222222"),
+                fontsize=kw.pop("fontsize", 10), color=kw.pop("color", "#222222"),
                 fontweight=kw.pop("fontweight", "normal"), wrap=True)
 
     x = x0
     for c, w in zip(cols, widths):
         cell(x, y_top - rh, w, rh, c, facecolor="#2b3a4a", color="white",
-             fontweight="bold", fontsize=10.5)
+             fontweight="bold", fontsize=10)
         x += w
 
-    tier_colors = {"T1": "#e8f2ea", "T2": "#fdf3e0"}
+    grade_colors = {"A": "#e8f2ea", "B": "#fdf3e0", "C": "#f0e8f5"}
     y = y_top - rh
     for r in rows:
         y -= rh
         x = x0
-        face = tier_colors.get(r[1], "white")
+        face = grade_colors.get(r[1][0], "white")
         for c, w in zip(r, widths):
-            fw = "bold" if w == 0.09 else "normal"
+            fw = "bold" if w == 0.20 and c == r[1] else "normal"
             cell(x, y, w, rh, c, facecolor=face, fontweight=fw,
-                 fontsize=10 if len(c) > 22 else 10.5)
+                 fontsize=9 if len(c) > 24 else 10)
             x += w
 
     fig.text(0.02, 0.03,
-             "Promotion condition: a vendor ships a deterministic offline "
+             "Grade-B\u2192grade-A promotion condition: a vendor ships a deterministic offline "
              "'evaluate this command against this policy' entrypoint at a pinned "
-             "version (T2\u2192T1).\n"
-             "Leading candidate: Amp (only vendor besides OpenAI with a shipped "
-             "permission-test command).",
+             "version.\n"
+             "Met 2026-10-22 by Amp (`amp permissions test`, pinned 0.0.1792680614-g8973a3) "
+             "\u2014 FinePrint is now a two-oracle method.",
              fontsize=8.5, color="#777777", ha="left", va="bottom")
     fig.tight_layout()
     out = ASSETS / "tier_matrix.png"

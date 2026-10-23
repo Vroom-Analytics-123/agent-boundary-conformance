@@ -48,6 +48,25 @@ flowchart LR
 
 Key verified mechanics: when several rules match one command, the **strictest decision wins**, regardless of order (verified six ways). Path forms flip with configuration (`/bin/rm -rf` is unknown by default, forbidden with `--resolve-host-executables`) — which is exactly why every result records its pinned configuration.
 
+## The invariant catalogue is the invention
+
+The tester in this repo is one implementation. The durable asset is the **invariant catalogue** ([docs/catalogue/](docs/catalogue/)): **16 parameterized invariants** (FP-001…FP-016) — statements of intent, like "a destructive recursive delete must never be silently allowed" — each carrying, **per target**, a translation into that target's own policy language, the **measurement route** the translation is checked by, and the **confidence** the agreeing routes support.
+
+That structure is what makes the knowledge compound. Everything a measurement learns about a target — its precedence quirks, which command forms its checker cannot decide, where its approval gate actually sits — is written back into that target's translations, so the next target starts from everything the previous ones taught. A new harness or framework joins by **adding translations, never by rewriting invariants**; **[docs/EXTENDING.md](docs/EXTENDING.md)** is the mechanism — identity pinning, the three spike questions, the dossier + manifest + translation contract, and the promotion path from design-stage to measured. The six Wave A targets were added in a single day at paper depth because the asset is shaped for it; their translations are labelled UNMEASURED until a route actually runs.
+
+## Attack surface — what this prevents
+
+FinePrint does not inspect code or content. It verifies the **agent-side control plane at the execution/impact stage** — the checkpoint every harmful action, however delivered, must cross:
+
+- **Destructive commands** — recursive deletes, disk wipes, production database drops.
+- **Secret exfiltration** — reads of credential stores (`~/.ssh`, `.env`, token files) and sends to endpoints the user never named.
+- **Unapproved installs + lifecycle scripts** — dependency additions, and the install-time code that then runs with the agent's full privileges.
+- **Force-push / deploy without approval** — history rewrites and production changes that skip the human gate.
+- **Privilege escalation** — approval layers switched off by a flag any local process can pass; elevated modes that never ask.
+- **Runaway spend** — cost caps that exist on paper but no route ever witnesses firing.
+
+The supply-chain relevance is structural: a compromised package, a poisoned MCP server, a trojanized install script — the payload still has to *do* something on the victim's machine (run a script, read credential stores, spawn a shell, add a recipient, publish a package, exfiltrate), and those actions pass through exactly the three layers measured here. Agent guardrails are the last checkpoint a supply-chain payload must cross, and FinePrint verifies that the checkpoint exists and fires — it does not verify the payload. It does **not** scan packages, detect malware, or provide provenance signing; it is complementary to Snyk/Socket/Sigstore-class tools, which reduce the chance a payload arrives. This measures whether the stated limits are real when one does.
+
 ## Document map — what is current, what is history
 
 | Document | Status | What it is |

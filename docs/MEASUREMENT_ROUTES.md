@@ -47,6 +47,12 @@ never a bypass/evasion/hole; unmatched serializes as **unknown**, never allow.
 | OpenCode (opencode-ai@1.19.3; 1.x semantics pinned) | **reconstructed** | config-evaluation | No offline checker exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x — evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO). Manifest: `adapters/opencode.manifest.json`. |
 | GitHub Copilot CLI (@github/copilot@1.0.103) | **reconstructed** (from configuration; account-walled) | config-evaluation | Install is not auth-walled but every live evaluation route sits behind `/login` (account/subscription wall, named). Offline binary inspection found no checker-like entrypoint; semantics evaluatable from docs only. Assessment: `adapters/copilot-assessment.md`. |
 | Muse Code — Meta (muse-stable 1.4.11; terminal coding agent) | **no paper surface** | none located | No deterministic offline decision checker in the CLI surface or official docs; surface and defaults recorded, no verdicts. Assessment: `adapters/muse-code-assessment.md`. (Bonus assessment outside the wave's original list; this is the `muse` terminal agent, not the Muse personal assistant.) |
+| Omnigent (0.19.1; meta-harness) | **reconstructed** (design-stage, Wave A) | config-evaluation | Stateful policy engine — ALLOW/ASK/DENY over request/tool_call/tool_result/response events, YAML/CEL/Python policies, session → agent → server stacking, any-DENY blocks — documented precisely enough to evaluate on paper; no offline oracle in any documented CLI/REST surface (DOC-scope negative; no binary installed). NOT measured. Assessment: `adapters/omnigent-assessment.md`; manifest: `adapters/omnigent.manifest.json`. |
+| Hermes Agent — Nous Research (version unpinned; docs describe post-v0.21 behaviour) | **reconstructed** (design-stage, Wave A) | config-evaluation | Identity pinned from Omnigent's own launcher text ("Hermes Agent (Nous Research)"). Deterministic Decision core — hardline blocklist, `approvals.deny` globs with compound splitting, protected-path denylist — documented across three agreeing vendor docs; the default `smart` mode routes flagged commands to a stochastic guardian LLM (unevaluatable subset). NOT measured. Assessment: `adapters/hermes-assessment.md`; manifest: `adapters/hermes.manifest.json`. |
+| OpenClaw (github.com/openclaw/openclaw; gateway/runtime — own native exec boundary assessed) | **reconstructed** (design-stage, Wave A) | config-evaluation | Identity pinned via the project repo + Omnigent's `docs/openclaw.md`; same-name candidates excluded with evidence. `tools.allow`/`tools.deny` (deny always wins) + exec-approvals allowlist documented, but granularity is tool/binary, never argv; no vendor checker. NOT measured. Assessment: `adapters/openclaw-assessment.md`; manifest: `adapters/openclaw.manifest.json`. |
+| LangGraph (langgraph 1.2.16; framework) | **no paper surface** (design-stage, Wave A) | none — framework runtime | No declarative policy surface exists; Decision lives in user code, so a reconstruction would invent the policy language. Approval is real and pre-execution (`interrupt()` + checkpointer; LangChain `HumanInTheLoopMiddleware`). Coverage path = instrumented reference agent (dossier §reference-agent). NOT measured. Assessment: `adapters/langgraph-assessment.md`; manifest: `adapters/langgraph.manifest.json`. |
+| Strands Agents (strands-agents 1.62.0; framework) | **no paper surface** (design-stage, Wave A) | none — framework runtime | No CLI, policy file, or checker; the gate is in-process Python (`BeforeToolCallEvent` hooks; typed interventions Proceed/Deny/Guide/Confirm/Transform) — arbitrary code is not reconstructable. Bedrock Guardrails screen model inputs/outputs only, never tool actions. Approval exists as interrupts + a vended HITL handler. Coverage path = instrumented reference agent. NOT measured. Assessment: `adapters/strands-assessment.md`; manifest: `adapters/strands.manifest.json`. |
+| CrewAI (1.15.28; framework) | **no paper surface** (design-stage, Wave A) | none — framework runtime | No declarative surface; the only pre-execution control is author-written `PRE_TOOL_CALL` hooks, and hook exceptions other than `HookAborted` are swallowed (fail-open). Task `human_input` is post-effect output review, not action approval; task guardrails are output-side only. Coverage path = instrumented reference crew. NOT measured. Assessment: `adapters/crewai-assessment.md`; manifest: `adapters/crewai.manifest.json`. |
 
 **Revision — empirical wave (2026-10-22):** the five T2 harnesses were measured
 through their best honest routes (no account/login anywhere). Claude Code
@@ -86,6 +92,23 @@ version. FinePrint is now a **two-oracle method** (Codex execpolicy +
 Amp permissions test). The spike's REPRO record stands
 (`docs/amp-spike-2026-10-22.md`); the "awaiting the founder's decision" line
 in the wave revision above is superseded.
+
+**Revision — Wave A expansion spikes (2026-10-22, founder-directed):** six
+design-stage dossiers were added. On the harness/meta-harness surface:
+Omnigent (a meta-harness with its own policy engine — the governance layer
+is itself a measurement target), Hermes Agent, and OpenClaw (both
+identities pinned from primary sources, rival candidates excluded with
+evidence; OpenClaw's scope caveat: a gateway/runtime, its own native
+tool/exec boundary assessed). On the framework surface: LangGraph, Strands
+Agents, and CrewAI — none has a declarative policy surface, so each
+dossier's coverage path is an instrumented reference agent measured live,
+not a paper route. **Nothing in this revision is a measurement:** every new
+target is UNMEASURED, its catalogue translations are standalone drafts in
+`docs/catalogue/translations-draft/` (merging into the generated catalogue
+awaits the generator naming alignment recorded in commit `fa41cd8`), and
+its route assignment is a paper assignment from vendor documentation.
+Live Approval/Effect routes for all six remain blocked on the credentials
+in each dossier's LIVE-UNLOCK line (Wave B).
 
 ## Evidence behind each assignment
 

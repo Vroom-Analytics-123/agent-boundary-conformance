@@ -103,10 +103,11 @@ tool/exec boundary assessed). On the framework surface: LangGraph, Strands
 Agents, and CrewAI — none has a declarative policy surface, so each
 dossier's coverage path is an instrumented reference agent measured live,
 not a paper route. **Nothing in this revision is a measurement:** every new
-target is UNMEASURED, its catalogue translations are standalone drafts in
-`docs/catalogue/translations-draft/` (merging into the generated catalogue
-awaits the generator naming alignment recorded in commit `fa41cd8`), and
-its route assignment is a paper assignment from vendor documentation.
+target is UNMEASURED, its catalogue translations live in
+`docs/catalogue/translations-draft/` and are merged into the generated
+catalogue (the generator naming alignment that unblocked the merge is
+recorded in the Phase B cleanup, 2026-10-22), and its route assignment is
+a paper assignment from vendor documentation.
 Live Approval/Effect routes for all six remain blocked on the credentials
 in each dossier's LIVE-UNLOCK line (Wave B).
 

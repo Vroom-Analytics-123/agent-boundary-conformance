@@ -156,15 +156,47 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   bundle bytes untouched, `signature_state` honestly remains `"unsigned"`).
 - Tamper-evidence today is Merkle-root + pre-registration hash-locking +
   detached Ed25519 signatures. Independent witness re-runs are still the
-  open item (see §8).
+  open item (see §9).
 
-## 8. What would change these limitations
+## 8. Live (effect) measurement — 2026-10-22 wave: nothing measured; the auth wall is the finding
+
+- **Update 2026-10-22 (paper-vs-live wave, `docs/live-test/`):** the
+  founder-directed online evaluation ran its locked protocol across all
+  nine harnesses (Codex, Amp, Claude Code, Cursor, Gemini CLI, OpenCode,
+  Copilot CLI, Pi, Muse Code) and executed **0 of 12 cases on every
+  harness**. The pre-registered runnability gate failed at both routes
+  for all nine: no local model provider exists in this environment (no
+  Ollama, nothing on 11434/1234, no base URLs), and no vendor offline/demo
+  mode genuinely executes tools (Muse Code's `--provider echo` makes no
+  tool calls; Amp's `permissions test` is paper-only, `--no-tui` threads
+  require login). All thirteen swept API-key names absent; all auth files
+  absent. REPRO environment facts — not runtime measurements.
+- What WAS live-measured: **blocked-by-auth, 9/9, each with its specific
+  missing artifact named** (Codex: OpenAI model auth — pilot-established;
+  Amp: `amp login` session; Claude Code: Anthropic key or login; Cursor:
+  account login; Gemini CLI: Google key or OAuth; OpenCode: any provider
+  credential; Copilot CLI: GitHub login + subscription; Pi: model endpoint
+  + key; Muse Code: dev.meta.ai account or MODEL_API_KEY). The 12 locked
+  cases and 9 pinned configs stand committed, unexecuted — declared, not
+  executed.
+- Scope this precisely: **no approval decision, no sandbox enforcement,
+  and no observed effect was measured for any harness in this wave.**
+  `intent_coverage` at the effect layer is UNRESOLVED everywhere; the
+  paper-vs-live agreement classes are `not-evaluated`. The paper side
+  (A/B grades) remains the measured evidence; the live side is an honest
+  blank, not a pass. Any citation must say "blocked at the runnability
+  gate — no live cases executed."
+- The unblock is founder-supplied auth per harness (RESULTS.md §6), used
+  only for the contained 12 cases under the locked configs — zero
+  pre-registration changes needed. Until then this limitation stands.
+
+## 9. What would change these limitations
 
 | Limitation | Evidence that would lift it |
 |---|---|
 | Single harness | A T2→T1 promotion: vendor ships a deterministic offline policy-evaluation entrypoint at a pinned version; corpus rerun sealed |
 | Corpus artifact | A second corpus sampled from real policy files / observed command traffic, pre-registered before running |
 | Pre-fix | LIFTED 2026-10-22: founder approved the Day-5 diff → applied, re-locked, reran 41 cases + 11-case family + precedence checks, re-sealed (`evidence/postfix-2026-10-22/`), re-issued scorecard v3 POST-FIX |
-| Rules-layer only | Runtime probes under pinned approval_policy + sandbox_mode, labelled as layer-2 evidence |
+| Rules-layer only | 2026-10-22: first live wave pre-registered + run — 9/9 harnesses blocked-by-auth at the runnability gate (no local model provider, no executing offline mode); 12 cases + 9 pinned configs locked and committed unexecuted in `docs/live-test/`; unblock = founder-supplied auth per harness. Live layer still UNRESOLVED. |
 | Snyk not tested | Founder supplies a token from his own account (or explicitly deprioritizes Snyk) |
 | Unwitnessed | Independent witness re-runs (signing done 2026-10-22; see docs/SIGNING.md) |

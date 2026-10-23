@@ -18,6 +18,7 @@ Version 1.0.0 · generated 2026-10-23 · 16 entries · **10 MEASURED / 6 UNMEASU
 - **Layers:** core catalogue (this file) -> domain packs (health, fintech, SaaS; Phase-2 scope) -> org overlay (owner-authored).
 - **Tailoring:** bind parameters + select probe families.
 - **Curation:** open, versioned, curated (Sigma/Semgrep-registry model); every change carries provenance and a changelog line.
+- **Transferability (founder direction, 2026-10-22):** the catalogue is a first-class transferable asset across coding agents/harnesses — every entry's per-harness translations (measurement route + confidence) are the mechanism, built on the per-harness knowledge the measurement program accumulates. A new harness adopts the catalogue by adding translations, never by rewriting invariants.
 
 ## Measured / unmeasured split
 

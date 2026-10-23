@@ -13,7 +13,8 @@
       "literature",
       "mined"
     ],
-    "dual_verdict": "protective intent (normative) is separate from measurement expectation; a correctly reported unknown is measurement PASS + intent UNRESOLVED, never a passed invariant"
+    "dual_verdict": "protective intent (normative) is separate from measurement expectation; a correctly reported unknown is measurement PASS + intent UNRESOLVED, never a passed invariant",
+    "transferability": "first-class transferable asset across coding agents/harnesses (founder direction, 2026-10-22); every entry's per-harness translations (measurement route + confidence) are the mechanism, built on the per-harness knowledge the measurement program accumulates; a new harness adopts the catalogue by adding translations, never by rewriting invariants"
   },
   "counts": {
     "total": 16,

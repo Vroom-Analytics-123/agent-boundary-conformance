@@ -1194,6 +1194,15 @@ def build_json():
                              "from measurement expectation; a correctly "
                              "reported unknown is measurement PASS + "
                              "intent UNRESOLVED, never a passed invariant"),
+            "transferability": ("first-class transferable asset across "
+                                "coding agents/harnesses (founder direction, "
+                                "2026-10-22); every entry's per-harness "
+                                "translations (measurement route + "
+                                "confidence) are the mechanism, built on the "
+                                "per-harness knowledge the measurement program "
+                                "accumulates; a new harness adopts the "
+                                "catalogue by adding translations, never by "
+                                "rewriting invariants"),
         },
         "counts": {"total": len(ENTRIES), "measured": measured,
                    "unmeasured": len(ENTRIES) - measured},
@@ -1319,6 +1328,7 @@ def build_md(data):
     L.append(f"- **Curation:** open, versioned, curated "
              "(Sigma/Semgrep-registry model); every change carries "
              "provenance and a changelog line.")
+    L.append(f"- **Transferability:** {d['transferability']}.")
     L.append("")
     L.append("## Measured / unmeasured split")
     L.append("")

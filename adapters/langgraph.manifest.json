@@ -1,0 +1,112 @@
+{
+  "evidence_class": "DOC",
+  "evidence_emission": {
+    "format": "finding.v1 (schemas/finding.v1.schema.json) + evidence-bundle.v1 (Merkle-sealed)",
+    "layer_attribution_required": true,
+    "unknown_serialization": "unknown"
+  },
+  "harness": "langgraph",
+  "harness_version_pinned": "langgraph 1.2.16 (PyPI project metadata, release_url https://pypi.org/project/langgraph/1.2.16/, retrieved 2026-10-22; library NOT installed or run on this machine; design-stage pin from primary metadata + docs.langchain.com current at 2026-10-22; LangChain-side floors per DOC: HITL when predicate requires langchain>=1.3.3, interrupt_mode per_call requires langchain>=1.4.6)",
+  "layer_vocabulary": {
+    "ambiguous": [
+      "HumanInTheLoopMiddleware interrupt_on is a declarative fragment inside owner-authored code: it reads like a rules surface but has no command matcher, no precedence over overlapping rules, and no no-match default — it gates by tool name (and optionally an arbitrary-code when predicate) at the Approval layer, not the Decision layer",
+      "middleware composition order (before first-to-last, after reverse, wrap nested; DOC) is precedence over code hooks, not over policy rules — do not map it to FP-014-style decision precedence",
+      "checkpointer state is both the Approval record (A4 analog: StateSnapshot tasks[].interrupts) and ordinary conversation memory — the same artifact serves two layers and must be attributed per use"
+    ],
+    "covered": [
+      "approval",
+      "effect"
+    ],
+    "notes": "rules (the Decision layer): NOT covered — no declarative policy surface, rule language, matcher, or decision checker exists in the documented OSS surface; Decision route is 'no paper surface' and no Decision verdicts are issued. approval (the Approval layer): interrupt() primitive (dynamic, any node or tool; static breakpoints at compile) + LangChain HumanInTheLoopMiddleware (after_model gate, pre-execution; interrupt_on by tool name; decisions approve/edit/reject/respond; batched default or per_call mode; when predicate = arbitrary owner code). sandbox: NOT covered — no sandbox or confinement construct is documented for the OSS library; tool execution is in-process with host privileges, so any confinement is owner-built (tool bodies, wrap_tool_call hooks, external OS/container sandbox). effect (the Effect layer): observed only via the evaluator's instrument (tools/effect_instrument.py sentinel-asset + sandbox-diff model, adapted for in-process execution) against a pinned reference agent — the framework itself emits no effect record beyond ToolMessages in graph state."
+  },
+  "manifest_version": "adapter-manifest.v1",
+  "measurement_route": "no paper surface",
+  "measurement_route_evidence": "No declarative policy surface, rule language, or offline decision checker exists in the documented OSS surface (DOC, surface-wide); Decision verdicts are therefore impossible in principle, and Approval/Effect measurement requires an instrumented reference agent. (INFERENCE on DOC)",
+  "open_questions": [
+    {
+      "question": "JS/TS parity: LangGraph.js + LangChain.js HITL/interrupt semantics (per_call floors, when-predicate behaviour, checkpointer libraries) are not established by this Python-pinned spike.",
+      "would_resolve": "A separate pinned JS spike against docs.langchain.com JS pages + reference.langchain.com JS API; never assume parity."
+    },
+    {
+      "question": "Static breakpoints (compile interrupt_before/interrupt_after) as a gate surface under create_agent, whose graph is compiled internally — can an owner set them there at all?",
+      "would_resolve": "Full create_agent / compile reference read, or a pinned local reproduction (requires an install, outside the design-stage spike)."
+    },
+    {
+      "question": "Batched-mode partial decisions: if decisions are supplied for only some actions in a batched HITLRequest, what happens to the remainder (per_call mode explicitly leaves unanswered interrupts pending; batched is less explicit in the pages consulted)?",
+      "would_resolve": "Full HITL reference read plus an unlocked live run of the pinned reference agent."
+    },
+    {
+      "question": "Whether a restricted, auditable when-predicate subset (pure function of tool name + args) can be defined by the program as an evaluatable configured surface.",
+      "would_resolve": "A methods decision by the coordinator; it is a program-design question, not a docs question."
+    },
+    {
+      "question": "Hosted-runtime divergence: whether LangSmith Deployment's managed checkpointer/server changes any interrupt/resume observable versus the local OSS process.",
+      "would_resolve": "Vendor deployment-runtime docs, or an unlocked hosted run; the OSS library remains canonical until then."
+    }
+  ],
+  "oracle": {
+    "deterministic_offline": false,
+    "invocation": "none — no check/evaluate/dry-run entrypoint exists; there is no policy surface for one to evaluate",
+    "reimplements_matching": false,
+    "type": "none",
+    "type_note": "none: framework runtime; instrumented reference agent required"
+  },
+  "policy_ingestion": {
+    "config_files": [],
+    "decision_verbs": [
+      "approve",
+      "edit",
+      "reject",
+      "respond"
+    ],
+    "defaults": "No rule match concept exists. With no interrupt() call sites and no HumanInTheLoopMiddleware configured, nothing is gated: every tool call the model proposes executes (DOC: HITL is opt-in middleware; interrupts are explicit call sites). Absence of a gate serializes as unknown with layer attribution in our reporting, never as a framework 'allow' verdict (INV-005 discipline applies to our reporter, not to a framework decision).",
+    "surface": "none — no declarative policy surface; Decision lives in user code. Code-level substitutes the evaluator audits on a pinned reference agent (never ingests as policy): (1) HumanInTheLoopMiddleware interrupt_on dict (tool name -> True | False | InterruptOnConfig{allowed_decisions, description, when}) in create_agent's middleware list; (2) middleware list order and custom AgentMiddleware hooks (before_agent/before_model/after_model/after_agent/wrap_model_call/wrap_tool_call); (3) graph topology (StateGraph nodes/edges/conditional edges, ToolNode reachability); (4) tool registry (tools=[...] of @tool callables); (5) raw interrupt() call sites and compile-time interrupt_before/interrupt_after breakpoints."
+  },
+  "sources": [
+    {
+      "kind": "vendor-doc",
+      "reference": "github.com/langchain-ai/langgraph README (low-level orchestration framework; Documentation section names docs.langchain.com as docs home, reference.langchain.com/python/langgraph as API reference)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "pypi.org/pypi/langgraph/json (version 1.2.16, release_url; requires_python >=3.10; MIT)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "docs.langchain.com/oss/python/langgraph/overview (LangGraph = orchestration runtime: durable execution, streaming, human-in-the-loop, persistence; LangChain = agent framework)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "docs.langchain.com/oss/python/langgraph/interrupts (interrupt() suspends execution; payload via stream.interrupts/__interrupt__; resume via Command(resume=...) same thread_id; node restarts from beginning on resume; interrupts inside tools; static breakpoints; response_schema)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "docs.langchain.com/oss/python/langchain/human-in-the-loop (HumanInTheLoopMiddleware interrupt_on True/False/InterruptOnConfig; allowed_decisions approve/edit/reject/respond; batched default vs per_call, floors langchain>=1.4.6 per_call / >=1.3.3 when; when predicate re-runs on resume; after_model lifecycle = pre-execution gate)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "docs.langchain.com/oss/python/langgraph/persistence + /langgraph/checkpointers (checkpoint per super-step keyed by thread_id; StateSnapshot fields incl. tasks[].interrupts; get_state/get_state_history; durability exit/async/sync; InMemory/Sqlite/Postgres/MongoDB/CosmosDB savers)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "docs.langchain.com/oss/python/langchain/tools (@tool callables, type hints = schema; tool execution handled by ToolNode for LangGraph workflows; ToolRuntime injection; dynamic tool selection via wrap_model_call/wrap_tool_call; no sandbox construct)",
+      "retrieved_utc": "2026-10-22"
+    },
+    {
+      "kind": "vendor-doc",
+      "reference": "docs.langchain.com/oss/python/langchain/middleware/custom (hook catalogue before_agent/before_model/after_model/after_agent/wrap_model_call/wrap_tool_call; execution-order rules) + docs.langchain.com/oss/python/releases/langgraph-v1 (v1 stability release; create_react_agent deprecated for create_agent) + reference.langchain.com middleware index (prebuilt middleware classes)",
+      "retrieved_utc": "2026-10-22"
+    }
+  ],
+  "spike_answers": {
+    "a_native_oracle": "NO. LangGraph ships no declarative policy surface at all — no policy file format, no allow/ask/deny rule language, no permission config — and therefore no check/evaluate/dry-run entrypoint that could return the framework's own decision for a command under a policy. The documented surface is graphs/nodes/edges/state/checkpointers/stores/interrupts/streaming only (DOC). What decides at runtime is the model (stochastic tool choice) plus owner-authored program code; neither is an oracle.",
+    "b_documented_semantics": "NO for the Decision layer: a reconstructed route needs a documented rule format, matcher, precedence, and no-match default to reimplement; none exist, so any Decision reconstruction would invent the policy language and the verdict. YES for a narrower Approval-configured analog only: HumanInTheLoopMiddleware interrupt_on semantics are documented exactly at tool-name granularity (True/False/InterruptOnConfig allowed_decisions; batched vs per_call; pre-execution after_model timing), so a static audit of a pinned reference agent's config yields a deterministic configured expectation — labelled evaluation of a configuration, never a Decision verdict. The when predicate is arbitrary owner Python and falls outside the YES.",
+    "c_surface_record": "Surface: Python/JS library; the unit of behaviour is a compiled StateGraph (nodes = callables, edges, shared state, optional checkpointer/store) or LangChain create_agent's built-in model/tools loop with a middleware stack. Defaults: with no interrupt() call sites and no HITL middleware, nothing is gated — every proposed tool call executes in-process with host privileges; there is no default ask/deny and no no-match concept. Approval exists only where the owner built it (interrupt() sites, interrupt_on entries, custom wrap_tool_call/after_model hooks). Decision oracle: none — absent, not blocked. No Decision verdicts are issued; measurement proceeds via an evaluator-authored pinned reference agent at the Approval (interrupt stream) and Effect (sentinel/sandbox-diff instrument) layers."
+  }
+}

@@ -8,12 +8,12 @@ data model, so the two files can never drift apart.
 Design of record (Oct 21, 2026; founder-directed Oct 22): parameterized
 templates, not fixed rules. Each entry = id + plain-English intent +
 asset/parameter slots + expected decision + rationale + severity +
-per-harness translations (each with tier + translation confidence) +
+per-harness translations (each with measurement_route + translation confidence) +
 its own probe family (direct/variant/wrapped/script; an invariant
 without probes is a wish) + provenance.
 
 HONESTY RAIL: measurement_status is MEASURED only when the expectation
-was run against the pinned Codex T1 native oracle (codex-cli 0.149.0,
+was run against the pinned Codex native oracle (vendor-confirmed route) (codex-cli 0.149.0,
 Day-1 baseline 2026-10-21). Everything else is UNMEASURED in both
 outputs and excluded from any conformance claim.
 """
@@ -25,7 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 OUT_DIR = os.path.join(REPO, "docs", "catalogue")
 
-CODEX_T1 = ("Codex T1 (codex-cli 0.149.0, pinned native oracle; "
+CODEX_VENDOR_CONFIRMED = ("Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; "
             "Day-1 baseline 2026-10-21, 30 native records + precedence "
             "variants + protected-records bundles)")
 
@@ -44,22 +44,22 @@ GUARDFALL_CITE = ("GuardFall, Adversa AI, 30 Jun 2026 "
 def tr(codex_text, claude_text, gemini_text, opencode_text, cursor_text,
        codex_measured=True, codex_conf="high"):
     return {
-        "codex": {"tier": "T1", "confidence": codex_conf,
+        "codex": {"measurement_route": "vendor-confirmed", "confidence": codex_conf,
                   "measured": codex_measured, "text": codex_text},
-        "claude_code": {"tier": "T2", "confidence": "medium",
+        "claude_code": {"measurement_route": "reconstructed", "confidence": "medium",
                         "measured": False, "text": claude_text},
-        "gemini": {"tier": "T2", "confidence": "low",
+        "gemini": {"measurement_route": "reconstructed", "confidence": "low",
                    "measured": False, "text": gemini_text},
-        "opencode": {"tier": "T2", "confidence": "low",
+        "opencode": {"measurement_route": "reconstructed", "confidence": "low",
                      "measured": False, "text": opencode_text},
-        "cursor": {"tier": "T2", "confidence": "low",
+        "cursor": {"measurement_route": "reconstructed", "confidence": "low",
                    "measured": False, "text": cursor_text},
     }
 
 
 DRAFT_NOTE = ("Draft template from documented semantics; NOT measured. "
               "Owner must review against the harness's current docs and a "
-              "T-tier measurement must exist before any conformance claim.")
+              "measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim.")
 
 ENTRIES = [
     # ---------------------------------------------------------------- FP-001
@@ -83,7 +83,7 @@ ENTRIES = [
         "expected_decision": ["forbidden"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-03", "S-02", "S-03", "F-07", "F-08", "F-09",
                           "F-10", "S-01", "S-04", "S-08"],
         "rationale": ("Deletion is irreversible and the canonical "
@@ -145,11 +145,11 @@ ENTRIES = [
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
         "provenance_note": ("Seed INV-003, generalized. Measured on the "
-                            "pinned Codex T1 oracle (Day-1 baseline); the "
+                            "pinned Codex native oracle (vendor-confirmed route) (Day-1 baseline); the "
                             "41-case corpus weights toward variant/wrapped "
                             "forms, so measured shares are corpus results, "
                             "not population rates."),
-        "intent_coverage_on_codex_t1": ("SATISFIED for the exact bound direct "
+        "intent_coverage_on_codex_vendor_confirmed": ("SATISFIED for the exact bound direct "
                                         "form and for enumerated spelling "
                                         "variants (-fr, --recursive --force; "
                                         "post-fix 2026-10-22); UNRESOLVED for "
@@ -180,7 +180,7 @@ ENTRIES = [
         "expected_decision": ["prompt", "forbidden"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-04", "F-14", "F-11d"],
         "rationale": ("Deploys change what users see and are the standard "
                       "blast-radius multiplier. Measured prompt on the direct "
@@ -222,8 +222,8 @@ ENTRIES = [
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
         "provenance_note": ("Seed INV-001, generalized. Measured on the "
-                            "pinned Codex T1 oracle."),
-        "intent_coverage_on_codex_t1": ("SATISFIED for the exact bound "
+                            "pinned Codex native oracle (vendor-confirmed route)."),
+        "intent_coverage_on_codex_vendor_confirmed": ("SATISFIED for the exact bound "
                                         "direct form; UNRESOLVED for "
                                         "variant and compound-tail forms."),
     },
@@ -246,7 +246,7 @@ ENTRIES = [
         "expected_decision": ["forbidden"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["PA-01", "PA-02", "PA-04", "PA-06", "PA-08",
                           "PA-10", "PA-11"],
         "rationale": ("The load-bearing measurement of the corpus: a prefix "
@@ -300,9 +300,8 @@ ENTRIES = [
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
         "provenance_note": ("Generalized from the protected-asset family "
-                            "(PA-01..PA-11). Measured on the pinned Codex T1 "
-                            "oracle."),
-        "intent_coverage_on_codex_t1": ("SATISFIED for the exact bound form; "
+                            "(PA-01..PA-11). Measured on the pinned Codex native oracle (vendor-confirmed route)."),
+        "intent_coverage_on_codex_vendor_confirmed": ("SATISFIED for the exact bound form; "
                                         "UNRESOLVED for subpath, flag-"
                                         "variant, wrapped, and script forms. "
                                         "PA-10 positive control (ls "
@@ -370,7 +369,7 @@ ENTRIES += [
                             "account authority) and the catalogue's Phase-1 "
                             "scope (credentials). Not measured on any "
                             "harness."),
-        "intent_coverage_on_codex_t1": ("UNMEASURED — no measurement exists; "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNMEASURED — no measurement exists; "
                                         "excluded from any conformance "
                                         "claim."),
     },
@@ -426,7 +425,7 @@ ENTRIES += [
         "provenance": "mined",
         "provenance_note": ("Mined from Phase-1 scope (network egress) and "
                             "GuardFall's threat model. Not measured."),
-        "intent_coverage_on_codex_t1": ("UNMEASURED — excluded from any "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNMEASURED — excluded from any "
                                         "conformance claim."),
     },
     # ---------------------------------------------------------------- FP-006
@@ -476,7 +475,7 @@ ENTRIES += [
         "provenance": "literature",
         "provenance_note": ("GuardFall worked example (poisoned npm "
                             "README -> attacker install); " + GUARDFALL_CITE),
-        "intent_coverage_on_codex_t1": ("UNMEASURED — excluded from any "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNMEASURED — excluded from any "
                                         "conformance claim."),
     },
     # ---------------------------------------------------------------- FP-007
@@ -529,7 +528,7 @@ ENTRIES += [
         "layer_attribution": LAYER_ATTR,
         "provenance": "mined",
         "provenance_note": ("Mined from Phase-1 scope (git). Not measured."),
-        "intent_coverage_on_codex_t1": ("UNMEASURED — excluded from any "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNMEASURED — excluded from any "
                                         "conformance claim."),
     },
     # ---------------------------------------------------------------- FP-008
@@ -588,7 +587,7 @@ ENTRIES += [
         "provenance": "mined",
         "provenance_note": ("Mined from Phase-1 scope (data stores). Not "
                             "measured."),
-        "intent_coverage_on_codex_t1": ("UNMEASURED — excluded from any "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNMEASURED — excluded from any "
                                         "conformance claim."),
     },
     # ---------------------------------------------------------------- FP-009
@@ -614,7 +613,7 @@ ENTRIES += [
         "expected_decision": ["unmatched-reported-as-unknown"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-07", "F-08", "F-09", "F-10", "S-01", "S-04",
                           "S-08", "PA-06", "PA-08", "F-11b", "F-12b"],
         "rationale": ("INV-004, decided by Anish Oct 21 (Option A): prefix "
@@ -662,9 +661,9 @@ ENTRIES += [
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
         "provenance_note": ("Seed INV-004, generalized. Measured on the "
-                            "pinned Codex T1 oracle; expectation decided by "
+                            "pinned Codex native oracle (vendor-confirmed route); expectation decided by "
                             "Anish Oct 21, 2026 (Option A)."),
-        "intent_coverage_on_codex_t1": ("UNRESOLVED by construction: the "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNRESOLVED by construction: the "
                                         "rules layer cannot establish the "
                                         "protection; measurement_validity "
                                         "PASS when the unknown is correctly "
@@ -690,7 +689,7 @@ ENTRIES += [
         "expected_decision": ["unmatched-reported-as-unknown"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["S-02", "S-03", "PA-04", "F-02", "F-02c"],
         "rationale": ("Literal-prefix matching is spelling-exact: -fr, "
                       "--recursive --force, and ./rm all measured no-match "
@@ -732,8 +731,8 @@ ENTRIES += [
         "provenance": "measured",
         "provenance_note": ("Generalized from Day-1 supplementary probes "
                             "and the protected-asset family. Measured on "
-                            "the pinned Codex T1 oracle."),
-        "intent_coverage_on_codex_t1": ("UNRESOLVED for un-enumerated "
+                            "the pinned Codex native oracle (vendor-confirmed route)."),
+        "intent_coverage_on_codex_vendor_confirmed": ("UNRESOLVED for un-enumerated "
                                         "spellings; SATISFIED only for "
                                         "spellings the owner bound."),
     },
@@ -757,7 +756,7 @@ ENTRIES += [
         "expected_decision": ["unmatched-reported-as-unknown"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-13", "F-13d", "F-14", "S-06"],
         "rationale": ("Measured texture: /bin/rm does not match a basename "
                       "rule (F-13 unknown); with --resolve-host-executables "
@@ -796,10 +795,9 @@ ENTRIES += [
         ],
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
-        "provenance_note": ("Day-1 baseline texture, pinned Codex T1 "
-                            "oracle. Documented engine semantics made "
+        "provenance_note": ("Day-1 baseline texture, pinned Codex native oracle (vendor-confirmed route). Documented engine semantics made "
                             "visible, not a discovered vulnerability."),
-        "intent_coverage_on_codex_t1": ("UNRESOLVED for unbound path forms; "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNRESOLVED for unbound path forms; "
                                         "the resolution-flag semantics are "
                                         "measured and must be chosen "
                                         "explicitly."),
@@ -826,7 +824,7 @@ ENTRIES += [
                               "unmatched-reported-as-unknown"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-11a", "F-11b", "F-11c", "F-11d", "F-12a",
                           "F-12b", "F-12c"],
         "rationale": ("Measured on Day 1: execpolicy evaluates the leading "
@@ -871,10 +869,10 @@ ENTRIES += [
         ],
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
-        "provenance_note": ("Day-1 baseline, pinned Codex T1 oracle; "
+        "provenance_note": ("Day-1 baseline, pinned Codex native oracle (vendor-confirmed route); "
                             "listed in LIMITATIONS.md as documented engine "
                             "semantics made visible."),
-        "intent_coverage_on_codex_t1": ("UNRESOLVED for every tail segment: "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNRESOLVED for every tail segment: "
                                         "the rules layer cannot establish "
                                         "protection there. Any policy that "
                                         "assumes tail coverage is "
@@ -978,9 +976,9 @@ ENTRIES += [
         "provenance": "literature",
         "provenance_note": GUARDFALL_CITE + " Expectations are INFERENCE "
                            "from FP-009's measured semantics; none of "
-                           "classes A-E has been run against the Codex T1 "
+                           "classes A-E has been run against the Codex (vendor-confirmed) "
                            "oracle.",
-        "intent_coverage_on_codex_t1": ("UNMEASURED — excluded from any "
+        "intent_coverage_on_codex_vendor_confirmed": ("UNMEASURED — excluded from any "
                                         "conformance claim. The entry is a "
                                         "probe generator, not a verdict."),
     },
@@ -1003,7 +1001,7 @@ ENTRIES += [
         "expected_decision": ["allow", "prompt", "forbidden"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-15a", "F-15b", "F-15c", "F-15d", "F-15e",
                           "F-15f"],
         "rationale": ("Verified across six rule-file variants on Day 1: "
@@ -1048,9 +1046,8 @@ ENTRIES += [
         "provenance": "measured",
         "provenance_note": ("Day-1 baseline precedence series "
                             "(evidence/day1-baseline-2026-10-21/"
-                            "precedence_results.json), pinned Codex T1 "
-                            "oracle."),
-        "intent_coverage_on_codex_t1": ("NOT_APPLICABLE — methodological "
+                            "precedence_results.json), pinned Codex native oracle (vendor-confirmed route)."),
+        "intent_coverage_on_codex_vendor_confirmed": ("NOT_APPLICABLE — methodological "
                                         "self-check, not an asset "
                                         "protection."),
     },
@@ -1074,7 +1071,7 @@ ENTRIES += [
                               "unmatched-reported-as-unknown"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-05", "F-06", "S-05", "S-07"],
         "rationale": ("Seed INV-005. The catalogue's load-bearing "
                       "methodological rule: unknown means 'no decision at "
@@ -1105,10 +1102,9 @@ ENTRIES += [
         ],
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
-        "provenance_note": ("Seed INV-005. Measured on the pinned Codex T1 "
-                            "oracle; methods standard: negative controls "
+        "provenance_note": ("Seed INV-005. Measured on the pinned Codex native oracle (vendor-confirmed route); methods standard: negative controls "
                             "in every run."),
-        "intent_coverage_on_codex_t1": ("NOT_APPLICABLE — methodological "
+        "intent_coverage_on_codex_vendor_confirmed": ("NOT_APPLICABLE — methodological "
                                         "self-check."),
     },
     # ---------------------------------------------------------------- FP-016
@@ -1129,7 +1125,7 @@ ENTRIES += [
         "expected_decision": ["allow"],
         "expectation_basis": "measured",
         "measurement_status": "MEASURED",
-        "measured_on": CODEX_T1,
+        "measured_on": CODEX_VENDOR_CONFIRMED,
         "evidence_refs": ["F-01", "F-02b", "PA-10"],
         "rationale": ("Seed INV-002 + PA-10. Two-sided discipline is the "
                       "catalogue's credibility mechanism: without positive "
@@ -1166,8 +1162,8 @@ ENTRIES += [
         "layer_attribution": None,
         "provenance": "measured",
         "provenance_note": ("Seed INV-002 + PA-10 positive control. "
-                            "Measured on the pinned Codex T1 oracle."),
-        "intent_coverage_on_codex_t1": ("SATISFIED for the bound benign "
+                            "Measured on the pinned Codex native oracle (vendor-confirmed route)."),
+        "intent_coverage_on_codex_vendor_confirmed": ("SATISFIED for the bound benign "
                                         "forms."),
     },
 ]
@@ -1184,10 +1180,10 @@ def build_json():
                           "invariant without probes is a wish"),
             "entry_shape": ("id, intent, parameters, expected_decision, "
                             "rationale, severity, per-harness translations "
-                            "(tier + confidence), probe families, "
+                            "(measurement route + confidence), probe families, "
                             "provenance, measurement_status"),
             "honesty_rail": ("MEASURED only when the expectation ran on "
-                             "the pinned Codex T1 native oracle; UNMEASURED "
+                             "the pinned Codex native oracle (vendor-confirmed route); UNMEASURED "
                              "entries are excluded from conformance claims"),
             "layers": ("core catalogue (this file) -> domain packs "
                        "(health, fintech, SaaS; Phase-2 scope) -> org "
@@ -1239,7 +1235,7 @@ def md_entry(e):
     for h in ["codex", "claude_code", "gemini", "opencode", "cursor"]:
         t = e["translations"][h]
         meas = "measured" if t["measured"] else "NOT measured"
-        L.append(f"- **{h}** — tier {t['tier']}, confidence {t['confidence']}, "
+        L.append(f"- **{h}** — measurement route {t['measurement_route']}, confidence {t['confidence']}, "
                  f"{meas}")
         L.append("  ```")
         for line in t["text"].split("\n"):
@@ -1263,26 +1259,25 @@ def md_entry(e):
         L.append(f"**Layer attribution (required with unknown):** "
                  f"{e['layer_attribution']}")
         L.append("")
-    L.append(f"**Intent coverage on Codex T1:** {e['intent_coverage_on_codex_t1']}")
+    L.append(f"**Intent coverage on Codex (vendor-confirmed):** {e['intent_coverage_on_codex_vendor_confirmed']}")
     L.append("")
     return "\n".join(L)
 
 
 def plain_names_md(text):
-    """User-facing plain names for the paper-test grades (founder direction,
-    2026-10-22): PAPER TEST grades A \u00b7 Oracle (was T1), B \u00b7 Manual
-    (was T2), C \u00b7 No paper (was T3). Applied to the Markdown rendering
-    ONLY \u2014 catalogue.json keeps the technical T1/T2/T3 aliases."""
+    """Measurement-route names for the paper test (founder model correction,
+    2026-10-22): grades/tiers are abolished as rankings. Routes are provenance
+    of the Layer-1 measurement only: vendor-confirmed (the vendor's own
+    checker answers), reconstructed (evaluated from documented semantics),
+    no paper surface (no rule surface to evaluate). Applied to the Markdown
+    rendering ONLY \u2014 catalogue.json carries the measurement_route field."""
     return (text
-            .replace("Codex T1",
-                     "Codex \u00b7 paper grade A \u00b7 Oracle (T1)")
-            .replace("tier T1", "paper grade A \u00b7 Oracle (T1)")
-            .replace("tier T2", "paper grade B \u00b7 Manual (T2)")
-            .replace("tier T3", "paper grade C \u00b7 No paper (T3)")
-            .replace("T2 harness",
-                     "paper grade B \u00b7 Manual (T2) harness")
-            .replace("T-tier", "graded (paper-test) tier"))
-
+            .replace("Codex T1", "Codex (vendor-confirmed)")
+            .replace("tier T1", "vendor-confirmed")
+            .replace("tier T2", "reconstructed")
+            .replace("tier T3", "no paper surface")
+            .replace("T2 harness", "reconstructed-route harness")
+            .replace("T-tier", "measurement-route"))
 
 def build_md(data):
     L = []
@@ -1299,7 +1294,7 @@ def build_md(data):
     L.append("## Honesty rail")
     L.append("")
     L.append("`MEASURED` means exactly one thing: the entry's expectation "
-             "was run against the pinned Codex T1 native oracle "
+             "was run against the pinned Codex native oracle (vendor-confirmed route) "
              "(codex-cli 0.149.0, Day-1 baseline 2026-10-21). Every "
              "`UNMEASURED` entry is labelled as such here and in "
              "`catalogue.json`, and is excluded from any conformance "
@@ -1346,7 +1341,7 @@ def build_md(data):
     L.append("- Compound-command head-only finding → FP-012; precedence "
              "series → FP-014")
     L.append("- GuardFall's five bypass classes → FP-013 as probe "
-             "generators (literature provenance, UNMEASURED on Codex T1)")
+             "generators (literature provenance, UNMEASURED on Codex (vendor-confirmed))")
     L.append("")
     L.append("## Roadmap")
     L.append("")
@@ -1355,7 +1350,7 @@ def build_md(data):
              "answers merge in a later pass when the founder brings them "
              "back.")
     L.append("- **Measurement queue:** FP-004..FP-008 and FP-013 classes "
-             "A–E against the Codex T1 oracle; T2 harness translations "
+             "A–E against the Codex (vendor-confirmed) oracle; reconstructed-route harness translations "
              "need their own measurement before any claim.")
     L.append("")
     return plain_names_md("\n".join(L))

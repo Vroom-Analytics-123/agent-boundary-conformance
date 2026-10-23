@@ -320,7 +320,7 @@ footer{{margin-top:2rem;color:#6b7280;font-size:.85em;border-top:1px solid #e5e7
 <h1>FinePrint check scorecard</h1>
 <p class="dim">run <code>{html.escape(sc['bundle_id'])}</code> · label
 <strong>{html.escape(sc['label'])}</strong> · {html.escape(sc['generated_utc'])} ·
-harness <strong>{html.escape(run['harness'])}</strong> ({html.escape(run['adapter_tier'])},
+harness <strong>{html.escape(run['harness'])}</strong> ({html.escape(run['measurement_route'])},
 {html.escape(run['evidence_class'])}) · policy
 <code>{html.escape(run['policy']['path'])}</code></p>
 {privacy_note}

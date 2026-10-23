@@ -109,7 +109,7 @@ def synthetic_bundle(label, rows):
               for pid, actual, expected in probes]
         findings.extend(fs)
         results.append(CS.adjudicate(e, fs))
-    run_spec = {"harness": "synthetic", "adapter_tier": "T0",
+    run_spec = {"harness": "synthetic", "measurement_route": "synthetic-test",
                 "adapter_version_detail": "test", "evidence_class": "TEST",
                 "policy": {"path": "p", "sha256": "0" * 64, "kind": "test"},
                 "pack": {"core": {"path": "c", "sha256": "0" * 64,

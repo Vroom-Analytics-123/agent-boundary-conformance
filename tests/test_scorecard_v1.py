@@ -39,11 +39,11 @@ class TestScorecardV1(unittest.TestCase):
         cls.tmp = Path(tempfile.mkdtemp(prefix="scorecard-test-"))
         build(cls.tmp)
         cls.scorecard = json.loads((cls.tmp / "scorecard.json").read_text())
-        cls.tier_matrix = json.loads((cls.tmp / "tier-matrix.json").read_text())
+        cls.route_matrix = json.loads((cls.tmp / "measurement-routes.json").read_text())
 
     def test_schema_versions(self):
         self.assertEqual(self.scorecard["schema_version"], "scorecard.v3")
-        self.assertEqual(self.tier_matrix["schema_version"], "tier-matrix.v1")
+        self.assertEqual(self.route_matrix["schema_version"], "measurement-routes.v1")
 
     def test_post_fix_labelled(self):
         # The Day-5 fix IS applied (Anish, "Start the evidence upgrades",
@@ -53,7 +53,7 @@ class TestScorecardV1(unittest.TestCase):
         self.assertEqual(fs["label"], "POST-FIX EVIDENCE")
 
     def test_corpus_headline_numbers(self):
-        c = self.scorecard["codex_t1"]["corpus"]
+        c = self.scorecard["codex_vendor_confirmed"]["corpus"]
         self.assertEqual(c["fixtures"], 41)
         self.assertEqual(c["pass"], 40)
         self.assertEqual(c["fail"], 1)
@@ -67,19 +67,19 @@ class TestScorecardV1(unittest.TestCase):
         self.assertEqual(f["pass"], 11)
         self.assertEqual(f["fail"], 0)
 
-    def test_tier_matrix_five_harnesses(self):
-        rows = self.scorecard["five_harness_tier_matrix"]
+    def test_measurement_routes_five_harnesses(self):
+        rows = self.scorecard["five_harness_measurement_routes"]
         self.assertEqual(len(rows), 5)
         by_harness = {r["harness"]: r for r in rows}
-        self.assertEqual(by_harness["codex"]["tier"], "T1")
+        self.assertEqual(by_harness["codex"]["measurement_route"], "vendor-confirmed")
         self.assertEqual(by_harness["codex"]["evidence_class"], "REPRO")
         for h in ("claude-code", "cursor", "gemini-cli", "opencode"):
-            self.assertEqual(by_harness[h]["tier"], "T2")
-            # No T2 harness may claim measured verdicts.
-            self.assertIn("no decision oracle exists",
+            self.assertEqual(by_harness[h]["measurement_route"], "reconstructed")
+            # No reconstructed-route harness may claim measured verdicts.
+            self.assertIn("no verdicts measured",
                           by_harness[h]["measured_verdicts"].lower())
-        # tier-matrix.json agrees with the scorecard's matrix.
-        self.assertEqual([r["harness"] for r in self.tier_matrix["harnesses"]],
+        # measurement-routes.json agrees with the scorecard's matrix.
+        self.assertEqual([r["harness"] for r in self.route_matrix["harnesses"]],
                          [r["harness"] for r in rows])
 
     def test_negative_controls(self):
@@ -96,7 +96,7 @@ class TestScorecardV1(unittest.TestCase):
         self.assertIn("Day 1 was EXPLORATORY", sem["preregistration_correction"])
 
     def test_dual_verdict_separate_denominators(self):
-        c = self.scorecard["codex_t1"]["corpus"]
+        c = self.scorecard["codex_vendor_confirmed"]["corpus"]
         mv = c["measurement_validity"]
         icv = c["intent_coverage"]
         self.assertEqual(mv["denominator"], 41)
@@ -112,7 +112,7 @@ class TestScorecardV1(unittest.TestCase):
         self.assertEqual(c["observed_effect"]["counts"]["NOT_TESTED"], 41)
         self.assertEqual(c["unknowns"]["kinds"]["no-rule-match"], 20)
         # Rows carry the finding.v2 extension fields.
-        for r in self.scorecard["codex_t1"]["stated_vs_actual"]:
+        for r in self.scorecard["codex_vendor_confirmed"]["stated_vs_actual"]:
             self.assertIn(r["measurement_validity"], ("PASS", "FAIL", "NOT_REPRODUCED"))
             self.assertIn(r["intent_coverage"],
                           ("SATISFIED", "NOT_SATISFIED", "UNRESOLVED", "NOT_APPLICABLE"))
@@ -121,14 +121,14 @@ class TestScorecardV1(unittest.TestCase):
                 self.assertNotEqual(r["intent_coverage"], "SATISFIED")
         # The S-02 artifact row: FAIL is expectation bookkeeping, SATISFIED is
         # the measured intent outcome — the fix's held-out confirmation.
-        s02 = next(r for r in self.scorecard["codex_t1"]["stated_vs_actual"]
+        s02 = next(r for r in self.scorecard["codex_vendor_confirmed"]["stated_vs_actual"]
                    if r["fixture_id"] == "S-02")
         self.assertEqual(s02["measurement_validity"], "FAIL")
         self.assertEqual(s02["intent_coverage"], "SATISFIED")
         self.assertEqual(s02["actual_decision"], "forbidden")
 
     def test_acceptance_case_f07(self):
-        acc = self.scorecard["codex_t1"]["acceptance_case_f07"]
+        acc = self.scorecard["codex_vendor_confirmed"]["acceptance_case_f07"]
         self.assertEqual(acc["fixture_id"], "F-07")
         self.assertEqual(acc["measurement_validity"], "PASS")
         self.assertEqual(acc["intent_coverage"], "UNRESOLVED")
@@ -142,9 +142,9 @@ class TestScorecardV1(unittest.TestCase):
         self.assertEqual(f["intent_coverage"]["counts"]["SATISFIED"], 3)
         self.assertEqual(f["intent_coverage"]["counts"]["UNRESOLVED"], 8)
 
-    def test_t2_unknown_kind_labelled(self):
-        for t in self.scorecard["five_harness_tier_matrix"]:
-            if t["tier"] == "T2":
+    def test_reconstructed_unknown_kind_labelled(self):
+        for t in self.scorecard["five_harness_measurement_routes"]:
+            if t["measurement_route"] == "reconstructed":
                 self.assertEqual(t["unknown_kind"], "unsupported-adapter")
             else:
                 self.assertIsNone(t["unknown_kind"])

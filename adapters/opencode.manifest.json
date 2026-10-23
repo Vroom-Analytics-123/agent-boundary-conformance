@@ -1,1 +1,86 @@
-{"evidence_class":"DOC","evidence_emission":{"format":"finding.v1 (schemas/finding.v1.schema.json) + evidence-bundle.v1 (Merkle-sealed)","layer_attribution_required":true,"unknown_serialization":"unknown"},"harness":"opencode","harness_version_pinned":"opencode-ai@1.19.3 (npm installer stub; CLI not installed on this machine; adapter pins 1.x 'permission' semantics — the 1.x/2.x schema break is load-bearing: 2.x uses an ordered 'permissions' list of {action, resource, effect})","layer_vocabulary":{"ambiguous":["shell permission gates the tool call, but shell commands can mutate files — the permission is not a filesystem boundary (INFERENCE)","always approvals are session state, not config"],"covered":["rules","approval","effect"],"notes":"rules: permission object (below). approval: ask prompts; --auto flips ask->allow at runtime (deny still enforced). sandbox: ABSENT as a documented layer (external_directory is a path guard, not OS confinement). effect: doom_loop observes repetition. No-match default: ask (non-auto mode); unknowns serialize as unknown with layer attribution, never as allow."},"manifest_version":"adapter-manifest.v1","open_questions":[{"question":"Schema break across major versions: 1.x 'permission' object vs 2.x 'permissions' ordered list of {action, resource, effect}. This adapter pins 1.x semantics only.","would_resolve":"A separate 2.x evaluation pass at a pinned 2.x version; do not mix schemas."},{"question":"'parsed commands' matching — the parsing/normalization OpenCode applies before pattern matching is unspecified.","would_resolve":"Vendor documentation of the command-parsing step; until then, pattern semantics are evaluated against the literal documented wildcard table."},{"question":"CLI not installed here (npm package is a ~3KB installer stub whose postinstall downloads the real binary), so no local --help reproduction.","would_resolve":"Install the pinned binary in a scratch dir and re-run the (a)-spike read-only."},{"question":"Fresh-install defaults are permissive: most tools allow; only doom_loop/external_directory default ask; read allows everything except *.env/*.env.* denied. The ABSENCE of config is decision-relevant and must be ingested.","would_resolve":"The adapter must ingest the effective (resolved) configuration, not just user-authored keys — 'opencode debug config' shows resolved config but no per-command decision."}],"oracle":{"deterministic_offline":false,"invocation":"none — no check/evaluate subcommand (opencode debug config shows RESOLVED CONFIG only, not a per-command decision)","reimplements_matching":true,"type":"config-evaluation"},"policy_ingestion":{"config_files":["~/.config/opencode/opencode.json (global)","./opencode.json or .opencode/opencode.json (project)","opencode.jsonc supported","$schema: https://opencode.ai/config.json"],"decision_verbs":["allow","ask","deny"],"defaults":"No rule match -> ask (non-auto mode; DOC). Unknowns serialize as unknown with layer attribution, never as allow.","surface":"permission key: 'allow'|'ask'|'deny' globally, per tool-key, or per tool-key as {pattern: effect} objects. Per-agent permission overrides merged with AGENT RULES TAKING PRECEDENCE; markdown agent frontmatter permission: blocks. Tool keys: read/edit/glob/grep/list/shell/task/external_directory/webfetch/websearch/lsp/skill/question/doom_loop. Pattern matching: simple wildcards (* = zero+ chars, ? = exactly one, else literal; ~/ $HOME expansion). LAST MATCHING RULE WINS (order-dependent — unlike Claude/Cursor deny-first)."},"sources":[{"kind":"vendor-doc","reference":"opencode.ai/docs/permissions (permission object, last-match-wins, per-agent merge precedence, defaults)","retrieved_utc":"2026-10-21"},{"kind":"repo-source","reference":"npm opencode-ai@1.19.3 tarball member list: ~3KB stub (package.json + bin/opencode.exe + postinstall.mjs downloading the real binary) — CLI not installed (read-only inspection)","retrieved_utc":"2026-10-21"},{"kind":"third-party","reference":"--help captures of opencode 2.x (command surface; debug config shows resolved config, not per-command decisions)","retrieved_utc":"2026-10-21"}],"spike_answers":{"a_native_oracle":"NO. Command surface (TUI, run, mini, session, auth, models, mcp, plugin, service, serve, pair, api, reload, stats, acp, debug, upgrade, uninstall) has no check/evaluate subcommand; 'debug config' shows resolved config only.","b_documented_semantics":"YES, precise enough for honest T2 at 1.x: last-match-wins wildcards, per-agent merge precedence, documented defaults. Gaps capping at T2: the 1.x/2.x schema break (adapter pins 1.x), unspecified 'parsed commands' normalization, session-state 'always' approvals, runtime --auto flag.","c_surface_record":"Not applicable; harness is T2 (1.x semantics)."},"tier":"T2","tier_evidence":"No offline oracle exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x — evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO)"}
+{
+  "evidence_class": "DOC",
+  "evidence_emission": {
+    "format": "finding.v1 (schemas/finding.v1.schema.json) + evidence-bundle.v1 (Merkle-sealed)",
+    "layer_attribution_required": true,
+    "unknown_serialization": "unknown"
+  },
+  "harness": "opencode",
+  "harness_version_pinned": "opencode-ai@1.19.3 (npm installer stub; CLI not installed on this machine; adapter pins 1.x 'permission' semantics — the 1.x/2.x schema break is load-bearing: 2.x uses an ordered 'permissions' list of {action, resource, effect})",
+  "layer_vocabulary": {
+    "ambiguous": [
+      "shell permission gates the tool call, but shell commands can mutate files — the permission is not a filesystem boundary (INFERENCE)",
+      "always approvals are session state, not config"
+    ],
+    "covered": [
+      "rules",
+      "approval",
+      "effect"
+    ],
+    "notes": "rules (the Decision layer): permission object (below). approval (the Approval layer): ask prompts; --auto flips ask->allow at runtime (deny still enforced). sandbox: ABSENT as a documented layer (external_directory is a path guard, not OS confinement). effect (the Effect layer — observed outcome): doom_loop observes repetition. No-match default: ask (non-auto mode); unknowns serialize as unknown with layer attribution, never as allow."
+  },
+  "manifest_version": "adapter-manifest.v1",
+  "open_questions": [
+    {
+      "question": "Schema break across major versions: 1.x 'permission' object vs 2.x 'permissions' ordered list of {action, resource, effect}. This adapter pins 1.x semantics only.",
+      "would_resolve": "A separate 2.x evaluation pass at a pinned 2.x version; do not mix schemas."
+    },
+    {
+      "question": "'parsed commands' matching — the parsing/normalization OpenCode applies before pattern matching is unspecified.",
+      "would_resolve": "Vendor documentation of the command-parsing step; until then, pattern semantics are evaluated against the literal documented wildcard table."
+    },
+    {
+      "question": "CLI not installed here (npm package is a ~3KB installer stub whose postinstall downloads the real binary), so no local --help reproduction.",
+      "would_resolve": "Install the pinned binary in a scratch dir and re-run the (a)-spike read-only."
+    },
+    {
+      "question": "Fresh-install defaults are permissive: most tools allow; only doom_loop/external_directory default ask; read allows everything except *.env/*.env.* denied. The ABSENCE of config is decision-relevant and must be ingested.",
+      "would_resolve": "The adapter must ingest the effective (resolved) configuration, not just user-authored keys — 'opencode debug config' shows resolved config but no per-command decision."
+    }
+  ],
+  "oracle": {
+    "deterministic_offline": false,
+    "invocation": "none — no check/evaluate subcommand (opencode debug config shows RESOLVED CONFIG only, not a per-command decision)",
+    "reimplements_matching": true,
+    "type": "config-evaluation"
+  },
+  "policy_ingestion": {
+    "config_files": [
+      "~/.config/opencode/opencode.json (global)",
+      "./opencode.json or .opencode/opencode.json (project)",
+      "opencode.jsonc supported",
+      "$schema: https://opencode.ai/config.json"
+    ],
+    "decision_verbs": [
+      "allow",
+      "ask",
+      "deny"
+    ],
+    "defaults": "No rule match -> ask (non-auto mode; DOC). Unknowns serialize as unknown with layer attribution, never as allow.",
+    "surface": "permission key: 'allow'|'ask'|'deny' globally, per tool-key, or per tool-key as {pattern: effect} objects. Per-agent permission overrides merged with AGENT RULES TAKING PRECEDENCE; markdown agent frontmatter permission: blocks. Tool keys: read/edit/glob/grep/list/shell/task/external_directory/webfetch/websearch/lsp/skill/question/doom_loop. Pattern matching: simple wildcards (* = zero+ chars, ? = exactly one, else literal; ~/ $HOME expansion). LAST MATCHING RULE WINS (order-dependent — unlike Claude/Cursor deny-first)."
+  },
+  "sources": [
+    {
+      "kind": "vendor-doc",
+      "reference": "opencode.ai/docs/permissions (permission object, last-match-wins, per-agent merge precedence, defaults)",
+      "retrieved_utc": "2026-10-21"
+    },
+    {
+      "kind": "repo-source",
+      "reference": "npm opencode-ai@1.19.3 tarball member list: ~3KB stub (package.json + bin/opencode.exe + postinstall.mjs downloading the real binary) — CLI not installed (read-only inspection)",
+      "retrieved_utc": "2026-10-21"
+    },
+    {
+      "kind": "third-party",
+      "reference": "--help captures of opencode 2.x (command surface; debug config shows resolved config, not per-command decisions)",
+      "retrieved_utc": "2026-10-21"
+    }
+  ],
+  "spike_answers": {
+    "a_native_oracle": "NO. Command surface (TUI, run, mini, session, auth, models, mcp, plugin, service, serve, pair, api, reload, stats, acp, debug, upgrade, uninstall) has no check/evaluate subcommand; 'debug config' shows resolved config only.",
+    "b_documented_semantics": "YES, precise enough for honest T2 at 1.x: last-match-wins wildcards, per-agent merge precedence, documented defaults. Gaps capping at T2: the 1.x/2.x schema break (adapter pins 1.x), unspecified 'parsed commands' normalization, session-state 'always' approvals, runtime --auto flag.",
+    "c_surface_record": "Not applicable; harness is T2 (1.x semantics)."
+  },
+  "measurement_route": "reconstructed",
+  "measurement_route_evidence": "No offline oracle exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x — evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO)"
+}

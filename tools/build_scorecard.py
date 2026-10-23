@@ -27,13 +27,14 @@ Usage:
       --out evidence/reports/day6-scorecard
 
 Emits in <out>:
-  tier-matrix.json — the five-harness tier matrix, machine-readable
-                     (schema "tier-matrix.v1"), sourced from the five
-                     committed adapter manifests in adapters/
+  measurement-routes.json — the five-harness measurement-route matrix,
+                     machine-readable (schema "measurement-routes.v1"),
+                     sourced from the five committed adapter manifests in
+                     adapters/
   scorecard.json   — the scorecard surface as JSON (schema "scorecard.v2"):
-                     dual-verdict rows for the Codex T1 corpus, the
-                     protected-records family, the tier matrix, and the
-                     same-corpus baselines
+                     dual-verdict rows for the Codex vendor-confirmed
+                     corpus, the protected-records family, the
+                     measurement-route matrix, and the same-corpus baselines
   scorecard.html   — the readable standalone report (inline CSS, no external
                      assets)
 
@@ -90,8 +91,8 @@ DUAL_VERDICT_SEMANTICS = {
                          "(22 corpus unknowns pre-fix)",
         "insufficient-runtime-evidence": "(b) a runtime experiment ran but proved "
                          "too little — none in week 1; reserved for the effect layer",
-        "unsupported-adapter": "(c) no decision oracle exists for this harness — "
-                         "the four T2 adapters",
+        "unsupported-adapter": "(c) the vendor ships no decision checker for this harness — "
+                         "the four reconstructed-route adapters",
     },
     "sealed_bundles_untouched": ("Dual verdicts are adjudicated in this reporting "
                                  "layer from sealed evidence-bundle.v1 findings; "
@@ -138,7 +139,7 @@ POST_FIX = {
              "Wrapped forms stay unknown per INV-004 Option A."),
 }
 
-TIER_ORDER = ["codex", "claude-code", "cursor", "gemini-cli", "opencode"]
+ROUTE_ORDER = ["codex", "claude-code", "cursor", "gemini-cli", "opencode"]
 MANIFEST_FILES = {
     "codex": "codex.v0.manifest.json",
     "claude-code": "claude-code.manifest.json",
@@ -159,8 +160,8 @@ pre{background:#f4f4f4;padding:.8rem;border-radius:4px;overflow-x:auto;font-size
 .pass{color:#0a7a2f;font-weight:bold}.fail{color:#c00;font-weight:bold}
 .badge{display:inline-block;padding:.1rem .5rem;border-radius:999px;font-size:.72rem;
 font-weight:bold;color:#fff}.b-allow{background:#0a7a2f}.b-prompt{background:#b26a00}
-.b-forbidden{background:#c00}.b-unknown{background:#555}.b-T1{background:#0a7a2f}
-.b-T2{background:#b26a00}.b-T3{background:#555}
+.b-forbidden{background:#c00}.b-unknown{background:#555}.b-vendor-confirmed{background:#0a7a2f}
+.b-reconstructed{background:#b26a00}.b-no-paper-surface{background:#555}
 .mv-PASS{color:#0a7a2f;font-weight:bold}.mv-FAIL{color:#c00;font-weight:bold}
 .ic-SATISFIED{color:#0a7a2f;font-weight:bold}.ic-UNRESOLVED{color:#b26a00;font-weight:bold}
 .ic-NOT_SATISFIED{color:#c00;font-weight:bold}.ic-NOT_APPLICABLE{color:#555}
@@ -186,35 +187,36 @@ def badge(d):
 
 def load_manifests():
     rows = []
-    for name in TIER_ORDER:
+    for name in ROUTE_ORDER:
         fname = MANIFEST_FILES[name]
         path = ADAPTERS / fname
         m = json.loads(path.read_text())
         oracle = m.get("oracle", {})
-        is_t1 = m["tier"] == "T1"
-        measured = ("41-case corpus replayed against the native oracle; "
-                    "verdicts are measured (REPRO)" if is_t1
-                    else "no verdicts measured — no decision oracle exists. "
-                         "A T2 adapter would compute EVALUATIONS from documented "
-                         "semantics (never interrogation); its evidence class "
-                         "drops to DOC/INFERENCE accordingly. No harness is "
-                         "presented as supported beyond its tier.")
+        is_vendor_confirmed = m["measurement_route"] == "vendor-confirmed"
+        measured = ("41-case corpus replayed against the vendor's own checker; "
+                    "verdicts are measured (REPRO)" if is_vendor_confirmed
+                    else "no verdicts measured — the vendor ships no decision "
+                         "checker. A reconstructed-route adapter computes "
+                         "EVALUATIONS from documented semantics (never "
+                         "interrogation); its evidence class drops to "
+                         "DOC/INFERENCE accordingly. No harness is presented "
+                         "as supported beyond its measurement route.")
         rows.append({
             "harness": m["harness"],
-            "tier": m["tier"],
+            "measurement_route": m["measurement_route"],
             "oracle_type": oracle.get("type"),
             "reimplements_matching": oracle.get("reimplements_matching"),
             "evidence_class": m["evidence_class"],
             "version_pin": m.get("harness_version_pinned", ""),
             "policy_surface": m.get("policy_ingestion", {}).get("surface", ""),
-            "tier_evidence": m.get("tier_evidence", ""),
+            "measurement_route_evidence": m.get("measurement_route_evidence", ""),
             "manifest": f"adapters/{fname}",
-            "tier_assignment_doc": "docs/HARNESS_TIERS.md",
+            "route_assignment_doc": "docs/MEASUREMENT_ROUTES.md",
             "measured_verdicts": measured,
-            # Dual-verdict unknown kind (c): with no decision oracle, any
+            # Dual-verdict unknown kind (c): with no vendor checker, any
             # "no decision" at this adapter is an unsupported-adapter unknown —
-            # a different labelled state from a T1 no-rule-match.
-            "unknown_kind": (None if is_t1 else "unsupported-adapter"),
+            # a different labelled state from a vendor-confirmed no-rule-match.
+            "unknown_kind": (None if is_vendor_confirmed else "unsupported-adapter"),
         })
     return rows
 
@@ -243,7 +245,7 @@ def verdict_row(f, adj):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--bundle", required=True,
-                    help="sealed evidence bundle (evidence-bundle.v1), 41-case Codex T1 corpus")
+                    help="sealed evidence bundle (evidence-bundle.v1), 41-case Codex vendor-confirmed corpus")
     ap.add_argument("--family-bundle", required=True,
                     help="sealed protected-records bundle (evidence-bundle.v1), 11 fixtures")
     ap.add_argument("--out", default="evidence/reports/day6-scorecard")
@@ -290,27 +292,29 @@ def main():
             if r["intent_coverage"] == "SATISFIED" and r["actual_decision"] == "unknown"]
     assert not fbad, f"unknown family rows must never show satisfied intent: {fbad}"
 
-    tier_matrix = load_manifests()
+    route_matrix = load_manifests()
 
     nc = bundle["negative_controls"]
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    tier_matrix_doc = {
-        "schema_version": "tier-matrix.v1",
+    route_matrix_doc = {
+        "schema_version": "measurement-routes.v1",
         "generated_utc": generated,
         "sources": {
-            "manifests": [r["manifest"] for r in tier_matrix],
-            "tier_assignments": "docs/HARNESS_TIERS.md",
+            "manifests": [r["manifest"] for r in route_matrix],
+            "route_assignments": "docs/MEASUREMENT_ROUTES.md",
             "framework": "docs/FRAMEWORK.md",
         },
-        "note": ("A harness is described by its tier, never as generically "
-                 "'supported'. No T2 harness has measured verdicts: no decision "
-                 "oracle exists, so verdicts would be evaluations from documented "
-                 "semantics, never interrogations. T2 is the ceiling until a "
-                 "vendor ships a deterministic offline evaluate-a-command entrypoint "
-                 "at a pinned version. A T2 'no decision' is the labelled unknown "
-                 "kind unsupported-adapter — distinct from a T1 no-rule-match."),
-        "harnesses": tier_matrix,
+        "note": ("A harness is described by its measurement route, never as "
+                 "generically 'supported'. The route is provenance of the "
+                 "Layer-1 measurement only — unranked, never harness quality "
+                 "(founder correction 2026-10-22). No reconstructed-route "
+                 "harness has measured verdicts: the vendor ships no decision "
+                 "checker, so verdicts would be evaluations from documented "
+                 "semantics, never interrogations. A reconstructed 'no decision' "
+                 "is the labelled unknown kind unsupported-adapter — distinct "
+                 "from a vendor-confirmed no-rule-match."),
+        "harnesses": route_matrix,
     }
 
     ic = dual["intent_coverage"]
@@ -331,7 +335,7 @@ def main():
             "dual_verdict": DUAL_VERDICT_SEMANTICS,
             "preregistration_correction": PREREGISTRATION_CORRECTION,
         },
-        "codex_t1": {
+        "codex_vendor_confirmed": {
             "harness": "codex",
             "harness_version_pinned": "codex-cli 0.149.0",
             "evidence_class": "REPRO",
@@ -451,7 +455,7 @@ def main():
             "unknown_kinds": fdual["unknown_kinds"],
             "verdicts": frows,
         },
-        "five_harness_tier_matrix": tier_matrix,
+        "five_harness_measurement_routes": route_matrix,
         "negative_controls": {
             "count": len(nc["controls"]),
             "all_healthy": nc["all_correctly_failed"],
@@ -476,8 +480,8 @@ def main():
 
     out_dir = REPO / args.out
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "tier-matrix.json").write_text(
-        json.dumps(tier_matrix_doc, indent=2) + "\n")
+    (out_dir / "measurement-routes.json").write_text(
+        json.dumps(route_matrix_doc, indent=2) + "\n")
     (out_dir / "scorecard.json").write_text(
         json.dumps(scorecard, indent=2) + "\n")
 
@@ -511,24 +515,24 @@ def main():
     mv = dual["measurement_validity"]
     fic_counts = fdual["intent_coverage"]
 
-    tier_rows = []
-    for t in tier_matrix:
-        measured = ("Measured (REPRO)" if t["tier"] == "T1"
-                    else "Not measured — no decision oracle exists")
+    route_rows = []
+    for t in route_matrix:
+        measured = ("Measured (REPRO)" if t["measurement_route"] == "vendor-confirmed"
+                    else "Not measured — the vendor ships no decision checker")
         ukind = esc(t["unknown_kind"]) if t["unknown_kind"] else "—"
-        tier_rows.append(
+        route_rows.append(
             f"<tr><td><b>{esc(t['harness'])}</b></td>"
-            f"<td>{badge(t['tier'])}</td>"
+            f"<td>{badge(t['measurement_route'].replace(' ', '-'))}</td>"
             f"<td><code>{esc(t['oracle_type'])}</code></td>"
             f"<td><span class='ec'>{esc(t['evidence_class'])}</span></td>"
             f"<td><code>{esc(t['version_pin'])}</code></td>"
-            f"<td class='legend'>{esc(t['tier_evidence'])}</td>"
+            f"<td class='legend'>{esc(t['measurement_route_evidence'])}</td>"
             f"<td class='legend'>{esc(measured)}</td>"
             f"<td class='legend'>{ukind}</td></tr>")
-    tier_html = ("<table><tr><th>harness</th><th>tier</th><th>oracle type</th>"
+    route_html = ("<table><tr><th>harness</th><th>measurement route</th><th>oracle type</th>"
                  "<th>evidence class</th><th>version pin</th>"
-                 "<th>tier evidence</th><th>verdicts</th><th>unknown kind</th></tr>"
-                 + "".join(tier_rows) + "</table>")
+                 "<th>route evidence</th><th>verdicts</th><th>unknown kind</th></tr>"
+                 + "".join(route_rows) + "</table>")
 
     baselines = scorecard["baselines_same_corpus"]
     base_rows = "".join(
@@ -541,7 +545,7 @@ def main():
 <h1>Boundary Scorecard v3 — Agent Boundary Conformance</h1>
 <p class="legend">Post-fix export · generated {esc(generated)} ·
 <code>tools/build_scorecard.py</code> (deterministic; no oracle calls) ·
-schemas <code>scorecard.v3</code> / <code>tier-matrix.v1</code> ·
+schemas <code>scorecard.v3</code> / <code>measurement-routes.v1</code> ·
 evidence <code>evidence-bundle.v1</code> (sealed, untouched by the dual-verdict
 layer). Nothing here is published.</p>
 
@@ -604,7 +608,7 @@ displayed as a passed protective invariant: the rules layer cannot establish
 INV-004's normative intent ("a banned command hidden in a wrapper must not
 pass silently").</div>
 
-<h2>Stated intentions vs actual decisions, dual-verdict per fixture (Codex T1)</h2>
+<h2>Stated intentions vs actual decisions, dual-verdict per fixture (Codex, vendor-confirmed)</h2>
 <p class="legend">Harness: codex, pinned <code>codex-cli 0.149.0</code> ·
 rules layer only · every finding REPRO. "Stated intent" is the corpus
 expectation recorded Day 2 as a pre-registered <i>confirmation</i> of the
@@ -646,19 +650,21 @@ status <b>{esc(fb['status'])}</b>, Merkle root
 <code>{esc(fb['merkle']['root'])}</code>.</p>
 {vtable(frows, show_shard=False)}
 
-<h2>Five-harness tier matrix</h2>
+<h2>Five-harness measurement-route matrix</h2>
 <p class="legend">Per <code>docs/FRAMEWORK.md</code> and
-<code>docs/HARNESS_TIERS.md</code>: a harness is described by its tier, never as
-generically "supported". Sources: the committed manifests in
-<code>adapters/</code> (machine-readable: <code>tier-matrix.json</code>).</p>
-{tier_html}
-<div class="callout">The four T2 harnesses carry <b>no measured verdicts</b>:
-no decision oracle exists, so the finding for each is its surveyed surface plus
-"no decision oracle exists" — never an implied verdict. Their unknown kind is
-the labelled state <b>unsupported-adapter</b>, distinct from a T1
-<b>no-rule-match</b>. T2 adapters compute <i>evaluations</i> from documented
-semantics, never <i>interrogations</i>. T2 is the ceiling until a vendor ships
-a deterministic offline evaluate-a-command entrypoint at a pinned version.</div>
+<code>docs/MEASUREMENT_ROUTES.md</code>: a harness is described by its
+measurement route, never as generically "supported". The route is provenance
+of the Layer-1 measurement only — unranked, never harness quality. Sources:
+the committed manifests in <code>adapters/</code> (machine-readable:
+<code>measurement-routes.json</code>).</p>
+{route_html}
+<div class="callout">The four reconstructed-route harnesses carry <b>no measured
+verdicts</b>: the vendor ships no decision checker, so the finding for each is
+its surveyed surface plus "no decision checker exists" — never an implied
+verdict. Their unknown kind is the labelled state <b>unsupported-adapter</b>,
+distinct from a vendor-confirmed <b>no-rule-match</b>. Reconstructed-route
+adapters compute <i>evaluations</i> from documented semantics, never
+<i>interrogations</i>.</div>
 
 <h2>Baselines (same corpus)</h2>
 <table><tr><th>tool</th><th>status</th></tr>{base_rows}</table>
@@ -678,7 +684,7 @@ makes no oracle calls, so regeneration is a pure function of the repo at a
 given commit. Diffing <code>scorecard.json</code> across two regenerations must
 differ only in <code>generated_utc</code> and the <code>--out</code> path
 embedded verbatim in the reproduce command above.<br>
-Scorecard JSON: <code>scorecard.json</code> · tier matrix: <code>tier-matrix.json</code>
+Scorecard JSON: <code>scorecard.json</code> · measurement routes: <code>measurement-routes.json</code>
 · generated {esc(generated)}.
 </div>
 </body></html>"""
@@ -690,12 +696,12 @@ Scorecard JSON: <code>scorecard.json</code> · tier matrix: <code>tier-matrix.js
           f"{ic['UNRESOLVED']} unresolved / {ic['NOT_APPLICABLE']} not applicable")
     print(f"family: pass={fpasses} fail={len(frows) - fpasses} ({fdist})")
     print(f"family intent: {fic_counts['SATISFIED']} satisfied / {fic_counts['UNRESOLVED']} unresolved")
-    print(f"tiers: {', '.join(t['harness'] + ':' + t['tier'] for t in tier_matrix)}")
+    print(f"routes: {', '.join(t['harness'] + ':' + t['measurement_route'] for t in route_matrix)}")
     try:
         shown = out_dir.relative_to(REPO)
     except ValueError:
         shown = out_dir
-    print(f"wrote {shown}/tier-matrix.json + scorecard.json + scorecard.html")
+    print(f"wrote {shown}/measurement-routes.json + scorecard.json + scorecard.html")
 
 
 if __name__ == "__main__":

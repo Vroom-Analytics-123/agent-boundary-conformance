@@ -289,7 +289,7 @@ def build_run_spec(args, adapter_name, adapter, policy_path, entries,
           "private": bool(e.get("private"))} for e in entries])
     return {
         "harness": adapter_name,
-        "adapter_tier": adapter["tier"],
+        "measurement_route": adapter["measurement_route"],
         "adapter_version_detail": adapter.get("version_detail", ""),
         "evidence_class": adapter["evidence_class"],
         "policy": {"path": str(policy_p),
@@ -413,7 +413,7 @@ def main(argv):
     if not ok:
         sys.exit(f"adapter {args['harness']} not runnable: {detail}\n"
                  "Refusing to fabricate probe results.")
-    print(f"adapter: {args['harness']} ({adapter['tier']}) — {detail}")
+    print(f"adapter: {args['harness']} ({adapter['measurement_route']}) — {detail}")
 
     # --- compose the pack ---
     core_entries, _ = CL.load_core()

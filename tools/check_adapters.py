@@ -6,22 +6,27 @@ Adapter contract (see docs/CATALOGUE_COMMONS.md, "Adapter contract"):
       Is this adapter runnable on this machine right now?
   run_probe(argv, policy) -> dict with keys:
       actual         one of forbidden|prompt|allow|unknown|error
-      matched_rules  int (codex) or dict (t2 engines); informational
-      raw            raw native output (codex) or "" (t2)
+      matched_rules  int (codex) or dict (reconstructed engines); informational
+      raw            raw native output (codex) or "" (reconstructed)
       note           human-readable evidence note
-      layer          "rules-layer" (codex T1) or "rules" (t2 engines)
+      layer          "rules-layer" (codex, vendor-confirmed) or "rules"
+                     (reconstructed engines)
       error          None, or a string when actual == "error"
 
-Registered adapters:
-  codex        T1 — the pinned native oracle (codex execpolicy check) via
-               tools/pin.py. Fail closed: if the pinned binary is
-               unavailable or its sha256 mismatches, check_environment()
-               reports not-ok and the runner refuses to fabricate results.
-  claude-code  T2 — the documented-semantics evaluation engine at
-               adapters/claude-code/evaluate.py. Labelled reimplementation
-               of the vendor's documented matching semantics; NEVER
-               interrogates a native oracle (none exists). Evidence class
-               "T2-evaluation (never interrogated)".
+Registered adapters (measurement routes are provenance of the Layer-1
+measurement only — unranked, never harness quality; founder correction
+2026-10-22):
+  codex        vendor-confirmed — the pinned native oracle
+               (codex execpolicy check) via tools/pin.py. Fail closed: if
+               the pinned binary is unavailable or its sha256 mismatches,
+               check_environment() reports not-ok and the runner refuses
+               to fabricate results.
+  claude-code  reconstructed — the documented-semantics evaluation engine
+               at adapters/claude-code/evaluate.py. Labelled
+               reimplementation of the vendor's documented matching
+               semantics; NEVER interrogates a native oracle (none
+               exists). Evidence class "reconstructed-evaluation (never
+               interrogated)".
 
 Other T2 engines (cursor, gemini-cli, opencode) expose different
 evaluate() signatures today; they are registered here only when a shim
@@ -45,12 +50,12 @@ LAYER_ATTRIBUTION = ("no rules-layer decision; runtime outcome depends on "
                      "approval policy + sandbox under the pinned "
                      "configuration")
 
-EVIDENCE_CLASS_T1 = "REPRO"
-EVIDENCE_CLASS_T2 = "T2-evaluation (never interrogated)"
+EVIDENCE_CLASS_VENDOR_CONFIRMED = "REPRO"
+EVIDENCE_CLASS_RECONSTRUCTED = "reconstructed-evaluation (never interrogated)"
 
 
 # --------------------------------------------------------------------------
-# codex (T1, pinned native oracle)
+# codex (vendor-confirmed, pinned native oracle)
 # --------------------------------------------------------------------------
 
 def codex_binary():
@@ -99,7 +104,7 @@ def codex_run_probe(argv, policy):
 
 
 # --------------------------------------------------------------------------
-# claude-code (T2, documented-semantics engine)
+# claude-code (reconstructed, documented-semantics engine)
 # --------------------------------------------------------------------------
 
 def _claude_engine():
@@ -149,16 +154,16 @@ def claude_code_run_probe(argv, policy):
 
 ADAPTERS = {
     "codex": {
-        "tier": "T1",
-        "evidence_class": EVIDENCE_CLASS_T1,
+        "measurement_route": "vendor-confirmed",
+        "evidence_class": EVIDENCE_CLASS_VENDOR_CONFIRMED,
         "has_decision_source": True,
         "policy_kind": "codex .rules file (execpolicy Starlark prefix_rule)",
         "check_environment": codex_check_environment,
         "run_probe": codex_run_probe,
     },
     "claude-code": {
-        "tier": "T2",
-        "evidence_class": EVIDENCE_CLASS_T2,
+        "measurement_route": "reconstructed",
+        "evidence_class": EVIDENCE_CLASS_RECONSTRUCTED,
         "has_decision_source": True,
         "policy_kind": "Claude Code settings JSON with a 'permissions' object",
         "check_environment": claude_code_check_environment,
@@ -168,7 +173,7 @@ ADAPTERS = {
 
 
 def list_adapters():
-    return {name: {"tier": a["tier"],
+    return {name: {"measurement_route": a["measurement_route"],
                    "evidence_class": a["evidence_class"],
                    "policy_kind": a["policy_kind"]}
             for name, a in ADAPTERS.items()}

@@ -1,7 +1,7 @@
 {
   "manifest_version": "adapter-manifest.v1",
   "harness": "amp",
-  "tier": "T1",
+  "measurement_route": "vendor-confirmed",
   "evidence_class": "REPRO",
   "evidence_emission": {
     "format": "finding.v1 (schemas/finding.v1.schema.json) + evidence-bundle.v1 (Merkle-sealed)",
@@ -14,7 +14,7 @@
     "covered": [
       "rules"
     ],
-    "notes": "The oracle decides the permission-rules layer only (user amp.permissions rules + Amp's built-in permission rules). Approval UX and sandbox confinement are separate layers, not measured by `amp permissions test`. Unknowns carry mandatory layer attribution: 'no rules-layer decision (action: null); outcome depends on approval UX + sandbox under the pinned configuration' (INV-004, Option A)."
+    "notes": "The oracle decides the Decision layer only (the permission-rules layer: user amp.permissions rules + Amp's built-in permission rules). Approval UX (the Approval layer) and sandbox confinement (part of the Effect layer) are separate layers, not measured by `amp permissions test`. Unknowns carry mandatory layer attribution: 'no Decision-layer decision (action: null); outcome depends on the Approval and Effect layers under the pinned configuration' (INV-004, Option A)."
   },
   "open_questions": [
     {
@@ -50,7 +50,7 @@
       "reject",
       "delegate"
     ],
-    "defaults": "Genuine no-match yields action: null (observed with an unknown tool; REPRO). For the Bash tool, Amp's built-in catch-all ask rule (built-in matchIndex 27) resolves unknown commands to ask \u2014 that is Amp's shipped default behavior, recorded as observed (REPRO), not a framework claim. Unmatched serializes as unknown per INV-005.",
+    "defaults": "Genuine no-match yields action: null (observed with an unknown tool; REPRO). For the Bash tool, Amp's built-in catch-all ask rule (built-in matchIndex 27) resolves unknown commands to ask — that is Amp's shipped default behavior, recorded as observed (REPRO), not a framework claim. Unmatched serializes as unknown per INV-005.",
     "surface": "amp.permissions rules: {tool (glob), matches: {cmd|path: [glob|regex...]}, action: allow|reject|ask|delegate}. First matching rule in list order wins; user rules precede built-in rules (REPRO)."
   },
   "sources": [
@@ -66,7 +66,7 @@
     },
     {
       "kind": "local-observation",
-      "reference": "evidence/amp-spike-2026-10-22/P-01..P-13.run1.json \u2014 13 corpus-derived probes, byte-identical across 2 runs (cmp-verified)",
+      "reference": "evidence/amp-spike-2026-10-22/P-01..P-13.run1.json — 13 corpus-derived probes, byte-identical across 2 runs (cmp-verified)",
       "retrieved_utc": "2026-10-22"
     },
     {
@@ -85,5 +85,5 @@
     "b_documented_semantics": "Not needed; (a) answered yes. Rule shape discovered empirically (not in the published settings schema); precedence first-match-wins + user-over-built-in verified empirically (REPRO).",
     "c_surface_record": "Applicable: harness promoted to T1 by founder decision 2026-10-22 ('do T1, T2 and T3 for all harnesses wherever possible')."
   },
-  "tier_evidence": "amp permissions test returns the harness's own permission-engine decision offline and deterministically (no auth); 13 corpus-derived probes replayed byte-identically across 2 runs in the 2026-10-22 spike (REPRO), and the full 41-case corpus + protected family replayed byte-identically in the T1 promotion run (evidence/amp-2026-10-22/). PROMOTED to T1 by founder decision 2026-10-22."
+  "measurement_route_evidence": "amp permissions test returns the harness's own permission-engine decision offline and deterministically (no auth); 13 corpus-derived probes replayed byte-identically across 2 runs in the 2026-10-22 spike (REPRO), and the full 41-case corpus + protected family replayed byte-identically in the T1 promotion run (evidence/amp-2026-10-22/). PROMOTED to T1 by founder decision 2026-10-22."
 }

@@ -10,9 +10,10 @@ and standards bodies can adopt.*
 
 - The plain-language foundation and the building-inspector metaphor: [docs/EXPLAINER.md](docs/EXPLAINER.md)
 - The living status page (verdict NARROW, objectives, what's waiting on the founder): [docs/DASHBOARD.md](docs/DASHBOARD.md)
-- The tier assignments with the evidence behind each harness: [docs/HARNESS_TIERS.md](docs/HARNESS_TIERS.md) — the five-harness graphic is [docs/assets/tier_matrix.png](docs/assets/tier_matrix.png)
+- The tier assignments with the evidence behind each harness: [docs/HARNESS_TIERS.md](docs/HARNESS_TIERS.md) — the grade-matrix graphic is [docs/assets/tier_matrix.png](docs/assets/tier_matrix.png)
 - The evidence the tiers are measured against: [evidence/](evidence/) — sealed bundles under `evidence/day*-2026-10-*`, daily briefs in [docs/daily/](docs/daily/)
 - The narrowed novelty claim this framework supports: [docs/SCIENTIFIC_REVIEW_ADDENDUM.md](docs/SCIENTIFIC_REVIEW_ADDENDUM.md)
+- The founder's direction log, 2026-10-22 — layer primacy (cross-layer checking as the core method), grades as strength of evidence, the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal: [docs/DIRECTION-2026-10-22.md](docs/DIRECTION-2026-10-22.md) — the cross-layer-checking name is undecided (candidates Cross-Examination / Triangulation / Layercheck, pending his tap)
 
 ## What the framework is
 
@@ -94,14 +95,17 @@ public repos, THIRD-PARTY):
 
 | # | Harness | Policy surface (as researched) | Corpus repos | Status |
 |---|---|---|---|---|
-| 1 | **Codex** (OpenAI) | `execpolicy` `.rules`, prefix rules, `execpolicy check` CLI | 212 | **T1 adapter done** (v0, pinned 0.149.0) |
-| 2 | **Claude Code** (Anthropic) | `settings.json` permissions allow/ask/deny, PreToolUse hooks, Bash sandbox; auto-mode classifier (stochastic layer) | 1,887 | Feasibility spike — oracle type to establish |
-| 3 | **Cursor** (Anysphere) | IDE/CLI permission settings, rules files | 315 | Survey + spike |
-| 4 | **Gemini CLI** (Google) | Settings/policy config, sandbox flags (off by default per research) | 273 | Survey + spike |
-| 5 | **OpenCode** (open source) | `opencode.json` per-tool permissions (allow/ask/deny) | 142 | Survey + spike |
+| 1 | **Codex** (OpenAI) | `execpolicy` `.rules`, prefix rules, `execpolicy check` CLI | 212 | **A · Oracle adapter done** (v0, pinned 0.149.0) |
+| 2 | **Claude Code** (Anthropic) | `settings.json` permissions allow/ask/deny, PreToolUse hooks, Bash sandbox; auto-mode classifier (stochastic layer) | 1,887 | Measured **B · Manual** (Oct 22 wave) |
+| 3 | **Cursor** (Anysphere) | IDE/CLI permission settings, rules files | 315 | Measured **B · Manual** (Oct 22 wave) |
+| 4 | **Gemini CLI** (Google) | Settings/policy config, sandbox flags (off by default per research) | 273 | Measured **B · Manual** (Oct 22 wave) |
+| 5 | **OpenCode** (open source) | `opencode.json` per-tool permissions (allow/ask/deny) | 142 | Measured **B · Manual** (Oct 22 wave) |
 
-GitHub Copilot is a candidate sixth: large installed base, least
-declarative surface; expected T2/T3. It joins when the five are tiered.
+GitHub Copilot CLI was assessed 2026-10-22: **B · Manual** (T2-config) —
+install is not auth-walled but every live evaluation route sits behind the
+account/subscription wall at `/login` (the wall, not the semantics, is the
+binding constraint); offline binary inspection found no oracle-like
+entrypoint. Assessment: `adapters/copilot-assessment.md`.
 
 **Spike question for every harness, in order:** (a) Is there a deterministic,
 offline way to obtain the harness's own decision for a command under a given
@@ -111,8 +115,10 @@ surface cannot support.
 
 ## What does not change
 
-- The Day-7 kill criterion stands, evaluated on the Codex T1 evidence and
-  the same-corpus baselines. Framework breadth does not dilute it.
+- The Day-7 kill criterion was evaluated on the Codex evidence and
+  the same-corpus baselines (verdict NARROW, delivered Oct 21); the evidence
+  basis now extends to the Amp oracle (promoted to paper grade A · Oracle Oct
+  22). Framework breadth does not dilute it.
 - Scope discipline (per `docs/SCIENTIFIC_REVIEW_ADDENDUM.md`): general
   agent frameworks, MCP gateways, and model APIs are not coding-harness
   policy surfaces and stay out of this framework.

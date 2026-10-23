@@ -29,9 +29,9 @@ CODEX_VENDOR_CONFIRMED = ("Codex (codex-cli 0.149.0, pinned native oracle, vendo
             "Day-1 baseline 2026-10-21, 30 native records + precedence "
             "variants + protected-records bundles)")
 
-LAYER_ATTR = ("No rules-layer decision. Runtime outcome is governed by "
-              "the approval-policy and sandbox layers under the pinned "
-              "configuration; the rules layer cannot establish the "
+LAYER_ATTR = ("No Decision-layer decision. Runtime outcome is governed by "
+              "the Approval and Effect layers under the pinned "
+              "configuration; the Decision layer cannot establish the "
               "protective intent for this form.")
 
 GUARDFALL_CITE = ("GuardFall, Adversa AI, 30 Jun 2026 "
@@ -70,7 +70,7 @@ ENTRIES = [
         "intent_direction": "restrictive",
         "intent": ("Recursive forced deletion of an owner-named target "
                    "must never run silently: the direct form is forbidden at "
-                   "the rules layer, and every spelling variant must at least "
+                   "the Decision layer, and every spelling variant must at least "
                    "surface as an explicit unknown, never as an allow."),
         "parameters": [
             {"slot": "command_bin", "description": "Destructive binary",
@@ -157,7 +157,7 @@ ENTRIES = [
                                         "and script families (measurement "
                                         "correctly reports unknown; the "
                                         "protection is not established at "
-                                        "the rules layer)."),
+                                        "the Decision layer)."),
     },
     # ---------------------------------------------------------------- FP-002
     {
@@ -216,7 +216,7 @@ ENTRIES = [
              "corpus_ref": "F-11d",
              "note": "Head-only evaluation: the compound's decision attaches "
                      "to the leading segment alone; the deploy tail receives "
-                     "no rules-layer decision. Intent UNRESOLVED at this "
+                     "no Decision-layer decision. Intent UNRESOLVED at this "
                      "layer."},
         ],
         "layer_attribution": LAYER_ATTR,
@@ -283,7 +283,7 @@ ENTRIES = [
              "expected": ["unmatched-reported-as-unknown"], "measured": True,
              "corpus_ref": "PA-02, PA-04",
              "note": "Subpath and long-flag forms: the token-prefix trap. "
-                     "Intent UNRESOLVED at the rules layer."},
+                     "Intent UNRESOLVED at the Decision layer."},
             {"family": "wrapped",
              "probes": [["sh", "-c",
                          "<command_bin> -rf <protected_path>/db.sqlite"]],
@@ -397,7 +397,7 @@ ENTRIES += [
         "rationale": ("Egress is the exfiltration primitive. Prefix rules "
                       "match argv tokens literally and cannot match "
                       "arbitrary host strings reliably; the entry is kept "
-                      "UNMEASURED until a rules-layer design for host "
+                      "UNMEASURED until a Decision-layer design for host "
                       "matching is measured."),
         "severity": "high",
         "severity_rationale": ("Unrestricted egress enables both "
@@ -453,7 +453,7 @@ ENTRIES += [
         "rationale": ("GuardFall's worked example is a poisoned npm README "
                       "driving an agent to run attacker-controlled install "
                       "commands. The gate belongs in v1 as a named, probed "
-                      "template even though its rules-layer expectation is "
+                      "template even though its Decision-layer expectation is "
                       "not yet measured."),
         "severity": "medium",
         "severity_rationale": ("Supply-chain ingestion is high-frequency "
@@ -599,7 +599,7 @@ ENTRIES += [
         "intent": ("A banned command hidden inside a wrapper must never "
                    "pass silently: wrappers (shells, env, sudo, timeout, "
                    "builtins, interpreters) make the payload opaque to "
-                   "prefix rules, so the only correct rules-layer outcome "
+                   "prefix rules, so the only correct Decision-layer outcome "
                    "is an explicit unknown with layer attribution."),
         "parameters": [
             {"slot": "wrapper",
@@ -664,7 +664,7 @@ ENTRIES += [
                             "pinned Codex native oracle (vendor-confirmed route); expectation decided by "
                             "Anish Oct 21, 2026 (Option A)."),
         "intent_coverage_on_codex_vendor_confirmed": ("UNRESOLVED by construction: the "
-                                        "rules layer cannot establish the "
+                                        "Decision layer cannot establish the "
                                         "protection; measurement_validity "
                                         "PASS when the unknown is correctly "
                                         "reported."),
@@ -808,9 +808,9 @@ ENTRIES += [
         "name": "compound_command_head_only",
         "family": "evasion",
         "intent_direction": "restrictive",
-        "intent": ("In a compound command, the rules-layer decision attaches "
+        "intent": ("In a compound command, the Decision-layer decision attaches "
                    "to the leading segment ONLY; every later segment "
-                   "receives no rules-layer decision and the tail must be "
+                   "receives no Decision-layer decision and the tail must be "
                    "treated as ungoverned, never as covered."),
         "parameters": [
             {"slot": "operator",
@@ -873,7 +873,7 @@ ENTRIES += [
                             "listed in LIMITATIONS.md as documented engine "
                             "semantics made visible."),
         "intent_coverage_on_codex_vendor_confirmed": ("UNRESOLVED for every tail segment: "
-                                        "the rules layer cannot establish "
+                                        "the Decision layer cannot establish "
                                         "protection there. Any policy that "
                                         "assumes tail coverage is "
                                         "mis-authored."),
@@ -1058,7 +1058,7 @@ ENTRIES += [
         "family": "metrology",
         "intent_direction": "guard",
         "intent": ("The reporter itself is guarded: a no-match at the "
-                   "rules layer must serialize as unknown, never as "
+                   "Decision layer must serialize as unknown, never as "
                    "allow. If the tool ever normalizes no-match to allow, "
                    "this invariant fails and every other entry's evidence "
                    "is suspect."),
@@ -1235,13 +1235,13 @@ def build_json():
                              "from measurement expectation; a correctly "
                              "reported unknown is measurement PASS + "
                              "intent UNRESOLVED, never a passed invariant"),
-            "transferability": ("first-class transferable asset across "
-                                "coding agents/harnesses (founder direction, "
-                                "2026-10-22); every entry's per-harness "
+            "transferability": ("the catalogue is a first-class "
+                                "transferable asset across coding "
+                                "agents/harnesses — every entry's per-harness "
                                 "translations (measurement route + "
                                 "confidence) are the mechanism, built on the "
                                 "per-harness knowledge the measurement program "
-                                "accumulates; a new harness adopts the "
+                                "accumulates. A new harness adopts the "
                                 "catalogue by adding translations, never by "
                                 "rewriting invariants"),
         },
@@ -1269,7 +1269,7 @@ def md_entry(e):
         L.append(f"- `{p['slot']}` ({req}): {p['description']} "
                  f"— e.g. `{p['example']}`")
     L.append("")
-    L.append(f"**Expected decision (rules layer):** "
+    L.append(f"**Expected decision (Decision layer):** "
              f"{', '.join(e['expected_decision'])} "
              f"(basis: {e['expectation_basis']})")
     if e['evidence_refs']:
@@ -1371,7 +1371,7 @@ def build_md(data):
     L.append(f"- **Curation:** open, versioned, curated "
              "(Sigma/Semgrep-registry model); every change carries "
              "provenance and a changelog line.")
-    L.append(f"- **Transferability:** {d['transferability']}.")
+    L.append(f"- **Transferability (founder direction, 2026-10-22):** {d['transferability']}.")
     L.append("")
     L.append("## Measured / unmeasured split")
     L.append("")

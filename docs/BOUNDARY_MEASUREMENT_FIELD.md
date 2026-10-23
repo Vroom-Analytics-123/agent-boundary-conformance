@@ -1,7 +1,7 @@
 # Boundary Measurement — field definition & the path to primary verifier (2026-10-21)
 
 ## The name
-**Boundary Measurement** — the discipline this work defines. It sits inside FinePrint (the research program) and names what the Agent Boundary Conformance experiment does. Related terms kept distinct: the *Agent Boundary Index* (the published measurements), *conformance testing* (the method), *FinePrint* (the program), *verified/contradicted/unknown* (the verdicts).
+**Boundary Measurement** — the discipline this work defines. It sits inside FinePrint (the research program) and names what the Agent Boundary Conformance experiment does. Related terms kept distinct: the *Agent Boundary Index* (the published measurements), *conformance testing* (the method), *Cross-Examination* (the method's core move — declared intent, the policy engine's decision, and the observed effect examined against each other; a disagreement between any two is a finding; name adopted by the founder 2026-10-22, chosen over Triangulation and Layercheck), *FinePrint* (the program), *verified/contradicted/unknown* (the verdicts).
 
 ## The definition (canonical wording — reuse verbatim)
 > Boundary measurement is the independent measurement of whether an AI agent's enforced limits match its stated limits. Every agent operates inside a boundary — permission rules, approval policies, sandboxes — that its operators believe implements their intentions. Boundary measurement tests that belief: it compares stated intent, the harness's native policy decisions, and observed effects, for each harness version, and publishes the divergence with reproducible, cryptographically verifiable evidence.

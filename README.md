@@ -2,7 +2,7 @@
 
 **Boundary Measurement** is the independent measurement of whether an AI agent's *enforced* limits match its *stated* limits. Think of it as a **building inspector** for agent policies: the inspector doesn't declare the building safe or unsafe — she checks the building against the code its owner filed, item by item, and writes down what matches and what doesn't. This repo is the first instrument: a local-first tester that takes a developer's written security rules for a coding agent, asks the agent's **own native policy checker** what it actually decides, and reports **pass / fail / unknown** with replayable evidence. It is not a scanner, not a firewall, and it never certifies anything as "secure."
 
-**Status (Oct 22, 2026):** sprint complete — verdict **NARROW**. The repo stands as a Codex-T1 conformance *method* with its limitations on its face, not as an Index. The Day-5 fix is **approved and applied** (Oct 22): post-fix evidence is sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`) and the Boundary Scorecard v3 is labelled POST-FIX; the pre-fix v2 scorecard is kept alongside as history. The full living status lives in **[docs/DASHBOARD.md](docs/DASHBOARD.md)** — start there.
+**Status (Oct 22, 2026):** sprint complete — verdict **NARROW**. The repo stands as a two-oracle (Codex + Amp — paper grade **A · Oracle**) conformance *method* with its limitations on its face, not as an Index. The Day-5 fix is **approved and applied** (Oct 22): post-fix evidence is sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`) and the Boundary Scorecard v3 is labelled POST-FIX; the pre-fix v2 scorecard is kept alongside as history. The full living status lives in **[docs/DASHBOARD.md](docs/DASHBOARD.md)** — start there.
 
 ---
 
@@ -27,9 +27,9 @@
 
 ![The three layers Boundary Measurement compares](docs/assets/three_layers.png)
 
-The project is a **harness-neutral framework** with labelled adapters, not a single-harness tool. Five harnesses are in scope: **Codex** is measured at T1 (native oracle, pinned codex-cli 0.149.0); **Claude Code, Cursor, Gemini CLI, and OpenCode** sit at T2 (config evaluation from documented semantics — no measured verdicts yet). No harness is described as generically "supported" — it is described by its tier.
+The project is a **harness-neutral framework** with labelled adapters, not a single-harness tool. **Codex** and **Amp** are measured at paper grade **A · Oracle** (native oracles: pinned codex-cli 0.149.0, pinned amp 0.0.1792680614-g8973a3); **Claude Code, Cursor, Gemini CLI, and OpenCode** sit at **B · Manual** (measured config-evaluations from documented semantics — labelled evaluation, never interrogation); **Muse Code** is **C · No paper** (no decision interface located; no verdicts). No harness is described as generically "supported" — it is described by its grade.
 
-![The five-harness tier matrix](docs/assets/tier_matrix.png)
+![The paper-test grade matrix](docs/assets/tier_matrix.png)
 
 ```mermaid
 flowchart LR
@@ -52,8 +52,9 @@ Key verified mechanics: when several rules match one command, the **strictest de
 |---|---|---|
 | [docs/DASHBOARD.md](docs/DASHBOARD.md) | **CURRENT** | The living status page — read this first |
 | [docs/EXPLAINER.md](docs/EXPLAINER.md) | CURRENT | **Start here if the idea is new to you** — the full plain-language foundation (the building-inspector metaphor, policy, conformance, the first measurement, the sprint-end verdict) |
-| [docs/FRAMEWORK.md](docs/FRAMEWORK.md) | **CURRENT** | The harness-neutral framework: invariant schema, adapter contract, the T1/T2/T3 tiers, the five-harness matrix + surveyed field |
-| [docs/HARNESS_TIERS.md](docs/HARNESS_TIERS.md) | CURRENT | The tier assignments with the evidence behind each (Codex T1 measured; four T2; the T2→T1 promotion condition) |
+| [docs/FRAMEWORK.md](docs/FRAMEWORK.md) | **CURRENT** | The harness-neutral framework: invariant schema, adapter contract, the paper-test grades (A · Oracle / B · Manual / C · No paper; T1/T2/T3 technical aliases), the all-harness matrix + surveyed field |
+| [docs/DIRECTION-2026-10-22.md](docs/DIRECTION-2026-10-22.md) | DIRECTION LOG | Founder direction 2026-10-22: layer primacy (cross-layer checking = the core method), grades = strength of evidence, the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal. Cross-layer check named **Cross-Examination** (founder's tap, 2026-10-22 — chosen over Triangulation / Layercheck) |
+| [docs/HARNESS_TIERS.md](docs/HARNESS_TIERS.md) | CURRENT | The grade assignments with the evidence behind each (Codex + Amp at A · Oracle measured; four at B · Manual; Muse Code at C · No paper; the grade-B→grade-A promotion condition) |
 | [docs/LIMITATIONS.md](docs/LIMITATIONS.md) | **CURRENT** | What the evidence does NOT support — read before citing any result |
 | [docs/COMPETITOR_BASELINES.md](docs/COMPETITOR_BASELINES.md) | CURRENT | Same tests, other tools (harness-eval, agent-security-harness, Snyk) |
 | [docs/COMPETITIVE_EVIDENCE_MATRIX.md](docs/COMPETITIVE_EVIDENCE_MATRIX.md) | CURRENT | 41 fixtures × tools matrix + Day-7 re-verification addendum |
@@ -68,7 +69,8 @@ Key verified mechanics: when several rules match one command, the **strictest de
 | [docs/preregistration/](docs/preregistration/) | CURRENT | Hash-locked pre-registration of the Day-2 run (corpus, thresholds, inclusion rules). Correction Oct 21: Day 1 was exploratory; Day 2 pre-registered a CONFIRMATION/replication of the explored hypothesis, not initial discovery (held-out: stratified alternation) |
 | [docs/daily/](docs/daily/) | DAILY LOG | One brief per sprint day; each is a snapshot of its day |
 | [evidence/reports/day6-scorecard-v3-postfix/](evidence/reports/day6-scorecard-v3-postfix/) | **CURRENT** | The Boundary Scorecard v3 (POST-FIX): `scorecard.json`/`scorecard.html` + `tier-matrix.json` — the shareable-first export |
-| [evidence/postfix-2026-10-22/](evidence/postfix-2026-10-22/) | **CURRENT** | Sealed post-fix evidence: `bundle.json` (41-case corpus, Merkle root `5a974fe6…`) + `bundle-protected.json` (11-case family, Merkle root `29768240…`); both verify clean, unsigned/unwitnessed |
+| [evidence/postfix-2026-10-22/](evidence/postfix-2026-10-22/) | **CURRENT** | Sealed post-fix evidence: `bundle.json` (41-case corpus, Merkle root `5a974fe6…`) + `bundle-protected.json` (11-case family, Merkle root `29768240…`); both verify clean, with detached Ed25519 post-seal attestations (sealed before signing existed, so `signature_state` honestly remains `unsigned`) |
+| [evidence/amp-2026-10-22/](evidence/amp-2026-10-22/) | **CURRENT** | Sealed Amp promotion evidence: `bundle.json` (41-case corpus + 11-case family, Merkle root `cb6eccf0…`, Ed25519-signed) + `rerun.json` raw oracle outputs |
 | [evidence/reports/day6-scorecard/](evidence/reports/day6-scorecard/) | HISTORY (pre-fix) | The Boundary Scorecard v2 (PRE-FIX) — kept as the pre-fix baseline |
 | [evidence/reports/day2-41-corpus/](evidence/reports/day2-41-corpus/) | CURRENT | Standalone deterministic report of the 41-case corpus (`report.json`/`report.html`) |
 | [docs/DAY1_BASELINE_PLAN.md](docs/DAY1_BASELINE_PLAN.md) | HISTORICAL | The Day-1 plan (executed Oct 21) |
@@ -80,4 +82,4 @@ Key verified mechanics: when several rules match one command, the **strictest de
 
 `security/` the invariant contracts · `fixtures/` sample policies + the 41 probe cases · `tools/` the replay engine (stdlib-only, shells to the pinned native checker) · `evidence/` frozen run records + reruns · `docs/` status, baselines, designs.
 
-**Kill criterion (locked) — verdict delivered:** by Day 7 (Oct 27) the sprint had to show a useful result the baselines miss or explain poorly — or stop, publish the negative result honestly, and offer the fixtures upstream. **Verdict: NARROW** (see [docs/daily/2026-10-27.md](docs/daily/2026-10-27.md)): the method is proven on Codex T1 evidence; a public multi-harness Index is not earned on one measured harness. The repo stands as the method, limitations on its face.
+**Kill criterion (locked) — verdict delivered:** by Day 7 (Oct 27) the sprint had to show a useful result the baselines miss or explain poorly — or stop, publish the negative result honestly, and offer the fixtures upstream. **Verdict: NARROW** (see [docs/daily/2026-10-27.md](docs/daily/2026-10-27.md)): the method is proven on Codex evidence (two-oracle since the Oct 22 Amp promotion to paper grade A · Oracle); a public multi-harness Index is not earned on the current evidence. The repo stands as the method, limitations on its face.

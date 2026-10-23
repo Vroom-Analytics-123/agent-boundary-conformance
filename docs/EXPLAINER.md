@@ -61,6 +61,21 @@ no decision at all), with the evidence attached and the layer named:
 rules layer, approval layer, sandbox/effect layer. A result at one layer is
 never reported as a result about the whole system.
 
+In plain names: the **PAPER TEST** is the offline half — what the rulebook
+decides, without running anything — and the **LIVE TEST** is the online half —
+what observably happens when it runs. Each harness earns a paper-test grade:
+**A · Oracle** (the harness ships its own offline decision checker, so we ask
+the machine itself), **B · Manual** (no checker exists; decisions are computed
+by hand from the documented semantics and labelled evaluation, never
+interrogation), **C · No paper** (no decision interface to evaluate; the
+surface is recorded and no verdicts are issued).
+
+The move has a name: **Cross-Examination** — the method's core move: for
+each invariant, the declared intent, the policy engine's decision, and the
+observed effect are examined against each other; a disagreement between any
+two is a finding. (Name adopted by the founder's tap, 2026-10-22 — chosen
+over Triangulation and Layercheck.)
+
 ## How the first measurement was made (Day 1, Oct 21, 2026)
 
 - **The judge is the harness itself.** Our harness never re-implements
@@ -124,6 +139,19 @@ no measured verdicts yet) — see `docs/FRAMEWORK.md` and
 `docs/assets/tier_matrix.png`. The Day-5 proposed fix to the sample
 policy is AWAITING the founder's approval and was NOT applied; all
 results above are pre-fix, labelled as such.
+
+**Update (Oct 22, 2026) — the record above stands; current state moved on:**
+the Day-5 fix was approved and applied; post-fix evidence is sealed
+(`evidence/postfix-2026-10-22/`, Boundary Scorecard v3 POST-FIX) — see
+`docs/DASHBOARD.md`. Amp was promoted to paper grade **A · Oracle**
+(founder decision): FinePrint is now a two-oracle method (Codex +
+`amp permissions test`), with the 41-case corpus + 11-case protected family
+replayed on the Amp oracle and sealed (`evidence/amp-2026-10-22/`,
+Merkle `cb6eccf0…`, Ed25519-signed). The 2026-10-22 all-harness wave
+measured the grade-**B · Manual** config-evaluations (Claude Code, Cursor,
+Gemini CLI, OpenCode — labelled evaluation, never interrogation); Muse Code
+graded **C · No paper** (no decision interface; no verdicts). The NARROW
+verdict above stands as the Oct 21 record.
 
 ## What the results point to
 

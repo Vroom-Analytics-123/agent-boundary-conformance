@@ -2,9 +2,10 @@
 
 Founder: Anish Kumar. Recorded verbatim-intent, paraphrase-faithful, by
 avan. This is a direction log: it adopts no measured claim, changes no
-schema, touches no sealed bundle. The naming candidates below are
-PENDING the founder's tap and MUST NOT be adopted unilaterally in living
-docs.
+schema, touches no sealed bundle. The naming candidates below were
+PENDING the founder's tap at recording time; the founder tapped
+**Cross-Examination** (~18:17 PDT the same evening, chosen over
+Triangulation and Layercheck), and the adoption is recorded below.
 
 ## 1. Layer primacy — cross-layer checking is the core method
 
@@ -20,14 +21,13 @@ checked against the other. This cross-layer checking is the core method
 of the framework — not an add-on, not a report section. Everything the
 framework measures should serve it.
 
-**Naming (CANDIDATES PENDING the founder's tap — do not adopt unilaterally):**
+**Naming (ADOPTED by the founder's tap, 2026-10-22 ~18:17 PDT):** the
+cross-layer check is called **Cross-Examination** — chosen over the other
+candidates, Triangulation and Layercheck.
 
-- Cross-Examination
-- Triangulation
-- Layercheck
-
-A naming-decision placeholder in living docs may list these candidates.
-None of them is the adopted term until the founder taps one.
+Cross-Examination — the method's core move: for each invariant, the
+declared intent, the policy engine's decision, and the observed effect are
+examined against each other; a disagreement between any two is a finding.
 
 ## 2. Grades = strength of evidence
 

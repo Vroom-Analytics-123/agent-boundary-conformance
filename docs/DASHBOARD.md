@@ -1,8 +1,8 @@
 # Boundary Measurement — Program Dashboard
-*Canonical status page. Last updated: Thu Oct 22, 2026, ~18:00 PDT (America/Los_Angeles) — Amp promoted to T1 (second oracle); cross-tier study sealed (T2-fidelity: Codex 100%, Amp 40.4%); post-fix evidence sealed (bundle `5a974fe6…`, scorecard v3 POST-FIX). Sprint verdict NARROW stands. Dates below are TARGETS we aim at, not gates — work runs continuously and pulls forward.*
+*Canonical status page. Last updated: Thu Oct 22, 2026, ~18:35 PDT (America/Los_Angeles) — naming hygiene (PAPER TEST / LIVE TEST; grades A · Oracle / B · Manual / C · No paper); stale-claim sweep; Amp promoted to grade A · Oracle (second oracle); cross-tier study sealed (grade-B fidelity: Codex 100%, Amp 40.4%); post-fix evidence sealed (bundle `5a974fe6…`, scorecard v3 POST-FIX). Sprint verdict NARROW stands. Dates below are TARGETS we aim at, not gates — work runs continuously and pulls forward.*
 
 ## What this is, in one paragraph
-We are founding a discipline called **Boundary Measurement**: independently checking whether an AI coding agent's enforced limits match the limits its operator stated — comparing (1) stated intent, (2) what the agent's own rulebook actually decides, and (3) what observably happens — for each version of each agent tool, and publishing the differences with replayable, cryptographically verifiable evidence. The research program is **FinePrint**; the public measurements will be the **Agent Boundary Index**. The long-term position we are building toward is the independent verifier for agents (the "UL for agents"): the referee vendors, buyers, auditors, and insurers rely on.
+We are founding a discipline called **Boundary Measurement**: independently checking whether an AI coding agent's enforced limits match the limits its operator stated — comparing (1) stated intent, (2) what the agent's own rulebook actually decides, and (3) what observably happens — for each version of each agent tool, and publishing the differences with replayable, cryptographically verifiable evidence. The research program is **FinePrint**; the public measurements will be the **Agent Boundary Index**. The long-term position we are building toward is the independent verifier for agents (the "UL for agents"): the referee vendors, buyers, auditors, and insurers rely on. The three-way comparison is called **Cross-Examination** — the method's core move: for each invariant, the declared intent, the policy engine's decision, and the observed effect are examined against each other; a disagreement between any two is a finding (founder's name, 2026-10-22 — chosen over Triangulation / Layercheck).
 
 ## Objectives (with target dates)
 | # | Objective | Status | Target |
@@ -16,19 +16,20 @@ We are founding a discipline called **Boundary Measurement**: independently chec
 ## What the NARROW verdict means
 
 The locked Day-7 kill test was met in its narrow form — it does **not** bless a public multi-harness Index. The honest continuation:
-1. This repo stands as a Codex-T1 conformance **method** (pre-registered corpus, pinned oracle, sealed Merkle bundles, negative controls, schema-enforced unknown semantics) with its limitations on its face (`docs/LIMITATIONS.md`) — not as an Index.
-2. Next evidence gate for any Index claim: a T2→T1 promotion. Amp is the leading candidate (only vendor besides OpenAI with a shipped permission-test command).
-3. ~~The single pending decision remains Anish's: approve/reject the Day-5 fix diff → apply, re-lock pre-registration, rerun 41 cases, re-seal, re-issue the scorecard without the PRE-FIX banner.~~ — ✅ **decided Oct 22: APPROVED** ("Start the evidence upgrades"). Applied, re-locked, rerun (41 cases + 11-case family + precedence checks, pinned oracle), re-sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`), scorecard v3 POST-FIX issued. The NARROW verdict itself is unchanged: the repo is a Codex-T1 conformance **method**, not an Index.
+1. This repo stands as a two-oracle (Codex + Amp, paper grade **A · Oracle**) conformance **method** (pre-registered corpus, pinned oracles, sealed Merkle bundles, negative controls, schema-enforced unknown semantics) with its limitations on its face (`docs/LIMITATIONS.md`) — not as an Index.
+2. The T2→T1 promotion gate for a second measured harness is now cleared: Amp was promoted to grade A · Oracle on 2026-10-22 (founder decision) — see the two-oracle addendum below. The "public Index" evidence gate (≥2 measured harnesses) is met on the oracle side; whether that licenses a public Index is Anish's call.
+3. ~~The single pending decision remains Anish's: approve/reject the Day-5 fix diff → apply, re-lock pre-registration, rerun 41 cases, re-seal, re-issue the scorecard without the PRE-FIX banner.~~ — ✅ **decided Oct 22: APPROVED** ("Start the evidence upgrades"). Applied, re-locked, rerun (41 cases + 11-case family + precedence checks, pinned oracle), re-sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`), scorecard v3 POST-FIX issued. The NARROW verdict itself is unchanged: the repo is a two-oracle conformance **method**, not an Index.
 4. Oct 28 Foresight checkpoint: NARROW is not a clean kill-test pass. Any filing uses the narrowed novelty language only — and nothing is submitted without his explicit per-item approval.
 Full reasoning: `docs/daily/2026-10-27.md`.
 
-## What's verified true right now (Oct 21)
+## Pre-fix baseline (Oct 21) — preserved as history
+
 - **41 test cases run; all 41 matched the expected decision** — the tester agrees with Codex's own rulebook wherever the rulebook gives an answer. Decisions seen: allow 6 · prompt 4 · forbidden 9 · **unknown 22**. Six independent runs agree byte-identically; sealed Day-6 bundle Merkle root `003bfbb3256032c5febef2559636393d671d75c56ee79788d2d594a38c2d3b32`.
 - **22 of 41 cases (54%) got NO decision at all** from the rulebook — mostly ordinary variants and disguised forms of the forbidden command. This is on a test set deliberately stuffed with tricky variants, so 54% must never be quoted as a real-world rate. "Unknown" means the written rules don't decide it — the agent's approval prompts and sandbox still govern what happens. It is NOT a bypass.
 - **Protected-records family 11/11** — a second sample policy guarding `/records/health` (allow read-only listing, forbid deletion/modification): allow 1 · forbidden 2 · unknown 8, all as expected (REPRO).
 - **Negative controls 4/4 healthy** — a run that passes its negative controls is a broken run.
 - **Precedence re-verified 6/6** — when rules conflict, most-restrictive-wins, order- and specificity-independent.
-- **Framework tiers:** Codex T1 + Amp T1 measured (native oracles, pinned codex-cli 0.149.0 and amp 0.0.1792680614-g8973a3); Claude Code / Cursor / Gemini CLI / OpenCode T2 (config evaluation from documented semantics — measured evaluations, never interrogated). [Five-harness tier graphic](docs/assets/tier_matrix.png). Full cross-tier study: `docs/cross-tier-comparison-2026-10-22.md`.
+- **Paper-test grades:** Codex at **A · Oracle** (T1; native oracle, pinned codex-cli 0.149.0); Claude Code / Cursor / Gemini CLI / OpenCode at **B · Manual** (T2; config evaluation from documented semantics — measured evaluations, never interrogated). [Paper-test grade graphic](docs/assets/tier_matrix.png). Full cross-tier study: `docs/cross-tier-comparison-2026-10-22.md`.
 - **Boundary Scorecard exported** — `evidence/reports/day6-scorecard/` (`scorecard.json` + `scorecard.html` + `tier-matrix.json`), shareable-first but NOT published, with the PRE-FIX banner (the Day-5 fix diff is unapproved and unapplied). Determinism verified on a clean checkout.
 
 ### Post-fix addendum (Oct 22, 2026) — the Day-5 fix is applied; history above preserved
@@ -40,7 +41,7 @@ Full reasoning: `docs/daily/2026-10-27.md`.
 - **Boundary Scorecard v3 (POST-FIX)** — `evidence/reports/day6-scorecard-v3-postfix/`, alongside (not replacing) the pre-fix v2. Regeneration check: byte-identical modulo timestamp/path. Full suite: 50 passed.
 - Tooling hardened during the run per the Day-5 pin checklist: `tools/make_preregistration.py` and `tools/build_protected_bundle.py` now resolve the oracle through `tools/pin.py` (fail-closed on the vendored pinned binary; the host path had been swapped to an unpinned build on Day 4); `tools/verify_bundle.py` is family-aware for the corpus-hash check.
 - **Competitor check (same corpus, re-run REPRO):** harness-eval 8.0.1 (92 rules, 0 mention `execpolicy`, no argv/policy input) and agent-security-harness 4.28.1 (zero `execpolicy`/`codex` in its modules) **cannot express** any fixture — REPRO interface evidence, not a hand-me-down. Native Codex is the oracle itself: it produces the decisions but never compares them against stated intent — which is exactly the job none of the baselines do. Snyk Agent Scan 0.6.9 still hard-blocked without `SNYK_TOKEN` (cell stays **not tested**); OWASP harness concept review only. Unrun cells say "not tested."
-- **Limitations published in-repo** — `docs/LIMITATIONS.md` (single harness · corpus artifact · pre-fix · rules-layer only · baseline scope · modest novelty · unsigned/unwitnessed · what would lift each).
+- **Limitations published in-repo** — `docs/LIMITATIONS.md` (two oracles · corpus artifact · post-fix · rules-layer only · live layer blocked-by-auth · baseline scope · modest novelty · detached attestations, unwitnessed · what would lift each).
 
 ### Two-oracle addendum (Oct 22, 2026) — Amp promoted to T1; Day-7 verdict text above preserved
 
@@ -61,7 +62,7 @@ Our sample rulebook has 3 rules: `git status` → allowed · `deployctl release`
 ## Grants & funding pipeline
 | Route | Size | Status | Target |
 |---|---|---|---|
-| Foresight (Nodes RFP) | $30–100K band | Proposal skeleton drafted; final text Oct 28 from the verdict | Submit by Sat Oct 31, 23:59 PT (Anish submits) |
+| Foresight (Nodes RFP) | $30–100K band | Proposal draft v2 written (post-fix + Amp promotion + cross-tier study); final text Oct 28 from the verdict | Submit by Sat Oct 31, 23:59 PT (Anish submits) |
 | BlueDot Rapid | up to $20K | Full draft written; ~15-min application | Week of Nov 2 |
 | Manifund | varies | Framing drafted with the BlueDot materials | Early Nov |
 | Transformative AI Fund | varies | After reproducible evidence exists | Nov–Dec |
@@ -70,7 +71,7 @@ Our sample rulebook has 3 rules: `git status` → allowed · `deployctl release`
 
 ## Publish queue (nothing here is public yet)
 **Post #1 — "Day 2 build-in-public" (DRAFT, awaiting Anish's approval).**
-Refreshed by the polish pass to bring everything together: the building-inspector metaphor (founder's choice, Oct 21), the framework + five-harness framing, the protected-asset finding, the Day-2/Day-3 results, and the NARROW verdict. Current text at `docs/drafts/2026-10-22-public-post-draft.md` (~180 words). The Day-1/Day-2 wording below is kept for the record as the superseded draft.
+Refreshed by the polish pass to bring everything together: the building-inspector metaphor (founder's choice, Oct 21), the framework + two-oracle (Codex + Amp) framing, the protected-asset finding, the Day-2/Day-3 results, and the NARROW verdict. Current text at `docs/drafts/2026-10-22-public-post-draft.md` (~180 words). The Day-1/Day-2 wording below is kept for the record as the superseded draft.
 
 **Long-form explainer post (DRAFT, awaiting Anish's approval).**
 Lives in the program repo's publish queue (`agent-boundary-program/publish-queue/explainer-post-draft.md`); refreshed by the polish pass from the same sources.

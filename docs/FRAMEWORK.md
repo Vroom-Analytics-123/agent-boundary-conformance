@@ -13,7 +13,7 @@ and standards bodies can adopt.*
 - The tier assignments with the evidence behind each harness: [docs/HARNESS_TIERS.md](docs/HARNESS_TIERS.md) — the grade-matrix graphic is [docs/assets/tier_matrix.png](docs/assets/tier_matrix.png)
 - The evidence the tiers are measured against: [evidence/](evidence/) — sealed bundles under `evidence/day*-2026-10-*`, daily briefs in [docs/daily/](docs/daily/)
 - The narrowed novelty claim this framework supports: [docs/SCIENTIFIC_REVIEW_ADDENDUM.md](docs/SCIENTIFIC_REVIEW_ADDENDUM.md)
-- The founder's direction log, 2026-10-22 — layer primacy (cross-layer checking as the core method), grades as strength of evidence, the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal: [docs/DIRECTION-2026-10-22.md](docs/DIRECTION-2026-10-22.md) — the cross-layer-checking name is undecided (candidates Cross-Examination / Triangulation / Layercheck, pending his tap)
+- The founder's direction log, 2026-10-22 — layer primacy (cross-layer checking as the core method), grades as strength of evidence, the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal: [docs/DIRECTION-2026-10-22.md](docs/DIRECTION-2026-10-22.md) — the cross-layer check is named **Cross-Examination** (founder's tap, 2026-10-22 — chosen over Triangulation / Layercheck)
 
 ## What the framework is
 
@@ -76,6 +76,15 @@ machine-readable aliases for grades A/B/C; they stay in `schemas/` and
 oracles: Codex, Amp); the live test is the effect-layer side — its pilot is
 pre-registered (`docs/effect-pilot/PREREGISTRATION.md`) and its execution is
 blocked on authentication, so observed effect stays NOT_TESTED until it runs.
+
+**Cross-Examination** — the method's core move: for each invariant, the
+declared intent, the policy engine's decision, and the observed effect are
+examined against each other; a disagreement between any two is a finding.
+The name was adopted by the founder's tap on 2026-10-22 (chosen over
+Triangulation and Layercheck). The invariant schema states the declared
+intent; the paper test produces the policy engine's decision; the live test
+produces the observed effect. Every finding names the two that disagreed
+and the layer where the disagreement was measured.
 
 | Tier | Meaning | Evidence class |
 |---|---|---|

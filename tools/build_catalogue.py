@@ -1169,6 +1169,47 @@ ENTRIES += [
 ]
 
 
+DRAFT_TRANSLATIONS_DIR = os.path.join(OUT_DIR, "translations-draft")
+
+BASE_HARNESS_ORDER = ["codex", "claude_code", "gemini", "opencode", "cursor"]
+
+
+def merge_draft_translations():
+    """Merge design-stage draft translations for additional targets.
+
+    Wave A expansion spikes (2026-10-22) add one fragment per new target at
+    docs/catalogue/translations-draft/<harness>.json:
+        {"harness": "<key>", "display": "<name>",
+         "entries": {"FP-001": {"measurement_route": ..., "confidence": ...,
+                                "measured": false, "text": ...}, ...}}
+    Fragments are merged into each entry's translations map. HONESTY RAIL:
+    a fragment translation with measured != false aborts the build — draft
+    targets are UNMEASURED by construction until a real measurement exists.
+    """
+    if not os.path.isdir(DRAFT_TRANSLATIONS_DIR):
+        return
+    for fname in sorted(os.listdir(DRAFT_TRANSLATIONS_DIR)):
+        if not fname.endswith(".json"):
+            continue
+        with open(os.path.join(DRAFT_TRANSLATIONS_DIR, fname)) as f:
+            frag = json.load(f)
+        harness = frag["harness"]
+        for entry in ENTRIES:
+            t = frag.get("entries", {}).get(entry["id"])
+            if t is None:
+                continue
+            if t.get("measured") is not False:
+                raise SystemExit(
+                    f"honesty rail: draft translation {harness}/{entry['id']} "
+                    "must carry measured: false")
+            entry["translations"][harness] = {
+                "measurement_route": t["measurement_route"],
+                "confidence": t["confidence"],
+                "measured": False,
+                "text": t["text"],
+            }
+
+
 def build_json():
     measured = sum(1 for e in ENTRIES if e["measurement_status"] == "MEASURED")
     return {
@@ -1241,7 +1282,9 @@ def md_entry(e):
     L.append("**Per-harness translations** (each labelled; non-Codex are "
              "drafts, not measured):")
     L.append("")
-    for h in ["codex", "claude_code", "gemini", "opencode", "cursor"]:
+    harness_order = BASE_HARNESS_ORDER + [
+        h for h in e["translations"] if h not in BASE_HARNESS_ORDER]
+    for h in harness_order:
         t = e["translations"][h]
         meas = "measured" if t["measured"] else "NOT measured"
         L.append(f"- **{h}** — measurement route {t['measurement_route']}, confidence {t['confidence']}, "
@@ -1368,6 +1411,7 @@ def build_md(data):
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
+    merge_draft_translations()
     data = build_json()
     with open(os.path.join(OUT_DIR, "catalogue.json"), "w") as f:
         json.dump(data, f, indent=2)

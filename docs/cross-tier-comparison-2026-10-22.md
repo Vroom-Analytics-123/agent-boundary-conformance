@@ -73,7 +73,11 @@ aggregate 25/25, zero disagreements. Per oracle class: allow 7/7 · prompt 4/4
 INFERENCE: Codex's rules language is fully described by its documented
 semantics for this corpus. A documentation-faithful T2 evaluation of Codex
 policy reproduces the oracle exactly — where such an evaluation is honest to
-run, it can be trusted completely. (This does not promote any T2 harness:
+run, it can be trusted completely. Methodological caveat: the corpus was
+designed around the same documented semantics the evaluator encodes, so the
+100% reads as "documented semantics == oracle on a semantics-designed
+corpus" — a clean trust signal for T2 evaluations, not a probe of
+undocumented native internals. (This does not promote any T2 harness:
 the fidelity number is about Codex's documentation completeness, not about
 other vendors' semantics.)
 

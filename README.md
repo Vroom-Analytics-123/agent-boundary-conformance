@@ -2,7 +2,7 @@
 
 **Boundary Measurement** is the independent measurement of whether an AI agent's *enforced* limits match its *stated* limits. Think of it as a **building inspector** for agent policies: the inspector doesn't declare the building safe or unsafe — she checks the building against the code its owner filed, item by item, and writes down what matches and what doesn't. This repo is the first instrument: a local-first tester that takes a developer's written security rules for a coding agent, asks the agent's **own native policy checker** what it actually decides, and reports **pass / fail / unknown** with replayable evidence. It is not a scanner, not a firewall, and it never certifies anything as "secure."
 
-**Status (Oct 22, 2026):** sprint complete — verdict **NARROW**. The repo stands as a conformance *method* with two vendor-confirmed Decision-layer routes (Codex + Amp), limitations on its face, not as an Index. The Day-5 fix is **approved and applied** (Oct 22): post-fix evidence is sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`) and the Boundary Scorecard v3 is labelled POST-FIX; the pre-fix v2 scorecard is kept alongside as history. The full living status lives in **[docs/DASHBOARD.md](docs/DASHBOARD.md)** — start there.
+**Status (Oct 22, 2026):** sprint complete — verdict **NARROW**. The repo stands as a conformance *method* with two vendor-confirmed Decision-layer routes (Codex + Amp), limitations on its face, not as an Index. The Day-5 fix is **approved and applied** (Oct 22): post-fix evidence is sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`) and the Boundary Scorecard v3 is labelled POST-FIX; the pre-fix v2 scorecard is kept alongside as history. **Wave A expansion (Oct 22, founder-directed):** six further targets — Omnigent, Hermes Agent, OpenClaw, LangGraph, Strands Agents, CrewAI — now carry design-stage route dossiers and draft catalogue translations (all **UNMEASURED**; see "Coverage" below). The full living status lives in **[docs/DASHBOARD.md](docs/DASHBOARD.md)** — start there.
 
 ---
 
@@ -29,6 +29,8 @@
 
 The project is a **harness-neutral framework** with labelled adapters, not a single-harness tool. **Codex** and **Amp** are measured at the **vendor-confirmed** Decision-layer route (the vendor's own checker answers: pinned codex-cli 0.149.0, pinned amp 0.0.1792680614-g8973a3); **Claude Code, Cursor, Gemini CLI, and OpenCode** are measured at the **reconstructed** route (config-evaluations from documented semantics — labelled evaluation, never interrogation); **Muse Code** has **no paper surface** (no decision interface located; no verdicts). These routes are unranked: ease of measurement never makes a harness better or worse. No harness is described as generically "supported" — it is described by its measurement route.
 
+**Coverage — Wave A targets (design-stage, UNMEASURED).** Six more targets carry route dossiers (`adapters/<key>-assessment.md` + manifest) and draft translations for all 16 catalogue invariants: **Omnigent** (a meta-harness — its own policy engine is the measured surface), **Hermes Agent**, and **OpenClaw** at the **reconstructed** route on paper; **LangGraph**, **Strands Agents**, and **CrewAI** at **no paper surface** — agent frameworks have no declarative policy to read, so their coverage path is a live *instrumented reference agent* designed in each dossier, not a paper route. Nothing about these six is measured yet, and every catalogue translation says so. Adding a target follows **[docs/EXTENDING.md](docs/EXTENDING.md)**.
+
 ![The paper-test route matrix](docs/assets/measurement_routes.png)
 
 ```mermaid
@@ -54,7 +56,11 @@ Key verified mechanics: when several rules match one command, the **strictest de
 | [docs/EXPLAINER.md](docs/EXPLAINER.md) | CURRENT | **Start here if the idea is new to you** — the full plain-language foundation (the building-inspector metaphor, policy, conformance, the first measurement, the sprint-end verdict) |
 | [docs/FRAMEWORK.md](docs/FRAMEWORK.md) | **CURRENT** | The harness-neutral framework: invariant schema, adapter contract, the three layers (Decision = what the rules decide; Approval = the approval moment; Effect = what actually happens — ground truth), the paper-test measurement routes (vendor-confirmed / reconstructed / no paper surface — provenance of the Decision-layer measurement only, never a harness ranking), the all-harness matrix + surveyed field |
 | [docs/DIRECTION-2026-10-22.md](docs/DIRECTION-2026-10-22.md) | DIRECTION LOG | Founder direction 2026-10-22: layer primacy (cross-layer checking = the core method; Effect is ground truth and the most important layer), measurement-route provenance (unranked labels attached to Decision-layer results only), the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal. Cross-layer check named **Cross-Examination** (founder's tap, 2026-10-22 — chosen over Triangulation / Layercheck) |
-| [docs/MEASUREMENT_ROUTES.md](docs/MEASUREMENT_ROUTES.md) | CURRENT | The measurement-route assignments with the evidence behind each (Codex + Amp vendor-confirmed measured; four reconstructed; Muse Code no paper surface; the condition for vendor-confirmed route recognition) |
+| [docs/MEASUREMENT_ROUTES.md](docs/MEASUREMENT_ROUTES.md) | CURRENT | The measurement-route assignments with the evidence behind each (Codex + Amp vendor-confirmed measured; four reconstructed measured-evaluations; Muse Code no paper surface; six Wave A design-stage assignments; the condition for vendor-confirmed route recognition) |
+| [docs/MEASUREMENT_MODEL.md](docs/MEASUREMENT_MODEL.md) | CURRENT | The three-layer doctrine of record: Decision · Approval · Effect, the routes per layer (D1–D3 / A1–A4 / E1–E4), confidence = agreeing routes, and the keystone rule (Approval settles live; Effect settles on an observed live change) |
+| [docs/catalogue/](docs/catalogue/) | CURRENT | The invariant catalogue: 16 parameterized invariants (FP-001…FP-016), each with per-target translations + route + confidence for 11 targets; generated by `tools/build_catalogue.py` from in-code entries + `translations-draft/` fragments |
+| [docs/EXTENDING.md](docs/EXTENDING.md) | CURRENT | **How to add a harness or framework target** — identity pinning, the three spike questions, dossier + manifest + catalogue translations, the instrumented-reference-agent pattern for frameworks, and the promotion path to measured |
+| [docs/approval-effect-protocol.md](docs/approval-effect-protocol.md) | CURRENT | The pre-registered (hash-locked) protocol for live Approval/Effect measurement: route definitions, containment, witness format |
 | [docs/LIMITATIONS.md](docs/LIMITATIONS.md) | **CURRENT** | What the evidence does NOT support — read before citing any result |
 | [docs/COMPETITOR_BASELINES.md](docs/COMPETITOR_BASELINES.md) | CURRENT | Same tests, other tools (harness-eval, agent-security-harness, Snyk) |
 | [docs/COMPETITIVE_EVIDENCE_MATRIX.md](docs/COMPETITIVE_EVIDENCE_MATRIX.md) | CURRENT | 41 fixtures × tools matrix + Day-7 re-verification addendum |
@@ -78,8 +84,22 @@ Key verified mechanics: when several rules match one command, the **strictest de
 | [docs/CATCH_UP_READING.md](docs/CATCH_UP_READING.md) | REFERENCE | The founder's reading plan for the field |
 | [docs/IMPLEMENTATION_DESIGN.md](docs/IMPLEMENTATION_DESIGN.md) | REFERENCE | Stack design notes (Rust path, probe design) |
 
-## Layout
+## Repository structure
 
-`security/` the invariant contracts · `fixtures/` sample policies + the 41 probe cases · `tools/` the replay engine (stdlib-only, shells to the pinned native checker) · `evidence/` frozen run records + reruns · `docs/` status, baselines, designs.
+The repo is organized as a framework: a target-independent core, one
+adapter per target, and evidence kept separate from both.
+
+| Path | Holds |
+|---|---|
+| `docs/catalogue/` | **The invariant catalogue** — 16 parameterized invariants with per-target translations (route + confidence each); generated by `tools/build_catalogue.py`; new-target drafts land in `translations-draft/` first |
+| `adapters/` | **One dossier + manifest per target** (`<key>-assessment.md`, `<key>.manifest.json`); executable adapters for measured targets live in `adapters/<key>/` |
+| `tools/` | **The measurement machinery** — fixture replay, catalogue generator, evidence bundling/sealing/verification, approval witness, effect instrumentation |
+| `evidence/` | **Sealed run records** — frozen bundles, reruns, scorecards. Sealed bundles are never edited; corrections land as new bundles |
+| `docs/` | **Doctrine + status** — the measurement model, framework, route assignments, dashboard, limitations, the extension guide, daily briefs (history) |
+| `fixtures/` · `security/` · `schemas/` | Probe corpora + sample policies · the invariant contracts under test · versioned finding/evidence schemas |
+| `tests/` · `ci/` · `catalogue-contrib/` | Engine tests · CI wiring · the Catalogue Commons (org overlays stay private by construction; worked examples only) |
+
+Extending the framework — a new harness or framework target — is a
+documented, repeatable procedure: **[docs/EXTENDING.md](docs/EXTENDING.md)**.
 
 **Kill criterion (locked) — verdict delivered:** by Day 7 (Oct 27) the sprint had to show a useful result the baselines miss or explain poorly — or stop, publish the negative result honestly, and offer the fixtures upstream. **Verdict: NARROW** (see [docs/daily/2026-10-27.md](docs/daily/2026-10-27.md)): the method is proven on Codex evidence (two vendor-confirmed Decision-layer routes since Oct 22, when Amp's shipped native offline decision oracle `amp permissions test` was recognized as a vendor-confirmed route); a public multi-harness Index is not earned on the current evidence. The repo stands as the method, limitations on its face.

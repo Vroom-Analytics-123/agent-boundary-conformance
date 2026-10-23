@@ -1,5 +1,23 @@
 # Founder direction — 2026-10-22 (~18:15 PDT)
 
+> **Supersession note — 2026-10-22 (~18:29 PDT, the founder's third and
+> controlling iteration).** §2 ("Grades = strength of evidence") below is
+> SUPERSEDED and is preserved as the record of the earlier iteration, not
+> rewritten. Grades and T1/T2/T3 ranking labels are abolished: ease of
+> measurement never makes a harness better or worse. What the grades actually
+> were is provenance of the Layer-1 (Decision-layer) measurement only — now
+> named, unranked: **vendor-confirmed** (the vendor's own checker answers:
+> Codex, Amp), **reconstructed** (evaluated from documented semantics:
+> Claude Code, Cursor, Gemini CLI, OpenCode; Copilot
+> reconstructed-from-configuration, account-walled), **no paper surface**
+> (Pi, Muse Code). The scoring rule in §3 stands in substance — layer
+> outcomes first, a failed layer dominates — with the measurement route
+> annotating confidence in the Decision-layer finding, never ranking
+> harnesses. The layers are named **Decision · Approval · Effect** (adopted
+> by the founder's tap ~18:38 PDT): Decision (Layer 1) = what the rules
+> decide; Approval (Layer 2) = the approval moment; Effect (Layer 3) = what
+> actually happens — ground truth, the most important layer.
+
 Founder: Anish Kumar. Recorded verbatim-intent, paraphrase-faithful, by
 avan. This is a direction log: it adopts no measured claim, changes no
 schema, touches no sealed bundle. The naming candidates below were
@@ -10,11 +28,12 @@ Triangulation and Layercheck), and the adoption is recorded below.
 ## 1. Layer primacy — cross-layer checking is the core method
 
 What makes FinePrint powerful is checking ALL layers AND checking them
-AGAINST EACH OTHER:
+AGAINST EACH OTHER (founder-adopted layer names, 2026-10-22 ~18:38 PDT):
 
 - **Stated intent** — what the developer declared (invariant / policy)
-- **Native policy decision** — what the harness's own decision surface says
-- **Observed effect** — what actually happens when it runs
+- **Decision** (was "Layer 1") — what the harness's rules decide about a command
+- **Approval** (was "Layer 2") — the approval moment: a human or classifier is asked
+- **Effect** (was "Layer 3") — what actually happens when it runs; ground truth, the most important layer. The Live Test is the main event; paper findings are provisional until the Live Test confirms or refutes them
 
 The power is in the comparison: intent vs. decision vs. effect, each pair
 checked against the other. This cross-layer checking is the core method
@@ -70,3 +89,30 @@ catalogue on par with honesty of measurement — see the dated note in the
 *Recorded 2026-10-22 by avan from the founder's direction (~18:15 PDT).
 Documentation of direction only: no measured claim, sealed bundle, or
 schema changed in this pass.*
+
+## Adoption note — measurement-layer names Decision · Approval · Effect (2026-10-22 ~18:38 PDT)
+
+Adopted by the founder's tap + message, 2026-10-22 ~18:38 PDT: the three
+measurement layers are named **Decision · Approval · Effect**, presented
+in that order.
+
+- **Decision** (was "Layer 1"): what the harness's rules decide about a
+  command. The paper test measures this layer.
+- **Approval** (was "Layer 2"): the approval moment — a human or
+  classifier is asked.
+- **Effect** (was "Layer 3"): what actually happens when the command
+  runs. Effect is GROUND TRUTH and the most important layer; the Live
+  Test is the main event; paper findings are provisional until the Live
+  Test confirms or refutes them.
+
+Decision-measurement confidence (adopted in the same direction): the
+Decision layer is measured through different routes — vendor-confirmed
+(the harness ships a native offline decision oracle) / reconstructed
+(decisions computed from documented policy semantics) / no paper surface
+(no decision interface exists to evaluate). The number of INDEPENDENT
+routes that agree is the CONFIDENCE in OUR Decision verdict: two routes
+cross-checked and agreeing = high confidence; one route = lower
+confidence; no route = the Decision layer is unreadable for that
+harness, and the Live Test is the only measurement. Confidence attaches
+to our measurement, never to the harness — it is NOT a grade, ranking,
+or score of any harness.

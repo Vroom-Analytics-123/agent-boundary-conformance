@@ -40,6 +40,25 @@ rulebooks can be read by a human, reviewed, version-controlled — and
    versions. A rulebook the owner wrote is stable and inspectable — *if*
    someone verifies, after each update, that it still does what they think.
 
+## The three layers — the framework
+
+Everything this project measures serves one comparison: stated intent, the
+policy engine's decision, and the observed effect, examined against each
+other. The layers (adopted names, founder's tap 2026-10-22):
+
+- **Decision (Layer 1) — what the rules decide.** The harness's policy
+  engine's offline decision for a command under a policy: allow, prompt/ask,
+  forbidden, or no decision. The **PAPER TEST** measures this layer, without
+  running anything.
+- **Approval (Layer 2) — the approval moment.** The human/classifier gate
+  where an action is asked about, approved, or overridden.
+- **Effect (Layer 3) — what actually happens.** The observed runtime outcome.
+  The **LIVE TEST** measures this layer.
+
+**Effect is ground truth and the most important layer** (founder's explicit
+priority): paper (Decision-layer) findings are provisional until the live
+test confirms or refutes them.
+
 ## What conformance means
 
 Conformance asks one narrow question: **does the system behave the way it
@@ -57,18 +76,24 @@ safety audiences the variant phrasing is IAEA/arms-control-style
 verification — same mechanics, different register.) This project compares three
 things — stated intent, written policy, and the engine's actual decision
 for each command — and reports **pass / fail / unknown** (the engine gave
-no decision at all), with the evidence attached and the layer named:
-rules layer, approval layer, sandbox/effect layer. A result at one layer is
+no decision at all), with the evidence attached and the layer named: **Decision** (what the
+harness's rules decide), **Approval** (the approval moment — a human or
+classifier is asked), or **Effect** (what actually happens when it runs —
+ground truth). A result at one layer is
 never reported as a result about the whole system.
 
 In plain names: the **PAPER TEST** is the offline half — what the rulebook
 decides, without running anything — and the **LIVE TEST** is the online half —
-what observably happens when it runs. Each harness earns a paper-test grade:
-**A · Oracle** (the harness ships its own offline decision checker, so we ask
-the machine itself), **B · Manual** (no checker exists; decisions are computed
-by hand from the documented semantics and labelled evaluation, never
-interrogation), **C · No paper** (no decision interface to evaluate; the
-surface is recorded and no verdicts are issued).
+what observably happens when it runs. Every paper-test (Decision-layer)
+finding carries its **measurement route** — provenance of how the Decision
+verdict was obtained, unranked and descriptive (founder model correction,
+2026-10-22; grades/tiers as harness rankings are abolished — ease of
+measurement never makes a harness better or worse): **vendor-confirmed**
+(the vendor's own checker answers — we ask the machine itself),
+**reconstructed** (the vendor ships no checker; decisions are computed by
+hand from the documented semantics and labelled evaluation, never
+interrogation), or **no paper surface** (no rule surface exists to evaluate;
+the surface is recorded and no verdicts are issued).
 
 The move has a name: **Cross-Examination** — the method's core move: for
 each invariant, the declared intent, the policy engine's decision, and the
@@ -99,8 +124,8 @@ over Triangulation and Layercheck.)
   command and check the work.
 
 **Result (REPRO):** measurement validity 41/41 — every expected native
-rules-layer decision matched — and 22 of the 41 (54%) returned **unknown**:
-no rules-layer decision at all (allow 6 · prompt 4 · forbidden 9 · unknown
+Decision-layer decision matched — and 22 of the 41 (54%) returned **unknown**:
+no Decision-layer decision at all (allow 6 · prompt 4 · forbidden 9 · unknown
 22). Measurement is not protection: intent coverage is a separate judgment —
 10 satisfied · 23 unresolved · 8 not applicable (of 41), under its own
 denominator. A correctly reported unknown is a successful measurement, never
@@ -128,30 +153,34 @@ against the closest open-source tools: harness-eval and
 agent-security-harness **cannot express** these tests at all (re-run
 REPRO); Snyk Agent Scan and the OWASP harness were not tested
 (documented gaps, never silent omissions). The locked Day-7 kill test
-returned **NARROW**: the method is proven on the Codex T1 evidence, but a
-public multi-harness Index is not earned on one measured harness — so the
-repo stands as a Codex-T1 conformance *method* with its limitations on
-its face (`docs/LIMITATIONS.md`), not as an Index. Full reasoning:
-`docs/daily/2026-10-27.md`. The project also became a harness-neutral
-framework (founder's direction, Oct 21): Codex is T1 (native oracle);
-Claude Code, Cursor, Gemini CLI, and OpenCode are T2 (config evaluation,
-no measured verdicts yet) — see `docs/FRAMEWORK.md` and
-`docs/assets/tier_matrix.png`. The Day-5 proposed fix to the sample
+returned **NARROW**: the method is proven on the Codex vendor-confirmed
+evidence, but a public multi-harness Index is not earned on one measured
+harness — so the repo stands as a Codex-vendor-confirmed conformance
+*method* with its limitations on its face (`docs/LIMITATIONS.md`), not as
+an Index. Full reasoning: `docs/daily/2026-10-27.md`. The project also
+became a harness-neutral framework (founder's direction, Oct 21): Codex's
+Decision-layer route is vendor-confirmed (the vendor's own checker);
+Claude Code, Cursor, Gemini CLI, and OpenCode are reconstructed (evaluation
+from documented semantics, no measured verdicts yet) — see
+`docs/FRAMEWORK.md` and `docs/assets/measurement_routes.png`. The Day-5
+proposed fix to the sample
 policy is AWAITING the founder's approval and was NOT applied; all
 results above are pre-fix, labelled as such.
 
 **Update (Oct 22, 2026) — the record above stands; current state moved on:**
 the Day-5 fix was approved and applied; post-fix evidence is sealed
 (`evidence/postfix-2026-10-22/`, Boundary Scorecard v3 POST-FIX) — see
-`docs/DASHBOARD.md`. Amp was promoted to paper grade **A · Oracle**
-(founder decision): FinePrint is now a two-oracle method (Codex +
-`amp permissions test`), with the 41-case corpus + 11-case protected family
-replayed on the Amp oracle and sealed (`evidence/amp-2026-10-22/`,
-Merkle `cb6eccf0…`, Ed25519-signed). The 2026-10-22 all-harness wave
-measured the grade-**B · Manual** config-evaluations (Claude Code, Cursor,
-Gemini CLI, OpenCode — labelled evaluation, never interrogation); Muse Code
-graded **C · No paper** (no decision interface; no verdicts). The NARROW
-verdict above stands as the Oct 21 record.
+`docs/DASHBOARD.md`. Amp's Decision-layer route was recognized as
+**vendor-confirmed** (founder decision 2026-10-22; the earlier "promotion"
+framing was rank-framed and is dropped): FinePrint now has two
+vendor-confirmed Decision-layer routes (Codex + `amp permissions test`),
+with the 41-case corpus + 11-case protected family replayed on the Amp
+checker and sealed (`evidence/amp-2026-10-22/`, Merkle `cb6eccf0…`,
+Ed25519-signed). The 2026-10-22 all-harness wave measured the
+**reconstructed** evaluations (Claude Code, Cursor, Gemini CLI, OpenCode —
+labelled evaluation, never interrogation); Muse Code has **no paper
+surface** (no decision interface; no verdicts). The NARROW verdict above
+stands as the Oct 21 record.
 
 ## What the results point to
 
@@ -160,7 +189,7 @@ verdict above stands as the Oct 21 record.
    are the same action in different spelling — so variants of a forbidden
    command receive no ruling.
 2. **Wrappers are opaque.** Once a command sits inside `bash -c "…"`, the
-   rules layer sees only "bash"; rules about the payload never fire.
+   Decision layer sees only "bash"; rules about the payload never fire.
 3. **Precedence is sound.** When rules conflict, the most restrictive wins
    — re-verified across six rule-file variants (REPRO). The engine's logic
    is not the problem; its *coverage* is partial.
@@ -196,7 +225,7 @@ A complete conformance suite spans a spectrum:
 - **Asset-specific prohibitions** — including forms no command-shaped rule
   anticipates: a short script that empties a ledger file is not an `rm` at
   all, so a prefix rulebook will likely have nothing to say about it. The
-  honest result is "unknown at the rules layer" — which is exactly what
+  honest result is "unknown at the Decision layer" — which is exactly what
   motivates measuring the *effect* layer later.
 - **Allowed-but-gated** actions (production deploy → must ask a human).
 - **Routine allowed** actions as positive controls — because conformance

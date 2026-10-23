@@ -1,5 +1,27 @@
 # Cross-Tier Comparison Study — 2026-10-22
 
+> **Framing addendum — 2026-10-22 (founder model correction, third and
+> controlling iteration, ~18:29 PDT).** This is a dated record: the measured
+> numbers below are unchanged, and the historical text is not rewritten. The
+> *framing* is corrected as follows. (1) The fidelity results — Codex
+> documented-semantics reconstruction 52/52 vs its checker; Amp 21/52 — are
+> facts about the **reconstruction route** for those vendors' Decision-layer
+> (Layer 1) measurement: how faithfully an evaluation built from the vendor's
+> documented semantics alone reproduces the vendor's own checker on the same
+> corpus. They are not scores, and no harness "earns" anything by them. (2)
+> The Amp case is a **Decision-layer finding in its own right**: unpublished
+> built-in rules decide ~59% of the corpus (24/41), and the vendor's
+> documentation does not describe its own decision layer — the 40.4% is the
+> honest ceiling for any docs-only Amp evaluation. (3) "Cross-tier" below now
+> reads as **cross-route / cross-harness** in living references: the study
+> compares measurement routes (vendor-confirmed vs reconstructed vs no paper
+> surface) across harnesses. Grades/tiers as harness rankings are abolished —
+> ease of measurement never makes a harness better or worse. The file keeps
+> its name as a dated record.
+> The framework is the three layers: Decision (Layer 1) = what the rules
+> decide; Approval (Layer 2) = the approval moment; Effect (Layer 3) = what
+> actually happens — ground truth, the most important layer.
+
 *Founder directive (Oct 22, 2026): "do T1, T2 and T3 for all harnesses wherever
 possible and compare between T1 and T3, T2 and T3 for the same harness."
 This document is the study record. Claims are labelled **REPRO** (oracle or

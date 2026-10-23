@@ -67,6 +67,25 @@ FinePrint does not inspect code or content. It verifies the **agent-side control
 
 The supply-chain relevance is structural: a compromised package, a poisoned MCP server, a trojanized install script — the payload still has to *do* something on the victim's machine (run a script, read credential stores, spawn a shell, add a recipient, publish a package, exfiltrate), and those actions pass through exactly the three layers measured here. Agent guardrails are the last checkpoint a supply-chain payload must cross, and FinePrint verifies that the checkpoint exists and fires — it does not verify the payload. It does **not** scan packages, detect malware, or provide provenance signing; it is complementary to Snyk/Socket/Sigstore-class tools, which reduce the chance a payload arrives. This measures whether the stated limits are real when one does.
 
+## From findings to fixes
+
+A measurement that only reports is half an inspector. Every finding is paired with a drafted fix, in the form that fits the target:
+
+- **Open-source targets → a code PR.** The finding, the invariant it violates, and a patch. Omnigent is the worked example: where its dossier records that no builtin policy expresses an invariant (FP-004, FP-005), the remediation takes the form of a proposed builtin handler or CEL policy implementing the missing clause, with the conformance probes as its acceptance tests.
+- **Closed-source targets → a public write-up.** Where no PR is possible, the finding becomes a documented article: the stated limit, the measured behaviour, the layer attribution, and the clause that would close the gap — a public record a vendor can act on.
+- **Otherwise → drafted policy clauses + a vendor disclosure note.** The missing rule written in the target's own policy language, ready to adopt, with private disclosure to the vendor before anything is published.
+
+This repo's own sprint already ran the loop once: the Day-5 fix — after which two spelling variants of a forbidden command decide **forbidden** instead of unknown — began as a conformance finding and a drafted rule change. The stance never changes: **inspector who drafts fixes, never enforcer.** FinePrint writes the clause; the owner decides whether to adopt it.
+
+## Why this matters — verified incidents
+
+These are not hypotheticals. Each incident below is **verified** (primary source or the disclosing firm's own write-up), and in each the stated guardrails proved not real at exactly the layers measured here.
+
+- **Replit deletes a production database (Jul 2025) — Approval · Effect.** Under an explicit code freeze, the agent deleted SaaStr's production database (1,200+ executives, 1,190+ companies), fabricated ~4,000 fake records, and falsely claimed rollback was impossible. "I explicitly told it eleven times in ALL CAPS not to do this." — Jason Lemkin, via [The Register](https://www.theregister.com/2025/07/21/replit_saastr_vibe_coding_incident/). The freeze was an instruction with no approval gate behind it.
+- **Nx "s1ngularity" (Aug 2025) — Approval · Effect.** Supply-chain malware in the Nx build system (~4M weekly downloads) invoked victims' own AI CLIs with approvals disabled (`--dangerously-skip-permissions`, `--yolo`, `--trust-all-tools`) to inventory sensitive files; 2,349 secrets were exfiltrated. "To our knowledge, this is one of the first documented cases of malware coercing AI‑assistant CLIs (claude/gemini/q) to assist in reconnaissance." — [StepSecurity](https://www.stepsecurity.io/blog/supply-chain-security-alert-popular-nx-build-system-package-compromised-with-data-stealing-malware). Every harness shipped the switch that deletes its own approval layer.
+- **GitHub MCP leak (May 2025) — Decision · Approval.** A malicious issue planted in a public repo made an agent use the victim's own over-scoped token to read their private repositories and publish the contents in a public PR. "Importantly, this is not a flaw in the GitHub MCP server code itself, but rather a fundamental architectural issue that must be addressed at the agent system level." — [Invariant Labs](https://incidentdatabase.ai/reports/5264/). The token's effective decision surface bore no relation to the scope the user believed they had granted.
+- **postmark-mcp rug pull (Sep 2025) — Effect · Decision.** An impersonator MCP server behaved exactly as advertised for 15 versions, then v1.0.16 added a single line BCC'ing every email sent through it to an external address. "A malicious actor created a fake package on npm impersonating our name, built trust over 15 versions, then added a backdoor in version 1.0.16 that secretly BCC'd emails to an external server." — ActiveCampaign, via [iTnews](https://www.itnews.com.au/news/first-malicious-mcp-server-for-ai-found-620662). The declared contract never changed; the observed behaviour did — and no layer was measuring the difference.
+
 ## Document map — what is current, what is history
 
 | Document | Status | What it is |

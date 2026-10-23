@@ -1,4 +1,4 @@
-# Claude Code policy translation notes (2026-10-22, T2 wave)
+# Claude Code policy translation notes (2026-10-22, reconstructed route)
 
 Source policies: `fixtures/policies/default.rules` + `fixtures/policies/protected_records.rules`
 (Codex prefix-rule form) and `evidence/day1-baseline-2026-10-21/prec_{a..f}.rules`

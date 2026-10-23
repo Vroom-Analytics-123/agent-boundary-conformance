@@ -72,7 +72,7 @@ live policy decision was ever observed.**
   but the echo provider never makes tool calls, so no policy decision is
   exercised; a two-run determinism test has no oracle to test against.
 
-### (b) Documented semantics precise enough for honest T2? — **NO**
+### (b) Documented semantics precise enough for an honest reconstructed route? — **NO**
 
 - **No declarative per-command rule format is vendor-documented.**
   Permission profiles are a preconfigured native catalog: the schema
@@ -108,7 +108,7 @@ live policy decision was ever observed.**
   user code**, not a declarative policy surface; the block wire contract
   is not vendor-documented for this product.
 
-### (c) Surface record (T3)
+### (c) Surface record (no paper surface)
 
 - **Policy surface:** 4-axis permission model (approval / filesystem /
   network / reviewer authority); named permission profiles
@@ -127,24 +127,26 @@ live policy decision was ever observed.**
   "what does this policy decide for this command." **No verdicts are
   issued.**
 
-## Recommended tier
+## Recommended measurement route
 
-| Harness | Tier | Oracle type | One-line evidence |
+| Harness | Route | Evidence type | One-line evidence |
 |---|---|---|---|
-| Muse Code (Meta, `muse` 1.4.11) | **T3** | none | Real binary inspected (REPRO): no check/evaluate subcommand; profiles are select-never-create with an undocumented rule format; approvals route through an LLM reviewer (default on) and human prompts — no deterministic offline decision interface exists. (DOC+REPRO) |
+| Muse Code (Meta, `muse` 1.4.11) | **no paper surface** | none | Real binary inspected (REPRO): no check/evaluate subcommand; profiles are select-never-create with an undocumented rule format; approvals route through an LLM reviewer (default on) and human prompts — no deterministic offline decision interface exists. (DOC+REPRO) |
 
-**Tier: T3 — Surface survey.** No honest T2 route exists today: there is
-no documented command-rule format to reimplement, and the would-be oracle
-would have to reproduce an LLM reviewer's judgment, which is not a
-deterministic function of config.
+**Route: no paper surface — surface survey.** (Provenance of the Layer-1
+measurement only; unranked — ease of measurement never makes a harness
+better or worse.) No honest reconstructed route exists today: there is
+no documented command-rule format to reimplement, and the would-be
+checker would have to reproduce an LLM reviewer's judgment, which is not
+a deterministic function of config.
 
 ## Open questions (what would resolve them)
 
 1. **Documented `PermissionFormatV1` / custom-profile rule schema** — would
    turn the select-not-create catalog into an evaluatable rule set.
    (Vendor action: publish the schema.)
-2. **A `muse policy check`-style offline entrypoint** — the T3→T1
-   promotion condition, same as every other harness.
+2. **A `muse policy check`-style offline entrypoint** — the condition
+   for vendor-confirmed recognition, same as every other harness.
 3. **Semantics of the shell argv-prefix grammar** (`ShellPrefixSuggestion`:
    prefix vs literal, precedence across stages, no-match within the
    grammar) — currently visible only as struct names in the binary.
@@ -161,12 +163,12 @@ deterministic function of config.
 - **Stochastic reviewer in the decision path:** the LLM approval judge is
   on by default and profiles select reviewer authority
   (`autoReview|human|none`) — even with an account, per-command decisions
-  would not be deterministic, so an oracle-style replay (Codex T1) is not
-  achievable on the current architecture.
+  would not be deterministic, so a Codex-style vendor-confirmed replay is
+  not achievable on the current architecture.
 - **No declarative rule format:** without a documented allow/deny command
-  syntax, a T2 reimplementation has nothing to reimplement — inventing
-  rule semantics from binary struct names would be fabrication, not
-  evaluation.
+  syntax, a reconstructed-route reimplementation has nothing to
+  reimplement — inventing rule semantics from binary struct names would
+  be fabrication, not evaluation.
 
 ## Evidence log
 

@@ -26,7 +26,7 @@ precedence operator.
 - `protected-records.json` — translation of `fixtures/policies/protected_records.rules`.
 - `protected-records.order-swapped.json` — exact reverse key order.
 
-## Explicit normalization assumption (T2 ceiling)
+## Explicit normalization assumption (reconstructed-route ceiling)
 
 The corpus fixtures carry `argv` (token lists). OpenCode's `shell` tool
 matches "parsed commands", but the vendor does not document the

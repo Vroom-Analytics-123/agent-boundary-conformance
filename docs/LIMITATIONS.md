@@ -6,23 +6,26 @@ resolution flag). This page lists what the week-1 evidence does NOT support.
 It is part of the repo on purpose: a conformance project that hides its own
 coverage gaps has no standing to report anyone else's.
 
-## 1. Single-harness evidence (Codex T1 only)
+## 1. Single-harness evidence (Codex, vendor-confirmed only)
 
 - Measured verdicts exist for exactly one harness: Codex (`codex-cli 0.149.0`,
   vendored pinned binary, sha256 `bbc3341e…`). REPRO, six agreeing runs.
-- Claude Code, Cursor, Gemini CLI, OpenCode are **T2 (config-evaluation)**:
-  no decision oracle exists, **no verdicts were measured** — their manifests
-  say so explicitly. Nothing in this repo may be read as a verdict about
-  any of them.
+- Claude Code, Cursor, Gemini CLI, OpenCode are measured at the
+  **reconstructed** route (config-evaluation from documented semantics):
+  no vendor decision checker exists, **no verdicts were measured** — their
+  manifests say so explicitly. Nothing in this repo may be read as a verdict
+  about any of them.
 - The "public Index" concept is therefore unproven: an index needs ≥2 measured
-  harnesses. The next evidence gate is a T2→T1 promotion (Amp is the leading
-  candidate — the only vendor besides OpenAI with a shipped permission-test
-  command), not more Codex runs.
+  harnesses. The next evidence gate is a vendor-confirmed route recognition
+  (Amp is the leading candidate — the only vendor besides OpenAI with a
+  shipped permission-test command), not more Codex runs.
 
 ### Addendum (2026-10-22) — Amp promoted: measured verdicts now exist for two harnesses
 
-The founder approved Amp's promotion to paper grade **A · Oracle** (T1) on
-2026-10-22. `amp permissions test` (pinned `0.0.1792680614-g8973a3`,
+The founder recognized Amp's Decision-layer route as **vendor-confirmed** on
+2026-10-22: `amp permissions test` is a shipped native offline decision
+oracle, verified that day (the earlier "promotion" framing was rank-framed
+and is dropped). Pinned `0.0.1792680614-g8973a3`,
 sha256 `89304a6e…`) replayed the full 41-case corpus + 11-case protected
 family byte-identically across two runs; sealed bundle
 `evidence/amp-2026-10-22/bundle.json` (Merkle root `cb6eccf0…`,
@@ -31,7 +34,7 @@ exist for **two** harnesses (Codex + Amp) — the "single harness" limitation
 above is lifted. The "public Index" evidence gate (≥2 measured harnesses)
 is now met on the oracle side; whether that licenses a public Index is the
 founder's call, not this document's. Claude Code, Cursor, Gemini CLI,
-OpenCode remain paper grade **B · Manual** (T2): no native-decision verdicts
+OpenCode remain at the **reconstructed** route: no native-decision verdicts
 were measured for them — the 2026-10-22 wave measured their
 config-evaluation methods (doc-cited engine tests), which their manifests
 label evaluation, never interrogation.
@@ -106,7 +109,7 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   execution) was attempted and **blocked before any case execution**: the
   pinned `codex exec` cannot complete a model turn in this environment
   without authentication (no `~/.codex/auth.json`, no `OPENAI_API_KEY`;
-  requests time out). It produced **no Layer-2/3 measurements** — everything
+  requests time out). It produced **no Approval/Effect-layer measurements** — everything
   above stands unchanged. The blocked result, per-case table (16/16 blocked),
   and standalone unsigned evidence are in `docs/effect-pilot/`.
 
@@ -201,9 +204,10 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   and no observed effect was measured for any harness in this wave.**
   `intent_coverage` at the effect layer is UNRESOLVED everywhere; the
   paper-vs-live agreement classes are `not-evaluated`. The paper side
-  (A/B grades) remains the measured evidence; the live side is an honest
-  blank, not a pass. Any citation must say "blocked at the runnability
-  gate — no live cases executed."
+  (Decision-layer evidence at vendor-confirmed and reconstructed routes) remains
+  the measured evidence; the live side is an honest blank, not a pass. Any
+  citation must say "blocked at the runnability gate — no live cases
+  executed."
 - The unblock is founder-supplied auth per harness (RESULTS.md §6), used
   only for the contained 12 cases under the locked configs — zero
   pre-registration changes needed. Until then this limitation stands.
@@ -212,7 +216,7 @@ from the pre-fix bundle/scorecard v2 — never mix them.
 
 | Limitation | Evidence that would lift it |
 |---|---|
-| Single harness | LIFTED 2026-10-22: Amp promoted to paper grade A · Oracle (T1) — `amp permissions test` at the pinned version replayed the corpus + protected family byte-identically; sealed `evidence/amp-2026-10-22/` (Merkle `cb6eccf0…`, Ed25519-signed). Measured verdicts now exist for two harnesses. |
+| Single harness | LIFTED 2026-10-22: Amp's Decision-layer route recognized as vendor-confirmed — `amp permissions test` at the pinned version replayed the corpus + protected family byte-identically; sealed `evidence/amp-2026-10-22/` (Merkle `cb6eccf0…`, Ed25519-signed). Measured verdicts now exist for two harnesses. |
 | Corpus artifact | A second corpus sampled from real policy files / observed command traffic, pre-registered before running |
 | Pre-fix | LIFTED 2026-10-22: founder approved the Day-5 diff → applied, re-locked, reran 41 cases + 11-case family + precedence checks, re-sealed (`evidence/postfix-2026-10-22/`), re-issued scorecard v3 POST-FIX |
 | Rules-layer only | 2026-10-22: first live wave pre-registered + run — 9/9 harnesses blocked-by-auth at the runnability gate (no local model provider, no executing offline mode); 12 cases + 9 pinned configs locked and committed unexecuted in `docs/live-test/`; unblock = founder-supplied auth per harness. Live layer still UNRESOLVED. |

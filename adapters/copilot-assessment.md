@@ -59,7 +59,7 @@ touched.
 - `copilot help <topic>` topics are docs, not evaluators. Determinism demo
   is N/A: there is no decision function to replay.
 
-### (b) Documented semantics precise enough for honest T2? — **YES**
+### (b) Documented semantics precise enough for an honest reconstructed route? — **YES**
 
 The surface is declarative and the semantics are specified row-by-row in
 both vendor docs and the binary's own help. Four rule surfaces, three of
@@ -145,18 +145,18 @@ declarative surface of the set." For the **CLI** surface that is wrong:
 deny-always-wins precedence, stem-prefix shell matching with worked
 examples, literal-plus-`:*` saved-approval matching, and a documented
 deny/ask/allow precedence + ask-by-default rule language are **at least as
-declarative as the other T2 harnesses** (the note likely described the
-IDE autocomplete product, not the CLI). The managed rule-array format is
+declarative as the other reconstructed-route harnesses** (the note likely
+described the IDE autocomplete product, not the CLI). The managed rule-array format is
 the richest of the set; its ceiling is that it is admin-authored only —
 it does not appear in the user `settings.json` reference (verified:
 `copilot help config`, 262 lines, no `permissions` deny/ask/allow keys).
 
-**Ceilings capping at T2 (gaps, all recorded):**
+**Ceilings capping at the reconstructed route (gaps, all recorded):**
 
 1. No offline oracle — everything above is DOC (+REPRO of the help text),
    never interrogation.
 2. The `permissions` deny/ask/allow array format is documented under
-   **managed settings only**; a T2 adapter evaluating it ingests
+   **managed settings only**; a reconstructed-route adapter evaluating it ingests
    admin-authored policy, not something an ordinary user writes in
    `settings.json`.
 3. "Read-only shell command" auto-allow classifier is a built-in
@@ -180,15 +180,17 @@ it does not appear in the user `settings.json` reference (verified:
    extended in the very near future to support wildcard matching and
    other richer functionality" — explicitly under construction.
 
-### (c) Surface record — N/A (harness is T2, not T3)
+### (c) Surface record — N/A (harness is reconstructed, not no-paper-surface)
 
-## Recommended tier
+## Recommended measurement route
 
-| Harness | Tier | Oracle type | One-line evidence |
+| Harness | Route | Evidence type | One-line evidence |
 |---|---|---|---|
-| GitHub Copilot CLI (`@github/copilot` 1.0.103) | **T2** | config-evaluation | No check/evaluate subcommand (REPRO: full subcommand list + binary strings grep), but deny-always-wins precedence, stem-prefix shell patterns, literal-plus-`:*` saved approvals, and managed deny/ask/allow arrays with an ask-by-default rule are documented precisely enough to evaluate — labelled evaluation, never interrogation. (INFERENCE on DOC+REPRO) |
+| GitHub Copilot CLI (`@github/copilot` 1.0.103) | **reconstructed** | config-evaluation | No check/evaluate subcommand (REPRO: full subcommand list + binary strings grep), but deny-always-wins precedence, stem-prefix shell patterns, literal-plus-`:*` saved approvals, and managed deny/ask/allow arrays with an ask-by-default rule are documented precisely enough to evaluate — labelled evaluation, never interrogation. (INFERENCE on DOC+REPRO) |
 
-**Tier: T2 — Config evaluation.** An honest adapter evaluates the
+**Route: reconstructed — config evaluation.** (Provenance of the Layer-1
+measurement only; unranked — ease of measurement never makes a harness
+better or worse.) An honest adapter evaluates the
 deny-first rule engine (flags + `permissions-config.json` + URL lists +
 managed arrays) against the five invariants in the shared vocabulary,
 labels every result evaluation, and treats stochastic layers (assisted
@@ -200,7 +202,8 @@ attribution, never a verdict.
 1. **Live decision probe behind the wall** — one authenticated run asking
    "what does this policy decide for this command" would confirm the DOC
    semantics against the runtime. Blocked by the login/subscription wall
-   (hard limit). T2→T1 condition stays: a shipped offline evaluator.
+   (hard limit). The condition for vendor-confirmed recognition stays: a
+   shipped offline evaluator.
 2. **Read-only shell classifier** — vendor documentation of which shell
    commands count as "read-only" for auto-approval.
 3. **Chain/splitting semantics** for `&&`/`;`/`|` in shell rule matching.

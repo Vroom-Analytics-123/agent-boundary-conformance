@@ -33,7 +33,7 @@ An entry is accepted only if ALL of these hold:
    family with at least one probe. "An invariant without probes is a wish."
 2. **Measured before claimed.** New entries arrive `UNMEASURED`. `MEASURED`
    is granted by maintainers only after the expectation runs against the
-   pinned oracle (Codex T1 native, `codex-cli 0.149.0`) — never on the
+   pinned vendor checker (Codex, vendor-confirmed route, `codex-cli 0.149.0`) — never on the
    contributor's say-so. A contribution that sets `measurement_status:
    MEASURED` must carry `provenance.kind: measured` with `measured_on`
    naming the harness + version, plus `evidence_refs`; the loader rejects

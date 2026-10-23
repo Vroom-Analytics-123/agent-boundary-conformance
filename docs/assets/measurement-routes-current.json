@@ -1,0 +1,87 @@
+{
+  "generated_utc": "2026-10-23T01:30:00Z",
+  "schema_version": "measurement-routes.v1",
+  "note": "Measurement routes are provenance of the Layer-1 measurement only \u2014 unranked, never harness quality (founder correction 2026-10-22, superseding the Grade A/B/C and T1/T2/T3 ranking labels). A harness is described by its measurement route, never as generically 'supported'.",
+  "sources": {
+    "manifests": [
+      "adapters/codex.v0.manifest.json",
+      "adapters/amp.manifest.json",
+      "adapters/claude-code.manifest.json",
+      "adapters/cursor.manifest.json",
+      "adapters/gemini-cli.manifest.json",
+      "adapters/opencode.manifest.json"
+    ],
+    "assessments": [
+      "adapters/copilot-assessment.md",
+      "adapters/muse-code-assessment.md"
+    ],
+    "framework": "docs/FRAMEWORK.md",
+    "route_assignments": "docs/MEASUREMENT_ROUTES.md"
+  },
+  "harnesses": [
+    {
+      "harness": "codex",
+      "measurement_route": "vendor-confirmed",
+      "oracle_type": "native-offline",
+      "verdicts": "measured verdicts",
+      "evidence_class": "REPRO",
+      "version_pin": "codex-cli 0.149.0"
+    },
+    {
+      "harness": "amp",
+      "measurement_route": "vendor-confirmed",
+      "oracle_type": "native-offline",
+      "verdicts": "measured verdicts",
+      "evidence_class": "REPRO",
+      "version_pin": "amp 0.0.1792680614-g8973a3"
+    },
+    {
+      "harness": "claude-code",
+      "measurement_route": "reconstructed",
+      "oracle_type": "config-evaluation",
+      "verdicts": "measured evaluation",
+      "evidence_class": "DOC+REPRO (INFERENCE)",
+      "version_pin": "@anthropic-ai/claude-code@2.1.307"
+    },
+    {
+      "harness": "cursor",
+      "measurement_route": "reconstructed",
+      "oracle_type": "config-evaluation",
+      "verdicts": "measured evaluation",
+      "evidence_class": "DOC+THIRD-PARTY (INFERENCE)",
+      "version_pin": "cursor 2026.10.19 (Allowlist mode)"
+    },
+    {
+      "harness": "gemini-cli",
+      "measurement_route": "reconstructed",
+      "oracle_type": "config-evaluation",
+      "verdicts": "measured evaluation",
+      "evidence_class": "REPRO+DOC (INFERENCE)",
+      "version_pin": "@google/gemini-cli@0.65.0"
+    },
+    {
+      "harness": "opencode",
+      "measurement_route": "reconstructed",
+      "oracle_type": "config-evaluation",
+      "verdicts": "measured evaluation",
+      "evidence_class": "DOC+REPRO (INFERENCE)",
+      "version_pin": "opencode-ai@1.19.3 (1.x)"
+    },
+    {
+      "harness": "copilot",
+      "measurement_route": "reconstructed",
+      "oracle_type": "config-evaluation",
+      "verdicts": "assessment only (account wall)",
+      "evidence_class": "DOC+REPRO",
+      "version_pin": "@github/copilot@1.0.103"
+    },
+    {
+      "harness": "muse-code",
+      "measurement_route": "no paper surface",
+      "oracle_type": "none located",
+      "verdicts": "no verdicts",
+      "evidence_class": "DOC+REPRO",
+      "version_pin": "muse-stable 1.4.11"
+    }
+  ]
+}

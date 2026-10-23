@@ -59,12 +59,12 @@ python3 tools/catalogue_loader.py --validate-contrib <entry>.json
 1. **No entry without probes** — an invariant without probes is a wish.
 2. **Measured before claimed** — new entries arrive `UNMEASURED`. `MEASURED`
    is granted by maintainers only after the expectation runs on the pinned
-   oracle; the loader rejects `MEASURED` without measured provenance +
+   vendor checker; the loader rejects `MEASURED` without measured provenance +
    evidence refs.
 3. **Provenance required** — no anonymous invariants.
 4. **Every `<slot>` in a probe must be a declared parameter.**
 5. **Dual-verdict honesty** — probes that expect `unknown` are unresolved
-   intent at the rules layer, never satisfied protections.
+   intent at the Decision layer, never satisfied protections.
 
 ## The check runner (product wedge)
 
@@ -146,17 +146,18 @@ The fresh run is diffed against the sealed baseline. Reported:
 `{actual, matched_rules, raw, note, layer, error}` with `actual` in the
 shared vocabulary (`forbidden` | `prompt` | `allow` | `unknown`).
 
-| adapter | tier | route |
+| adapter | measurement route | route |
 |---|---|---|
-| `codex` | T1 | pinned native oracle (`codex execpolicy check`) via `tools/pin.py` — fail closed if the pinned binary is unavailable |
-| `claude-code` | T2 | documented-semantics evaluation engine (`adapters/claude-code/evaluate.py`); evidence class "T2-evaluation (never interrogated)" |
+| `codex` | vendor-confirmed | pinned native checker (`codex execpolicy check`) via `tools/pin.py` — fail closed if the pinned binary is unavailable |
+| `claude-code` | reconstructed | documented-semantics evaluation engine (`adapters/claude-code/evaluate.py`); evidence class "reconstructed evaluation (never interrogated)" |
 
-Other T2 engines (cursor, gemini-cli, opencode) expose different
-`evaluate()` signatures today; they join the registry when a conformant
-shim exists — a wrong shim is worse than no adapter. T2 runs measure the
-documented-semantics engine against the pack's expectations: divergences
-from codex-measured expectations are engine-vs-oracle differences, not
-conformance verdicts, and the scorecard labels them as such.
+Other reconstructed-route engines (cursor, gemini-cli, opencode) expose
+different `evaluate()` signatures today; they join the registry when a
+conformant shim exists — a wrong shim is worse than no adapter.
+Reconstructed-route runs measure the documented-semantics engine against
+the pack's expectations: divergences from codex-measured expectations are
+engine-vs-checker differences, not conformance verdicts, and the scorecard
+labels them as such.
 
 ## The local-first boundary
 
@@ -202,6 +203,6 @@ your machine.
    `forbidden` — expectation FAILs where the oracle is *more* protective.
    Intent adjudication treats these as satisfied-protection, not
    regressions.
-4. **T2 expectations.** The core pack's expectations are codex-measured;
-   running them against a T2 engine yields informative divergences, not
-   conformance verdicts.
+4. **Reconstructed-route expectations.** The core pack's expectations
+   are codex-measured; running them against a reconstructed-route engine
+   yields informative divergences, not conformance verdicts.

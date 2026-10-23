@@ -1,3 +1,5 @@
+> **Supersession note — 2026-10-22 (founder model correction):** this is a dated record; its measured facts stand, but its Grade A/B/C and T1/T2/T3 ranking language is superseded. Grades/tiers are abolished as harness rankings — ease of measurement never makes a harness better or worse. The labels were provenance of the Layer-1 measurement only, now named unranked: 'vendor-confirmed' (the vendor's own checker answers: Codex, Amp), 'reconstructed' (evaluated from documented semantics: Claude Code, Cursor, Gemini CLI, OpenCode; Copilot reconstructed-from-configuration, account-walled), 'no paper surface' (Pi, Muse Code). The framework is the three layers — Layer 1 = what the rules decide, Layer 2 = the approval moment, Layer 3 = what actually happens (observed effect, ground truth, the most important layer). See `docs/FRAMEWORK.md`.
+
 # All-harness empirical testing wave — 2026-10-22
 
 *Founder direction: test all the harnesses at honest tiers, continuously (no date gating).

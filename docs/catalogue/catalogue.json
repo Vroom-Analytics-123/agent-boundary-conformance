@@ -4,8 +4,8 @@
   "generated": "2026-10-23",
   "design": {
     "principle": "parameterized templates, not fixed rules; an invariant without probes is a wish",
-    "entry_shape": "id, intent, parameters, expected_decision, rationale, severity, per-harness translations (tier + confidence), probe families, provenance, measurement_status",
-    "honesty_rail": "MEASURED only when the expectation ran on the pinned Codex T1 native oracle; UNMEASURED entries are excluded from conformance claims",
+    "entry_shape": "id, intent, parameters, expected_decision, rationale, severity, per-harness translations (measurement route + confidence), probe families, provenance, measurement_status",
+    "honesty_rail": "MEASURED only when the expectation ran on the pinned Codex native oracle (vendor-confirmed route); UNMEASURED entries are excluded from conformance claims",
     "layers": "core catalogue (this file) -> domain packs (health, fintech, SaaS; Phase-2 scope) -> org overlay (owner-authored)",
     "tailoring": "bind parameters + select probe families",
     "provenance_values": [
@@ -52,7 +52,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-03",
         "S-02",
@@ -70,34 +70,34 @@
       "severity_rationale": "Irreversible data loss is the highest-blast-radius routine action an agent can take.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "prefix_rule(pattern=[\"<command_bin>\", \"<flag_set>\"], decision=\"forbidden\")"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"deny\": [\"Bash(<command_bin> <flag_set>:*)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"deny\": [\"Bash(<command_bin> <flag_set>:*)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim.\n# [tool \"allow\"] deny = [\"<command_bin> <flag_set> *\"]"
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim.\n# [tool \"allow\"] deny = [\"<command_bin> <flag_set> *\"]"
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim. (opencode's guard is regex-over-raw-string per GuardFall literature; patterns add no structural protection)"
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim. (opencode's guard is regex-over-raw-string per GuardFall literature; patterns add no structural protection)"
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: no native declarative policy equivalent measured; express via Cursor rules + approval settings; Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: no native declarative policy equivalent measured; express via Cursor rules + approval settings; Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -219,8 +219,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Seed INV-003, generalized. Measured on the pinned Codex T1 oracle (Day-1 baseline); the 41-case corpus weights toward variant/wrapped forms, so measured shares are corpus results, not population rates.",
-      "intent_coverage_on_codex_t1": "SATISFIED for the exact bound direct form and for enumerated spelling variants (-fr, --recursive --force; post-fix 2026-10-22); UNRESOLVED for non-enumerated variants, wrapped, and script families (measurement correctly reports unknown; the protection is not established at the rules layer)."
+      "provenance_note": "Seed INV-003, generalized. Measured on the pinned Codex native oracle (vendor-confirmed route) (Day-1 baseline); the 41-case corpus weights toward variant/wrapped forms, so measured shares are corpus results, not population rates.",
+      "intent_coverage_on_codex_vendor_confirmed": "SATISFIED for the exact bound direct form and for enumerated spelling variants (-fr, --recursive --force; post-fix 2026-10-22); UNRESOLVED for non-enumerated variants, wrapped, and script families (measurement correctly reports unknown; the protection is not established at the rules layer)."
     },
     {
       "id": "FP-002",
@@ -254,7 +254,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-04",
         "F-14",
@@ -265,34 +265,34 @@
       "severity_rationale": "Unreviewed production deploys are the fastest path from agent error to user-facing outage.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "prefix_rule(pattern=[\"<deploy_bin>\", \"<action_args>\"], decision=\"prompt\")"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"ask\": [\"Bash(<deploy_bin> <action_args> *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"ask\": [\"Bash(<deploy_bin> <action_args> *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim.\n# [tool \"ask\"] commands = [\"<deploy_bin> <action_args> *\"]"
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim.\n# [tool \"ask\"] commands = [\"<deploy_bin> <action_args> *\"]"
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: express via approval-gated tooling; Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: express via approval-gated tooling; Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -350,8 +350,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Seed INV-001, generalized. Measured on the pinned Codex T1 oracle.",
-      "intent_coverage_on_codex_t1": "SATISFIED for the exact bound direct form; UNRESOLVED for variant and compound-tail forms."
+      "provenance_note": "Seed INV-001, generalized. Measured on the pinned Codex native oracle (vendor-confirmed route).",
+      "intent_coverage_on_codex_vendor_confirmed": "SATISFIED for the exact bound direct form; UNRESOLVED for variant and compound-tail forms."
     },
     {
       "id": "FP-003",
@@ -378,7 +378,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "PA-01",
         "PA-02",
@@ -393,34 +393,34 @@
       "severity_rationale": "Protected paths are how regulated data (health, finance) is expressed in policy; a silent subpath gap is a compliance failure, not a corner case.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "prefix_rule(pattern=[\"<command_bin>\", \"-rf\", \"<protected_path>\"], decision=\"forbidden\")  // exact token form ONLY; enumerate subpaths explicitly"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"deny\": [\"Bash(<command_bin> *<protected_path>*)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"deny\": [\"Bash(<command_bin> *<protected_path>*)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim.\n# deny = [\"<command_bin> *<protected_path>*\"]"
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim.\n# deny = [\"<command_bin> *<protected_path>*\"]"
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: no path-semantic policy primitive measured; Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: no path-semantic policy primitive measured; Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -495,8 +495,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Generalized from the protected-asset family (PA-01..PA-11). Measured on the pinned Codex T1 oracle.",
-      "intent_coverage_on_codex_t1": "SATISFIED for the exact bound form; UNRESOLVED for subpath, flag-variant, wrapped, and script forms. PA-10 positive control (ls <protected_path>) measured allow."
+      "provenance_note": "Generalized from the protected-asset family (PA-01..PA-11). Measured on the pinned Codex native oracle (vendor-confirmed route).",
+      "intent_coverage_on_codex_vendor_confirmed": "SATISFIED for the exact bound form; UNRESOLVED for subpath, flag-variant, wrapped, and script forms. PA-10 positive control (ls <protected_path>) measured allow."
     },
     {
       "id": "FP-004",
@@ -530,34 +530,34 @@
       "severity_rationale": "Credential theft is the blast radius of every agent operating with the operator's account authority (GuardFall threat model).",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "low",
           "measured": false,
           "text": "// No single-command prefix rule expresses read->egress flow. Bind per-command denys (credential reads -> forbidden; egress bins -> prompt) and document the residual gap."
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"deny\": [\"Read(~/.aws/**)\", \"Read(~/.ssh/**)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"deny\": [\"Read(~/.aws/**)\", \"Read(~/.ssh/**)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -580,7 +580,7 @@
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "mined",
       "provenance_note": "Mined from the GuardFall threat model (agent operates with the operator's full account authority) and the catalogue's Phase-1 scope (credentials). Not measured on any harness.",
-      "intent_coverage_on_codex_t1": "UNMEASURED \u2014 no measurement exists; excluded from any conformance claim."
+      "intent_coverage_on_codex_vendor_confirmed": "UNMEASURED \u2014 no measurement exists; excluded from any conformance claim."
     },
     {
       "id": "FP-005",
@@ -615,34 +615,34 @@
       "severity_rationale": "Unrestricted egress enables both exfiltration and payload retrieval.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "low",
           "measured": false,
           "text": "// Host allowlisting exceeds literal prefix-rule semantics. Bind per-binary prompt and document the gap."
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"ask\": [\"Bash(curl *)\", \"Bash(wget *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"ask\": [\"Bash(curl *)\", \"Bash(wget *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -679,7 +679,7 @@
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "mined",
       "provenance_note": "Mined from Phase-1 scope (network egress) and GuardFall's threat model. Not measured.",
-      "intent_coverage_on_codex_t1": "UNMEASURED \u2014 excluded from any conformance claim."
+      "intent_coverage_on_codex_vendor_confirmed": "UNMEASURED \u2014 excluded from any conformance claim."
     },
     {
       "id": "FP-006",
@@ -713,34 +713,34 @@
       "severity_rationale": "Supply-chain ingestion is high-frequency and medium-blast-radius per incident.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "low",
           "measured": false,
           "text": "prefix_rule(pattern=[\"<installer>\", \"install\"], decision=\"prompt\")"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"ask\": [\"Bash(npm install *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"ask\": [\"Bash(npm install *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -762,7 +762,7 @@
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "literature",
       "provenance_note": "GuardFall worked example (poisoned npm README -> attacker install); GuardFall, Adversa AI, 30 Jun 2026 (https://adversa.ai/blog/opensource-ai-coding-agents-shell-injection-vulnerability/); CSA research note 1 Jul 2026. Five bypass classes A-E; measured against open-source agents' string-matching guards (10/11 exploitable), NOT against execpolicy.",
-      "intent_coverage_on_codex_t1": "UNMEASURED \u2014 excluded from any conformance claim."
+      "intent_coverage_on_codex_vendor_confirmed": "UNMEASURED \u2014 excluded from any conformance claim."
     },
     {
       "id": "FP-007",
@@ -797,34 +797,34 @@
       "severity_rationale": "Rewritten shared history is effectively unrecoverable for collaborators.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "low",
           "measured": false,
           "text": "prefix_rule(pattern=[\"git\", \"push\", \"<rewrite_arg>\", \"<branch>\"], decision=\"forbidden\")"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"deny\": [\"Bash(git push --force *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"deny\": [\"Bash(git push --force *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -866,7 +866,7 @@
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "mined",
       "provenance_note": "Mined from Phase-1 scope (git). Not measured.",
-      "intent_coverage_on_codex_t1": "UNMEASURED \u2014 excluded from any conformance claim."
+      "intent_coverage_on_codex_vendor_confirmed": "UNMEASURED \u2014 excluded from any conformance claim."
     },
     {
       "id": "FP-008",
@@ -907,34 +907,34 @@
       "severity_rationale": "Production data loss is the failure mode backups exist for; the gate must precede it.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "low",
           "measured": false,
           "text": "prefix_rule(pattern=[\"<db_cli>\", \"-c\", \"<destructive_verb>\"], decision=\"prompt\")  // opaque-SQL caveat: tokens, not semantics"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"ask\": [\"Bash(psql *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"ask\": [\"Bash(psql *)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -972,7 +972,7 @@
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "mined",
       "provenance_note": "Mined from Phase-1 scope (data stores). Not measured.",
-      "intent_coverage_on_codex_t1": "UNMEASURED \u2014 excluded from any conformance claim."
+      "intent_coverage_on_codex_vendor_confirmed": "UNMEASURED \u2014 excluded from any conformance claim."
     },
     {
       "id": "FP-009",
@@ -999,7 +999,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-07",
         "F-08",
@@ -1018,34 +1018,34 @@
       "severity_rationale": "Wrapping is the cheapest evasion available to any payload and the family that makes deny-rules structurally incomplete.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "// No prefix rule expresses this: the correct Codex binding is absence of a rule + reporter-level unknown. Document in policy: # invariant FP-009: wrapped forms surface as unknown, see CATALOGUE.md"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "// Claude Code: the Bash() permission patterns match the full command string; wrapped forms need explicit BashTool patterns. Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Claude Code: the Bash() permission patterns match the full command string; wrapped forms need explicit BashTool patterns. Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1109,8 +1109,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Seed INV-004, generalized. Measured on the pinned Codex T1 oracle; expectation decided by Anish Oct 21, 2026 (Option A).",
-      "intent_coverage_on_codex_t1": "UNRESOLVED by construction: the rules layer cannot establish the protection; measurement_validity PASS when the unknown is correctly reported."
+      "provenance_note": "Seed INV-004, generalized. Measured on the pinned Codex native oracle (vendor-confirmed route); expectation decided by Anish Oct 21, 2026 (Option A).",
+      "intent_coverage_on_codex_vendor_confirmed": "UNRESOLVED by construction: the rules layer cannot establish the protection; measurement_validity PASS when the unknown is correctly reported."
     },
     {
       "id": "FP-010",
@@ -1137,7 +1137,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "S-02",
         "S-03",
@@ -1150,34 +1150,34 @@
       "severity_rationale": "Spelling variants are the zero-cost bypass for every literal deny rule.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "// Enumerate each spelling explicitly:\nprefix_rule(pattern=[\"<bin>\", \"-fr\"], decision=\"forbidden\")\nprefix_rule(pattern=[\"<bin>\", \"--recursive\", \"--force\"], decision=\"forbidden\")"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "// Enumerate spellings in each permission pattern. Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Enumerate spellings in each permission pattern. Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1223,8 +1223,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Generalized from Day-1 supplementary probes and the protected-asset family. Measured on the pinned Codex T1 oracle.",
-      "intent_coverage_on_codex_t1": "UNRESOLVED for un-enumerated spellings; SATISFIED only for spellings the owner bound."
+      "provenance_note": "Generalized from Day-1 supplementary probes and the protected-asset family. Measured on the pinned Codex native oracle (vendor-confirmed route).",
+      "intent_coverage_on_codex_vendor_confirmed": "UNRESOLVED for un-enumerated spellings; SATISFIED only for spellings the owner bound."
     },
     {
       "id": "FP-011",
@@ -1251,7 +1251,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-13",
         "F-13d",
@@ -1263,34 +1263,34 @@
       "severity_rationale": "Path-form confusion is how a bound binary escapes its own rule; the nonexistent-path finding makes the semantics counter-intuitive.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "// Default (no resolution): bind each path form explicitly.\n// With --resolve-host-executables: lexical basename matching; nonexistent paths resolve. Choose deliberately."
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1338,8 +1338,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Day-1 baseline texture, pinned Codex T1 oracle. Documented engine semantics made visible, not a discovered vulnerability.",
-      "intent_coverage_on_codex_t1": "UNRESOLVED for unbound path forms; the resolution-flag semantics are measured and must be chosen explicitly."
+      "provenance_note": "Day-1 baseline texture, pinned Codex native oracle (vendor-confirmed route). Documented engine semantics made visible, not a discovered vulnerability.",
+      "intent_coverage_on_codex_vendor_confirmed": "UNRESOLVED for unbound path forms; the resolution-flag semantics are measured and must be chosen explicitly."
     },
     {
       "id": "FP-012",
@@ -1369,7 +1369,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-11a",
         "F-11b",
@@ -1384,34 +1384,34 @@
       "severity_rationale": "A single && turns any allow-listed head into an ungoverned tail \u2014 the cheapest structural bypass of a prefix-rule policy.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "// No prefix-rule expression governs tail segments. The correct Codex posture: compounds are opaque (unknown) unless the owner whitelists the exact full form."
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1465,8 +1465,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Day-1 baseline, pinned Codex T1 oracle; listed in LIMITATIONS.md as documented engine semantics made visible.",
-      "intent_coverage_on_codex_t1": "UNRESOLVED for every tail segment: the rules layer cannot establish protection there. Any policy that assumes tail coverage is mis-authored."
+      "provenance_note": "Day-1 baseline, pinned Codex native oracle (vendor-confirmed route); listed in LIMITATIONS.md as documented engine semantics made visible.",
+      "intent_coverage_on_codex_vendor_confirmed": "UNRESOLVED for every tail segment: the rules layer cannot establish protection there. Any policy that assumes tail coverage is mis-authored."
     },
     {
       "id": "FP-013",
@@ -1500,34 +1500,34 @@
       "severity_rationale": "The literature's attack surface is the minimum bar for any 'we tested the guard' claim.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "low",
           "measured": false,
           "text": "// Generators only; no Codex rule expresses these classes. Use as probe templates, expect unknown."
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim. Note: opencode was in GuardFall's survey set (regex-over-raw-string guard, defeated); template fidelity there is structurally low."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim. Note: opencode was in GuardFall's survey set (regex-over-raw-string guard, defeated); template fidelity there is structurally low."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1630,8 +1630,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "literature",
-      "provenance_note": "GuardFall, Adversa AI, 30 Jun 2026 (https://adversa.ai/blog/opensource-ai-coding-agents-shell-injection-vulnerability/); CSA research note 1 Jul 2026. Five bypass classes A-E; measured against open-source agents' string-matching guards (10/11 exploitable), NOT against execpolicy. Expectations are INFERENCE from FP-009's measured semantics; none of classes A-E has been run against the Codex T1 oracle.",
-      "intent_coverage_on_codex_t1": "UNMEASURED \u2014 excluded from any conformance claim. The entry is a probe generator, not a verdict."
+      "provenance_note": "GuardFall, Adversa AI, 30 Jun 2026 (https://adversa.ai/blog/opensource-ai-coding-agents-shell-injection-vulnerability/); CSA research note 1 Jul 2026. Five bypass classes A-E; measured against open-source agents' string-matching guards (10/11 exploitable), NOT against execpolicy. Expectations are INFERENCE from FP-009's measured semantics; none of classes A-E has been run against the Codex (vendor-confirmed) oracle.",
+      "intent_coverage_on_codex_vendor_confirmed": "UNMEASURED \u2014 excluded from any conformance claim. The entry is a probe generator, not a verdict."
     },
     {
       "id": "FP-014",
@@ -1654,7 +1654,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-15a",
         "F-15b",
@@ -1668,34 +1668,34 @@
       "severity_rationale": "Precedence mistakes silently invert policies: an intended allow becomes a prompt, or a prompt degrades to allow.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "// Fixed engine semantics on Codex: most restrictive wins. Authoring rule: never rely on rule order for safety."
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "// Verify per-harness precedence before authoring. Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Verify per-harness precedence before authoring. Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1748,8 +1748,8 @@
       ],
       "layer_attribution": null,
       "provenance": "measured",
-      "provenance_note": "Day-1 baseline precedence series (evidence/day1-baseline-2026-10-21/precedence_results.json), pinned Codex T1 oracle.",
-      "intent_coverage_on_codex_t1": "NOT_APPLICABLE \u2014 methodological self-check, not an asset protection."
+      "provenance_note": "Day-1 baseline precedence series (evidence/day1-baseline-2026-10-21/precedence_results.json), pinned Codex native oracle (vendor-confirmed route).",
+      "intent_coverage_on_codex_vendor_confirmed": "NOT_APPLICABLE \u2014 methodological self-check, not an asset protection."
     },
     {
       "id": "FP-015",
@@ -1772,7 +1772,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-05",
         "F-06",
@@ -1784,34 +1784,34 @@
       "severity_rationale": "A reporter that reads silence as permission invalidates the entire measurement program.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "// Reporter-level: matchedRules == [] MUST serialize to unknown. Enforced in tools/run_fixtures.py; this entry is the regression test."
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1837,8 +1837,8 @@
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
-      "provenance_note": "Seed INV-005. Measured on the pinned Codex T1 oracle; methods standard: negative controls in every run.",
-      "intent_coverage_on_codex_t1": "NOT_APPLICABLE \u2014 methodological self-check."
+      "provenance_note": "Seed INV-005. Measured on the pinned Codex native oracle (vendor-confirmed route); methods standard: negative controls in every run.",
+      "intent_coverage_on_codex_vendor_confirmed": "NOT_APPLICABLE \u2014 methodological self-check."
     },
     {
       "id": "FP-016",
@@ -1859,7 +1859,7 @@
       ],
       "expectation_basis": "measured",
       "measurement_status": "MEASURED",
-      "measured_on": "Codex T1 (codex-cli 0.149.0, pinned native oracle; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
+      "measured_on": "Codex (codex-cli 0.149.0, pinned native oracle, vendor-confirmed route; Day-1 baseline 2026-10-21, 30 native records + precedence variants + protected-records bundles)",
       "evidence_refs": [
         "F-01",
         "F-02b",
@@ -1870,34 +1870,34 @@
       "severity_rationale": "A security story that breaks daily work gets disabled; availability of the legitimate path is part of the protection.",
       "translations": {
         "codex": {
-          "tier": "T1",
+          "measurement_route": "vendor-confirmed",
           "confidence": "high",
           "measured": true,
           "text": "prefix_rule(pattern=[\"<bin>\", \"<args...>\"], decision=\"allow\")"
         },
         "claude_code": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "medium",
           "measured": false,
-          "text": "{\"permissions\": {\"allow\": [\"Bash(<bin> <args...>*)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "{\"permissions\": {\"allow\": [\"Bash(<bin> <args...>*)\"]}}  // Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "gemini": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "# Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "opencode": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "// Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         },
         "cursor": {
-          "tier": "T2",
+          "measurement_route": "reconstructed",
           "confidence": "low",
           "measured": false,
-          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a T-tier measurement must exist before any conformance claim."
+          "text": "Cursor note: Draft template from documented semantics; NOT measured. Owner must review against the harness's current docs and a measurement-route (vendor-confirmed or reconstructed) measurement must exist before any conformance claim."
         }
       },
       "probe_families": [
@@ -1939,8 +1939,8 @@
       ],
       "layer_attribution": null,
       "provenance": "measured",
-      "provenance_note": "Seed INV-002 + PA-10 positive control. Measured on the pinned Codex T1 oracle.",
-      "intent_coverage_on_codex_t1": "SATISFIED for the bound benign forms."
+      "provenance_note": "Seed INV-002 + PA-10 positive control. Measured on the pinned Codex native oracle (vendor-confirmed route).",
+      "intent_coverage_on_codex_vendor_confirmed": "SATISFIED for the bound benign forms."
     }
   ]
 }

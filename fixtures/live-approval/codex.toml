@@ -1,0 +1,6 @@
+# Pinned live approval config — Codex (codex-cli 0.149.0)
+# Equivalent to: codex exec -c approval_policy=never -s workspace-write
+# (the live invocation pins these via -c/-s; this file pins the values
+# as text so the protocol lock is byte-verifiable).
+approval_policy = "never"
+sandbox_mode = "workspace-write"

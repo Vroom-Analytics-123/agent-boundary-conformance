@@ -8,6 +8,35 @@
 >
 > It matters because agent autonomy is scaling faster than agent accountability. Today, the only parties who can say whether an agent's controls work are the vendors who built them and the developers who hope they configured them correctly. An independent measurement discipline is the missing institution — the same role crash testing created for cars, penetration testing for networks, and SOC 2 for SaaS. Whoever maintains the trusted measurements becomes the referee every vendor, buyer, auditor, and insurer has to reckon with.
 
+## The three measurement layers (founder-adopted names, 2026-10-22)
+
+Every finding names its layer. The names were adopted by the founder's
+tap on 2026-10-22 (~18:38 PDT):
+
+- **Decision** (Layer 1) — what the harness's rules decide about a
+  command. The paper test measures this layer.
+- **Approval** (Layer 2) — the approval moment: a human or classifier
+  is asked.
+- **Effect** (Layer 3) — what actually happens when the command runs.
+  **Effect is ground truth and the most important layer.** The **Live
+  Test** is the main event; paper findings are provisional until the
+  Live Test confirms or refutes them.
+
+## Decision-layer measurement — routes and confidence (founder-adopted, 2026-10-22)
+
+The Decision layer is measured through different routes:
+
+- **vendor-confirmed** — the harness ships a native offline decision oracle;
+- **reconstructed** — decisions are computed from documented policy semantics;
+- **no paper surface** — no decision interface exists to evaluate.
+
+The number of INDEPENDENT routes that agree is the CONFIDENCE in OUR
+Decision verdict: two routes cross-checked and agreeing = high confidence;
+one route = lower confidence; no route = the Decision layer is unreadable
+for that harness, and the Live Test is the only measurement. Confidence
+attaches to our measurement, never to the harness — it is NOT a grade,
+ranking, or score of any harness.
+
 ## Why the "make a mark" odds are genuinely better than startup base rates (and where they aren't)
 Higher than usual, for structural reasons — not optimism:
 - **The seat is empty.** No incumbent publishes intent↔decision↔effect measurements; the neighbouring fields (scanning, red-teaming, runtime governance) are occupied, this one is not. Field-definition is winner-take-most: the first credible, sustained publisher becomes the citation.

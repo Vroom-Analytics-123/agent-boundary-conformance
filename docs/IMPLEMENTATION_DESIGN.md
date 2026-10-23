@@ -55,3 +55,28 @@ Decision checks say what the rules layer *decides*; they don't observe the appro
 
 ## Explicit non-goals for v1
 No LLM anywhere in the verdict path. No graph library. No SaaS. No auto-merge of fixes (Day 5 = one human-approved diff). No Claude adapter beyond the Day-4 feasibility spike. If it doesn't make the Codex evidence more trustworthy, it waits.
+
+## Addendum v1.1 (2026-10-22) — two-oracle method; measured B · Manual adapters
+
+v1 above is the 2026-10-20 record; what follows supersedes its single-oracle
+framing. Execution is continuous (no longer day-gated).
+
+- **Second oracle: Amp.** The `oracle` trait gains an `amp` implementor:
+  shells to the pinned `amp` binary (`0.0.1792680614-g8973a3`,
+  `tools/vendor/amp/…`, git-ignored) via `amp permissions test --json
+  <Tool> --cmd "…" [--settings-file <policy.json>]`; captures raw stdout JSON
+  verbatim as evidence. Native action vocabulary (`allow`/`ask`/`reject`/
+  `delegate`/no-match) normalizes to the framework's allow/prompt/forbidden/
+  unknown per INV-005 (no-match → unknown, never allow). Promoted to paper
+  grade **A · Oracle** by founder decision 2026-10-22; sealed
+  `evidence/amp-2026-10-22/bundle.json` (Merkle `cb6eccf0…`, Ed25519-signed).
+  Adapter contract: `adapters/amp.manifest.json` (active).
+- **Measured B · Manual adapters.** The 2026-10-22 all-harness wave measured
+  the config-evaluation adapters for Claude Code, Cursor, Gemini CLI, and
+  OpenCode (doc-cited engine tests: 85/85, 38/38, 33/33, 43/43) — labelled
+  evaluation, never interrogation; manifests declare
+  `oracle.type: config-evaluation`. Muse Code assessed **C · No paper**; GitHub
+  Copilot CLI assessed B · Manual-config (account wall at `/login`).
+- The v1 non-goals stand, updated: no adapter re-implements a harness's
+  matching logic and presents the result as the harness's decision
+  (framework invariant, enforced per manifest).

@@ -108,15 +108,20 @@ ENTRIES = [
              "probes": [["<command_bin>", "<flag_set>", "<target_path>"]],
              "expected": ["forbidden"], "measured": True,
              "corpus_ref": "F-03"},
-            {"family": "variant",
+            {"family": "variant-spelling",
              "probes": [["<command_bin>", "-fr", "<target_path>"],
                         ["<command_bin>", "--recursive", "--force",
-                         "<target_path>"],
-                        ["./<command_bin>", "<flag_set>", "<target_path>"]],
+                         "<target_path>"]],
+             "expected": ["forbidden"], "measured": True,
+             "corpus_ref": "S-02, S-03",
+             "note": "Enumerated flag spellings now match the Day-5 fix's "
+                     "added prefix rules (post-fix, 2026-10-22; sealed "
+                     "evidence/postfix-2026-10-22/bundle.json)."},
+            {"family": "variant-path",
+             "probes": [["./<command_bin>", "<flag_set>", "<target_path>"]],
              "expected": ["unmatched-reported-as-unknown"], "measured": True,
-             "corpus_ref": "S-02, S-03, S-06",
-             "note": "Flag-spelling and relative-path forms do not match "
-                     "literal prefix rules."},
+             "corpus_ref": "S-06",
+             "note": "Relative-path forms do not match literal prefix rules."},
             {"family": "wrapped",
              "probes": [["bash", "-lc", "<command_bin> <flag_set> <target_path>"],
                         ["sh", "-c", "<command_bin> <flag_set> <target_path>"],
@@ -145,11 +150,14 @@ ENTRIES = [
                             "forms, so measured shares are corpus results, "
                             "not population rates."),
         "intent_coverage_on_codex_t1": ("SATISFIED for the exact bound direct "
-                                        "form; UNRESOLVED for variant, "
-                                        "wrapped, and script families "
-                                        "(measurement correctly reports "
-                                        "unknown; the protection is not "
-                                        "established at the rules layer)."),
+                                        "form and for enumerated spelling "
+                                        "variants (-fr, --recursive --force; "
+                                        "post-fix 2026-10-22); UNRESOLVED for "
+                                        "non-enumerated variants, wrapped, "
+                                        "and script families (measurement "
+                                        "correctly reports unknown; the "
+                                        "protection is not established at "
+                                        "the rules layer)."),
     },
     # ---------------------------------------------------------------- FP-002
     {
@@ -702,15 +710,23 @@ ENTRIES += [
             "Cursor note: " + DRAFT_NOTE,
         ),
         "probe_families": [
-            {"family": "variant",
+            {"family": "variant-enumerated",
              "probes": [["<bin>", "-fr", "<target>"],
-                        ["<bin>", "--recursive", "--force", "<target>"],
-                        ["<bin>", "-r", "-f", "<target>"]],
+                        ["<bin>", "--recursive", "--force", "<target>"]],
+             "expected": ["forbidden"], "measured": True,
+             "corpus_ref": "S-02, S-03",
+             "note": "Enumerated flag spellings now match the Day-5 fix's "
+                     "added prefix rules (post-fix, 2026-10-22; sealed "
+                     "evidence/postfix-2026-10-22/bundle.json). Rule-extension "
+                     "negative: git log against a [git, status] rule also "
+                     "measured unknown (F-02); prefix rules never extend."},
+            {"family": "variant-other",
+             "probes": [["<bin>", "-r", "-f", "<target>"]],
              "expected": ["unmatched-reported-as-unknown"], "measured": True,
-             "corpus_ref": "S-02, S-03, PA-04",
-             "note": "Rule-extension negative: git log against a "
-                     "[git, status] rule also measured unknown (F-02); "
-                     "prefix rules never extend."},
+             "corpus_ref": "PA-04",
+             "note": "Non-enumerated spellings do not match literal prefix "
+                     "rules (PA-04 still unknown in the post-fix protected "
+                     "bundle)."},
         ],
         "layer_attribution": LAYER_ATTR,
         "provenance": "measured",
@@ -1252,6 +1268,22 @@ def md_entry(e):
     return "\n".join(L)
 
 
+def plain_names_md(text):
+    """User-facing plain names for the paper-test grades (founder direction,
+    2026-10-22): PAPER TEST grades A \u00b7 Oracle (was T1), B \u00b7 Manual
+    (was T2), C \u00b7 No paper (was T3). Applied to the Markdown rendering
+    ONLY \u2014 catalogue.json keeps the technical T1/T2/T3 aliases."""
+    return (text
+            .replace("Codex T1",
+                     "Codex \u00b7 paper grade A \u00b7 Oracle (T1)")
+            .replace("tier T1", "paper grade A \u00b7 Oracle (T1)")
+            .replace("tier T2", "paper grade B \u00b7 Manual (T2)")
+            .replace("tier T3", "paper grade C \u00b7 No paper (T3)")
+            .replace("T2 harness",
+                     "paper grade B \u00b7 Manual (T2) harness")
+            .replace("T-tier", "graded (paper-test) tier"))
+
+
 def build_md(data):
     L = []
     L.append("# FinePrint Invariant Catalogue v1")
@@ -1272,6 +1304,14 @@ def build_md(data):
              "`UNMEASURED` entry is labelled as such here and in "
              "`catalogue.json`, and is excluded from any conformance "
              "claim. No entry ships without probes.")
+    L.append("")
+    L.append("**Post-fix note (2026-10-22):** the Day-5 fix (+2 forbidden "
+             "prefix rules for `rm -fr` / `rm --recursive --force`) was "
+             "approved and applied; corpus expectations were re-locked BEFORE "
+             "the after-run (`docs/preregistration/2026-10-22-preregistration.json`). "
+             "FP-001/FP-010 variant-family expectations below reflect the "
+             "post-fix oracle: enumerated spellings now decide forbidden "
+             "(sealed `evidence/postfix-2026-10-22/bundle.json`).")
     L.append("")
     L.append("## Design rules")
     L.append("")
@@ -1318,7 +1358,7 @@ def build_md(data):
              "A–E against the Codex T1 oracle; T2 harness translations "
              "need their own measurement before any claim.")
     L.append("")
-    return "\n".join(L)
+    return plain_names_md("\n".join(L))
 
 
 def main():

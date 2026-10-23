@@ -7,8 +7,12 @@ versions and commands: `docs/COMPETITOR_BASELINES.md`; native raw JSON:
 `evidence/day1-baseline-2026-10-21/`.
 
 **Pinned config (native column):** codex-cli 0.149.0, `fixtures/policies/default.rules`
-(`["git","status"]→allow`, `["deployctl","release"]→prompt`, `["rm","-rf"]→forbidden`,
-no `host_executable()` entries), resolution OFF unless noted. Unmatched = **unknown**
+— this matrix is the Day-1 record, run against 3 rules (`["git","status"]→allow`,
+`["deployctl","release"]→prompt`, `["rm","-rf"]→forbidden`, no `host_executable()`
+entries), resolution OFF unless noted. The current fixture has 5 rules (Day-5 fix,
+approved Oct 22: +`["rm","-fr"]→forbidden`, +`["rm","--recursive","--force"]→forbidden`);
+post-fix native results are sealed at `evidence/postfix-2026-10-22/bundle.json`.
+Unmatched = **unknown**
 (no rules-layer decision; runtime = approval policy + sandbox, untested) — never a
 bypass/evasion.
 

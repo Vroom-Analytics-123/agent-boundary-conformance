@@ -1,7 +1,7 @@
 {
   "schema": "fineprint.catalogue.v1",
   "catalogue_version": "1.0.0",
-  "generated": "2026-10-22",
+  "generated": "2026-10-23",
   "design": {
     "principle": "parameterized templates, not fixed rules; an invariant without probes is a wish",
     "entry_shape": "id, intent, parameters, expected_decision, rationale, severity, per-harness translations (tier + confidence), probe families, provenance, measurement_status",
@@ -117,7 +117,7 @@
           "corpus_ref": "F-03"
         },
         {
-          "family": "variant",
+          "family": "variant-spelling",
           "probes": [
             [
               "<command_bin>",
@@ -129,7 +129,18 @@
               "--recursive",
               "--force",
               "<target_path>"
-            ],
+            ]
+          ],
+          "expected": [
+            "forbidden"
+          ],
+          "measured": true,
+          "corpus_ref": "S-02, S-03",
+          "note": "Enumerated flag spellings now match the Day-5 fix's added prefix rules (post-fix, 2026-10-22; sealed evidence/postfix-2026-10-22/bundle.json)."
+        },
+        {
+          "family": "variant-path",
+          "probes": [
             [
               "./<command_bin>",
               "<flag_set>",
@@ -140,8 +151,8 @@
             "unmatched-reported-as-unknown"
           ],
           "measured": true,
-          "corpus_ref": "S-02, S-03, S-06",
-          "note": "Flag-spelling and relative-path forms do not match literal prefix rules."
+          "corpus_ref": "S-06",
+          "note": "Relative-path forms do not match literal prefix rules."
         },
         {
           "family": "wrapped",
@@ -209,7 +220,7 @@
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",
       "provenance": "measured",
       "provenance_note": "Seed INV-003, generalized. Measured on the pinned Codex T1 oracle (Day-1 baseline); the 41-case corpus weights toward variant/wrapped forms, so measured shares are corpus results, not population rates.",
-      "intent_coverage_on_codex_t1": "SATISFIED for the exact bound direct form; UNRESOLVED for variant, wrapped, and script families (measurement correctly reports unknown; the protection is not established at the rules layer)."
+      "intent_coverage_on_codex_t1": "SATISFIED for the exact bound direct form and for enumerated spelling variants (-fr, --recursive --force; post-fix 2026-10-22); UNRESOLVED for non-enumerated variants, wrapped, and script families (measurement correctly reports unknown; the protection is not established at the rules layer)."
     },
     {
       "id": "FP-002",
@@ -1171,7 +1182,7 @@
       },
       "probe_families": [
         {
-          "family": "variant",
+          "family": "variant-enumerated",
           "probes": [
             [
               "<bin>",
@@ -1183,7 +1194,18 @@
               "--recursive",
               "--force",
               "<target>"
-            ],
+            ]
+          ],
+          "expected": [
+            "forbidden"
+          ],
+          "measured": true,
+          "corpus_ref": "S-02, S-03",
+          "note": "Enumerated flag spellings now match the Day-5 fix's added prefix rules (post-fix, 2026-10-22; sealed evidence/postfix-2026-10-22/bundle.json). Rule-extension negative: git log against a [git, status] rule also measured unknown (F-02); prefix rules never extend."
+        },
+        {
+          "family": "variant-other",
+          "probes": [
             [
               "<bin>",
               "-r",
@@ -1195,8 +1217,8 @@
             "unmatched-reported-as-unknown"
           ],
           "measured": true,
-          "corpus_ref": "S-02, S-03, PA-04",
-          "note": "Rule-extension negative: git log against a [git, status] rule also measured unknown (F-02); prefix rules never extend."
+          "corpus_ref": "PA-04",
+          "note": "Non-enumerated spellings do not match literal prefix rules (PA-04 still unknown in the post-fix protected bundle)."
         }
       ],
       "layer_attribution": "No rules-layer decision. Runtime outcome is governed by the approval-policy and sandbox layers under the pinned configuration; the rules layer cannot establish the protective intent for this form.",

@@ -19,6 +19,23 @@ coverage gaps has no standing to report anyone else's.
   candidate — the only vendor besides OpenAI with a shipped permission-test
   command), not more Codex runs.
 
+### Addendum (2026-10-22) — Amp promoted: measured verdicts now exist for two harnesses
+
+The founder approved Amp's promotion to paper grade **A · Oracle** (T1) on
+2026-10-22. `amp permissions test` (pinned `0.0.1792680614-g8973a3`,
+sha256 `89304a6e…`) replayed the full 41-case corpus + 11-case protected
+family byte-identically across two runs; sealed bundle
+`evidence/amp-2026-10-22/bundle.json` (Merkle root `cb6eccf0…`,
+Ed25519-signed, `signature_state="signed"`). Measured verdicts therefore
+exist for **two** harnesses (Codex + Amp) — the "single harness" limitation
+above is lifted. The "public Index" evidence gate (≥2 measured harnesses)
+is now met on the oracle side; whether that licenses a public Index is the
+founder's call, not this document's. Claude Code, Cursor, Gemini CLI,
+OpenCode remain paper grade **B · Manual** (T2): no native-decision verdicts
+were measured for them — the 2026-10-22 wave measured their
+config-evaluation methods (doc-cited engine tests), which their manifests
+label evaluation, never interrogation.
+
 ## 2. Synthetic corpus — the 54% unknown rate is a corpus artifact
 
 - The 41-case corpus is a **synthetic probe set deliberately weighted toward
@@ -32,14 +49,15 @@ coverage gaps has no standing to report anyone else's.
   to the public shard is detectable — but the corpus is still 41 cases, one
   policy file, one pinned version. It is a probe set, not a benchmark.
 
-## 3. Pre-fix evidence — the Day-5 fix is NOT applied
+## 3. Pre-fix baseline (superseded 2026-10-22 — the Day-5 fix is now APPLIED; see addendum)
 
-- All sealed bundles and the Day-6 scorecard are **pre-fix**: the Day-5 fix
-  diff (`docs/drafts/day5-fix.diff`, +2 prefix rules for `rm -fr` and
-  `rm --recursive --force`) is AWAITING the founder's approval and was not
-  applied. The scorecard says so on its face (`fix_status.applied: false`).
-- Do not cite this repo's numbers as "the fixed policy" — cite them as the
-  pre-fix baseline they are.
+- All sealed Day-1/Day-2/Day-6 bundles and the Day-6 scorecard v2 are **pre-fix**:
+  the Day-5 fix diff (`docs/drafts/day5-fix.diff`, +2 prefix rules for `rm -fr`
+  and `rm --recursive --force`) was AWAITING the founder's approval and had not
+  been applied at the time. The scorecard v2 says so on its face
+  (`fix_status.applied: false`).
+- Do not cite pre-fix numbers as "the fixed policy" — cite them as the pre-fix
+  baseline they are. Post-fix numbers live in the addendum below.
 
 ### Addendum (2026-10-22) — the Day-5 fix is now APPLIED; post-fix evidence sealed
 
@@ -79,8 +97,8 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   Unmatched serializes as **unknown with layer attribution** ("no rules-layer
   decision; runtime outcome depends on approval policy + sandbox under the
   pinned configuration") — never allow, never a bypass/evasion/hole.
-- No runtime probe under a pinned approval policy + sandbox mode was run in
-  week 1. Nothing here says what any command would actually do when executed.
+- No runtime probe under a pinned approval policy + sandbox mode has run as of
+  2026-10-22. Nothing here says what any command would actually do when executed.
 - 2026-10-22 (Evidence Upgrade C — effect-closure pilot): a pre-registered
   decision→approval→effect pilot (16 cases, pinned `approval_policy=never` +
   `sandbox_mode=workspace-write`, throwaway targets under a job-created
@@ -194,7 +212,7 @@ from the pre-fix bundle/scorecard v2 — never mix them.
 
 | Limitation | Evidence that would lift it |
 |---|---|
-| Single harness | A T2→T1 promotion: vendor ships a deterministic offline policy-evaluation entrypoint at a pinned version; corpus rerun sealed |
+| Single harness | LIFTED 2026-10-22: Amp promoted to paper grade A · Oracle (T1) — `amp permissions test` at the pinned version replayed the corpus + protected family byte-identically; sealed `evidence/amp-2026-10-22/` (Merkle `cb6eccf0…`, Ed25519-signed). Measured verdicts now exist for two harnesses. |
 | Corpus artifact | A second corpus sampled from real policy files / observed command traffic, pre-registered before running |
 | Pre-fix | LIFTED 2026-10-22: founder approved the Day-5 diff → applied, re-locked, reran 41 cases + 11-case family + precedence checks, re-sealed (`evidence/postfix-2026-10-22/`), re-issued scorecard v3 POST-FIX |
 | Rules-layer only | 2026-10-22: first live wave pre-registered + run — 9/9 harnesses blocked-by-auth at the runnability gate (no local model provider, no executing offline mode); 12 cases + 9 pinned configs locked and committed unexecuted in `docs/live-test/`; unblock = founder-supplied auth per harness. Live layer still UNRESOLVED. |

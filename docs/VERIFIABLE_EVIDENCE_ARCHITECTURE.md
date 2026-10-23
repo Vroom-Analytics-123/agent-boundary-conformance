@@ -31,7 +31,7 @@ When effect observation lands: model invocations and their transitive effects (w
 - **No novelty overclaim:** transparency logs (CT, Rekor), event sourcing, and property-based testing are proven, borrowed machinery. The novel composition is applying them to *agent permission decisions vs stated intent*, plus the divergence-mining search and the public corpus that accumulates on top.
 
 ## 6. What this changes in the existing plan
-- Week 1: only the parts already specced (hash-stamped bundles, event-shaped evidence). No schedule change.
+- As of 2026-10-22: only the parts already specced (hash-stamped bundles, event-shaped evidence). No schedule change.
 - Phase 1: public anchoring of the launch corpus root + verification tooling shipped with the Scorecard (a skeptic can verify our launch stat — that's the press hook).
 - Phase 2: divergence-mining prototype (grant-fundable research: BlueDot/TAIF narratives), hosted evidence store on the same event schema.
 - Grant language addition: "public, verifiable measurement infrastructure" — every number we publish carries its own proof.

@@ -2,6 +2,8 @@
 
 Goal: after ~4–5 hours total, you can hold your own in any room on this topic. The field is only months old — nobody is years ahead of you. What exists is crowded *around* our spot (scanners, red-teamers, runtime governors) and empty *in* it (intent→decision conformance). Read in this order; each item says what it proves and the sentence it lets you say.
 
+*Note: the "Tier 1/2/3" below are reading-priority tiers for this plan only — unrelated to the paper-test grades (A · Oracle / B · Manual / C · No paper).*
+
 ## Tier 1 — must read (~2.5 hrs)
 1. **Codex execpolicy README + OpenAI "Agent approvals & security" doc** (~30 min)
    The ground truth for our first harness: prefix rules, no-match = decision omitted, strictest-wins, host-executable resolution; approval policies + sandbox as separate layers.
@@ -20,7 +22,7 @@ Goal: after ~4–5 hours total, you can hold your own in any room on this topic.
 5. **harness-eval README + agent-security-harness README** (~20 min) — the closest open-source neighbours; know exactly what they do (static lint; scenario tests) and don't (no native decision queries). If anyone cites the latter's test counts, you know they're self-adjudicated.
 6. **Microsoft Agent Governance Toolkit repo** (~20 min) — the most complete native governance stack; enforcement, not independent testing. This is the "platform absorbs the shallow version" scenario in concrete form.
 7. **Snyk Agent Scan docs** (~15 min) — inventory/content scanning; distribution is their weapon, not decision testing.
-8. **Claude Code permissions/hooks + sandbox docs** (~25 min) — our second harness's surface; auto-mode classifiers are Anthropic betting on smarter runtime decisions instead of deterministic evidence. Know the contrast; it's our best talking point.
+8. **Amp `permissions test` surface** (~25 min) — our second native oracle (promoted to paper grade A · Oracle Oct 22); know what `amp permissions test --json` decides and what it can't see (built-in rules unpublished). **Claude Code permissions/hooks + sandbox docs** (~25 min) — measured grade B · Manual; auto-mode classifiers are Anthropic betting on smarter runtime decisions instead of deterministic evidence. Know the contrast; it's our best talking point.
 9. **AWS Cedar for Bedrock AgentCore blog** (~10 min) — deterministic, analyzable authorization as a design philosophy; the enterprise vocabulary buyers will use.
 
 ## Tier 3 — only if a conversation goes there

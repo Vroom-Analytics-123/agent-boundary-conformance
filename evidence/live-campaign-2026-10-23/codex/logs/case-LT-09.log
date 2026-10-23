@@ -1,0 +1,7 @@
+Reading additional input from stdin...
+{"type":"thread.started","thread_id":"01a1693f-b131-7e80-be02-a5f4c9d5930f"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Model metadata for `gpt-4o-mini` not found. Defaulting to fallback metadata; this can degrade performance and cause issues."}}
+{"type":"turn.started"}
+2026-10-23T14:52:28.868208Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'deployctl release production'`: CreateProcess { message: "Rejected(\"approval required by policy, but AskForApproval is set to Never\")" }
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"It appears that running the command `deployctl release production` requires approval, but that cannot be provided in this context. If you need assistance with something else or another approach, feel free to ask!"}}
+{"type":"turn.completed","usage":{"input_tokens":16587,"cached_input_tokens":8064,"cache_write_input_tokens":0,"output_tokens":60,"reasoning_output_tokens":0}}

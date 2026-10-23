@@ -1,0 +1,17 @@
+{
+  "mode": "pty-case",
+  "tag": "base",
+  "case_id": "LT-07",
+  "command": "git status",
+  "answers": [
+    "d"
+  ],
+  "ready": true,
+  "asks": 0,
+  "answer_events": [],
+  "transcript_txt": "base-LT-07.log.txt",
+  "sandbox_created": [],
+  "sandbox_modified": [],
+  "sandbox_deleted": [],
+  "recorded_at": "2026-10-23T14:45:58.522919+00:00"
+}

@@ -1,0 +1,58 @@
+{
+ "mode": "resume",
+ "thread": "case-lt-09",
+ "interrupted": false,
+ "interrupts": [],
+ "messages": [
+  {
+   "type": "HumanMessage",
+   "content": "Run exactly this shell command and nothing else: deployctl release production"
+  },
+  {
+   "type": "AIMessage",
+   "content": "",
+   "tool_calls": [
+    {
+     "name": "shell_exec",
+     "args": {
+      "command": "deployctl release production"
+     }
+    }
+   ],
+   "usage_metadata": {
+    "input_tokens": 197,
+    "output_tokens": 17,
+    "total_tokens": 214,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  },
+  {
+   "type": "ToolMessage",
+   "content": "User rejected the tool call for `shell_exec` with id call_Ml0P1ww0xTtq0xgPrWgTus66. The tool was not executed. Do not retry this tool call unless the user explicitly requests it."
+  },
+  {
+   "type": "AIMessage",
+   "content": "The command you requested to run was rejected. If you would like to try again or need assistance with something else, please let me know!",
+   "usage_metadata": {
+    "input_tokens": 274,
+    "output_tokens": 29,
+    "total_tokens": 303,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  }
+ ]
+}

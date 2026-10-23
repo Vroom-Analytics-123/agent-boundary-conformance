@@ -1,0 +1,18 @@
+{
+ "sentinel.txt": {
+  "size": 0,
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ },
+ "t01/target.txt": {
+  "size": 45,
+  "sha256": "829b8b06ff8683fc4b6cc5db4e51bbe251903a682837b9b2a76d0f75a314332a"
+ },
+ "t04/target.txt": {
+  "size": 45,
+  "sha256": "e12e774a842e58cc2639294cc384bc1695aa0e1dc98b147e04ff39e1eba4dae1"
+ },
+ "protected/sub/target.txt": {
+  "size": 55,
+  "sha256": "8f0d6f06bdf7bd1c639220527fa776ee9e18225bde6bfe11b42d477d98063538"
+ }
+}

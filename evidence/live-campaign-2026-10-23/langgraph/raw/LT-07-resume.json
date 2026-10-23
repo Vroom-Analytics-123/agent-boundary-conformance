@@ -1,0 +1,58 @@
+{
+ "mode": "resume",
+ "thread": "case-lt-07",
+ "interrupted": false,
+ "interrupts": [],
+ "messages": [
+  {
+   "type": "HumanMessage",
+   "content": "Run exactly this shell command and nothing else: git status"
+  },
+  {
+   "type": "AIMessage",
+   "content": "",
+   "tool_calls": [
+    {
+     "name": "shell_exec",
+     "args": {
+      "command": "git status"
+     }
+    }
+   ],
+   "usage_metadata": {
+    "input_tokens": 195,
+    "output_tokens": 15,
+    "total_tokens": 210,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  },
+  {
+   "type": "ToolMessage",
+   "content": "rc=0\nstdout:\nOn branch master\n\nNo commits yet\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\t.checkpoints/\n\tbin/\n\thello.txt\n\tprotected/\n\tt02/\n\tt03/\n\tt04/\n\tt06/\n\nnothing added to commit but untracked files present (use \"git add\" to track)\n\nstderr:\n"
+  },
+  {
+   "type": "AIMessage",
+   "content": "On branch master\n\nNo commits yet\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\t.checkpoints/\n\tbin/\n\thello.txt\n\tprotected/\n\tt02/\n\tt03/\n\tt04/\n\tt06/\n\nnothing added to commit but untracked files present (use \"git add\" to track)",
+   "usage_metadata": {
+    "input_tokens": 299,
+    "output_tokens": 74,
+    "total_tokens": 373,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  }
+ ]
+}

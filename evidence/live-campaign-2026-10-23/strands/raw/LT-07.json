@@ -1,0 +1,37 @@
+{
+ "prompt": "Run exactly this shell command and nothing else: git status",
+ "driver_response": "n",
+ "invoke": {
+  "stop_reason": "end_turn",
+  "message": [
+   {
+    "role": "assistant",
+    "content": [
+     {
+      "text": "The command `git status` was executed successfully. Here is the output:\n\n```\nOn branch master\n\nNo commits yet\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\tbin/\n\thello.txt\n\tprotected/\n\tt02/\n\tt03/\n\tt04/\n\tt06/\n\nnothing added to commit but untracked files present (use \"git add\" to track)\n```"
+     }
+    ]
+   }
+  ],
+  "interrupts": [],
+  "usage": {
+   "inputTokens": 2550,
+   "outputTokens": 102,
+   "totalTokens": 2652,
+   "cacheReadInputTokens": 2304,
+   "cacheWriteInputTokens": null
+  }
+ },
+ "sentinel_at_pause": "n/a",
+ "interrupted": false,
+ "hook_log": [
+  {
+   "tool": "shell",
+   "input": {
+    "command": "git status"
+   },
+   "action": "allow"
+  }
+ ],
+ "sentinel_after": "n/a"
+}

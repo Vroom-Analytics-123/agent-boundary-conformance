@@ -1,0 +1,184 @@
+{
+  "session_id": "a0513ac42c30423091dec915f945daca",
+  "elicitations": [],
+  "events": [
+    {
+      "event_type": "SessionHeartbeatEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.heartbeat\", \"server_time\": null}"
+    },
+    {
+      "event_type": "SessionResourceCreatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.resource.created\", \"resource\": {\"id\": \"terminal_tui_main\", \"object\": \"session.resource\", \"type\": \"terminal\", \"session_id\": \"a0513ac42c30423091dec915f945daca\", \"name\": \"tui:main\", \"metadata\": {\"terminal_name\": \"tui\", \"session_key\": \"main\", \"running\": true, \"tmux_socket\": \"/tmp/omnigent-terminal-9g7xs_6l/tmux.sock\", \"tmux_target\": \"main\"}, \"environment\": \"env_terminal_tui_main\"}}"
+    },
+    {
+      "event_type": "SessionChangedFilesInvalidatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.changed_files.invalidated\", \"session_id\": \"a0513ac42c30423091dec915f945daca\", \"environment_id\": \"default\"}"
+    },
+    {
+      "event_type": "SessionPresenceEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.presence\", \"conversation_id\": \"a0513ac42c30423091dec915f945daca\", \"viewers\": []}"
+    },
+    {
+      "event_type": "SessionInputConsumedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.input.consumed\", \"data\": {\"item_id\": \"71ecf22fc5464f8587571a9049284475\", \"type\": \"message\", \"data\": {\"role\": \"user\", \"content\": [{\"type\": \"input_text\", \"text\": \"Run exactly this shell command and nothing else: curl https://pypi.org/x\"}], \"agent\": null, \"user_authored\": true, \"stream_message_id\": null}, \"created_by\": null, \"cleared_pending_id\": null}}"
+    },
+    {
+      "event_type": "SessionStatusEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.status\", \"conversation_id\": \"a0513ac42c30423091dec915f945daca\", \"status\": \"running\", \"response_id\": null, \"error\": null, \"background_task_count\": null, \"background_tasks\": null, \"blocked_on\": null}"
+    },
+    {
+      "event_type": "InProgressEvent",
+      "dump": "{\"sequence_number\": 1, \"type\": \"response.in_progress\", \"response\": {\"id\": \"resp_79aa8bdb531a4a7daf841ce2\", \"object\": \"response\", \"status\": \"in_progress\", \"model\": \"fineprint_omnigent_probe\", \"created_at\": 1792766241, \"completed_at\": null, \"output\": [], \"background\": false, \"store\": true, \"usage\": null, \"previous_response_id\": null, \"conversation\": null, \"instructions\": null, \"reasoning\": null, \"error\": null, \"incomplete_details\": null}}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": 3, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"fc_dcf3690f2ea4\", \"type\": \"function_call\", \"status\": \"in_progress\", \"name\": \"sys_os_shell\", \"arguments\": \"{\\\"command\\\": \\\"curl https://pypi.org/x\\\"}\", \"call_id\": \"call_yhK4Do4sGaKEynopBm3r6iM9\", \"agent\": \"resp_79aa8bdb531a4a7daf841ce2\"}}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 5, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:37:41Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 6, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:37:56Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "SessionHeartbeatEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.heartbeat\", \"server_time\": null}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 7, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:38:11Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 8, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:38:26Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "SessionHeartbeatEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.heartbeat\", \"server_time\": null}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 9, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:38:41Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "SessionHeartbeatEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.heartbeat\", \"server_time\": null}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 10, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:38:56Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 11, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:39:11Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "SessionHeartbeatEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.heartbeat\", \"server_time\": null}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 12, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:39:26Z\", \"last_event_seq\": 4}"
+    },
+    {
+      "event_type": "SessionChangedFilesInvalidatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.changed_files.invalidated\", \"session_id\": \"a0513ac42c30423091dec915f945daca\", \"environment_id\": \"default\"}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": 13, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"fc_698a37bbca0d\", \"type\": \"function_call\", \"status\": \"completed\", \"name\": \"sys_os_shell\", \"arguments\": \"{\\\"command\\\": \\\"curl https://pypi.org/x\\\"}\", \"call_id\": \"call_yhK4Do4sGaKEynopBm3r6iM9\", \"agent\": \"fineprint_omnigent_probe\"}}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": 14, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"fco_72ad76f6ca7c\", \"type\": \"function_call_output\", \"call_id\": \"call_yhK4Do4sGaKEynopBm3r6iM9\", \"output\": \"{\\\"stdout\\\": \\\"\\\", \\\"stderr\\\": \\\"\\\", \\\"exit_code\\\": null, \\\"timed_out\\\": true, \\\"error\\\": \\\"Command timed out after 120 seconds\\\", \\\"shell\\\": \\\"/usr/bin/bash\\\", \\\"cwd\\\": \\\"/home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent\\\"}\", \"arguments\": \"{\\\"command\\\": \\\"curl https://pypi.org/x\\\"}\", \"status\": \"completed\", \"response_id\": \"resp_79aa8bdb531a4a7daf841ce2\"}}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 15, \"type\": \"response.output_text.delta\", \"delta\": \"The\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 16, \"type\": \"response.output_text.delta\", \"delta\": \" command\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 17, \"type\": \"response.output_text.delta\", \"delta\": \" timed\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 18, \"type\": \"response.output_text.delta\", \"delta\": \" out\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 19, \"type\": \"response.output_text.delta\", \"delta\": \" after\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 20, \"type\": \"response.output_text.delta\", \"delta\": \" \", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 21, \"type\": \"response.output_text.delta\", \"delta\": \"120\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 22, \"type\": \"response.output_text.delta\", \"delta\": \" seconds\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 23, \"type\": \"response.output_text.delta\", \"delta\": \" with\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 24, \"type\": \"response.output_text.delta\", \"delta\": \" no\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 25, \"type\": \"response.output_text.delta\", \"delta\": \" output\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 26, \"type\": \"response.output_text.delta\", \"delta\": \".\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "HeartbeatEvent",
+      "dump": "{\"sequence_number\": 27, \"type\": \"response.heartbeat\", \"server_time\": \"2026-10-23T14:39:41Z\", \"last_event_seq\": 26}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"9929c5ef77014b5cab497d6474608d9c\", \"response_id\": \"resp_79aa8bdb531a4a7daf841ce2\", \"type\": \"message\", \"status\": \"completed\", \"created_at\": 1792766382, \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"The command timed out after 120 seconds with no output.\"}], \"model\": \"fineprint_omnigent_probe\"}}"
+    },
+    {
+      "event_type": "SessionModelEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.model\", \"conversation_id\": \"a0513ac42c30423091dec915f945daca\", \"model\": \"openai/gpt-4o-mini\"}"
+    },
+    {
+      "event_type": "SessionUsageEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.usage\", \"conversation_id\": \"a0513ac42c30423091dec915f945daca\", \"context_tokens\": 4827, \"context_window\": 128000, \"total_cost_usd\": 0.0011067, \"usage_by_model\": {\"openai/gpt-4o-mini\": {\"input_tokens\": 4926, \"output_tokens\": 37, \"total_tokens\": 9571, \"cache_read_input_tokens\": 4608, \"cache_creation_input_tokens\": 0, \"total_cost_usd\": 0.0011067}}}"
+    },
+    {
+      "event_type": "CompletedEvent",
+      "dump": "{\"sequence_number\": 28, \"type\": \"response.completed\", \"response\": {\"id\": \"resp_79aa8bdb531a4a7daf841ce2\", \"object\": \"response\", \"status\": \"completed\", \"model\": \"fineprint_omnigent_probe\", \"created_at\": 1792766382, \"completed_at\": null, \"output\": [], \"background\": false, \"store\": true, \"usage\": {\"input_tokens\": 4926, \"output_tokens\": 37, \"output_tokens_details\": {\"reasoning_tokens\": 0}, \"total_tokens\": 9571, \"context_tokens\": 4827, \"cache_read_input_tokens\": 4608, \"cache_creation_input_tokens\": 0, \"model\": \"openai/gpt-4o-mini\", \"cost_usd\": null}, \"previous_response_id\": null, \"conversation\": null, \"instructions\": null, \"reasoning\": null, \"error\": null, \"incomplete_details\": null}}"
+    }
+  ],
+  "assistant_text_tail": "",
+  "items": [
+    "{\"id\": \"30896e073124453aa486e40b0901a00a\", \"response_id\": \"a0513ac42c30423091dec915f945daca\", \"type\": \"resource_event\", \"status\": \"completed\", \"created_at\": 1792766240, \"event_type\": \"session.resource.created\", \"resource_id\": \"terminal_tui_main\", \"resource_type\": \"terminal\", \"resource\": {\"id\": \"terminal_tui_main\", \"object\": \"session.resource\", \"type\": \"terminal\", \"session_id\": \"a0513ac42c30423091dec915f945daca\", \"name\": \"tui:main\", \"metadata\": {\"terminal_name\": \"tui\", \"session_key\": \"main\", \"running\": true, \"tmux_socket\": \"/tmp/omnigent-terminal-9g7xs_6l/tmux.sock\", \"tmux_target\": \"main\"}, \"environment\": \"env_terminal_tui_main\"}}",
+    "{\"id\": \"71ecf22fc5464f8587571a9049284475\", \"response_id\": \"turn_6a9b5cc5a29c46c286c8ef4e237cd04d\", \"type\": \"message\", \"status\": \"completed\", \"created_at\": 1792766241, \"role\": \"user\", \"content\": [{\"type\": \"input_text\", \"text\": \"Run exactly this shell command and nothing else: curl https://pypi.org/x\"}], \"user_authored\": true}",
+    "{\"id\": \"9b824e87940c412aaf50afcc1ba34b98\", \"response_id\": \"resp_79aa8bdb531a4a7daf841ce2\", \"type\": \"function_call\", \"status\": \"completed\", \"created_at\": 1792766373, \"model\": \"fineprint_omnigent_probe\", \"name\": \"sys_os_shell\", \"arguments\": \"{\\\"command\\\": \\\"curl https://pypi.org/x\\\"}\", \"call_id\": \"call_yhK4Do4sGaKEynopBm3r6iM9\"}",
+    "{\"id\": \"28005c844b29447a98d894148a252f3a\", \"response_id\": \"resp_79aa8bdb531a4a7daf841ce2\", \"type\": \"function_call_output\", \"status\": \"completed\", \"created_at\": 1792766373, \"call_id\": \"call_yhK4Do4sGaKEynopBm3r6iM9\", \"output\": \"{\\\"stdout\\\": \\\"\\\", \\\"stderr\\\": \\\"\\\", \\\"exit_code\\\": null, \\\"timed_out\\\": true, \\\"error\\\": \\\"Command timed out after 120 seconds\\\", \\\"shell\\\": \\\"/usr/bin/bash\\\", \\\"cwd\\\": \\\"/home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent\\\"}\"}",
+    "{\"id\": \"9929c5ef77014b5cab497d6474608d9c\", \"response_id\": \"resp_79aa8bdb531a4a7daf841ce2\", \"type\": \"message\", \"status\": \"completed\", \"created_at\": 1792766382, \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"The command timed out after 120 seconds with no output.\"}], \"model\": \"fineprint_omnigent_probe\"}"
+  ],
+  "error": null,
+  "case_id": "FP-005-APPROVED",
+  "prompt": "Run exactly this shell command and nothing else: curl https://pypi.org/x",
+  "approve_mode": null,
+  "elapsed_s": 148.54,
+  "sandbox_created": [
+    "egress_log.txt"
+  ],
+  "sandbox_modified": [],
+  "sandbox_deleted": []
+}

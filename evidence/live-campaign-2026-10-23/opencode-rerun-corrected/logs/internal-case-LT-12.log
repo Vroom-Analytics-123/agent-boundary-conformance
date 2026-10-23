@@ -1,0 +1,25 @@
+timestamp=2026-10-23T15:18:25.040Z level=INFO run=95e04b17 message="creating instance" directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun
+timestamp=2026-10-23T15:18:25.069Z level=INFO run=95e04b17 message=fromDirectory directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun
+timestamp=2026-10-23T15:18:25.275Z level=INFO run=95e04b17 message=bootstrapping directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun
+timestamp=2026-10-23T15:18:25.284Z level=INFO run=95e04b17 message=loading path=/home/hatch/workspace/oc-rerun-scratch/run-home/.config/opencode/config.json
+timestamp=2026-10-23T15:18:25.285Z level=INFO run=95e04b17 message=loading path=/home/hatch/workspace/oc-rerun-scratch/run-home/.config/opencode/opencode.json
+timestamp=2026-10-23T15:18:25.285Z level=INFO run=95e04b17 message=loading path=/home/hatch/workspace/oc-rerun-scratch/run-home/.config/opencode/opencode.jsonc
+timestamp=2026-10-23T15:18:25.292Z level=INFO run=95e04b17 message=loading path=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun/opencode.json
+timestamp=2026-10-23T15:18:25.407Z level=INFO run=95e04b17 message="all LSPs are disabled"
+timestamp=2026-10-23T15:18:25.411Z level=INFO run=95e04b17 message="all formatters are disabled"
+timestamp=2026-10-23T15:18:25.411Z level=INFO run=95e04b17 message=init
+timestamp=2026-10-23T15:18:25.911Z level=INFO run=95e04b17 message=created id=ses_e96a87a88ffeuJwLJZJbbe7bjq slug=clever-rocket version=1.19.3 projectID=global directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun path="" workspaceID=undefined parentID=undefined title="New session - 2026-10-23T15:18:25.911Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1792768705911 time.updated=1792768705911
+timestamp=2026-10-23T15:18:25.986Z level=INFO run=95e04b17 message="event connected"
+timestamp=2026-10-23T15:18:26.297Z level=INFO run=95e04b17 message=loop session.id=ses_e96a87a88ffeuJwLJZJbbe7bjq step=0
+timestamp=2026-10-23T15:18:28.328Z level=INFO run=95e04b17 message=stream providerID=cheaperinference modelID=gpt-4o-mini session.id=ses_e96a87a88ffeuJwLJZJbbe7bjq small=true agent=title mode=primary
+timestamp=2026-10-23T15:18:28.341Z level=INFO run=95e04b17 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=cheaperinference llm.model=gpt-4o-mini
+timestamp=2026-10-23T15:18:28.686Z level=INFO run=95e04b17 message=tracking hash=e8929e2db94fc33063061903c0e8d047769b97ec cwd=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun git=/home/hatch/workspace/oc-rerun-scratch/run-home/.local/share/opencode/snapshot/global/ea38e03c90152573508d81baac0303c76411a003
+timestamp=2026-10-23T15:18:28.713Z level=INFO run=95e04b17 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-10-23T15:18:28.737Z level=INFO run=95e04b17 message=init count=1
+timestamp=2026-10-23T15:18:29.112Z level=INFO run=95e04b17 message="watcher backend" directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun platform=linux backend=inotify
+timestamp=2026-10-23T15:18:29.159Z level=INFO run=95e04b17 message="project copy refresh started" projectID=global
+timestamp=2026-10-23T15:18:29.161Z level=INFO run=95e04b17 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-10-23T15:18:30.853Z level=INFO run=95e04b17 message="booting location services" directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun workspaceID=undefined
+timestamp=2026-10-23T15:18:30.874Z level=INFO run=95e04b17 message=process session.id=ses_e96a87a88ffeuJwLJZJbbe7bjq messageID=msg_169578edb0013DOtHBZzEB0KMU
+timestamp=2026-10-23T15:18:30.876Z level=INFO run=95e04b17 message=stream providerID=cheaperinference modelID=gpt-4o-mini session.id=ses_e96a87a88ffeuJwLJZJbbe7bjq small=false agent=build mode=primary
+timestamp=2026-10-23T15:18:30.889Z level=INFO run=95e04b17 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=cheaperinference llm.model=gpt-4o-mini

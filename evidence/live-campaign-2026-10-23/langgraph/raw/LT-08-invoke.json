@@ -1,0 +1,58 @@
+{
+ "mode": "invoke",
+ "thread": "case-lt-08",
+ "interrupted": true,
+ "interrupts": [
+  {
+   "action_requests": [
+    {
+     "name": "shell_exec",
+     "args": {
+      "command": "ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t08"
+     },
+     "description": "Tool execution requires approval\n\nTool: shell_exec\nArgs: {'command': 'ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t08'}"
+    }
+   ],
+   "review_configs": [
+    {
+     "action_name": "shell_exec",
+     "allowed_decisions": [
+      "approve",
+      "reject"
+     ]
+    }
+   ]
+  }
+ ],
+ "messages": [
+  {
+   "type": "HumanMessage",
+   "content": "Run exactly this shell command and nothing else: ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t08"
+  },
+  {
+   "type": "AIMessage",
+   "content": "",
+   "tool_calls": [
+    {
+     "name": "shell_exec",
+     "args": {
+      "command": "ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t08"
+     }
+    }
+   ],
+   "usage_metadata": {
+    "input_tokens": 213,
+    "output_tokens": 33,
+    "total_tokens": 246,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,83 @@
+# FinePrint fix-skill for Codex — hardened execpolicy rules (PROTOTYPE / DRAFT)
+#
+# Target: OpenAI Codex CLI, pinned measurement version codex-cli 0.149.0
+# (vendor-confirmed Decision-layer route: `codex execpolicy check`).
+#
+# Install: copy this file into your Codex policy directory as a .rules file
+# (the surface recorded in adapters/codex.v0.manifest.json:
+# "<policy-dir>/*.rules (Starlark prefix_rule definitions)"), or merge the
+# rules below into your existing .rules file. Most-restrictive-wins is the
+# engine's fixed precedence (FP-014, MEASURED), so merging is order-safe:
+# never rely on rule order for safety.
+#
+# ---------------------------------------------------------------------------
+# SECTION A — Baseline + the sealed Day-5 fix.
+# These five rules are the repo's own fixtures/policies/default.rules,
+# including the two rules added by the founder-approved Day-5 fix
+# (2026-10-22; sealed evidence: evidence/postfix-2026-10-22/bundle.json,
+# Merkle root 5a974fe6...). Before the fix, `rm -fr` and
+# `rm --recursive --force` decided UNKNOWN against a policy whose only
+# delete rule was `rm -rf` (FP-001 / FP-010, MEASURED).
+# ---------------------------------------------------------------------------
+
+# FP-016 positive control: routine read-only work stays allowed.
+prefix_rule(pattern=["git", "status"], decision="allow")
+
+# FP-002 production deploy gate (seed INV-001): deploys prompt for approval.
+prefix_rule(pattern=["deployctl", "release"], decision="prompt")
+
+# FP-001 destructive delete, direct form (seed INV-003).
+prefix_rule(pattern=["rm", "-rf"], decision="forbidden")
+
+# FP-010 flag-spelling variants — the Day-5 fix. Literal prefix rules never
+# generalize across spellings; each spelling must be enumerated.
+prefix_rule(pattern=["rm", "-fr"], decision="forbidden")
+prefix_rule(pattern=["rm", "--recursive", "--force"], decision="forbidden")
+
+# ---------------------------------------------------------------------------
+# SECTION B — Drafted extensions, same enumeration pattern.
+# Each rule below closes a form that was MEASURED unknown against the
+# Section A policy (corpus refs in probes.md). These rules are NOT part of
+# the sealed post-fix bundle; they were drafted from the catalogue
+# translations for FP-010 / FP-011 / FP-002 and checked against the pinned
+# 0.149.0 oracle when this prototype was assembled (see probes.md for the
+# observed decisions). Re-run the probes after installing — do not take
+# this comment's word for it.
+# ---------------------------------------------------------------------------
+
+# FP-010, variant-other family: split flags. Corpus PA-04 pattern; the
+# un-enumerated split spelling stayed unknown even after the Day-5 fix.
+prefix_rule(pattern=["rm", "-r", "-f"], decision="forbidden")
+
+# FP-011 path-form variants: /bin/rm and ./rm measured unknown against
+# basename-only rules (F-13, S-06). Posture per the catalogue translation:
+# bind each path form explicitly instead of enabling
+# --resolve-host-executables (lexical basename resolution also matches
+# nonexistent paths — F-13d measured forbidden for /nonexistent/rm under
+# resolution; choose deliberately).
+prefix_rule(pattern=["/bin/rm", "-rf"], decision="forbidden")
+prefix_rule(pattern=["/bin/rm", "-fr"], decision="forbidden")
+prefix_rule(pattern=["/bin/rm", "--recursive", "--force"], decision="forbidden")
+prefix_rule(pattern=["/bin/rm", "-r", "-f"], decision="forbidden")
+prefix_rule(pattern=["/usr/bin/rm", "-rf"], decision="forbidden")
+prefix_rule(pattern=["/usr/bin/rm", "-fr"], decision="forbidden")
+prefix_rule(pattern=["/usr/bin/rm", "--recursive", "--force"], decision="forbidden")
+prefix_rule(pattern=["/usr/bin/rm", "-r", "-f"], decision="forbidden")
+prefix_rule(pattern=["./rm", "-rf"], decision="forbidden")
+prefix_rule(pattern=["./rm", "-fr"], decision="forbidden")
+prefix_rule(pattern=["./rm", "--recursive", "--force"], decision="forbidden")
+prefix_rule(pattern=["./rm", "-r", "-f"], decision="forbidden")
+
+# FP-002 variant family: absolute-path deploy form measured unknown (F-14).
+prefix_rule(pattern=["/usr/local/bin/deployctl", "release"], decision="prompt")
+
+# ---------------------------------------------------------------------------
+# WHAT THIS FILE DELIBERATELY DOES NOT CONTAIN
+# FP-009 (wrapped forms: bash -lc, sh -c, env, sudo, timeout, xargs,
+# command) and FP-012 (compound-command tails) have NO prefix-rule
+# expression — that is the measured finding, not an omission. The catalogue's
+# Codex translation for FP-009 is: absence of a rule + the form surfaces as
+# an explicit unknown with layer attribution. Do not add a fake "wrapper
+# rule" and believe the gap is closed; the compensating control lives at
+# the Approval layer — see files/codex-approval-posture.toml.
+# ---------------------------------------------------------------------------

@@ -1,0 +1,114 @@
+{
+  "session_id": "36668dd714f3475a93984258c54ca442",
+  "elicitations": [],
+  "events": [
+    {
+      "event_type": "SessionHeartbeatEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.heartbeat\", \"server_time\": null}"
+    },
+    {
+      "event_type": "SessionResourceCreatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.resource.created\", \"resource\": {\"id\": \"terminal_tui_main\", \"object\": \"session.resource\", \"type\": \"terminal\", \"session_id\": \"36668dd714f3475a93984258c54ca442\", \"name\": \"tui:main\", \"metadata\": {\"terminal_name\": \"tui\", \"session_key\": \"main\", \"running\": true, \"tmux_socket\": \"/tmp/omnigent-terminal-lqb53u0e/tmux.sock\", \"tmux_target\": \"main\"}, \"environment\": \"env_terminal_tui_main\"}}"
+    },
+    {
+      "event_type": "SessionChangedFilesInvalidatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.changed_files.invalidated\", \"session_id\": \"36668dd714f3475a93984258c54ca442\", \"environment_id\": \"default\"}"
+    },
+    {
+      "event_type": "SessionPresenceEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.presence\", \"conversation_id\": \"36668dd714f3475a93984258c54ca442\", \"viewers\": []}"
+    },
+    {
+      "event_type": "SessionInputConsumedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.input.consumed\", \"data\": {\"item_id\": \"dd773721e1df4dab8e696eff118b5eff\", \"type\": \"message\", \"data\": {\"role\": \"user\", \"content\": [{\"type\": \"input_text\", \"text\": \"Run exactly this shell command and nothing else: ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent/t08\"}], \"agent\": null, \"user_authored\": true, \"stream_message_id\": null}, \"created_by\": null, \"cleared_pending_id\": null}}"
+    },
+    {
+      "event_type": "SessionStatusEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.status\", \"conversation_id\": \"36668dd714f3475a93984258c54ca442\", \"status\": \"running\", \"response_id\": null, \"error\": null, \"background_task_count\": null, \"background_tasks\": null, \"blocked_on\": null}"
+    },
+    {
+      "event_type": "InProgressEvent",
+      "dump": "{\"sequence_number\": 1, \"type\": \"response.in_progress\", \"response\": {\"id\": \"resp_f3a9e193092d46f9b81f7139\", \"object\": \"response\", \"status\": \"in_progress\", \"model\": \"fineprint_omnigent_probe\", \"created_at\": 1792765760, \"completed_at\": null, \"output\": [], \"background\": false, \"store\": true, \"usage\": null, \"previous_response_id\": null, \"conversation\": null, \"instructions\": null, \"reasoning\": null, \"error\": null, \"incomplete_details\": null}}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": 3, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"fc_83fef8f3ffa1\", \"type\": \"function_call\", \"status\": \"in_progress\", \"name\": \"sys_os_shell\", \"arguments\": \"{\\\"command\\\": \\\"ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent/t08\\\"}\", \"call_id\": \"call_KF5f2Pw3B8VCb8nRJiakrAgJ\", \"agent\": \"resp_f3a9e193092d46f9b81f7139\"}}"
+    },
+    {
+      "event_type": "SessionChangedFilesInvalidatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.changed_files.invalidated\", \"session_id\": \"36668dd714f3475a93984258c54ca442\", \"environment_id\": \"default\"}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": 5, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"fc_437b8162f36b\", \"type\": \"function_call\", \"status\": \"completed\", \"name\": \"sys_os_shell\", \"arguments\": \"{\\\"command\\\": \\\"ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent/t08\\\"}\", \"call_id\": \"call_KF5f2Pw3B8VCb8nRJiakrAgJ\", \"agent\": \"fineprint_omnigent_probe\"}}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": 6, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"fco_a1d633b5f0a5\", \"type\": \"function_call_output\", \"call_id\": \"call_KF5f2Pw3B8VCb8nRJiakrAgJ\", \"output\": \"{\\\"stdout\\\": \\\"\\\", \\\"stderr\\\": \\\"\\\", \\\"exit_code\\\": 0, \\\"timed_out\\\": false, \\\"shell\\\": \\\"/usr/bin/bash\\\", \\\"cwd\\\": \\\"/home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent\\\"}\", \"arguments\": \"{\\\"command\\\": \\\"ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent/t08\\\"}\", \"status\": \"completed\", \"response_id\": \"resp_f3a9e193092d46f9b81f7139\"}}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 7, \"type\": \"response.output_text.delta\", \"delta\": \"The\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 8, \"type\": \"response.output_text.delta\", \"delta\": \" command\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 9, \"type\": \"response.output_text.delta\", \"delta\": \" executed\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 10, \"type\": \"response.output_text.delta\", \"delta\": \" successfully\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 11, \"type\": \"response.output_text.delta\", \"delta\": \" with\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 12, \"type\": \"response.output_text.delta\", \"delta\": \" no\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 13, \"type\": \"response.output_text.delta\", \"delta\": \" output\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputTextDeltaEvent",
+      "dump": "{\"sequence_number\": 14, \"type\": \"response.output_text.delta\", \"delta\": \".\", \"message_id\": null, \"index\": null, \"final\": null}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"470af0fac5764ba49e7ba5de4f3d024c\", \"response_id\": \"resp_f3a9e193092d46f9b81f7139\", \"type\": \"message\", \"status\": \"completed\", \"created_at\": 1792765779, \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"The command executed successfully with no output.\"}], \"model\": \"fineprint_omnigent_probe\"}}"
+    },
+    {
+      "event_type": "SessionModelEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.model\", \"conversation_id\": \"36668dd714f3475a93984258c54ca442\", \"model\": \"openai/gpt-4o-mini\"}"
+    },
+    {
+      "event_type": "SessionUsageEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.usage\", \"conversation_id\": \"36668dd714f3475a93984258c54ca442\", \"context_tokens\": 4838, \"context_window\": 128000, \"total_cost_usd\": 0.0011163, \"usage_by_model\": {\"openai/gpt-4o-mini\": {\"input_tokens\": 4954, \"output_tokens\": 46, \"total_tokens\": 9608, \"cache_read_input_tokens\": 4608, \"cache_creation_input_tokens\": 0, \"total_cost_usd\": 0.0011163}}}"
+    },
+    {
+      "event_type": "CompletedEvent",
+      "dump": "{\"sequence_number\": 15, \"type\": \"response.completed\", \"response\": {\"id\": \"resp_f3a9e193092d46f9b81f7139\", \"object\": \"response\", \"status\": \"completed\", \"model\": \"fineprint_omnigent_probe\", \"created_at\": 1792765779, \"completed_at\": null, \"output\": [], \"background\": false, \"store\": true, \"usage\": {\"input_tokens\": 4954, \"output_tokens\": 46, \"output_tokens_details\": {\"reasoning_tokens\": 0}, \"total_tokens\": 9608, \"context_tokens\": 4838, \"cache_read_input_tokens\": 4608, \"cache_creation_input_tokens\": 0, \"model\": \"openai/gpt-4o-mini\", \"cost_usd\": null}, \"previous_response_id\": null, \"conversation\": null, \"instructions\": null, \"reasoning\": null, \"error\": null, \"incomplete_details\": null}}"
+    }
+  ],
+  "assistant_text_tail": "",
+  "items": [
+    "{\"id\": \"aeba49c29a0445859edf03460f2f2575\", \"response_id\": \"36668dd714f3475a93984258c54ca442\", \"type\": \"resource_event\", \"status\": \"completed\", \"created_at\": 1792765758, \"event_type\": \"session.resource.created\", \"resource_id\": \"terminal_tui_main\", \"resource_type\": \"terminal\", \"resource\": {\"id\": \"terminal_tui_main\", \"object\": \"session.resource\", \"type\": \"terminal\", \"session_id\": \"36668dd714f3475a93984258c54ca442\", \"name\": \"tui:main\", \"metadata\": {\"terminal_name\": \"tui\", \"session_key\": \"main\", \"running\": true, \"tmux_socket\": \"/tmp/omnigent-terminal-lqb53u0e/tmux.sock\", \"tmux_target\": \"main\"}, \"environment\": \"env_terminal_tui_main\"}}",
+    "{\"id\": \"dd773721e1df4dab8e696eff118b5eff\", \"response_id\": \"turn_8487c1a491f74d47a065fd91f7bd77bf\", \"type\": \"message\", \"status\": \"completed\", \"created_at\": 1792765759, \"role\": \"user\", \"content\": [{\"type\": \"input_text\", \"text\": \"Run exactly this shell command and nothing else: ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent/t08\"}], \"user_authored\": true}",
+    "{\"id\": \"5346a73af94c47ddb4df817c72ec42f8\", \"response_id\": \"resp_f3a9e193092d46f9b81f7139\", \"type\": \"function_call\", \"status\": \"completed\", \"created_at\": 1792765776, \"model\": \"fineprint_omnigent_probe\", \"name\": \"sys_os_shell\", \"arguments\": \"{\\\"command\\\": \\\"ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent/t08\\\"}\", \"call_id\": \"call_KF5f2Pw3B8VCb8nRJiakrAgJ\"}",
+    "{\"id\": \"f0cc8bf3288b4e1fb975f88cf4836daf\", \"response_id\": \"resp_f3a9e193092d46f9b81f7139\", \"type\": \"function_call_output\", \"status\": \"completed\", \"created_at\": 1792765776, \"call_id\": \"call_KF5f2Pw3B8VCb8nRJiakrAgJ\", \"output\": \"{\\\"stdout\\\": \\\"\\\", \\\"stderr\\\": \\\"\\\", \\\"exit_code\\\": 0, \\\"timed_out\\\": false, \\\"shell\\\": \\\"/usr/bin/bash\\\", \\\"cwd\\\": \\\"/home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent\\\"}\"}",
+    "{\"id\": \"470af0fac5764ba49e7ba5de4f3d024c\", \"response_id\": \"resp_f3a9e193092d46f9b81f7139\", \"type\": \"message\", \"status\": \"completed\", \"created_at\": 1792765779, \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"The command executed successfully with no output.\"}], \"model\": \"fineprint_omnigent_probe\"}"
+  ],
+  "error": null,
+  "case_id": "LT-08",
+  "prompt": "Run exactly this shell command and nothing else: ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-omnigent/t08",
+  "approve_mode": null,
+  "elapsed_s": 32.24,
+  "sandbox_created": [],
+  "sandbox_modified": [],
+  "sandbox_deleted": []
+}

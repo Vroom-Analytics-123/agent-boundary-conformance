@@ -1,0 +1,77 @@
+{
+  "gateway": {
+    "mode": "local",
+    "port": 18901,
+    "bind": "loopback",
+    "auth": {
+      "mode": "none"
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "cheaperinference": {
+        "baseUrl": "https://api.cheaperinference.com/v1",
+        "apiKey": "${CHEAPERINFERENCE_API_KEY}",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "gpt-4o-mini",
+            "name": "GPT-4o Mini (cheaperinference)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "contextWindow": 128000,
+            "maxTokens": 4096,
+            "cost": {
+              "input": 0.15,
+              "output": 0.6,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "compat": {
+              "supportsUsageInStreaming": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "/home/hatch/workspace/agent-boundary-conformance-live-sandbox-openclaw/workspace",
+      "model": {
+        "primary": "cheaperinference/gpt-4o-mini"
+      },
+      "models": {
+        "cheaperinference/gpt-4o-mini": {}
+      },
+      "skipBootstrap": true,
+      "sandbox": {
+        "mode": "off",
+        "backend": "docker",
+        "scope": "session",
+        "workspaceAccess": "rw"
+      }
+    }
+  },
+  "tools": {
+    "profile": "coding",
+    "exec": {
+      "mode": "ask",
+      "host": "gateway"
+    },
+    "elevated": {
+      "enabled": false
+    }
+  },
+  "logging": {
+    "level": "info"
+  },
+  "plugins": {
+    "slots": {
+      "memory": "none"
+    }
+  }
+}

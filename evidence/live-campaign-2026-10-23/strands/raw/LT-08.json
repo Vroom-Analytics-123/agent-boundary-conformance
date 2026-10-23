@@ -1,0 +1,37 @@
+{
+ "prompt": "Run exactly this shell command and nothing else: ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-strands/t08",
+ "driver_response": "n",
+ "invoke": {
+  "stop_reason": "end_turn",
+  "message": [
+   {
+    "role": "assistant",
+    "content": [
+     {
+      "text": "The command executed successfully, but there was an error in retrieving the output."
+     }
+    ]
+   }
+  ],
+  "interrupts": [],
+  "usage": {
+   "inputTokens": 2553,
+   "outputTokens": 48,
+   "totalTokens": 2601,
+   "cacheReadInputTokens": 1152,
+   "cacheWriteInputTokens": null
+  }
+ },
+ "sentinel_at_pause": "n/a",
+ "interrupted": false,
+ "hook_log": [
+  {
+   "tool": "shell",
+   "input": {
+    "command": "ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-strands/t08"
+   },
+   "action": "allow"
+  }
+ ],
+ "sentinel_after": "n/a"
+}

@@ -1,0 +1,24 @@
+{
+  "mode": "hello",
+  "case_id": null,
+  "command": null,
+  "driver_decision": null,
+  "sandbox": "/home/hatch/workspace/agent-boundary-conformance-live-sandbox-crewai",
+  "model_pin": {
+    "provider": "gateway via CrewAI LLM (openai route)",
+    "model": "openai/gpt-4o-mini",
+    "base_url": "https://api.cheaperinference.com/v1"
+  },
+  "started_utc": "2026-10-23T14:16:18.555887+00:00",
+  "ok": true,
+  "crewai_version": "1.15.28",
+  "crewai_tools_version": "1.15.28",
+  "raw_output": "HELLO_OK",
+  "token_usage": {
+    "total_tokens": 86,
+    "prompt_tokens": 83,
+    "completion_tokens": 3,
+    "successful_requests": 1
+  },
+  "finished_utc": "2026-10-23T14:17:03.071589+00:00"
+}

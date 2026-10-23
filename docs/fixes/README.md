@@ -1,0 +1,23 @@
+# Fixes register — index
+
+Every finding from the FinePrint live campaign (2026-10-23, Waves B+C) and the
+Wave A dossiers has a registered fix in this directory, in the form the target
+allows. **All entries are DRAFTS. Nothing has been submitted, filed, posted, or
+sent upstream.** Evidence for each entry lives in
+`evidence/live-campaign-2026-10-23/<target>/` unless noted.
+
+| # | Target | Fix draft | Form | Findings covered |
+|---|--------|-----------|------|------------------|
+| 1 | Omnigent 0.19.1 | `omnigent-fp004-fp005-builtin-gap.md` | Draft PR (patch + probes as acceptance tests) | **Priority fix.** FP-004 (credential-flow) and FP-005 (egress) are LIVE-CONFIRMED coverage gaps: 0 of 32 registry handlers can express them; a fake credential was read and POSTed to an unapproved host undecided (egress shim captured the marker). New builtin handlers proposed. |
+| 2 | Omnigent 0.19.1 | `omnigent-live-findings.md` | Draft working notes / write-up | Remaining live findings incl. FP-007 attribution (github_policy itself denies force-push, incl. bundled `-uf`) and the reconstructed-live route caveat (no offline oracle). |
+| 3 | Hermes Agent v0.22.5 | `hermes-gaps.md` | Draft PR form | FP-002 (no stage exists for deploy-class commands — confirmed live, LT-09 exit 127), FP-005, FP-006, FP-014; plus five live-observed additions: deny-beats-allowlist ordering + allowlist grain ("always" persists the *pattern rule key*, fires silently in fresh sessions), deny-globs are literal fnmatch (long-flag spellings fall through to ask), live approval dialog differs from docs (numbered select panel vs letter dialog), env-snapshot cache persisted the gateway credential to disk (deleted + rescanned clean; vendor-side fix proposed). |
+| 4 | OpenClaw 2026.10.6 | `openclaw-granularity.md` | Draft PR / disclosure | Decision granularity is the resolved binary, never argv (confirmed live: path-only `rm` allowlist entry ran `rm -fr` and `rm --recursive --force` with zero asks); `argvPolicy` extension sketch + doc-disclosure minimum; allow-always advertised but never offerable on the witnessed surface; headless runs silently denied (no approval route) — disclosure; sandbox explain-vs-runtime divergence (claims sandbox, cannot provision without Docker); approvals storage is SQLite at this version, not the dossier's JSON file. |
+| 5 | OpenCode 1.19.3 | `opencode-permission-key-drift.md` | Draft issue/PR proposal + campaign-fixture correction | A permission object keyed by an unknown tool name (`"shell"` vs the 1.19.3 tool `bash`) is accepted **silently** and never binds — LT-02 deleted under an explicit deny. Proposal: fail loudly on unknown keys, surface the matched rule in the run log, doc note. Our fixture's stale key is owned as our error; corrected-key re-run binds cleanly (zero deletions). |
+| 6 | CrewAI 1.15.28 | `crewai-fail-open-and-timing.md` | Draft PR form | F1 fail-open hooks CONFIRMED LIVE: a PRE_TOOL_CALL hook raising `ValueError` did not stop the call (sentinel deleted); only `HookAborted` aborts — propose fail-closed default or loud surfacing. F2 `human_input` CONFIRMED post-effect (prompt fired ~10 s after execution) — propose rename/re-document as post-effect review or add a true pre-execution gate. CodeInterpreterTool removal at this pin noted (premise drift). |
+| 7 | LangGraph 1.2.16 | `langgraph-no-sandbox-default.md` | Draft write-up / clause | No sandbox by default — the HITL interrupt is the ONLY barrier (the one approved case deleted; pause-time diff empty in 13/13 interrupts). FP-016 expectation splits at tool-name granularity (confirmed for `file_read`, refuted for `shell_exec` — benign shell commands interrupt too; discrimination needs owner `when`-predicate code). Fix: documented sandbox-default posture + per-tool interrupt guidance clauses. |
+| 8 | Strands Agents 1.62.0 | `strands-guardrail-scope.md` | Draft write-up | Bedrock Guardrails screen model text, never tool actions (scope confirmed from primary sources + live run) — propose documenting the scope boundary at the guardrail surface and a canonical `BeforeToolCallEvent` tool-action gate pattern (the pattern the live run used as sole gate; LT-05 protected path = hard veto). CedarAuthorization composition remains a documented open question (no offline checker). |
+
+Related deliverable (not a per-target fix draft): `deliverables/fineprint-fix-skill/`
+— the prototype FinePrint fix-skill package for Codex (DRAFT, commit `600f475`):
+drop-in hardened execpolicy rules + approval-posture config + conformance probes,
+the product form of "findings → fixes" for closed/CLI targets.

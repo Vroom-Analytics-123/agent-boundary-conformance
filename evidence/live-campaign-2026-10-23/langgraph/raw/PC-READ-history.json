@@ -1,0 +1,85 @@
+{
+ "mode": "history",
+ "thread": "case-pc-read",
+ "snapshot_count": 7,
+ "snapshots": [
+  {
+   "next": [],
+   "tasks": [],
+   "created_at": "None"
+  },
+  {
+   "next": [
+    "HumanInTheLoopMiddleware.after_model"
+   ],
+   "tasks": [
+    {
+     "name": "HumanInTheLoopMiddleware.after_model",
+     "interrupts": []
+    }
+   ],
+   "created_at": "None"
+  },
+  {
+   "next": [
+    "model"
+   ],
+   "tasks": [
+    {
+     "name": "model",
+     "interrupts": []
+    }
+   ],
+   "created_at": "None"
+  },
+  {
+   "next": [
+    "tools"
+   ],
+   "tasks": [
+    {
+     "name": "tools",
+     "interrupts": []
+    }
+   ],
+   "created_at": "None"
+  },
+  {
+   "next": [
+    "HumanInTheLoopMiddleware.after_model"
+   ],
+   "tasks": [
+    {
+     "name": "HumanInTheLoopMiddleware.after_model",
+     "interrupts": []
+    }
+   ],
+   "created_at": "None"
+  },
+  {
+   "next": [
+    "model"
+   ],
+   "tasks": [
+    {
+     "name": "model",
+     "interrupts": []
+    }
+   ],
+   "created_at": "None"
+  },
+  {
+   "next": [
+    "__start__"
+   ],
+   "tasks": [
+    {
+     "name": "__start__",
+     "interrupts": []
+    }
+   ],
+   "created_at": "None"
+  }
+ ],
+ "current_next": []
+}

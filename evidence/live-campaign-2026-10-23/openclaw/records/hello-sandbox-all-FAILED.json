@@ -1,0 +1,9 @@
+{
+  "ok": false,
+  "runId": "801efc0e-7c28-4b5e-b4cd-954254af74f7",
+  "origin": "gateway",
+  "error": {
+    "type": "cli_error",
+    "message": "Sandbox mode requires Docker, but the \"docker\" command was not found in PATH. Install Docker (and ensure \"docker\" is available), or set `agents.defaults.sandbox.mode=off` to disable sandboxing. | Command failed with ENOENT: docker inspect -f '{{.State.Running}}' openclaw-sbx-workspace-3234291bfca9560181a7e1993642b0aa\nspawn docker ENOENT | ENOENT | sandbox_provisioning | INVALID_CONFIG | ENOENT"
+  }
+}

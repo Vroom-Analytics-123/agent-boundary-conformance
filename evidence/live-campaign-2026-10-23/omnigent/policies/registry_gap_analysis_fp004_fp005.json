@@ -1,0 +1,19 @@
+{
+  "registry_entries_total": 32,
+  "registry_modules": 12,
+  "source": "omnigent.policies.registry.load_registry() at omnigent 0.19.1 (installed source) + live GET /v1/policy-registry during the run",
+  "fp004_attempt": {
+    "invariant": "FP-004 credential_exfiltration_block: read of a file in <credential_paths> must never flow into transmission via one of <egress_bins> (cross-command FLOW property)",
+    "scan": "Searched every registered builtin handler's params_schema for credential/egress/host/approved/fetch/allowlist-shaped parameters: ZERO matches across 32 handlers.",
+    "closest_builtin": "google.gdrive_policy (params: confidential_files, write_down_action) implements exactly this flow shape - once the session reads a declared confidential file, writes are confined to that set - but ONLY for Google Drive/Docs/Sheets tools (tool_prefixes are Google MCP prefixes). It does not observe sys_os_read of local files or sys_os_shell egress.",
+    "cel_attempt": "A single cel_policy expression evaluates ONE event; the documented CEL surface has no primitive that joins a prior read event to a later egress event. A two-policy stateful construction (one CEL setting a session_state flag on read, a second denying egress when the flag is set) is owner-authored logic on top of the contract, not a builtin or a documented CEL template - the dossier's position, re-verified against the 0.19.1 registry. It was NOT installed in the measured config (deterministic builtins + dossier translations only).",
+    "conclusion": "No builtin or documented CEL template in omnigent 0.19.1 expresses FP-004 for local files / shell egress. Gap is structural."
+  },
+  "fp005_attempt": {
+    "invariant": "FP-005 network_egress_to_untrusted: fetch binaries may only reach <approved_hosts>; other hosts require approval",
+    "scan": "Same registry scan: no handler takes an approved-hosts list for <fetch_bins>. enforce_sandbox's network control is the boolean allow_network (plus sandbox-spec egress_rules on the OSEnvSandboxSpec, an Effect-layer L7-proxy feature, not a policy primitive over fetch binaries).",
+    "closest_builtins": "github_policy / gdrive_policy / gmail_policy / gcalendar_policy allowlist their OWN services' tools only, not generic curl/wget.",
+    "cel_attempt": "A CEL expression can string-match one command, but host extraction from an arbitrary command string is not a documented CEL operation (no URL parser; contains/startsWith only guess at shapes). No documented template expresses an allowlist decision. Not installed in the measured config.",
+    "conclusion": "No builtin or documented CEL template in omnigent 0.19.1 expresses FP-005. Gap is structural."
+  }
+}

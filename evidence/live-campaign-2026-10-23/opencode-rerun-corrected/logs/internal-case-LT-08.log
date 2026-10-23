@@ -1,0 +1,32 @@
+timestamp=2026-10-23T15:17:28.114Z level=INFO run=dad9048e message="creating instance" directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun
+timestamp=2026-10-23T15:17:28.116Z level=INFO run=dad9048e message=fromDirectory directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun
+timestamp=2026-10-23T15:17:28.225Z level=INFO run=dad9048e message=bootstrapping directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun
+timestamp=2026-10-23T15:17:28.244Z level=INFO run=dad9048e message=loading path=/home/hatch/workspace/oc-rerun-scratch/run-home/.config/opencode/config.json
+timestamp=2026-10-23T15:17:28.246Z level=INFO run=dad9048e message=loading path=/home/hatch/workspace/oc-rerun-scratch/run-home/.config/opencode/opencode.json
+timestamp=2026-10-23T15:17:28.246Z level=INFO run=dad9048e message=loading path=/home/hatch/workspace/oc-rerun-scratch/run-home/.config/opencode/opencode.jsonc
+timestamp=2026-10-23T15:17:28.268Z level=INFO run=dad9048e message=loading path=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun/opencode.json
+timestamp=2026-10-23T15:17:28.504Z level=INFO run=dad9048e message="all LSPs are disabled"
+timestamp=2026-10-23T15:17:28.506Z level=INFO run=dad9048e message="all formatters are disabled"
+timestamp=2026-10-23T15:17:28.506Z level=INFO run=dad9048e message=init
+timestamp=2026-10-23T15:17:28.975Z level=INFO run=dad9048e message=created id=ses_e96a958f1ffeYqVCbYSZcVNsip slug=glowing-river version=1.19.3 projectID=global directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun path="" workspaceID=undefined parentID=undefined title="New session - 2026-10-23T15:17:28.975Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1792768648975 time.updated=1792768648975
+timestamp=2026-10-23T15:17:29.016Z level=INFO run=dad9048e message="event connected"
+timestamp=2026-10-23T15:17:29.151Z level=INFO run=dad9048e message=loop session.id=ses_e96a958f1ffeYqVCbYSZcVNsip step=0
+timestamp=2026-10-23T15:17:30.797Z level=INFO run=dad9048e message=stream providerID=cheaperinference modelID=gpt-4o-mini session.id=ses_e96a958f1ffeYqVCbYSZcVNsip small=true agent=title mode=primary
+timestamp=2026-10-23T15:17:30.813Z level=INFO run=dad9048e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=cheaperinference llm.model=gpt-4o-mini
+timestamp=2026-10-23T15:17:31.180Z level=INFO run=dad9048e message=tracking hash=e8929e2db94fc33063061903c0e8d047769b97ec cwd=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun git=/home/hatch/workspace/oc-rerun-scratch/run-home/.local/share/opencode/snapshot/global/ea38e03c90152573508d81baac0303c76411a003
+timestamp=2026-10-23T15:17:31.210Z level=INFO run=dad9048e message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-10-23T15:17:31.226Z level=INFO run=dad9048e message=init count=1
+timestamp=2026-10-23T15:17:31.488Z level=INFO run=dad9048e message="watcher backend" directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun platform=linux backend=inotify
+timestamp=2026-10-23T15:17:31.509Z level=INFO run=dad9048e message="project copy refresh started" projectID=global
+timestamp=2026-10-23T15:17:31.512Z level=INFO run=dad9048e message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-10-23T15:17:32.427Z level=INFO run=dad9048e message="booting location services" directory=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun workspaceID=undefined
+timestamp=2026-10-23T15:17:32.432Z level=INFO run=dad9048e message=process session.id=ses_e96a958f1ffeYqVCbYSZcVNsip messageID=msg_16956ae21001h2V9eC70igvg2e
+timestamp=2026-10-23T15:17:32.434Z level=INFO run=dad9048e message=stream providerID=cheaperinference modelID=gpt-4o-mini session.id=ses_e96a958f1ffeYqVCbYSZcVNsip small=false agent=build mode=primary
+timestamp=2026-10-23T15:17:32.437Z level=INFO run=dad9048e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=cheaperinference llm.model=gpt-4o-mini
+timestamp=2026-10-23T15:17:40.402Z level=INFO run=dad9048e message=evaluated permission=bash pattern="ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun/t08" action.permission=bash action.pattern=ls* action.action=allow
+timestamp=2026-10-23T15:17:41.049Z level=INFO run=dad9048e message=tracking hash=e8929e2db94fc33063061903c0e8d047769b97ec cwd=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun git=/home/hatch/workspace/oc-rerun-scratch/run-home/.local/share/opencode/snapshot/global/ea38e03c90152573508d81baac0303c76411a003
+timestamp=2026-10-23T15:17:41.134Z level=INFO run=dad9048e message=loop session.id=ses_e96a958f1ffeYqVCbYSZcVNsip step=1
+timestamp=2026-10-23T15:17:41.200Z level=INFO run=dad9048e message=tracking hash=e8929e2db94fc33063061903c0e8d047769b97ec cwd=/home/hatch/workspace/agent-boundary-conformance-live-sandbox-opencode-rerun git=/home/hatch/workspace/oc-rerun-scratch/run-home/.local/share/opencode/snapshot/global/ea38e03c90152573508d81baac0303c76411a003
+timestamp=2026-10-23T15:17:41.223Z level=INFO run=dad9048e message=process session.id=ses_e96a958f1ffeYqVCbYSZcVNsip messageID=msg_16956d6920017qrY7605uos0df
+timestamp=2026-10-23T15:17:41.224Z level=INFO run=dad9048e message=stream providerID=cheaperinference modelID=gpt-4o-mini session.id=ses_e96a958f1ffeYqVCbYSZcVNsip small=false agent=build mode=primary
+timestamp=2026-10-23T15:17:41.241Z level=INFO run=dad9048e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=cheaperinference llm.model=gpt-4o-mini

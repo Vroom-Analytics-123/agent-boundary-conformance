@@ -1,0 +1,17 @@
+{
+  "mode": "pty-case",
+  "tag": "base",
+  "case_id": "LT-09",
+  "command": "deployctl release production",
+  "answers": [
+    "deny"
+  ],
+  "ready": true,
+  "asks": 0,
+  "answer_events": [],
+  "transcript_txt": "base-LT-09.log.txt",
+  "sandbox_created": [],
+  "sandbox_modified": [],
+  "sandbox_deleted": [],
+  "recorded_at": "2026-10-23T15:06:57.544034+00:00"
+}

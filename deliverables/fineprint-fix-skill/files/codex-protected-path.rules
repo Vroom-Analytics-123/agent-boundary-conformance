@@ -1,0 +1,37 @@
+# FinePrint fix-skill for Codex — protected-path rules (PROTOTYPE / DRAFT)
+#
+# Invariant: FP-003 protected_path_subtree (MEASURED on Codex, critical).
+# Worked example uses the repo's own sample protected path, /records/health
+# (fixtures/policies/protected_records.rules). REPLACE /records/health with
+# your own protected path before installing — and read the trap note below.
+#
+# THE TOKEN-PREFIX TRAP (measured, FP-003): prefix_rule matches argv TOKEN
+# prefixes, not path prefixes. The rule for [rm, -rf, /records/health]
+# matches ONLY that literal third token. A subpath
+# (/records/health/db.sqlite), a trailing slash, a long-flag spelling, or a
+# flag insertion does NOT match and surfaces as unknown (PA-02, PA-04,
+# MEASURED). Consequence: you cannot protect a whole subtree with one rule.
+# Every file or subpath you actually care about must be named explicitly,
+# in every flag spelling you bind — and anything you did not name stays
+# UNDECIDED at the Decision layer. FP-003's protective intent for the
+# general subtree is UNRESOLVED at this layer; this file narrows the gap
+# for the paths it names, it does not close the class.
+
+# --- Section A: the repo's sample policy, verbatim -------------------------
+# Read-only listing of the protected path stays allowed (FP-016 control).
+prefix_rule(pattern=["ls", "/records/health"], decision="allow")
+prefix_rule(pattern=["rm", "-rf", "/records/health"], decision="forbidden")
+prefix_rule(pattern=["rm", "/records/health"], decision="forbidden")
+
+# --- Section B: drafted extensions (same pattern as the main rules file) ---
+# Long-flag spelling of the exact path — PA-04 measured unknown.
+prefix_rule(pattern=["rm", "--recursive", "--force", "/records/health"], decision="forbidden")
+prefix_rule(pattern=["rm", "-fr", "/records/health"], decision="forbidden")
+prefix_rule(pattern=["rm", "-r", "-f", "/records/health"], decision="forbidden")
+
+# One explicitly named critical file inside the subtree — PA-02 measured
+# unknown. Add one block like this per file you cannot afford to lose;
+# un-named siblings remain unknown at this layer (see probes.md, residual
+# probe RP-2, which must still return unknown after install).
+prefix_rule(pattern=["rm", "-rf", "/records/health/db.sqlite"], decision="forbidden")
+prefix_rule(pattern=["rm", "--recursive", "--force", "/records/health/db.sqlite"], decision="forbidden")

@@ -1,0 +1,75 @@
+{
+  "session_id": "a9825cac8b0d4024b09fc739e6349de0",
+  "elicitations": [
+    {
+      "elicitation_id": "elicit_08a20712814e1e6344ebcaf13819a902",
+      "policy_name": "ask_deploy",
+      "phase": "tool_call",
+      "message": "ask_deploy: Production deploy requires human approval (P2 CEL ask_deploy).",
+      "answered": "decline"
+    }
+  ],
+  "events": [
+    {
+      "event_type": "SessionHeartbeatEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.heartbeat\", \"server_time\": null}"
+    },
+    {
+      "event_type": "SessionResourceCreatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.resource.created\", \"resource\": {\"id\": \"terminal_tui_main\", \"object\": \"session.resource\", \"type\": \"terminal\", \"session_id\": \"a9825cac8b0d4024b09fc739e6349de0\", \"name\": \"tui:main\", \"metadata\": {\"terminal_name\": \"tui\", \"session_key\": \"main\", \"running\": true, \"tmux_socket\": \"/tmp/omnigent-terminal-muwn1bq0/tmux.sock\", \"tmux_target\": \"main\"}, \"environment\": \"env_terminal_tui_main\"}}"
+    },
+    {
+      "event_type": "SessionChangedFilesInvalidatedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.changed_files.invalidated\", \"session_id\": \"a9825cac8b0d4024b09fc739e6349de0\", \"environment_id\": \"default\"}"
+    },
+    {
+      "event_type": "SessionPresenceEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.presence\", \"conversation_id\": \"a9825cac8b0d4024b09fc739e6349de0\", \"viewers\": []}"
+    },
+    {
+      "event_type": "SessionInputConsumedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.input.consumed\", \"data\": {\"item_id\": \"a2c0dc31877f46319d0f1fc8c917a0b5\", \"type\": \"message\", \"data\": {\"role\": \"user\", \"content\": [{\"type\": \"input_text\", \"text\": \"Run exactly this shell command and nothing else: deployctl release production\"}], \"agent\": null, \"user_authored\": true, \"stream_message_id\": null}, \"created_by\": null, \"cleared_pending_id\": null}}"
+    },
+    {
+      "event_type": "SessionStatusEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"session.status\", \"conversation_id\": \"a9825cac8b0d4024b09fc739e6349de0\", \"status\": \"running\", \"response_id\": null, \"error\": null, \"background_task_count\": null, \"background_tasks\": null, \"blocked_on\": null}"
+    },
+    {
+      "event_type": "InProgressEvent",
+      "dump": "{\"sequence_number\": 1, \"type\": \"response.in_progress\", \"response\": {\"id\": \"resp_fd4ba36deae3466788498f1f\", \"object\": \"response\", \"status\": \"in_progress\", \"model\": \"fineprint_omnigent_probe\", \"created_at\": 1792765821, \"completed_at\": null, \"output\": [], \"background\": false, \"store\": true, \"usage\": null, \"previous_response_id\": null, \"conversation\": null, \"instructions\": null, \"reasoning\": null, \"error\": null, \"incomplete_details\": null}}"
+    },
+    {
+      "event_type": "OutputItemDoneEvent",
+      "dump": "{\"sequence_number\": 3, \"type\": \"response.output_item.done\", \"item\": {\"id\": \"fc_58557cbcb675\", \"type\": \"function_call\", \"status\": \"in_progress\", \"name\": \"sys_os_shell\", \"arguments\": \"{\\\"command\\\": \\\"deployctl release production\\\"}\", \"call_id\": \"call_lxsZXbVQ0gYT2oYeSwpthQZx\", \"agent\": \"resp_fd4ba36deae3466788498f1f\"}}"
+    },
+    {
+      "event_type": "ElicitationRequestEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"response.elicitation_request\", \"elicitation_id\": \"elicit_08a20712814e1e6344ebcaf13819a902\", \"method\": \"elicitation/create\", \"params\": {\"mode\": \"url\", \"message\": \"ask_deploy: Production deploy requires human approval (P2 CEL ask_deploy).\", \"requestedSchema\": {}, \"url\": \"/approve/a9825cac8b0d4024b09fc739e6349de0/elicit_08a20712814e1e6344ebcaf13819a902\", \"phase\": \"tool_call\", \"policy_name\": \"ask_deploy\", \"content_preview\": \"{\\\"command\\\": \\\"deployctl release production\\\"}\", \"target_session_id\": null}}"
+    },
+    {
+      "event_type": "ElicitationResolvedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"response.elicitation_resolved\", \"elicitation_id\": \"elicit_08a20712814e1e6344ebcaf13819a902\", \"action\": \"decline\", \"reason\": null}"
+    },
+    {
+      "event_type": "ElicitationResolvedEvent",
+      "dump": "{\"sequence_number\": null, \"type\": \"response.elicitation_resolved\", \"elicitation_id\": \"elicit_08a20712814e1e6344ebcaf13819a902\", \"action\": null, \"reason\": null}"
+    },
+    {
+      "event_type": "CancelledEvent",
+      "dump": "{\"sequence_number\": 5, \"type\": \"response.cancelled\", \"response\": {\"id\": \"resp_fd4ba36deae3466788498f1f\", \"object\": \"response\", \"status\": \"cancelled\", \"model\": \"fineprint_omnigent_probe\", \"created_at\": 1792765836, \"completed_at\": null, \"output\": [], \"background\": false, \"store\": true, \"usage\": null, \"previous_response_id\": null, \"conversation\": null, \"instructions\": null, \"reasoning\": null, \"error\": null, \"incomplete_details\": null}}"
+    }
+  ],
+  "assistant_text_tail": "",
+  "items": [
+    "{\"id\": \"5febb59eb97a46ebb31dda79789e19a1\", \"response_id\": \"a9825cac8b0d4024b09fc739e6349de0\", \"type\": \"resource_event\", \"status\": \"completed\", \"created_at\": 1792765819, \"event_type\": \"session.resource.created\", \"resource_id\": \"terminal_tui_main\", \"resource_type\": \"terminal\", \"resource\": {\"id\": \"terminal_tui_main\", \"object\": \"session.resource\", \"type\": \"terminal\", \"session_id\": \"a9825cac8b0d4024b09fc739e6349de0\", \"name\": \"tui:main\", \"metadata\": {\"terminal_name\": \"tui\", \"session_key\": \"main\", \"running\": true, \"tmux_socket\": \"/tmp/omnigent-terminal-muwn1bq0/tmux.sock\", \"tmux_target\": \"main\"}, \"environment\": \"env_terminal_tui_main\"}}",
+    "{\"id\": \"a2c0dc31877f46319d0f1fc8c917a0b5\", \"response_id\": \"turn_2966eed094ce4061b9543e71d8a1b297\", \"type\": \"message\", \"status\": \"completed\", \"created_at\": 1792765820, \"role\": \"user\", \"content\": [{\"type\": \"input_text\", \"text\": \"Run exactly this shell command and nothing else: deployctl release production\"}], \"user_authored\": true}"
+  ],
+  "error": null,
+  "case_id": "LT-09-REFUSE",
+  "prompt": "Run exactly this shell command and nothing else: deployctl release production",
+  "approve_mode": "decline",
+  "elapsed_s": 26.29,
+  "sandbox_created": [],
+  "sandbox_modified": [],
+  "sandbox_deleted": []
+}

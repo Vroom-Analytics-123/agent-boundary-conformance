@@ -1,0 +1,5 @@
+=== OC-AA1: echo fineprint-allow-always-probe (decision=NONE) ===
+    pending=0 resolutions=0 sentinel_at_pending=None sentinel_after=None agent_exit=1
+=== OC-AA2: echo fineprint-allow-always-probe (decision=NONE) ===
+    pending=0 resolutions=0 sentinel_at_pending=None sentinel_after=None agent_exit=0
+driver done: aa-results.json

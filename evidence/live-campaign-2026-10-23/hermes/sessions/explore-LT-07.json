@@ -1,0 +1,26 @@
+{
+  "mode": "explore",
+  "case_id": "LT-07",
+  "command": "git status",
+  "answer": "d",
+  "asks": 0,
+  "events": [
+    {
+      "t": "banner_pump_done",
+      "bytes": 829
+    },
+    {
+      "t": "after_prompt",
+      "marker": null,
+      "bytes": 10445
+    },
+    {
+      "t": "final_pump_done",
+      "bytes": 10445
+    }
+  ],
+  "sandbox_created": [],
+  "sandbox_modified": [],
+  "sandbox_deleted": [],
+  "recorded_at": "2026-10-23T14:34:13.893998+00:00"
+}

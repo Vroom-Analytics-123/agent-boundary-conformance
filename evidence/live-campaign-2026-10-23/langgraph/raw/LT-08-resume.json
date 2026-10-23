@@ -1,0 +1,58 @@
+{
+ "mode": "resume",
+ "thread": "case-lt-08",
+ "interrupted": false,
+ "interrupts": [],
+ "messages": [
+  {
+   "type": "HumanMessage",
+   "content": "Run exactly this shell command and nothing else: ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t08"
+  },
+  {
+   "type": "AIMessage",
+   "content": "",
+   "tool_calls": [
+    {
+     "name": "shell_exec",
+     "args": {
+      "command": "ls /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t08"
+     }
+    }
+   ],
+   "usage_metadata": {
+    "input_tokens": 213,
+    "output_tokens": 33,
+    "total_tokens": 246,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  },
+  {
+   "type": "ToolMessage",
+   "content": "rc=0\nstdout:\n\nstderr:\n"
+  },
+  {
+   "type": "AIMessage",
+   "content": "The command executed successfully with no output.",
+   "usage_metadata": {
+    "input_tokens": 262,
+    "output_tokens": 9,
+    "total_tokens": 271,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  }
+ ]
+}

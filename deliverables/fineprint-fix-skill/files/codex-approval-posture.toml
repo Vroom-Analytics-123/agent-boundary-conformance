@@ -1,0 +1,40 @@
+# FinePrint fix-skill for Codex — approval-layer posture (PROTOTYPE / DRAFT)
+#
+# Why this file exists: FP-009 (shell_wrapper_opaque_payload, MEASURED,
+# critical) and FP-012 (compound_command_head_only, MEASURED, critical)
+# cannot be fixed in execpolicy rules — prefix rules cannot inspect a
+# wrapped payload, and a compound's Decision-layer decision attaches to its
+# head segment only (a `git status && rm -rf /tmp/x` compound measured
+# ALLOW, corpus F-11a). For those forms the Decision layer returns an
+# explicit unknown, and what actually happens is governed by the Approval
+# and sandbox layers. This file pins those layers to their restrictive
+# documented settings so an unknown fails toward a human, not toward silent
+# execution.
+#
+# Evidence class for the values below: documented value sets (DOC) plus a
+# REPRO probe of `codex exec --help` on the vendored codex-cli 0.149.0
+# binary — recorded in docs/approval-configured-route-2026-10-22.md.
+# This is a configured-route EVALUATION, not a witnessed live approval:
+# witnessed approval (route A3) was BLOCKED in the measurement program
+# (no authenticated run), and nothing here claims otherwise.
+#
+# Merge into your Codex config.toml; do not overwrite a config you have
+# not read.
+
+# "untrusted" = auto-approve only safe reads; anything else asks.
+# ("on-request" — the model decides when to ask — is the weaker acceptable
+# alternative. Never set "never" outside a deliberately contained test
+# pin: under "never" the approval moment never surfaces to a human.)
+approval_policy = "untrusted"
+
+# "workspace-write" = read anywhere, write only inside the workspace, no
+# network unless separately enabled. Never pair an unknown-surfacing
+# policy with "danger-full-access".
+sandbox_mode = "workspace-write"
+
+# NEVER pass --dangerously-bypass-approvals-and-sandbox to the agent, and
+# treat any tool, script, or package that asks the agent to run with it
+# (or with approval_policy = "never" + danger-full-access) as a finding,
+# not a convenience: the Nx "s1ngularity" incident (Aug 2025, verified;
+# see README.md) exfiltrated 2,349 secrets by invoking victims' own AI
+# CLIs with exactly those approval-disabling flags.

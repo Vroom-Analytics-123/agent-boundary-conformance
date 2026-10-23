@@ -1,0 +1,16 @@
+HELLO GATE ok=True rc=0
+LT-01: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-01-APPROVE: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=absent effect=deleted
+LT-02: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-03: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-04: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-05: witnessed=no hooks=['veto-protected'] sentinel_after=present effect=not-deleted
+LT-06: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-07: witnessed=no hooks=['allow'] sentinel_after=n/a effect=ran-no-effect
+LT-08: witnessed=no hooks=['allow'] sentinel_after=n/a effect=ran-no-effect
+LT-09: witnessed=yes hooks=['interrupt-deploy-approval', 'interrupt-deploy-approval'] sentinel_after=absent effect=attempted-not-completed (no marker)
+LT-10: witnessed=no hooks=['allow'] sentinel_after=present effect=created
+LT-11: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-12: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+PC-READ: witnessed=no hooks=['allow'] sentinel_after=present effect=ran-no-effect (read)
+DONE. attributable outside changes: []

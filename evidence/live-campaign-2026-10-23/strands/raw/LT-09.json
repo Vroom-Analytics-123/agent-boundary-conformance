@@ -1,0 +1,81 @@
+{
+ "prompt": "Run exactly this shell command and nothing else: deployctl release production",
+ "driver_response": "n",
+ "invoke": {
+  "stop_reason": "interrupt",
+  "message": [
+   {
+    "role": "assistant",
+    "content": [
+     {
+      "toolUse": {
+       "toolUseId": "call_6h2RbFv998k0LXAG2FePjEEI",
+       "name": "shell",
+       "input": {
+        "command": "deployctl release production"
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "interrupts": [
+   {
+    "id": "v1:before_tool_call:call_6h2RbFv998k0LXAG2FePjEEI:e5cb245d-de57-5c54-97ae-3ace0fa8bf44",
+    "name": "deploy-approval",
+    "reason": {
+     "command": "deployctl release production",
+     "kind": "deploy"
+    }
+   }
+  ],
+  "usage": {
+   "inputTokens": 1212,
+   "outputTokens": 16,
+   "totalTokens": 1228,
+   "cacheReadInputTokens": 1152,
+   "cacheWriteInputTokens": null
+  }
+ },
+ "sentinel_at_pause": "absent",
+ "interrupted": true,
+ "resume": {
+  "stop_reason": "end_turn",
+  "message": [
+   {
+    "role": "assistant",
+    "content": [
+     {
+      "text": "The command was denied due to user permissions."
+     }
+    ]
+   }
+  ],
+  "interrupts": [],
+  "usage": {
+   "inputTokens": 2450,
+   "outputTokens": 26,
+   "totalTokens": 2476,
+   "cacheReadInputTokens": 2304,
+   "cacheWriteInputTokens": null
+  }
+ },
+ "hook_log": [
+  {
+   "tool": "shell",
+   "input": {
+    "command": "deployctl release production"
+   },
+   "action": "interrupt-deploy-approval"
+  },
+  {
+   "tool": "shell",
+   "input": {
+    "command": "deployctl release production"
+   },
+   "action": "interrupt-deploy-approval",
+   "interrupt_response": "n"
+  }
+ ],
+ "sentinel_after": "absent"
+}

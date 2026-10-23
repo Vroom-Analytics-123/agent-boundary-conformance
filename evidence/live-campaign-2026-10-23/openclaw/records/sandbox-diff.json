@@ -1,0 +1,10 @@
+{
+ "created": [
+  "sentinel.txt"
+ ],
+ "deleted": [
+  "t02/target.txt",
+  "t03/target.txt"
+ ],
+ "modified": []
+}

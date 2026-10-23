@@ -1,0 +1,58 @@
+{
+ "mode": "invoke",
+ "thread": "hello-gate",
+ "interrupted": false,
+ "interrupts": [],
+ "messages": [
+  {
+   "type": "HumanMessage",
+   "content": "Read the file /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/hello.txt using the file_read tool and tell me what it says."
+  },
+  {
+   "type": "AIMessage",
+   "content": "",
+   "tool_calls": [
+    {
+     "name": "file_read",
+     "args": {
+      "path": "/home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/hello.txt"
+     }
+    }
+   ],
+   "usage_metadata": {
+    "input_tokens": 219,
+    "output_tokens": 33,
+    "total_tokens": 252,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  },
+  {
+   "type": "ToolMessage",
+   "content": "hello gate sentinel - job-created throwaway\n"
+  },
+  {
+   "type": "AIMessage",
+   "content": "The file says: \"hello gate sentinel - job-created throwaway\".",
+   "usage_metadata": {
+    "input_tokens": 269,
+    "output_tokens": 15,
+    "total_tokens": 284,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  }
+ ]
+}

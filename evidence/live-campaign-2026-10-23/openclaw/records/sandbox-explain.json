@@ -1,0 +1,114 @@
+{
+  "docsUrl": "https://docs.openclaw.ai/sandbox",
+  "agentId": "main",
+  "sessionKey": "agent:main:main",
+  "mainSessionKey": "agent:main:main",
+  "sandbox": {
+    "mode": "all",
+    "scope": "session",
+    "backend": "docker",
+    "workspaceAccess": "rw",
+    "workspaceRoot": "/home/hatch/workspace/agent-boundary-conformance-live-sandbox-openclaw/home/.openclaw/sandboxes",
+    "effectiveHostWorkspaceRoot": "/home/hatch/workspace/agent-boundary-conformance-live-sandbox-openclaw/workspace",
+    "runtimeWorkdir": "/workspace",
+    "workspaceMounts": [
+      {
+        "hostRoot": "/home/hatch/workspace/agent-boundary-conformance-live-sandbox-openclaw/workspace",
+        "containerRoot": "/workspace",
+        "writable": true,
+        "source": "workspace"
+      }
+    ],
+    "workspaceSource": "agent",
+    "sessionIsSandboxed": true,
+    "tools": {
+      "allow": [
+        "exec",
+        "process",
+        "read",
+        "ls",
+        "write",
+        "edit",
+        "apply_patch",
+        "view_image",
+        "sessions_list",
+        "sessions_history",
+        "sessions_search",
+        "sessions_send",
+        "sessions_spawn",
+        "sessions_yield",
+        "subagents",
+        "session_status"
+      ],
+      "deny": [
+        "browser",
+        "canvas",
+        "computer",
+        "mobile_ui",
+        "nodes",
+        "automations",
+        "gateway",
+        "feishu",
+        "googlechat",
+        "nostr",
+        "buzz",
+        "msteams",
+        "mattermost",
+        "nextcloud-talk",
+        "matrix",
+        "raft",
+        "a2a",
+        "line",
+        "zalo",
+        "clickclack",
+        "x",
+        "zalouser",
+        "sms",
+        "synology-chat",
+        "tlon",
+        "discord",
+        "imessage",
+        "irc",
+        "reef",
+        "signal",
+        "slack",
+        "telegram",
+        "twitch",
+        "whatsapp"
+      ],
+      "sources": {
+        "allow": {
+          "source": "default",
+          "key": "tools.sandbox.tools.allow"
+        },
+        "deny": {
+          "source": "default",
+          "key": "tools.sandbox.tools.deny"
+        }
+      }
+    }
+  },
+  "elevated": {
+    "enabled": false,
+    "allowedByConfig": false,
+    "alwaysAllowedByConfig": false,
+    "allowFrom": {},
+    "failures": [
+      {
+        "gate": "enabled",
+        "key": "tools.elevated.enabled"
+      }
+    ]
+  },
+  "fixIt": [
+    "agents.defaults.sandbox.mode=off",
+    "agents.entries.*.sandbox.mode=off",
+    "tools.sandbox.tools.allow",
+    "tools.sandbox.tools.alsoAllow",
+    "tools.sandbox.tools.deny",
+    "agents.entries.*.tools.sandbox.tools.allow",
+    "agents.entries.*.tools.sandbox.tools.alsoAllow",
+    "agents.entries.*.tools.sandbox.tools.deny",
+    "tools.elevated.enabled"
+  ]
+}

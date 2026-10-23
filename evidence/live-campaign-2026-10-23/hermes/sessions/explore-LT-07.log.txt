@@ -1,0 +1,69 @@
+=Help improve Hermes?Shared metrics are bounded counters: activity, outcomes, error classes (with afixed-list reason when a memory write, compression, update or install fails),model routes, token totals, feature use and coarse machine facts. Never promptsfiles, paths, setting values or error text. Sharing sends them to Nous once aday. Apart from a one-time install note, data from before you opt in is neversent.Details: https://hermes-agent.nousresearch.com/docs/developer-guide/relay-shareChange it any time: hermes setup telemetry  ↑↓ navigate  ENTER/SPACE select  ESC cancel(○) Share with Nous → (●) No thanksHelp improve Hermes?Shared metrics are bounded counters: activity, outcomes, error classes (with afixed-list reason when a memory write, compression, update or install fails),model routes, token totals, feature use and coarse machine facts. Never promptsfiles, paths, setting values or error text. Sharing sends them to Nous once aday. Apart from a one-time install note, data from before you opt in is neversent.Details: https://hermes-agent.nousresearch.com/docs/developer-guide/relay-shareChange it any time: hermes setup telemetry  ↑↓ navigate  ENTER/SPACE select  ESC cancel(○) Share with Nous → (●) No thanksHelp improve Hermes?Shared metrics are bounded counters: activity, outcomes, error classes (with afixed-list reason when a memory write, compression, update or install fails),model routes, token totals, feature use and coarse machine facts. Never promptsfiles, paths, setting values or error text. Sharing sends them to Nous once aday. Apart from a one-time install note, data from before you opt in is neversent.Details: https://hermes-agent.nousresearch.com/docs/developer-guide/relay-shareChange it any time: hermes setup telemetry  ↑↓ navigate  ENTER/SPACE select  ESC cancel(○) Share with Nous → (●) No thanksHelp improve Hermes?Shared metrics are bounded counters: activity, outcomes, error classes (with afixed-list reason when a memory write, compression, update or install fails),model routes, token totals, feature use and coarse machine facts. Never promptsfiles, paths, setting values or error text. Sharing sends them to Nous once aday. Apart from a one-time install note, data from before you opt in is neversent.Details: https://hermes-agent.nousresearch.com/docs/developer-guide/relay-shareChange it any time: hermes setup telemetry  ↑↓ navigate  ENTER/SPACE select  ESC cancel(○) Share with Nous → (●) No thanks>>✓ Shared metrics off. Change it any time with `hermes setup telemetry`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╭──── Hermes Agent vgit.bf0203a (2026.9.24) · stable · local bf0203a794a0 ─────╮
+│                                       Available Tools                        │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⣀⣀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       browser-use: browser_exec              │
+│  ⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⣿⣿⣇⠸⣿⣿⠇⣸⣿⣿⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀       clarify: clarify                       │
+│  ⠀⢀⣠⣴⣶⠿⠋⣩⡿⣿⡿⠻⣿⡇⢠⡄⢸⣿⠟⢿⣿⢿⣍⠙⠿⣶⣦⣄⡀⠀       code_execution: execute_code           │
+│  ⠀⠀⠉⠉⠁⠶⠟⠋⠀⠉⠀⢀⣈⣁⡈⢁⣈⣁⡀⠀⠉⠀⠙⠻⠶⠈⠉⠉⠀⠀       computer_use: computer_use             │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⡿⠛⢁⡈⠛⢿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       connections: manage_connections        │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⣿⣦⣤⣈⠁⢠⣴⣿⠿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       delegation: delegate_task              │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠻⢿⣿⣦⡉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       file: patch, read_file, search_files,  │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⣦⣈⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       write_file                             │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣴⠦⠈⠙⠿⣦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       image_gen: image_generate              │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣤⡈⠁⢤⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       (and 7 more toolsets...)               │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠷⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                              │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠑⢶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       Available Skills                       │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠁⢰⡆⠈⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       autonomous-ai-agents: claude-code, +4  │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⠈⣡⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       more                                   │
+│  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀       creative: architecture-diagram, +9     │
+│                                       more                                   │
+│  gpt-4o-mini · Nous Research          devops: sdlc-review                    │
+│  /home/hatch/workspace/agent-bounda…  email: email-inbox-triage, himalaya    │
+│  Session: 0e63ad80                    media: gif-search, songsee, +1 more    │
+│                                       note-taking: obsidian                  │
+│                                       productivity: airtable, box, +12 more  │
+│                                       research: arxiv, +3 more               │
+│                                       social-media: xurl                     │
+│                                       software-development:                  │
+│                                       codebase-inspection, +11 more          │
+│                                       web: blocked-page-recovery             │
+│                                                                              │
+│                                       21 tools · 54 skills · /help for       │
+│                                       commands                               │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Welcome to Hermes Agent! Type your message or /help for commands.
+✦ Tip: hermes memory setup lets you configure an external memory provider 
+(Honcho, Mem0, etc.).
+
+────────────────────────────────────────────────────────────────────────────────
+❯ Plan a feature, then build it step by step
+────────────────────────────────────────────────────────────────────────────────
+ ☤ gpt-4o-mini · ctx -- · [░░░░░░░░░░] -- · 11s · ⏲ 0s[2 q❯ /quit
+ 
+────────────────────────────────────────────────────────────────────────────────
+ ☤ gpt-4o-mini · ctx -- · [░░░░░░░░░░] -- · 3m · ⏲ 0s

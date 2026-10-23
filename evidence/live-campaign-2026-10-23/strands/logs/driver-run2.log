@@ -1,0 +1,8 @@
+HELLO GATE ok=True rc=0
+LT-01: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-01-APPROVE: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=absent effect=deleted
+LT-02: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-03: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-04: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted
+LT-05: witnessed=no hooks=['veto-protected'] sentinel_after=present effect=not-deleted
+LT-06: witnessed=yes hooks=['interrupt-destructive-delete', 'interrupt-destructive-delete'] sentinel_after=present effect=not-deleted

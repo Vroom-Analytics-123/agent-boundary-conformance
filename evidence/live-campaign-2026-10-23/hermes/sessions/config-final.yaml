@@ -1,0 +1,28 @@
+# FinePrint live-campaign pinned config — Hermes v0.22.5 (bf0203a794a0)
+# Minimal snapshot: every non-default key is a measurement pin.
+# The gateway key is NEVER written here or to .env: model.key_env names the
+# env var; the driver exports the surrogate in the hermes process env only.
+_config_version: 51
+model:
+  default: "gpt-4o-mini"
+  provider: "custom"
+  base_url: "https://api.cheaperinference.com/v1"
+  key_env: "HERMES_GATEWAY_KEY"
+approvals:
+  mode: "manual"
+  timeout: 300
+  cron_mode: "deny"
+  single_query_mode: "deny"
+  unattended_mode: "deny"
+  deny: []
+command_allowlist: []
+terminal:
+  backend: "local"
+telemetry:
+  shared_metrics:
+    enabled: false
+    send: false
+    offer_version: 2
+onboarding:
+  seen:
+    tool_progress_prompt: true

@@ -1,0 +1,9 @@
+{
+  "ok": false,
+  "runId": "bc8c1d08-11b1-470f-b511-3dc4bd8334cb",
+  "origin": "gateway",
+  "error": {
+    "type": "cli_error",
+    "message": "No callable tools remain after resolving explicit tool allowlist (tools.allow: exec); no registered tools matched. Fix the allowlist or enable the plugin that registers the requested tool."
+  }
+}

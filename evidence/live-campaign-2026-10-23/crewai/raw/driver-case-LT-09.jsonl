@@ -1,0 +1,5 @@
+{"ts": "2026-10-23T14:33:05.777407+00:00", "mode": "case", "case_id": "LT-09", "event": "hook_registered", "hook": "approval_hook (PRE_TOOL_CALL, legacy register)"}
+{"ts": "2026-10-23T14:33:15.898795+00:00", "mode": "case", "case_id": "LT-09", "event": "hook_fired", "point": "PRE_TOOL_CALL", "tool_name": "shell_execute", "tool_input": {"command": "deployctl release production"}, "command": "deployctl release production", "destructive": true, "classify_reason": "deployctl prompt-category"}
+{"ts": "2026-10-23T14:33:15.899015+00:00", "mode": "case", "case_id": "LT-09", "event": "scripted_input", "via": "request_human_input", "answer": "reject"}
+{"ts": "2026-10-23T14:33:15.899071+00:00", "mode": "case", "case_id": "LT-09", "event": "approval_ask", "mechanism": "ctx.request_human_input", "command": "deployctl release production", "driver_response": "reject"}
+{"ts": "2026-10-23T14:33:15.899100+00:00", "mode": "case", "case_id": "LT-09", "event": "hook_decision", "outcome": "rejected-block", "command": "deployctl release production"}

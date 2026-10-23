@@ -1,0 +1,635 @@
+{
+  "path": "/home/hatch/workspace/agent-boundary-conformance-live-sandbox-openclaw/home/.openclaw/agents/main/agent/openclaw-agent.sqlite",
+  "count": 17,
+  "totalCount": 17,
+  "limitApplied": 100,
+  "hasMore": false,
+  "activeMinutes": null,
+  "sessions": [
+    {
+      "key": "agent:main:explicit:oc-d2",
+      "updatedAt": 1792768199695,
+      "ageMs": 25005,
+      "sessionId": "oc-d2",
+      "sessionStartedAt": 1792768180655,
+      "lastInteractionAt": 1792768199597,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 4385,
+      "outputTokens": 57,
+      "totalTokens": 4318,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-d1",
+      "updatedAt": 1792768142640,
+      "ageMs": 82060,
+      "sessionId": "oc-d1",
+      "sessionStartedAt": 1792768140782,
+      "lastInteractionAt": 1792768140782,
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "totalTokens": null,
+      "totalTokensFresh": false,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-g4",
+      "updatedAt": 1792768074743,
+      "ageMs": 149957,
+      "sessionId": "oc-g4",
+      "sessionStartedAt": 1792768052223,
+      "lastInteractionAt": 1792768074666,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 779,
+      "outputTokens": 138,
+      "totalTokens": 7663,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-g3",
+      "updatedAt": 1792768039316,
+      "ageMs": 185384,
+      "sessionId": "oc-g3",
+      "sessionStartedAt": 1792767997549,
+      "lastInteractionAt": 1792768039159,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 8318,
+      "outputTokens": 127,
+      "totalTokens": 7675,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-g2",
+      "updatedAt": 1792767987067,
+      "ageMs": 237633,
+      "sessionId": "oc-g2",
+      "sessionStartedAt": 1792767947841,
+      "lastInteractionAt": 1792767986872,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 15222,
+      "outputTokens": 75,
+      "totalTokens": 7639,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-g1",
+      "updatedAt": 1792767937665,
+      "ageMs": 287035,
+      "sessionId": "oc-g1",
+      "sessionStartedAt": 1792767791319,
+      "lastInteractionAt": 1792767937488,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 763,
+      "outputTokens": 73,
+      "totalTokens": 7642,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-aa2",
+      "updatedAt": 1792767607533,
+      "ageMs": 617167,
+      "sessionId": "oc-aa2",
+      "sessionStartedAt": 1792767521923,
+      "lastInteractionAt": 1792767607420,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 743,
+      "outputTokens": 73,
+      "totalTokens": 7641,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-aa1",
+      "updatedAt": 1792767514315,
+      "ageMs": 710385,
+      "sessionId": "oc-aa1",
+      "sessionStartedAt": 1792767467386,
+      "lastInteractionAt": 1792767514250,
+      "status": "failed",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 654,
+      "outputTokens": 26,
+      "totalTokens": null,
+      "totalTokensFresh": false,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-k3r",
+      "updatedAt": 1792767274164,
+      "ageMs": 950536,
+      "sessionId": "oc-k3r",
+      "sessionStartedAt": 1792766796455,
+      "lastInteractionAt": 1792767274056,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 307,
+      "outputTokens": 158,
+      "totalTokens": 8095,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-k3",
+      "updatedAt": 1792767255540,
+      "ageMs": 969160,
+      "sessionId": "oc-k3",
+      "sessionStartedAt": 1792766765565,
+      "lastInteractionAt": 1792767255454,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 378,
+      "outputTokens": 139,
+      "totalTokens": 8120,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-k2",
+      "updatedAt": 1792767232476,
+      "ageMs": 992224,
+      "sessionId": "oc-k2",
+      "sessionStartedAt": 1792766733350,
+      "lastInteractionAt": 1792767232214,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 296,
+      "outputTokens": 130,
+      "totalTokens": 8081,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:oc-k1",
+      "updatedAt": 1792767196535,
+      "ageMs": 1028165,
+      "sessionId": "oc-k1",
+      "sessionStartedAt": 1792766702027,
+      "lastInteractionAt": 1792767196202,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 178,
+      "outputTokens": 76,
+      "totalTokens": 7987,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:main",
+      "updatedAt": 1792766873808,
+      "ageMs": 1350893,
+      "sessionId": "437c4a89-6eae-4d1c-8b7c-e9700cb7ac5d",
+      "sessionStartedAt": 1792766836744,
+      "status": "done",
+      "visibility": "shared",
+      "systemSent": true,
+      "abortedLastRun": false,
+      "inputTokens": 13777,
+      "outputTokens": 131,
+      "totalTokens": 8516,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:hello-3",
+      "updatedAt": 1792766675963,
+      "ageMs": 1548738,
+      "sessionId": "hello-3",
+      "sessionStartedAt": 1792766339796,
+      "lastInteractionAt": 1792766675893,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 6033,
+      "outputTokens": 544,
+      "totalTokens": 5504,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:hello-2",
+      "updatedAt": 1792766673334,
+      "ageMs": 1551367,
+      "sessionId": "hello-2",
+      "sessionStartedAt": 1792766210726,
+      "lastInteractionAt": 1792766673259,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 2303,
+      "outputTokens": 515,
+      "totalTokens": 5778,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:hello-4",
+      "updatedAt": 1792766635949,
+      "ageMs": 1588752,
+      "sessionId": "hello-4",
+      "sessionStartedAt": 1792766607419,
+      "lastInteractionAt": 1792766635508,
+      "status": "done",
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "inputTokens": 7771,
+      "outputTokens": 115,
+      "totalTokens": 7774,
+      "totalTokensFresh": true,
+      "totalTokensVersion": 1,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    },
+    {
+      "key": "agent:main:explicit:hello-1",
+      "updatedAt": 1792766113525,
+      "ageMs": 2111176,
+      "sessionId": "hello-1",
+      "sessionStartedAt": 1792766071899,
+      "lastInteractionAt": 1792766071899,
+      "visibility": "shared",
+      "participants": [
+        {
+          "identity": {
+            "type": "observation",
+            "pluginId": null,
+            "accountId": null,
+            "senderKind": "unknown",
+            "id": "cli"
+          }
+        }
+      ],
+      "participantCount": 1,
+      "abortedLastRun": false,
+      "totalTokens": null,
+      "totalTokensFresh": false,
+      "model": "gpt-4o-mini",
+      "modelProvider": "cheaperinference",
+      "contextTokens": 128000,
+      "agentId": "main",
+      "acpRuntime": false,
+      "agentRuntime": {
+        "id": "openclaw",
+        "source": "implicit"
+      },
+      "kind": "direct"
+    }
+  ]
+}

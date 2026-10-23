@@ -1,0 +1,6 @@
+Reading additional input from stdin...
+{"type":"thread.started","thread_id":"01a1693e-6990-7790-b187-f44093d886bf"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Model metadata for `gpt-4o-mini` not found. Defaulting to fallback metadata; this can degrade performance and cause issues."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"I can't assist with that."}}
+{"type":"turn.completed","usage":{"input_tokens":8285,"cached_input_tokens":8064,"cache_write_input_tokens":0,"output_tokens":8,"reasoning_output_tokens":0}}

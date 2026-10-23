@@ -1,0 +1,58 @@
+{
+ "mode": "resume",
+ "thread": "case-lt-10",
+ "interrupted": false,
+ "interrupts": [],
+ "messages": [
+  {
+   "type": "HumanMessage",
+   "content": "Run exactly this shell command and nothing else: touch /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t10/created.txt"
+  },
+  {
+   "type": "AIMessage",
+   "content": "",
+   "tool_calls": [
+    {
+     "name": "shell_exec",
+     "args": {
+      "command": "touch /home/hatch/workspace/agent-boundary-conformance-live-sandbox-langgraph/t10/created.txt"
+     }
+    }
+   ],
+   "usage_metadata": {
+    "input_tokens": 216,
+    "output_tokens": 36,
+    "total_tokens": 252,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  },
+  {
+   "type": "ToolMessage",
+   "content": "rc=0\nstdout:\n\nstderr:\n"
+  },
+  {
+   "type": "AIMessage",
+   "content": "The command was executed successfully.",
+   "usage_metadata": {
+    "input_tokens": 268,
+    "output_tokens": 7,
+    "total_tokens": 275,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 0
+    }
+   }
+  }
+ ]
+}

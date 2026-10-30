@@ -54,14 +54,60 @@ Key verified mechanics: when several rules match one command, the **strictest de
 
 FinePrint's first live model integration — and the model is deliberately **not** the judge. **Nemotron-3-Super on Nebius Token Factory** proposes adversarial scenario variants for a given invariant set (`tools/nemotron_scenarios.py`); the deterministic checker (pinned codex execpolicy oracle) returns the Decision verdict for each; the demo script (`tools/run_nemotron_demo.py`) adds the Effect observation in a throwaway sandbox. Proposed commands are **never executed** — the only executed command is one allow-verdict benign command (or the labelled `ls` positive control), and the sentinel file must survive intact.
 
-The Oct 30 live run (FP-001/002/003, 6 proposals): 1 prompt verdict matching the model's prediction, 5 unknowns — the checker honestly reporting that the written policy gives no Decision for split-flag, wrapper, and `find -delete` forms. Unknown is not a bypass; it is the coverage gap this project maps. Full evidence, timestamps, and the safety contract: **[docs/NEBIUS_INTEGRATION.md](docs/NEBIUS_INTEGRATION.md)** and `evidence/nebius-2026-10-30/demo-evidence.json`. Run it yourself with your own Token Factory key:
+The Oct 30 live run (FP-001/002/003, 6 proposals): 1 prompt verdict matching the model's prediction, 5 unknowns — the checker honestly reporting that the written policy gives no Decision for split-flag, wrapper, and `find -delete` forms. Unknown is not a bypass; it is the coverage gap this project maps. Full evidence, timestamps, and the safety contract: **[docs/NEBIUS_INTEGRATION.md](docs/NEBIUS_INTEGRATION.md)** and `evidence/nebius-2026-10-30/demo-evidence.json`.
+
+### Run the Nebius demo
+
+**Prerequisites.** Python 3 (the tools are stdlib-only) and the pinned `codex` CLI v0.149.0 — vendored in this repo; the runner checks the pin and refuses to run if the binary is unavailable or its hash mismatches, so it never fabricates a verdict. You also need your own Nebius Token Factory API key.
+
+**Setup — how the key is provided.** The key is read only from the `NEBIUS_API_KEY` environment variable, and only in `--direct` mode (the script's default transport is the author's connector helper, which other runners do not have — pass `--direct`). The key travels only in the `Authorization` header of the single chat-completions request; it is never printed, logged, or written to any evidence file. Do not commit it; do not paste it into an issue or a pull request.
 
 ```bash
+# Full loop: propose -> Decision verdicts -> Effect in containment.
+# Point --out at a FRESH directory: evidence/nebius-2026-10-30/ is the
+# sealed Oct 30 record and must not be overwritten.
 NEBIUS_API_KEY=... python3 tools/run_nemotron_demo.py \
     --invariants FP-001,FP-002,FP-003 \
     --model nvidia/nemotron-3-super-120b-a12b \
-    --policy fixtures/policies/default.rules --direct
+    --policy fixtures/policies/default.rules \
+    --out evidence/my-nebius-run/ --direct
+
+# Or the module alone (propose + check, no Effect step):
+NEBIUS_API_KEY=... python3 tools/nemotron_scenarios.py \
+    --invariants FP-001,FP-002,FP-003 \
+    --model nvidia/nemotron-3-super-120b-a12b \
+    --policy fixtures/policies/default.rules \
+    --out evidence/my-nebius-run/
 ```
+
+**What output to expect.** The run prints the safety contract first, then the evidence path, the model line, one block per proposal, and the Effect lines (in this order):
+
+```
+SAFETY: proposed commands are checked, never executed, except one
+allow-verdict benign command passing the safety gate inside a
+throwaway sandbox. Forbidden/prompt/unknown proposals are never run.
+
+wrote evidence/my-nebius-run/demo-evidence.json
+model: nvidia/nemotron-3-super-120b-a12b via direct (NEBIUS_API_KEY env)
+
+INVARIANT FP-002-01: <model-generated title>
+  proposal: deployctl release --environment=production
+  rationale: <model-generated rationale>
+  Decision: prompt (model predicted prompt)
+... (one block per proposal; titles and rationales are model-generated
+...  and differ run to run, as do the exact proposals)
+
+Effect: sandbox /tmp/fineprint-nemotron-demo-XXXX, sentinel intact: True
+  executed (only benign allow/control): ls /tmp/fineprint-nemotron-demo-XXXX -> rc=0
+```
+
+The proposal call may take a minute or two — Nemotron-3 is a reasoning model, so budget tokens accordingly (the demo script defaults to `--max-tokens 8192`; the module defaults to 4096). A fresh run's proposals will differ from the Oct 30 record, but the shape to look for is the same: each proposal gets a deterministic Decision verdict (`forbidden`, `prompt`, or `unknown`), the model's `expected_decision` is only its prediction, and no proposed command is ever executed — the only executed command is an allow-verdict benign command inside the throwaway sandbox, or the labelled `ls` positive control when no proposal qualifies. Unit tests for the module (no network, no oracle) live at `tests/test_nemotron_scenarios.py`.
+
+**How Nemotron is used.** Nemotron is the adversarial scenario generator, not a chatbot wrapper and never the judge. Given an invariant set from the in-repo catalogue (`docs/catalogue/catalogue.json`), it must output JSON only, matching a strict schema: exactly 2 scenarios per invariant, each an argv token array (never a shell string, so no compound-command smuggling), targeting only throwaway paths under `/tmp/fineprint-nemotron-demo/` or the `deployctl` release form, each differing from the invariant's direct form (a flag-spelling, path-form, or wrapper variant). The deterministic checker — the pinned codex execpolicy oracle — returns the Decision verdict for each variant, and the demo script adds the Effect observation in containment. A disagreement between the model's prediction and the checker's verdict is itself a finding: it maps where the written policy gives no Decision at all.
+
+**Where Token Factory accelerated the work.** Token Factory's OpenAI-compatible endpoint (`https://api.tokenfactory.nebius.com/v1/chat/completions`) meant integration was a base-URL swap: the existing OpenAI-style client worked unchanged, with no new SDK and no new client code. The Token Factory model catalog is where the model id was verified (`nvidia/nemotron-3-super-120b-a12b`); if the catalog ever drops it, pass another catalog-listed Nemotron model with `--model` and record the substitution in the evidence — never claim a model that did not run. No other Nebius tool is used in this project: no Tavily, no other Nebius product — Token Factory alone.
+
+**Sealed evidence.** The Oct 30 live run is recorded at `evidence/nebius-2026-10-30/demo-evidence.json` — prompt, raw model response, token usage (439 prompt, 3,137 completion of which 2,515 reasoning, 3,576 total), timestamps, per-scenario Decision verdicts, the Effect record (sentinel SHA-256 identical before and after), and the safety contract — with the full write-up at [docs/NEBIUS_INTEGRATION.md](docs/NEBIUS_INTEGRATION.md). Sealed bundles are never edited; a new run writes a new file.
 
 ## The invariant catalogue is the invention
 

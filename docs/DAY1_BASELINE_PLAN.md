@@ -40,4 +40,4 @@ Approve/edit the 5 draft invariants in `security/invariants.yaml` — especially
 - Mon Oct 26 Day 6 JSON + standalone HTML report; CI only if tests stable; BlueDot draft
 - Tue Oct 27 Day 7 same-corpus comparison + go / narrow / stop verdict. The public mini-Index is NOT a week-1 deliverable — it is gated on a "go" verdict.
 - Oct 28–29: Foresight draft only if kill test passes · Oct 31 23:59 PDT: Foresight deadline (only if Anish submits)
-- Hard context: Bangalore filing Thu Oct 29, Skyline GC bids Fri Oct 30 — sprint must not eat those.
+- Hard context: external deadlines Thu Oct 29 / Fri Oct 30 — sprint must not eat those.

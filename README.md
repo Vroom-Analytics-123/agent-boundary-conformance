@@ -154,3 +154,7 @@ Extending the framework — a new harness or framework target — is a
 documented, repeatable procedure: **[docs/EXTENDING.md](docs/EXTENDING.md)**.
 
 **Kill criterion (locked) — verdict delivered:** by Day 7 (Oct 27) the sprint had to show a useful result the baselines miss or explain poorly — or stop, publish the negative result honestly, and offer the fixtures upstream. **Verdict: NARROW** (see [docs/daily/2026-10-27.md](docs/daily/2026-10-27.md)): the method is proven on Codex evidence (two vendor-confirmed Decision-layer routes since Oct 22, when Amp's shipped native offline decision oracle `amp permissions test` was recognized as a vendor-confirmed route); a public multi-harness Index is not earned on the current evidence. The repo stands as the method, limitations on its face.
+
+## License
+
+Apache-2.0 — see [LICENSE](LICENSE). Copyright 2026 Anish Kumar.

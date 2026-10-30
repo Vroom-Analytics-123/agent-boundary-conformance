@@ -50,6 +50,19 @@ flowchart LR
 
 Key verified mechanics: when several rules match one command, the **strictest decision wins**, regardless of order (verified six ways). Path forms flip with configuration (`/bin/rm -rf` is unknown by default, forbidden with `--resolve-host-executables`) — which is exactly why every result records its pinned configuration.
 
+## Nebius × NVIDIA: Nemotron proposes, the checker decides (new, Oct 30, 2026)
+
+FinePrint's first live model integration — and the model is deliberately **not** the judge. **Nemotron-3-Super on Nebius Token Factory** proposes adversarial scenario variants for a given invariant set (`tools/nemotron_scenarios.py`); the deterministic checker (pinned codex execpolicy oracle) returns the Decision verdict for each; the demo script (`tools/run_nemotron_demo.py`) adds the Effect observation in a throwaway sandbox. Proposed commands are **never executed** — the only executed command is one allow-verdict benign command (or the labelled `ls` positive control), and the sentinel file must survive intact.
+
+The Oct 30 live run (FP-001/002/003, 6 proposals): 1 prompt verdict matching the model's prediction, 5 unknowns — the checker honestly reporting that the written policy gives no Decision for split-flag, wrapper, and `find -delete` forms. Unknown is not a bypass; it is the coverage gap this project maps. Full evidence, timestamps, and the safety contract: **[docs/NEBIUS_INTEGRATION.md](docs/NEBIUS_INTEGRATION.md)** and `evidence/nebius-2026-10-30/demo-evidence.json`. Run it yourself with your own Token Factory key:
+
+```bash
+NEBIUS_API_KEY=... python3 tools/run_nemotron_demo.py \
+    --invariants FP-001,FP-002,FP-003 \
+    --model nvidia/nemotron-3-super-120b-a12b \
+    --policy fixtures/policies/default.rules --direct
+```
+
 ## The invariant catalogue is the invention
 
 The tester in this repo is one implementation. The durable asset is the **invariant catalogue** ([docs/catalogue/](docs/catalogue/)): **16 parameterized invariants** (FP-001…FP-016) — statements of intent, like "a destructive recursive delete must never be silently allowed" — each carrying, **per target**, a translation into that target's own policy language, the **measurement route** the translation is checked by, and the **confidence** the agreeing routes support.

@@ -184,19 +184,19 @@ def three_layers():
     # — ground truth, the most important layer.
     boxes = [
         (0.35, 1.15, 2.7, 2.4, "#2b3a4a",
-         "Layer 1 · What the rules decide", "the paper test\nthe harness's own\ndecision surface"),
+         "Layer 1 ·\nWhat the rules\ndecide", "the paper test\nthe harness's own\ndecision surface"),
         (3.65, 1.15, 2.7, 2.4, "#5b7ba5",
-         "Layer 2 · The approval moment", "the human/classifier\ngate: ask, approve,\noverride"),
+         "Layer 2 ·\nThe approval\nmoment", "the human/classifier\ngate: ask, approve,\noverride"),
         (6.95, 1.15, 2.7, 2.4, "#8a6d3b",
-         "Layer 3 · What actually happens", "the live test\nobserved runtime\noutcome — GROUND TRUTH"),
+         "Layer 3 ·\nWhat actually\nhappens", "the live test\nobserved runtime\noutcome —\nGROUND TRUTH"),
     ]
     for x, y, w, h, bg, title, body in boxes:
         ax.add_patch(mpatches.FancyBboxPatch(
             (x, y), w, h, boxstyle="round,pad=0.02,rounding_size=0.12",
             facecolor=bg, edgecolor="#1d2733", linewidth=1.2))
         ax.text(x + w / 2, y + h - 0.30, title, ha="center", va="top",
-                fontsize=11.5, fontweight="bold", color="white")
-        ax.text(x + w / 2, y + h - 0.75, body, ha="center", va="top",
+                fontsize=11, fontweight="bold", color="white", linespacing=1.4)
+        ax.text(x + w / 2, y + h - 1.10, body, ha="center", va="top",
                 fontsize=10, color="white", linespacing=1.5)
 
     # Arrows between layers
@@ -205,14 +205,14 @@ def three_layers():
                     arrowprops=dict(arrowstyle="-|>", color="#444444",
                                     lw=1.6, shrinkA=2, shrinkB=2))
 
-    fig.text(0.5, 0.13,
-             "Cross-Examination compares the layers against each other — a disagreement "
-             "between any two is a finding.",
-             ha="center", fontsize=10, color="#555555")
-    fig.text(0.5, 0.06,
-             "Layer 3 is ground truth: paper findings are provisional until the live test "
+    fig.text(0.5, 0.16,
+             "Cross-Examination compares the layers against each other —\n"
+             "a disagreement between any two is a finding.",
+             ha="center", fontsize=9.5, color="#555555")
+    fig.text(0.5, 0.07,
+             "Layer 3 is ground truth: paper findings are provisional until the live test\n"
              "confirms or refutes them. Silence is reported as unknown — never as allow.",
-             ha="center", fontsize=10, color="#555555")
+             ha="center", fontsize=9.5, color="#555555")
     out = ASSETS / "three_layers.png"
     fig.savefig(out)  # fixed canvas: no tight-crop
     plt.close(fig)

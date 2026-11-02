@@ -1,10 +1,26 @@
 # Agent Boundary Conformance — the first instrument of **Boundary Measurement**
 
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE) [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/) [![MCP server](https://img.shields.io/badge/MCP-stdio-green.svg)](mcp/README.md)
+
 **Boundary Measurement** is the independent measurement of whether an AI agent's *enforced* limits match its *stated* limits. Think of it as a **building inspector** for agent policies: the inspector doesn't declare the building safe or unsafe — she checks the building against the code its owner filed, item by item, and writes down what matches and what doesn't. This repo is the first instrument: a local-first tester that takes a developer's written security rules for a coding agent, asks the agent's **own native policy checker** what it actually decides, and reports **pass / fail / unknown** with replayable evidence. It is not a scanner, not a firewall, and it never certifies anything as "secure."
 
 Harnesses change under their owners — a new release, a new feature, a new flag can move a decision the last version got right — so the suite **re-runs on every harness version upgrade and feature change**, and the version-over-version regression diff is the product's heartbeat: **measure → re-measure → fix → re-verify**.
 
 **Status:** sprint complete — verdict **NARROW**. The repo stands as a conformance *method* with two vendor-confirmed Decision-layer routes (Codex + Amp), limitations on its face, not as an Index. The dated history — the Day-5 fix, the pre/post-fix numbers, the Wave A expansion, the Oct 30 Nebius integration — lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/DASHBOARD.md](docs/DASHBOARD.md)**.
+
+## 🚀 Try it
+
+- **Fastest — live demo:** [fineprint.vroomanalytics.com](https://fineprint.vroomanalytics.com/) — watch the attacks, try a command, apply a one-click fix. Nothing executes; it runs in your browser.
+- **In about a minute, locally:**
+
+```bash
+git clone https://github.com/Vroom-Analytics-123/agent-boundary-conformance.git
+cd agent-boundary-conformance
+python3 -m pytest tests/ -q        # 100 passed, ~35s, stdlib only
+python3 tools/run_fixtures.py      # verdict table, ~10s (needs the pinned codex CLI, v0.149.0)
+```
+
+- **From your agent:** the [MCP server](mcp/README.md) (`python3 mcp/server.py`, stdio) gives Claude Code, Codex, and any MCP-compatible client four tools — `check_command`, `list_invariants`, `measurement_routes`, `run_check`. See the [skill](mcp/SKILL.md) for how an agent should use them.
 
 ---
 
@@ -22,7 +38,7 @@ Harnesses change under their owners — a new release, a new feature, a new flag
 - **Pre-fix:** allow 6 · prompt 4 · forbidden 9 · **unknown 22**. The 22 "unknowns" are cases where the written policy gives **no decision at all** — mostly ordinary variants (`rm -fr`, `rm --recursive --force`) and disguised forms (`bash -lc`, `env`, `sudo`, `timeout`, `xargs`) of the forbidden command.
 - **Post-fix (Oct 22, founder-approved):** the two spelling variants now decide **forbidden** — allow 6 · prompt 4 · forbidden 11 · unknown 20. Sealed bundle `evidence/postfix-2026-10-22/bundle.json` (Merkle root `5a974fe6…`); scorecard v3 POST-FIX at `evidence/reports/day6-scorecard-v3-postfix/`. Wrapped/disguised forms stay unknown per INV-004 Option A.
 - Post-fix measurement validity 40/41 (the single FAIL is S-02's bookkeeping artifact: a held-out case whose expectation was frozen — its native decision was reproduced exactly). Intent coverage is a separate judgment: 12 satisfied · 21 unresolved · 8 not applicable, of 41. A correctly reported unknown is a successful measurement, never a satisfied protective intent. The 11-case protected-records family: measurement 11/11 PASS, intent 3 satisfied · 8 unresolved; 4/4 negative controls stay healthy.
-- **"Unknown" is NOT a bypass.** It means the rules layer doesn't decide it; the agent's approval prompts and sandbox still govern what happens. That distinction is the credibility of this entire project and appears in every output.
+- **"Unknown" is NOT a bypass.** It means the Decision layer doesn't decide it; the agent's approval prompts and sandbox still govern what happens. That distinction is the credibility of this entire project and appears in every output.
 - The corpus is deliberately weighted toward tricky variants to map coverage — **54% unknown is a property of this probe set, never a real-world rate.**
 
 ## How it works
@@ -128,6 +144,7 @@ These are not hypotheticals. Each incident below is **verified** (primary source
 | [docs/NEBIUS_INTEGRATION.md](docs/NEBIUS_INTEGRATION.md) | The Nemotron integration: full demo guide, schema, Token Factory notes, sealed evidence |
 | [docs/catalogue/](docs/catalogue/) | The invariant catalogue: 16 parameterized invariants with per-target translations |
 | [CHANGELOG.md](CHANGELOG.md) | The dated project history — sprint timeline, pre/post-fix numbers, the public flip, the Nebius integration |
+| [mcp/README.md](mcp/README.md) | **Use FinePrint from your agent** — the MCP server (stdio) + skill: `check_command`, `list_invariants`, `measurement_routes`, `run_check` |
 
 The full document map — every doc, its status, and what it holds — is in **[docs/DOCUMENT_MAP.md](docs/DOCUMENT_MAP.md)**.
 
@@ -142,6 +159,7 @@ adapter per target, and evidence kept separate from both.
 | `adapters/` | **One dossier + manifest per target** (`<key>-assessment.md`, `<key>.manifest.json`); executable adapters for measured targets live in `adapters/<key>/` |
 | `tools/` | **The measurement machinery** — fixture replay, catalogue generator, evidence bundling/sealing/verification, approval witness, effect instrumentation |
 | `evidence/` | **Sealed run records** — frozen bundles, reruns, scorecards. Sealed bundles are never edited; corrections land as new bundles |
+| `mcp/` | **The MCP server** — `server.py` (stdio, stdlib only), `SKILL.md` for agents, client configs in `examples/` |
 | `docs/` | **Doctrine + status** — the measurement model, framework, route assignments, dashboard, limitations, the extension guide, daily briefs (history) |
 | `fixtures/` · `security/` · `schemas/` | Probe corpora + sample policies · the invariant contracts under test · versioned finding/evidence schemas |
 | `tests/` · `ci/` · `catalogue-contrib/` | Engine tests · CI wiring · the Catalogue Commons (org overlays stay private by construction; worked examples only) |

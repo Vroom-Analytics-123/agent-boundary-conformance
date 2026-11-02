@@ -8,12 +8,13 @@ and standards bodies can adopt.*
 
 ## Where this fits (cross-links)
 
-- The plain-language foundation and the building-inspector metaphor: [docs/EXPLAINER.md](docs/EXPLAINER.md)
-- The living status page (verdict NARROW, objectives, what's waiting on the founder): [docs/DASHBOARD.md](docs/DASHBOARD.md)
-- The measurement-route assignments with the evidence behind each harness: [docs/MEASUREMENT_ROUTES.md](docs/MEASUREMENT_ROUTES.md) — the route-matrix graphic is [docs/assets/measurement_routes.png](docs/assets/measurement_routes.png)
-- The evidence the routes are measured against: [evidence/](evidence/) — sealed bundles under `evidence/day*-2026-10-*`, daily briefs in [docs/daily/](docs/daily/)
-- The narrowed novelty claim this framework supports: [docs/SCIENTIFIC_REVIEW_ADDENDUM.md](docs/SCIENTIFIC_REVIEW_ADDENDUM.md)
-- The founder's direction log, 2026-10-22 — layer primacy (cross-layer checking as the core method), the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal: [docs/DIRECTION-2026-10-22.md](docs/DIRECTION-2026-10-22.md) — the cross-layer check is named **Cross-Examination** (founder's tap, 2026-10-22 — chosen over Triangulation / Layercheck). **Model correction (founder, ~18:29 PDT the same day, controlling):** grades/tiers are abolished as harness rankings — ease of measurement never makes a harness better or worse. What the grades actually were is provenance of the Decision-layer measurement only, now named unranked: vendor-confirmed / reconstructed / no paper surface. Effect (what actually happens) is ground truth and the most important layer.
+- The plain-language foundation and the building-inspector metaphor: [EXPLAINER.md](EXPLAINER.md)
+- The living status page (verdict NARROW, objectives, what's waiting on the founder): [DASHBOARD.md](DASHBOARD.md)
+- The measurement-route assignments with the evidence behind each harness:
+- The measurement model (semantics, dual verdicts, evidence classes): [MEASUREMENT_MODEL.md](MEASUREMENT_MODEL.md) [MEASUREMENT_ROUTES.md](MEASUREMENT_ROUTES.md) — the route-matrix graphic is [assets/measurement_routes.png](assets/measurement_routes.png)
+- The evidence the routes are measured against: [evidence/](../evidence/) — sealed bundles under `evidence/day*-2026-10-*`, daily briefs in [daily/](daily/)
+- The narrowed novelty claim this framework supports: [SCIENTIFIC_REVIEW_ADDENDUM.md](SCIENTIFIC_REVIEW_ADDENDUM.md)
+- The founder's direction log, 2026-10-22 — layer primacy (cross-layer checking as the core method), the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal: [DIRECTION-2026-10-22.md](DIRECTION-2026-10-22.md) — the cross-layer check is named **Cross-Examination** (founder's tap, 2026-10-22 — chosen over Triangulation / Layercheck). **Model correction (founder, ~18:29 PDT the same day, controlling):** grades/tiers are abolished as harness rankings — ease of measurement never makes a harness better or worse. What the grades actually were is provenance of the Decision-layer measurement only, now named unranked: vendor-confirmed / reconstructed / no paper surface. Effect (what actually happens) is ground truth and the most important layer.
 
 ## The three measurement layers (founder-adopted names, 2026-10-22)
 

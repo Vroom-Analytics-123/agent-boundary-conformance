@@ -53,7 +53,7 @@ Full reasoning: `docs/daily/2026-10-27.md`.
 - **Protected-records family 11/11** — a second sample policy guarding `/records/health` (allow read-only listing, forbid deletion/modification): allow 1 · forbidden 2 · unknown 8, all as expected (REPRO).
 - **Negative controls 4/4 healthy** — a run that passes its negative controls is a broken run.
 - **Precedence re-verified 6/6** — when rules conflict, most-restrictive-wins, order- and specificity-independent.
-- **Paper-test grades:** Codex at **A · Oracle** (T1; native oracle, pinned codex-cli 0.149.0); Claude Code / Cursor / Gemini CLI / OpenCode at **B · Manual** (T2; config evaluation from documented semantics — measured evaluations, never interrogated). [Paper-test grade graphic](docs/assets/tier_matrix.png). Full cross-tier study: `docs/cross-tier-comparison-2026-10-22.md`.
+- **Paper-test measurement routes (grades abolished — routes are provenance, never rankings):** Codex **vendor-confirmed** (native oracle, pinned codex-cli 0.149.0); Claude Code / Cursor / Gemini CLI / OpenCode **reconstructed** (config evaluation from documented semantics — measured evaluations, never interrogated). Full cross-tier study: `docs/cross-tier-comparison-2026-10-22.md`.
 - **Boundary Scorecard exported** — `evidence/reports/day6-scorecard/` (`scorecard.json` + `scorecard.html` + `tier-matrix.json`), shareable-first but NOT published, with the PRE-FIX banner (the Day-5 fix diff is unapproved and unapplied). Determinism verified on a clean checkout.
 
 ### Post-fix addendum (Oct 22, 2026) — the Day-5 fix is applied; history above preserved

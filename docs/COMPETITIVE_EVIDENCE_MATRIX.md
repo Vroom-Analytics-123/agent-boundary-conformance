@@ -61,7 +61,7 @@ Supplementary native probes (REPRO, Day 1, same pinned config): `env FOO=bar rm 
 
 ## What each tool answers (updated with Day-1 evidence)
 
-- **Native Codex:** the rules layer's decision only — the oracle itself. No intent
+- **Native Codex:** the Decision layer's decision only — the oracle itself. No intent
   comparison, no config-sensitivity or precedence explanation, no cross-version
   regression, no effect measurement; on compound token lists it reports the head
   segment's decision without flagging that the tail was not evaluated.

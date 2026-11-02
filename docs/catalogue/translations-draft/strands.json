@@ -91,7 +91,7 @@
       "measurement_route": "no paper surface",
       "confidence": "low",
       "measured": false,
-      "text": "Reporter-level guard, restated for Strands: Strands has no rules layer and no match concept \u2014 a tool call no hook cancels simply proceeds. The measurement reporter must serialize 'no gate decided' (hook absent, hook fell through, or <unmatched_argv> unmatched by the reference hook's checks) as unknown, never as allow. A run whose negative controls (<unmatched_argv>) report allow is a broken run. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
+      "text": "Reporter-level guard, restated for Strands: Strands has no Decision layer and no match concept \u2014 a tool call no hook cancels simply proceeds. The measurement reporter must serialize 'no gate decided' (hook absent, hook fell through, or <unmatched_argv> unmatched by the reference hook's checks) as unknown, never as allow. A run whose negative controls (<unmatched_argv>) report allow is a broken run. Draft template from documented semantics; NOT measured. Owner must review against the target's current docs and a measurement must exist before any conformance claim."
     },
     "FP-016": {
       "measurement_route": "no paper surface",

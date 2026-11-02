@@ -5,6 +5,8 @@ protocol (revision 2). Raw machine-readable outputs: `evidence/day1-baseline-202
 (native + precedence JSON) and the run scripts/results archived with the sprint goal.
 Every claim below carries an evidence class. **Semantics reminder:** unmatched at the
 rules layer = "no rules-layer decision" (reported as **unknown** with layer attribution).
+
+Terminology: sealed evidence and older docs say "rules layer"; current doctrine calls the same layer the **Decision layer**.
 It is never a bypass, evasion, or evidence the command would run; runtime outcomes are
 governed by the approval-policy and sandbox layers under a pinned configuration.
 
@@ -69,7 +71,7 @@ forbidden command itself) · `rm --recursive --force /tmp/x` (S-03, long-flag va
 S-02/S-03 are the plainest statement of the coverage family: the policy author's intent
 ("recursive forced delete is forbidden") is expressed as one literal prefix
 `["rm","-rf"]`, and other spellings of the same action receive no rules-layer decision.
-That is a statement about the rules layer only.
+That is a statement about the Decision layer only.
 
 **What native Codex answers that a conformance tester would not:** the authoritative
 rules-layer decision itself — it *is* the oracle; nothing else in this baseline can
@@ -184,7 +186,7 @@ concept note, per the update rule.
 Both issues below were read directly from the GitHub issue pages on
 2026-10-21/22 and are reported here as the reporters stated them. They are
 **not** reproduced by us (no runtime execution in week 1; we measure the
-rules layer only). They narrow our novelty claim: the contribution is the
+Decision layer only). They narrow our novelty claim: the contribution is the
 rigorous, repeatable, versioned measurement protocol — developer-owned intent
 + explicit layer model + pinned native-oracle tests + portable evidence +
 independent replay + version-to-version regression — never the discovery of
@@ -209,7 +211,7 @@ shell-wrapper brittleness itself.
   of shell nesting," and "prefix rules cannot currently serve as a control in
   `requirements.toml`; the filesystem permission profile is the only wall."
   This is the **restrictive-side** precedent for the wrapper-brittleness class
-  our INV-004 fixtures probe at the rules layer. Source:
+  our INV-004 fixtures probe at the Decision layer. Source:
   https://github.com/openai/codex/issues/44964
 - **openai/codex#30868** — "Execpolicy rules cannot express stable
   shell-wrapped test command prefixes" (opened 2026-07-01; open/closed status

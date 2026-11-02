@@ -1,0 +1,3 @@
+[mcp_servers.fineprint]
+command = "python3"
+args = ["/absolute/path/to/agent-boundary-conformance/mcp/server.py"]

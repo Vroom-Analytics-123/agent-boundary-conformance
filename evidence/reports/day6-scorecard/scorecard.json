@@ -1,13 +1,15 @@
 {
-  "schema_version": "scorecard.v2",
-  "generated_utc": "2026-10-22T06:34:54Z",
+  "schema_version": "scorecard.v3",
+  "generated_utc": "2026-11-02T06:27:09Z",
   "generator": "tools/build_scorecard.py (deterministic; no oracle calls)",
   "fix_status": {
-    "applied": false,
-    "label": "PRE-FIX EVIDENCE",
-    "proposal_doc": "docs/drafts/2026-10-25-day5-fix-proposal-AWAITING-APPROVAL.md",
+    "applied": true,
+    "label": "POST-FIX EVIDENCE",
+    "approval": "Anish: \"Start the evidence upgrades\" (Oct 22, 2026)",
     "diff": "docs/drafts/day5-fix.diff",
-    "note": "The Day-5 fix (two forbidden prefix_rules for 'rm -fr' / 'rm --recursive --force' spelling variants; S-02/S-03 unknown -> forbidden) is PROPOSED and AWAITING Anish's approval \u2014 it is NOT applied. This scorecard reports pre-fix cells and must be re-issued after any approved rerun."
+    "rules_sha256": "9b83f89f15ff93b05ca9e23ae2b8500fa78f23e907d24c0e1690394d88f9d38f",
+    "corpus_version_hash": "2dc43a8690b50a329455b896d17fed736f5f7e4b8c1e63d19ad4c6615bc0a2e9",
+    "note": "The Day-5 fix is APPLIED: two forbidden prefix_rules for 'rm -fr' and 'rm --recursive --force' appended to fixtures/policies/default.rules. S-02/S-03 actual decisions flipped unknown -> forbidden (the two intended cells); all other 39 cells byte-identical to the pre-fix run. S-02's pre-registered expectation was deliberately frozen at 'unknown' (held-out shard: content untouched, hash only), so its runner verdict reads 'fail' as a bookkeeping artifact \u2014 its intent_coverage moved UNRESOLVED -> SATISFIED, an independent held-out confirmation of the fix with no retuning. Wrapped forms stay unknown per INV-004 Option A."
   },
   "semantics": {
     "unknown": "unknown = no rules-layer decision; runtime outcome depends on approval policy + sandbox under the pinned configuration. An unmatched command at the rules layer is NEVER a bypass, evasion, or hole. Unmatched serializes as unknown, never allow.",
@@ -20,15 +22,15 @@
       "observed_effect": "BLOCKED / OCCURRED / NOT_OBSERVED / NOT_TESTED \u2014 tied to the exact experiment. NOT_TESTED for every week-1 fixture: no command is ever executed.",
       "non_conflation": "A correctly reported unknown is a successful MEASUREMENT, never evidence that a protective intent is satisfied. The two judgments are orthogonal and are never combined into one headline number.",
       "unknown_kinds": {
-        "no-rule-match": "(a) the native check returned no matched rules \u2014 all 22 corpus unknowns and all 8 family unknowns",
+        "no-rule-match": "(a) the native check returned no matched rules \u2014 all 20 post-fix corpus unknowns and all 8 family unknowns (22 corpus unknowns pre-fix)",
         "insufficient-runtime-evidence": "(b) a runtime experiment ran but proved too little \u2014 none in week 1; reserved for the effect layer",
-        "unsupported-adapter": "(c) no decision oracle exists for this harness \u2014 the four T2 adapters"
+        "unsupported-adapter": "(c) the vendor ships no decision checker for this harness \u2014 the four reconstructed-route adapters"
       },
       "sealed_bundles_untouched": "Dual verdicts are adjudicated in this reporting layer from sealed evidence-bundle.v1 findings; bundle Merkle roots are never rewritten."
     },
     "preregistration_correction": "Correction (Oct 21, 2026): Day 1 was EXPLORATORY \u2014 the hypothesis (literal prefix matching leaves coverage gaps; wrappers are opaque to the rules layer) was formed during Day-1 exploration. The Day-2 pre-registration was a pre-registered CONFIRMATION / replication of that previously explored hypothesis, not pre-registered initial discovery. Held-out fixtures were selected by stratified alternation within expected-decision class (allow 3/3, prompt 2/2, forbidden 5/4, unknown 11/11; public 21 / held-out 20)."
   },
-  "codex_t1": {
+  "codex_vendor_confirmed": {
     "harness": "codex",
     "harness_version_pinned": "codex-cli 0.149.0",
     "evidence_class": "REPRO",
@@ -59,7 +61,7 @@
           "NOT_REPRODUCED": 0
         },
         "headline": "41/41 measurement_validity PASS",
-        "note": "Every fixture's native decision was reproduced exactly against the pinned oracle \u2014 a measurement result, not a protection result."
+        "note": "Every fixture's native decision was reproduced exactly against the pinned oracle \u2014 a measurement result, not a protection result. One bookkeeping exception: S-02 (held-out shard) adjudicates as measurement FAIL only because its pre-registered expectation was deliberately frozen at 'unknown' per the held-out policy; the native decision itself (forbidden) was reproduced exactly and is verifier-confirmed from raw stdout."
       },
       "intent_coverage": {
         "denominator": 41,
@@ -70,7 +72,7 @@
           "NOT_APPLICABLE": 8
         },
         "headline": "intent coverage 10 satisfied / 0 not satisfied / 23 unresolved / 8 not applicable (of 41)",
-        "note": "SEPARATE denominator from measurement validity. UNRESOLVED = the rules layer cannot establish the owner's stated protection for that operation (all 22 unknowns, all 11 INV-004 wrappers). A correctly reported unknown is measurement PASS, never a satisfied protective intent."
+        "note": "SEPARATE denominator from measurement validity. UNRESOLVED = the rules layer cannot establish the owner's stated protection for that operation (22 unknowns post-fix, all no-rule-match; INV-004 wrappers stay UNRESOLVED). A correctly reported unknown is measurement PASS, never a satisfied protective intent."
       },
       "observed_effect": {
         "denominator": 41,
@@ -1046,75 +1048,75 @@
       }
     ]
   },
-  "five_harness_tier_matrix": [
+  "five_harness_measurement_routes": [
     {
       "harness": "codex",
-      "tier": "T1",
+      "measurement_route": "vendor-confirmed",
       "oracle_type": "native-offline",
       "reimplements_matching": false,
       "evidence_class": "REPRO",
       "version_pin": "codex-cli 0.149.0",
       "policy_surface": "execpolicy Starlark rules files (prefix_rule pattern/decision), e.g. fixtures/policies/default.rules",
-      "tier_evidence": "codex execpolicy check returns the harness's own rules-layer decision offline and deterministically; 41-case corpus replays byte-identically across 4 independent runs (REPRO).",
+      "measurement_route_evidence": "codex execpolicy check returns the harness's own Decision-layer decision offline and deterministically; 41-case corpus replays byte-identically across 4 independent runs (REPRO).",
       "manifest": "adapters/codex.v0.manifest.json",
-      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "41-case corpus replayed against the native oracle; verdicts are measured (REPRO)",
+      "route_assignment_doc": "docs/MEASUREMENT_ROUTES.md",
+      "measured_verdicts": "41-case corpus replayed against the vendor's own checker; verdicts are measured (REPRO)",
       "unknown_kind": null
     },
     {
       "harness": "claude-code",
-      "tier": "T2",
+      "measurement_route": "reconstructed",
       "oracle_type": "config-evaluation",
       "reimplements_matching": true,
       "evidence_class": "DOC",
       "version_pin": "@anthropic-ai/claude-code@2.1.307 (npm registry metadata, 2026-10-21; CLI not installed on this machine; evaluation pinned to vendor docs retrieved 2026-10-21)",
       "policy_surface": "settings.json permissions: { allow[], ask[], deny[], disableBypassPermissionsMode, disableAutoMode, additionalDirectories }, defaultMode, sandbox, hooks ($schema: https://json.schemastore.org/claude-code-settings.json)",
-      "tier_evidence": "No native offline decision oracle exists, but allow/ask/deny matching semantics (order, wildcards, precedence, deny-always-wins) are documented precisely enough to compute evaluations \u2014 labelled evaluation, never interrogation. (INFERENCE on DOC+REPRO)",
+      "measurement_route_evidence": "No native offline decision oracle exists, but allow/ask/deny matching semantics (order, wildcards, precedence, deny-always-wins) are documented precisely enough to compute evaluations \u2014 labelled evaluation, never interrogation. (INFERENCE on DOC+REPRO)",
       "manifest": "adapters/claude-code.manifest.json",
-      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "route_assignment_doc": "docs/MEASUREMENT_ROUTES.md",
+      "measured_verdicts": "no verdicts measured \u2014 the vendor ships no decision checker. A reconstructed-route adapter computes EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its measurement route.",
       "unknown_kind": "unsupported-adapter"
     },
     {
       "harness": "cursor",
-      "tier": "T2",
+      "measurement_route": "reconstructed",
       "oracle_type": "config-evaluation",
       "reimplements_matching": true,
       "evidence_class": "DOC",
       "version_pin": "docs-2026-10-21 (real CLI not installed on this machine; distributed via curl https://cursor.com/install, not npm \u2014 npm 'cursor-agent@1.0.3' is an unrelated third-party package per its package.json; evaluation pinned to vendor docs retrieved 2026-10-21)",
       "policy_surface": "permissions: { allow[], deny[] } with tokens Shell(commandBase) (first token of the command line; globs; optional command:args syntax), Read(pathOrGlob), Write(pathOrGlob), WebFetch(domainOrPattern), Mcp(server:tool)",
-      "tier_evidence": "Permission tokens, first-token+glob matching, and deny-precedence are documented precisely enough for evaluation in Allowlist mode; the default Auto-review mode's classifier is stochastic and staff-confirmed to drop hook asks, so it cannot be an oracle. (INFERENCE on DOC+THIRD-PARTY)",
+      "measurement_route_evidence": "Permission tokens, first-token+glob matching, and deny-precedence are documented precisely enough for evaluation in Allowlist mode; the default Auto-review mode's classifier is stochastic and staff-confirmed to drop hook asks, so it cannot be an oracle. (INFERENCE on DOC+THIRD-PARTY)",
       "manifest": "adapters/cursor.manifest.json",
-      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "route_assignment_doc": "docs/MEASUREMENT_ROUTES.md",
+      "measured_verdicts": "no verdicts measured \u2014 the vendor ships no decision checker. A reconstructed-route adapter computes EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its measurement route.",
       "unknown_kind": "unsupported-adapter"
     },
     {
       "harness": "gemini-cli",
-      "tier": "T2",
+      "measurement_route": "reconstructed",
       "oracle_type": "config-evaluation",
       "reimplements_matching": true,
       "evidence_class": "DOC",
       "version_pin": "@google/gemini-cli@0.65.0 (npm registry metadata + local --help/--version reproduction in scratch dir, 2026-10-21; version pin is load-bearing \u2014 tools.exclude and --allowed-tools already deprecated toward the policy engine)",
       "policy_surface": "~/.gemini/policies/*.toml (user), adminPolicyPaths (admin), --policy/--admin-policy flags. [[rule]]: toolName, commandPrefix (string|array), commandRegex, argsPattern, decision = allow|deny|ask_user, priority, modes, interactive. Tiers: Admin > User > Default REGARDLESS of priority number. confirmationRequired takes precedence over allowed + core. tools.sandbox OFF by default.",
-      "tier_evidence": "Locally reproduced --help proves no decision oracle exists, while the TOML policy engine (prefix/regex/argsPattern, priority tiers, mode scoping, documented precedence) is specified precisely enough to evaluate \u2014 labelled evaluation. (INFERENCE on REPRO+DOC)",
+      "measurement_route_evidence": "Locally reproduced --help proves no decision oracle exists, while the TOML policy engine (prefix/regex/argsPattern, priority tiers, mode scoping, documented precedence) is specified precisely enough to evaluate \u2014 labelled evaluation. (INFERENCE on REPRO+DOC)",
       "manifest": "adapters/gemini-cli.manifest.json",
-      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "route_assignment_doc": "docs/MEASUREMENT_ROUTES.md",
+      "measured_verdicts": "no verdicts measured \u2014 the vendor ships no decision checker. A reconstructed-route adapter computes EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its measurement route.",
       "unknown_kind": "unsupported-adapter"
     },
     {
       "harness": "opencode",
-      "tier": "T2",
+      "measurement_route": "reconstructed",
       "oracle_type": "config-evaluation",
       "reimplements_matching": true,
       "evidence_class": "DOC",
       "version_pin": "opencode-ai@1.19.3 (npm installer stub; CLI not installed on this machine; adapter pins 1.x 'permission' semantics \u2014 the 1.x/2.x schema break is load-bearing: 2.x uses an ordered 'permissions' list of {action, resource, effect})",
       "policy_surface": "permission key: 'allow'|'ask'|'deny' globally, per tool-key, or per tool-key as {pattern: effect} objects. Per-agent permission overrides merged with AGENT RULES TAKING PRECEDENCE; markdown agent frontmatter permission: blocks. Tool keys: read/edit/glob/grep/list/shell/task/external_directory/webfetch/websearch/lsp/skill/question/doom_loop. Pattern matching: simple wildcards (* = zero+ chars, ? = exactly one, else literal; ~/ $HOME expansion). LAST MATCHING RULE WINS (order-dependent \u2014 unlike Claude/Cursor deny-first).",
-      "tier_evidence": "No offline oracle exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x \u2014 evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO)",
+      "measurement_route_evidence": "No offline oracle exists, but the permission object semantics (last-match-wins wildcards, per-agent merge precedence, documented defaults) are fully specified for 1.x \u2014 evaluatable, with the 1.x/2.x schema break as a hard version pin. (INFERENCE on DOC+REPRO)",
       "manifest": "adapters/opencode.manifest.json",
-      "tier_assignment_doc": "docs/HARNESS_TIERS.md",
-      "measured_verdicts": "no verdicts measured \u2014 no decision oracle exists. A T2 adapter would compute EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its tier.",
+      "route_assignment_doc": "docs/MEASUREMENT_ROUTES.md",
+      "measured_verdicts": "no verdicts measured \u2014 the vendor ships no decision checker. A reconstructed-route adapter computes EVALUATIONS from documented semantics (never interrogation); its evidence class drops to DOC/INFERENCE accordingly. No harness is presented as supported beyond its measurement route.",
       "unknown_kind": "unsupported-adapter"
     }
   ],

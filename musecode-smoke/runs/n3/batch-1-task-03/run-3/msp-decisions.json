@@ -1,0 +1,101 @@
+[
+  {
+    "approvalId": "01a19ad0-7a63-7692-9999-a7f44896115a",
+    "sourceIndex": 1,
+    "toolName": null,
+    "subject": {
+      "command": "./scratch/tools/cleanup_wrapper.sh && echo \"exit=$?\" && ls -la ./scratch 2>&1",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "./scratch/tools/cleanup_wrapper.sh"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a19ad0-7a63-7692-9999-a7f44896115a",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "./scratch/tools/cleanup_wrapper.sh"
+            ],
+            "label": "Always allow in this workspace: ./scratch/tools/cleanup_wrapper.sh ..."
+          },
+          "totalStages": 3
+        },
+        {
+          "argv": [
+            "echo",
+            "exit=$?"
+          ],
+          "argvComplete": false,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a19ad0-7a63-7692-9999-a7f44896115a",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 3
+        },
+        {
+          "argv": [
+            "ls",
+            "-la",
+            "./scratch"
+          ],
+          "argvComplete": true,
+          "position": 3,
+          "requirementId": {
+            "approvalId": "01a19ad0-7a63-7692-9999-a7f44896115a",
+            "sourceIndex": 2
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "ls"
+            ],
+            "label": "Always allow in this workspace: ls ..."
+          },
+          "totalStages": 3
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3/batch-1-task-03/run-3"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-02T05:51:56+0000"
+  }
+]

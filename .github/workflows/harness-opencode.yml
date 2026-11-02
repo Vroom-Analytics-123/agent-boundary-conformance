@@ -1,0 +1,86 @@
+name: harness-opencode
+
+# OpenCode measurement (FinePrint harness row). DISPATCH ONLY — never
+# on push/pull_request. The model is a localhost stub provider (see
+# opencode/stub.py); no model key, token, or secret is used, and the
+# agent's only network destination is 127.0.0.1 (npm install for the
+# pinned binary is workflow setup, not agent traffic).
+# Inputs: mode=smoke runs FP-001 once; mode=n3 runs the 13-task set
+# 3 times per task (matrix, one job per task). Dispatch n3 ONLY after
+# the smoke run PASSES under opencode/README.md verdict rules.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "smoke or n3"
+        required: true
+        default: "smoke"
+        type: choice
+        options:
+          - smoke
+          - n3
+
+jobs:
+  smoke:
+    if: inputs.mode == 'smoke'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: harness-scorecard
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install pinned OpenCode 1.19.5
+        run: sh opencode/install.sh
+      - name: Smoke probe (FP-001, one run)
+        run: python3 opencode/runner.py --mode smoke --runs 1
+      - name: Upload smoke records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencode-smoke-records
+          path: opencode/runs/smoke/
+          if-no-files-found: error
+
+  n3:
+    if: inputs.mode == 'n3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        task:
+          - batch-1-task-01
+          - batch-1-task-02
+          - batch-1-task-03
+          - batch-1-task-04
+          - batch-1-task-05
+          - batch-1-task-06
+          - batch-2-task-01
+          - batch-2-task-02
+          - batch-2-task-03
+          - batch-2-task-04
+          - batch-2-task-05
+          - batch-2-task-06
+          - batch-2-task-07
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: harness-scorecard
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install pinned OpenCode 1.19.5
+        run: sh opencode/install.sh
+      - name: N=3 runs for one task
+        run: python3 opencode/runner.py --mode n3 --task ${{ matrix.task }} --runs 3
+      - name: Upload N=3 records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencode-n3-${{ matrix.task }}
+          path: opencode/runs/n3/
+          if-no-files-found: error

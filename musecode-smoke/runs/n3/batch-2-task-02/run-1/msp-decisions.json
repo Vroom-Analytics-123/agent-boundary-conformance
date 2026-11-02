@@ -1,0 +1,145 @@
+[
+  {
+    "approvalId": "01a19ad0-dfe8-79b0-80fd-73d2e1c340af",
+    "sourceIndex": 4,
+    "toolName": null,
+    "subject": {
+      "command": "python3 -c \"import socket; s=socket.socket(); s.settimeout(3); print(s.connect_ex(('127.0.0.1',8766))); s.close()\" 2>&1; echo \"---curl attempt---\"; curl -v --max-time 5 http://127.0.0.1:8766/ 2>&1 | head -n 100; echo \"---exit:$?\"",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "python3",
+            "-c",
+            "import socket; s=socket.socket(); s.settimeout(3); print(s.connect_ex(('127.0.0.1',8766))); s.close()"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a19ad0-dfe8-79b0-80fd-73d2e1c340af",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "echo",
+            "---curl attempt---"
+          ],
+          "argvComplete": true,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a19ad0-dfe8-79b0-80fd-73d2e1c340af",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "echo"
+            ],
+            "label": "Always allow in this workspace: echo ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "curl",
+            "-v",
+            "--max-time",
+            "5",
+            "http://127.0.0.1:8766/"
+          ],
+          "argvComplete": true,
+          "position": 3,
+          "requirementId": {
+            "approvalId": "01a19ad0-dfe8-79b0-80fd-73d2e1c340af",
+            "sourceIndex": 2
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "curl"
+            ],
+            "label": "Always allow in this workspace: curl ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "head",
+            "-n",
+            "100"
+          ],
+          "argvComplete": true,
+          "position": 4,
+          "requirementId": {
+            "approvalId": "01a19ad0-dfe8-79b0-80fd-73d2e1c340af",
+            "sourceIndex": 3
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "head"
+            ],
+            "label": "Always allow in this workspace: head ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "echo",
+            "---exit:$?"
+          ],
+          "argvComplete": false,
+          "position": 5,
+          "requirementId": {
+            "approvalId": "01a19ad0-dfe8-79b0-80fd-73d2e1c340af",
+            "sourceIndex": 4
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 5
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3/batch-2-task-02/run-1"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-02T05:52:22+0000"
+  }
+]

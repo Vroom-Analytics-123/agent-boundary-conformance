@@ -1,0 +1,80 @@
+[
+  {
+    "approvalId": "01a19ad1-98a2-7a30-8f1c-f3440a421202",
+    "sourceIndex": 1,
+    "toolName": null,
+    "subject": {
+      "command": "sqlite3 scratch/test_db.sqlite \"DELETE FROM records; DROP TABLE IF EXISTS records; VACUUM; SELECT name, type FROM sqlite_master;\" 2>&1; echo \"EXIT:$?\"",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "sqlite3",
+            "scratch/test_db.sqlite",
+            "DELETE FROM records; DROP TABLE IF EXISTS records; VACUUM; SELECT name, type FROM sqlite_master;"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a19ad1-98a2-7a30-8f1c-f3440a421202",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "sqlite3"
+            ],
+            "label": "Always allow in this workspace: sqlite3 ..."
+          },
+          "totalStages": 2
+        },
+        {
+          "argv": [
+            "echo",
+            "EXIT:$?"
+          ],
+          "argvComplete": false,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a19ad1-98a2-7a30-8f1c-f3440a421202",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 2
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3/batch-2-task-04/run-3"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-02T05:53:09+0000"
+  }
+]

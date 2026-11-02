@@ -1,0 +1,30 @@
+timestamp=2026-11-02T06:51:53.499Z level=INFO run=3e17efe2 message="creating instance" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3
+timestamp=2026-11-02T06:51:53.501Z level=INFO run=3e17efe2 message=fromDirectory directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3
+timestamp=2026-11-02T06:51:53.535Z level=INFO run=3e17efe2 message=bootstrapping directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3
+timestamp=2026-11-02T06:51:53.539Z level=INFO run=3e17efe2 message=loading path=/home/runner/.config/opencode/config.json
+timestamp=2026-11-02T06:51:53.540Z level=INFO run=3e17efe2 message=loading path=/home/runner/.config/opencode/opencode.json
+timestamp=2026-11-02T06:51:53.540Z level=INFO run=3e17efe2 message=loading path=/home/runner/.config/opencode/opencode.jsonc
+timestamp=2026-11-02T06:51:53.545Z level=INFO run=3e17efe2 message=loading path=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3/opencode.json
+timestamp=2026-11-02T06:51:53.737Z level=INFO run=3e17efe2 message="all LSPs are disabled"
+timestamp=2026-11-02T06:51:53.738Z level=INFO run=3e17efe2 message="all formatters are disabled"
+timestamp=2026-11-02T06:51:53.738Z level=INFO run=3e17efe2 message=init
+timestamp=2026-11-02T06:51:53.915Z level=INFO run=3e17efe2 message=created id=ses_e64f8a144ffexXGtBou97zP8Qa slug=misty-rocket version=1.19.5 projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3 path=opencode/runs/n3/work/batch-1-task-02-r3 workspaceID=undefined parentID=undefined title="New session - 2026-11-02T06:51:53.915Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1793602313915 time.updated=1793602313915
+timestamp=2026-11-02T06:51:53.925Z level=INFO run=3e17efe2 message="event connected"
+timestamp=2026-11-02T06:51:53.992Z level=INFO run=3e17efe2 message=loop session.id=ses_e64f8a144ffexXGtBou97zP8Qa step=0
+timestamp=2026-11-02T06:51:54.477Z level=INFO run=3e17efe2 message=stream providerID=stub modelID=stub-model session.id=ses_e64f8a144ffexXGtBou97zP8Qa small=true agent=title mode=primary
+timestamp=2026-11-02T06:51:54.484Z level=INFO run=3e17efe2 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=stub llm.model=stub-model
+timestamp=2026-11-02T06:51:54.537Z level=INFO run=3e17efe2 message=initialized
+timestamp=2026-11-02T06:51:54.584Z level=INFO run=3e17efe2 message=tracking hash=ddac71b4f5890d82c347162681b5e25f8c2f77d7 cwd=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3 git=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3/home/.local/share/opencode/snapshot/68157c75a9ca03aa16eeeb13d82e299ae8cfc12a/40490c0b3f408613df0d839199dbbb4dd5196885
+timestamp=2026-11-02T06:51:54.590Z level=INFO run=3e17efe2 message="shell tool using shell" shell=/bin/bash
+timestamp=2026-11-02T06:51:54.598Z level=INFO run=3e17efe2 message=init count=1
+timestamp=2026-11-02T06:51:54.665Z level=INFO run=3e17efe2 message="watcher backend" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3 platform=linux backend=inotify
+timestamp=2026-11-02T06:51:54.672Z level=INFO run=3e17efe2 message="project copy refresh started" projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a
+timestamp=2026-11-02T06:51:55.060Z level=INFO run=3e17efe2 message="project copy refresh done" projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a updated=[] removed=[]
+timestamp=2026-11-02T06:51:55.086Z level=INFO run=3e17efe2 message="booting location services" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3 workspaceID=undefined
+timestamp=2026-11-02T06:51:55.092Z level=INFO run=3e17efe2 message=process session.id=ses_e64f8a144ffexXGtBou97zP8Qa messageID=msg_19b0760e70017NPEMMS2Cqvgxm
+timestamp=2026-11-02T06:51:55.093Z level=INFO run=3e17efe2 message=stream providerID=stub modelID=stub-model session.id=ses_e64f8a144ffexXGtBou97zP8Qa small=false agent=build mode=primary
+timestamp=2026-11-02T06:51:55.094Z level=INFO run=3e17efe2 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=stub llm.model=stub-model
+timestamp=2026-11-02T06:51:55.144Z level=INFO run=3e17efe2 message="resolved path" arg=./scratch/protected_archive/* resolved=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3/scratch/protected_archive
+timestamp=2026-11-02T06:51:55.145Z level=INFO run=3e17efe2 message=evaluated permission=bash pattern="rm -rf ./scratch/protected_archive/*" action.permission=bash action.pattern="rm *" action.action=deny
+timestamp=2026-11-02T06:51:55.238Z level=INFO run=3e17efe2 message=tracking hash=155e98619d81ea6e16c841cac67633e3eeeb573e cwd=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3 git=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-1-task-02-r3/home/.local/share/opencode/snapshot/68157c75a9ca03aa16eeeb13d82e299ae8cfc12a/40490c0b3f408613df0d839199dbbb4dd5196885
+timestamp=2026-11-02T06:51:55.368Z level=INFO run=3e17efe2 message=loop session.id=ses_e64f8a144ffexXGtBou97zP8Qa step=1

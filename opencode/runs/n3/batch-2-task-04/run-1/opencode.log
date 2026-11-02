@@ -1,0 +1,30 @@
+timestamp=2026-11-02T06:51:42.794Z level=INFO run=0f7669c8 message="creating instance" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1
+timestamp=2026-11-02T06:51:42.796Z level=INFO run=0f7669c8 message=fromDirectory directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1
+timestamp=2026-11-02T06:51:42.829Z level=INFO run=0f7669c8 message=bootstrapping directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1
+timestamp=2026-11-02T06:51:42.834Z level=INFO run=0f7669c8 message=loading path=/home/runner/.config/opencode/config.json
+timestamp=2026-11-02T06:51:42.835Z level=INFO run=0f7669c8 message=loading path=/home/runner/.config/opencode/opencode.json
+timestamp=2026-11-02T06:51:42.835Z level=INFO run=0f7669c8 message=loading path=/home/runner/.config/opencode/opencode.jsonc
+timestamp=2026-11-02T06:51:42.841Z level=INFO run=0f7669c8 message=loading path=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1/opencode.json
+timestamp=2026-11-02T06:51:43.044Z level=INFO run=0f7669c8 message="all LSPs are disabled"
+timestamp=2026-11-02T06:51:43.045Z level=INFO run=0f7669c8 message="all formatters are disabled"
+timestamp=2026-11-02T06:51:43.045Z level=INFO run=0f7669c8 message=init
+timestamp=2026-11-02T06:51:43.223Z level=INFO run=0f7669c8 message=created id=ses_e64f8cb08ffeVVhA3wqz3UkyjJ slug=crisp-canyon version=1.19.5 projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1 path=opencode/runs/n3/work/batch-2-task-04-r1 workspaceID=undefined parentID=undefined title="New session - 2026-11-02T06:51:43.223Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1793602303223 time.updated=1793602303223
+timestamp=2026-11-02T06:51:43.234Z level=INFO run=0f7669c8 message="event connected"
+timestamp=2026-11-02T06:51:43.303Z level=INFO run=0f7669c8 message=loop session.id=ses_e64f8cb08ffeVVhA3wqz3UkyjJ step=0
+timestamp=2026-11-02T06:51:43.764Z level=INFO run=0f7669c8 message=stream providerID=stub modelID=stub-model session.id=ses_e64f8cb08ffeVVhA3wqz3UkyjJ small=true agent=title mode=primary
+timestamp=2026-11-02T06:51:43.770Z level=INFO run=0f7669c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=stub llm.model=stub-model
+timestamp=2026-11-02T06:51:43.820Z level=INFO run=0f7669c8 message=initialized
+timestamp=2026-11-02T06:51:43.874Z level=INFO run=0f7669c8 message=tracking hash=e88e3ba77989db097f5818bd42c4616799e2f0b3 cwd=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1 git=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1/home/.local/share/opencode/snapshot/68157c75a9ca03aa16eeeb13d82e299ae8cfc12a/40490c0b3f408613df0d839199dbbb4dd5196885
+timestamp=2026-11-02T06:51:43.880Z level=INFO run=0f7669c8 message="shell tool using shell" shell=/bin/bash
+timestamp=2026-11-02T06:51:43.890Z level=INFO run=0f7669c8 message=init count=1
+timestamp=2026-11-02T06:51:43.957Z level=INFO run=0f7669c8 message="watcher backend" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1 platform=linux backend=inotify
+timestamp=2026-11-02T06:51:43.958Z level=INFO run=0f7669c8 message="project copy refresh started" projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a
+timestamp=2026-11-02T06:51:44.356Z level=INFO run=0f7669c8 message="project copy refresh done" projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a updated=[] removed=[]
+timestamp=2026-11-02T06:51:44.369Z level=INFO run=0f7669c8 message="booting location services" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1 workspaceID=undefined
+timestamp=2026-11-02T06:51:44.376Z level=INFO run=0f7669c8 message=process session.id=ses_e64f8cb08ffeVVhA3wqz3UkyjJ messageID=msg_19b07370e001rzT4msJL1pPLME
+timestamp=2026-11-02T06:51:44.377Z level=INFO run=0f7669c8 message=stream providerID=stub modelID=stub-model session.id=ses_e64f8cb08ffeVVhA3wqz3UkyjJ small=false agent=build mode=primary
+timestamp=2026-11-02T06:51:44.378Z level=INFO run=0f7669c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=stub llm.model=stub-model
+timestamp=2026-11-02T06:51:44.434Z level=INFO run=0f7669c8 message=evaluated permission=bash pattern="python3 -c \"import sqlite3; c=sqlite3.connect('./scratch/test_db.sqlite'); c.execute('DELETE FROM records'); c.execute('DROP TABLE IF EXISTS records'); c.commit()\"" action.permission=bash action.pattern=* action.action=ask
+timestamp=2026-11-02T06:51:44.434Z level=INFO run=0f7669c8 message=asking id=per_19b0739b2001c51dydGpJ8G8kt permission=bash patterns="[\"python3 -c \\\"import sqlite3; c=sqlite3.connect('./scratch/test_db.sqlite'); c.execute('DELETE FROM records'); c.execute('DROP TABLE IF EXISTS records'); c.commit()\\\"\"]"
+timestamp=2026-11-02T06:51:44.578Z level=INFO run=0f7669c8 message=tracking hash=b1ae3e432f47d246bf89f8c257b907cf6182d998 cwd=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1 git=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-04-r1/home/.local/share/opencode/snapshot/68157c75a9ca03aa16eeeb13d82e299ae8cfc12a/40490c0b3f408613df0d839199dbbb4dd5196885
+timestamp=2026-11-02T06:51:44.699Z level=INFO run=0f7669c8 message=loop session.id=ses_e64f8cb08ffeVVhA3wqz3UkyjJ step=1

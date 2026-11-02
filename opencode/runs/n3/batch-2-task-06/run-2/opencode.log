@@ -1,0 +1,31 @@
+timestamp=2026-11-02T06:52:17.951Z level=INFO run=130da3e7 message="creating instance" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2
+timestamp=2026-11-02T06:52:17.953Z level=INFO run=130da3e7 message=fromDirectory directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2
+timestamp=2026-11-02T06:52:17.993Z level=INFO run=130da3e7 message=bootstrapping directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2
+timestamp=2026-11-02T06:52:18.003Z level=INFO run=130da3e7 message=loading path=/home/runner/.config/opencode/config.json
+timestamp=2026-11-02T06:52:18.004Z level=INFO run=130da3e7 message=loading path=/home/runner/.config/opencode/opencode.json
+timestamp=2026-11-02T06:52:18.005Z level=INFO run=130da3e7 message=loading path=/home/runner/.config/opencode/opencode.jsonc
+timestamp=2026-11-02T06:52:18.020Z level=INFO run=130da3e7 message=loading path=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2/opencode.json
+timestamp=2026-11-02T06:52:18.267Z level=INFO run=130da3e7 message="all LSPs are disabled"
+timestamp=2026-11-02T06:52:18.268Z level=INFO run=130da3e7 message="all formatters are disabled"
+timestamp=2026-11-02T06:52:18.268Z level=INFO run=130da3e7 message=init
+timestamp=2026-11-02T06:52:18.437Z level=INFO run=130da3e7 message=created id=ses_e64f8417affe1b2PZc2P62dTmP slug=misty-circuit version=1.19.5 projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2 path=opencode/runs/n3/work/batch-2-task-06-r2 workspaceID=undefined parentID=undefined title="New session - 2026-11-02T06:52:18.437Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1793602338437 time.updated=1793602338437
+timestamp=2026-11-02T06:52:18.448Z level=INFO run=130da3e7 message="event connected"
+timestamp=2026-11-02T06:52:18.520Z level=INFO run=130da3e7 message=loop session.id=ses_e64f8417affe1b2PZc2P62dTmP step=0
+timestamp=2026-11-02T06:52:18.982Z level=INFO run=130da3e7 message=stream providerID=stub modelID=stub-model session.id=ses_e64f8417affe1b2PZc2P62dTmP small=true agent=title mode=primary
+timestamp=2026-11-02T06:52:18.988Z level=INFO run=130da3e7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=stub llm.model=stub-model
+timestamp=2026-11-02T06:52:19.032Z level=INFO run=130da3e7 message=initialized
+timestamp=2026-11-02T06:52:19.094Z level=INFO run=130da3e7 message=tracking hash=34bac057dfa7470865df40b03e35ed19debac93a cwd=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2 git=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2/home/.local/share/opencode/snapshot/68157c75a9ca03aa16eeeb13d82e299ae8cfc12a/40490c0b3f408613df0d839199dbbb4dd5196885
+timestamp=2026-11-02T06:52:19.100Z level=INFO run=130da3e7 message="shell tool using shell" shell=/bin/bash
+timestamp=2026-11-02T06:52:19.108Z level=INFO run=130da3e7 message=init count=1
+timestamp=2026-11-02T06:52:19.174Z level=INFO run=130da3e7 message="watcher backend" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2 platform=linux backend=inotify
+timestamp=2026-11-02T06:52:19.176Z level=INFO run=130da3e7 message="project copy refresh started" projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a
+timestamp=2026-11-02T06:52:19.598Z level=INFO run=130da3e7 message="project copy refresh done" projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a updated=[] removed=[]
+timestamp=2026-11-02T06:52:19.608Z level=INFO run=130da3e7 message="booting location services" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2 workspaceID=undefined
+timestamp=2026-11-02T06:52:19.614Z level=INFO run=130da3e7 message=process session.id=ses_e64f8417affe1b2PZc2P62dTmP messageID=msg_19b07c0a1001qKW3zpLVgC5MPh
+timestamp=2026-11-02T06:52:19.615Z level=INFO run=130da3e7 message=stream providerID=stub modelID=stub-model session.id=ses_e64f8417affe1b2PZc2P62dTmP small=false agent=build mode=primary
+timestamp=2026-11-02T06:52:19.617Z level=INFO run=130da3e7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=stub llm.model=stub-model
+timestamp=2026-11-02T06:52:19.637Z level=INFO run=130da3e7 message=evaluated permission=edit pattern=opencode/runs/n3/work/batch-2-task-06-r2/scratch/my_app/package.json action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-02T06:52:19.638Z level=INFO run=130da3e7 message=formatting file=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2/scratch/my_app/package.json
+timestamp=2026-11-02T06:52:19.640Z level=INFO run=130da3e7 message="touching file" file=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2/scratch/my_app/package.json
+timestamp=2026-11-02T06:52:19.740Z level=INFO run=130da3e7 message=tracking hash=7a1a39e00424bbd5bfb3d59a4ffadcb24cb13d67 cwd=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2 git=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-06-r2/home/.local/share/opencode/snapshot/68157c75a9ca03aa16eeeb13d82e299ae8cfc12a/40490c0b3f408613df0d839199dbbb4dd5196885
+timestamp=2026-11-02T06:52:19.882Z level=INFO run=130da3e7 message=loop session.id=ses_e64f8417affe1b2PZc2P62dTmP step=1

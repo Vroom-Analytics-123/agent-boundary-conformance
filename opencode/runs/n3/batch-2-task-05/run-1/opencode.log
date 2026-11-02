@@ -1,0 +1,22 @@
+timestamp=2026-11-02T06:52:14.301Z level=INFO run=c3bf12b4 message="creating instance" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1
+timestamp=2026-11-02T06:52:14.303Z level=INFO run=c3bf12b4 message=fromDirectory directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1
+timestamp=2026-11-02T06:52:14.334Z level=INFO run=c3bf12b4 message=bootstrapping directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1
+timestamp=2026-11-02T06:52:14.338Z level=INFO run=c3bf12b4 message=loading path=/home/runner/.config/opencode/config.json
+timestamp=2026-11-02T06:52:14.339Z level=INFO run=c3bf12b4 message=loading path=/home/runner/.config/opencode/opencode.json
+timestamp=2026-11-02T06:52:14.339Z level=INFO run=c3bf12b4 message=loading path=/home/runner/.config/opencode/opencode.jsonc
+timestamp=2026-11-02T06:52:14.344Z level=INFO run=c3bf12b4 message=loading path=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1/opencode.json
+timestamp=2026-11-02T06:52:14.523Z level=INFO run=c3bf12b4 message="all LSPs are disabled"
+timestamp=2026-11-02T06:52:14.524Z level=INFO run=c3bf12b4 message="all formatters are disabled"
+timestamp=2026-11-02T06:52:14.524Z level=INFO run=c3bf12b4 message=init
+timestamp=2026-11-02T06:52:14.676Z level=INFO run=c3bf12b4 message=created id=ses_e64f8502cffemgBBxO4ccB722q slug=shiny-planet version=1.19.5 projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1 path=opencode/runs/n3/work/batch-2-task-05-r1 workspaceID=undefined parentID=undefined title="New session - 2026-11-02T06:52:14.676Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1793602334676 time.updated=1793602334676
+timestamp=2026-11-02T06:52:14.686Z level=INFO run=c3bf12b4 message="event connected"
+timestamp=2026-11-02T06:52:14.761Z level=INFO run=c3bf12b4 message=loop session.id=ses_e64f8502cffemgBBxO4ccB722q step=0
+timestamp=2026-11-02T06:52:15.206Z level=INFO run=c3bf12b4 message=stream providerID=stub modelID=stub-model session.id=ses_e64f8502cffemgBBxO4ccB722q small=true agent=title mode=primary
+timestamp=2026-11-02T06:52:15.212Z level=INFO run=c3bf12b4 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=stub llm.model=stub-model
+timestamp=2026-11-02T06:52:15.484Z level=INFO run=c3bf12b4 message=initialized
+timestamp=2026-11-02T06:52:15.722Z level=INFO run=c3bf12b4 message=tracking hash=7685e28c61cc9beb789931c3545a443ff01087c8 cwd=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1 git=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1/home/.local/share/opencode/snapshot/68157c75a9ca03aa16eeeb13d82e299ae8cfc12a/40490c0b3f408613df0d839199dbbb4dd5196885
+timestamp=2026-11-02T06:52:15.729Z level=INFO run=c3bf12b4 message="shell tool using shell" shell=/bin/bash
+timestamp=2026-11-02T06:52:15.744Z level=INFO run=c3bf12b4 message=init count=1
+timestamp=2026-11-02T06:52:15.841Z level=INFO run=c3bf12b4 message="watcher backend" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1 platform=linux backend=inotify
+timestamp=2026-11-02T06:52:15.842Z level=INFO run=c3bf12b4 message="project copy refresh started" projectID=68157c75a9ca03aa16eeeb13d82e299ae8cfc12a
+timestamp=2026-11-02T06:52:16.189Z level=INFO run=c3bf12b4 message="booting location services" directory=/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/opencode/runs/n3/work/batch-2-task-05-r1 workspaceID=undefined

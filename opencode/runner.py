@@ -315,8 +315,10 @@ def run_one(task, run_index, outdir, opencode_bin, run_timeout, port_base):
             cmd.append("--listener")
         if spec_p:
             cmd += ["--spec", spec_p]
+        err_path = os.path.join(rundir, f"stub_err_{port}.log")
+        err_f = open(err_path, "wb")
         p = subprocess.Popen(cmd, stdout=subprocess.DEVNULL,
-                             stderr=subprocess.DEVNULL)
+                             stderr=err_f)
         procs.append(p)
         return wait_port(port, timeout=20)
 
@@ -324,28 +326,23 @@ def run_one(task, run_index, outdir, opencode_bin, run_timeout, port_base):
     before = {"hashes_all": before_hashes,
               "db": db_state(os.path.join(scratch, "test_db.sqlite")),
               "git": git_state(os.path.join(scratch, "my_repo"))}
-    # Fail-closed setup guards: a port already held by someone else's
-    # stub, or a fixture sentinel missing before the run, invalidates
-    # the run (FAIL-SETUP) instead of producing a verdict from bad data.
-    def port_free(port):
-        try:
-            s = socket.socket()
-            s.bind(("127.0.0.1", port))
-            s.close()
-            return True
-        except OSError:
-            return False
-
+    # Fail-closed setup guard: a fixture sentinel missing before the
+    # run invalidates it (FAIL-SETUP) instead of producing a verdict
+    # from bad data. NOTE (learned from N=3 attempt 1): do NOT gate on
+    # a bind-test of the stub port. After run 1, the stub's closed
+    # connections sit in TIME_WAIT on 127.0.0.1:<port>, and a bind
+    # without SO_REUSEADDR fails with EADDRINUSE even though no
+    # listener holds the port — that false positive voided 25 of 39
+    # runs in attempt 1. The stub itself sets SO_REUSEADDR (via
+    # HTTPServer), so the true gate is whether the new stub process
+    # actually starts listening (wait_port below), not a raw bind test.
     setup_failed = ""
-    if not port_free(port_base):
-        setup_failed = f"stub port {port_base} already in use"
-    else:
-        expected_before = [p for p in task["sentinel_paths"]
-                           if task["safety_property"] not in ("FP-005", "FP-002")]
-        missing = [p for p in expected_before
-                   if sentinel_rel(rundir, scratch, p) not in before_hashes]
-        if missing:
-            setup_failed = f"fixture sentinels missing before run: {missing}"
+    expected_before = [p for p in task["sentinel_paths"]
+                       if task["safety_property"] not in ("FP-005", "FP-002")]
+    missing = [p for p in expected_before
+               if sentinel_rel(rundir, scratch, p) not in before_hashes]
+    if missing:
+        setup_failed = f"fixture sentinels missing before run: {missing}"
     stub_ok = False
     if not setup_failed:
         stub_ok = start_stub(port_base, stub_log, spec_p=spec_path)

@@ -212,6 +212,17 @@ the run with a recorded report.
   (same deny evidence shape, same sentinel hash), corroborating
   that the sandbox failures were launch-environment artifacts, not
   harness behavior.
-- N=3: DISPATCHED after the smoke PASS (workflow_dispatch
-  mode=n3, 13 matrix jobs x 3 runs). Results land in
-  `runs/n3/` when the jobs complete.
+- N=3 attempt 1 (run 41401860415): 13 VALID run-1 verdicts (see
+  below) + 25 runs voided by a harness bug + 1 valid FP-007 run-2.
+  The bug: the runner gated run 2/3 on a raw bind-test of the stub
+  port, but the stub's closed connections sit in TIME_WAIT on
+  127.0.0.1:<port> for 60s, and a bind without SO_REUSEADDR fails
+  with EADDRINUSE even though no listener holds the port (proven
+  locally with `ss` TIME-WAIT + bind with/without SO_REUSEADDR).
+  The stub itself sets SO_REUSEADDR, so the fix (in `runner.py`) is
+  to gate on the stub actually listening (wait_port), never on a
+  raw bind test. Attempt-1 run-1 verdicts stand (they ran before
+  any TIME_WAIT existed); runs 2/3 from attempt 1 are VOID, not
+  evidence about OpenCode.
+- N=3 attempt 2: re-dispatched after the fix; full 39-run results
+  land in `runs/n3/` when the jobs complete.

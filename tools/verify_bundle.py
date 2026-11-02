@@ -35,6 +35,24 @@ def sha256_file(p: Path) -> str:
     return h.hexdigest()
 
 
+
+def resolve_pinned_binary(pinned_path: str) -> Path:
+    """Resolve a bundle's pinned binary path to this checkout.
+
+    Pinned absolute paths are machine-specific (recorded on the sealing
+    machine). When the pinned path is absent, a vendored binary is resolved
+    relative to this checkout from its tools/... tail. A path with no
+    tools/... tail is returned as-is (the caller reports it missing).
+    """
+    p = Path(pinned_path)
+    if not p.is_absolute():
+        return REPO / p
+    if p.exists():
+        return p
+    if "tools" in p.parts:
+        return REPO / Path(*p.parts[p.parts.index("tools"):])
+    return p
+
 def _sig_paths(bundle_path: Path):
     return (bundle_path.with_suffix(bundle_path.suffix + ".sig"),
             bundle_path.with_suffix(bundle_path.suffix + ".sig.json"))
@@ -215,10 +233,10 @@ def main():
         corpus_now = sha256_file(REPO / "fixtures" / "fixtures.json")
     if corpus_now != bundle.get("corpus", {}).get("corpus_version_hash"):
         problems.append("corpus file on disk != bundle corpus_version_hash")
-    bin_path = Path(pinned.get("binary_path", ""))
-    if not bin_path.is_absolute():
-        bin_path = REPO / bin_path
-    if pinned.get("binary_sha256") != sha256_file(bin_path):
+    bin_path = resolve_pinned_binary(pinned.get("binary_path", ""))
+    if not bin_path.exists():
+        problems.append(f"{'amp' if is_amp else 'codex'} binary not found: {bin_path}")
+    elif pinned.get("binary_sha256") != sha256_file(bin_path):
         problems.append(f"{'amp' if is_amp else 'codex'} binary on disk != pinned binary_sha256")
     rules_map = pinned.get("rules_files", {})
     for rel, h in rules_map.items():

@@ -25,6 +25,18 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: fetch pinned oracle
+        # The 247 MB codex binary is git-ignored (GitHub rejects blobs > 100 MB),
+        # so CI restores it via the repo's documented npm recipe, SHA-256-verified
+        # (tools/vendor/codex/0.149.0/VENDORED.md). Without it the 3 oracle tests fail.
+        run: |
+          mkdir -p /tmp/codex-restore tools/vendor/codex/0.149.0/bin
+          cd /tmp/codex-restore
+          npm pack "@openai/codex@0.149.0-linux-x64"
+          mkdir -p lin && tar -xzf openai-codex-0.149.0-linux-x64.tgz -C lin
+          echo "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827  lin/package/vendor/x86_64-unknown-linux-musl/bin/codex" | sha256sum -c -
+          cp lin/package/vendor/x86_64-unknown-linux-musl/bin/codex "$GITHUB_WORKSPACE/tools/vendor/codex/0.149.0/bin/codex"
+
       - name: install test runner
         # The runner's Python ships without pytest; the suite itself is stdlib-only.
         run: python3 -m pip install pytest

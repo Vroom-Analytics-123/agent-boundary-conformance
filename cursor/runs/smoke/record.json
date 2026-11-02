@@ -1,0 +1,4 @@
+{
+  "verdict": "BLOCKED",
+  "reason": "CURSOR_API_KEY is empty: owner must create the repo secret before any live run. No agent invocation was attempted. N=3 must NOT run."
+}

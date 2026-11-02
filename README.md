@@ -6,7 +6,7 @@
 
 Harnesses change under their owners — a new release, a new feature, a new flag can move a decision the last version got right — so the suite **re-runs on every harness version upgrade and feature change**, and the version-over-version regression diff is the product's heartbeat: **measure → re-measure → fix → re-verify**.
 
-**Status:** sprint complete — verdict **NARROW**. The repo stands as a conformance *method* with two vendor-confirmed Decision-layer routes (Codex + Amp), limitations on its face, not as an Index. The dated history — the Day-5 fix, the pre/post-fix numbers, the Wave A expansion, the Oct 30 Nebius integration — lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/DASHBOARD.md](docs/DASHBOARD.md)**.
+**Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/DASHBOARD.md](docs/DASHBOARD.md)**.
 
 ## 🚀 Try it
 
@@ -28,10 +28,10 @@ python3 tools/run_fixtures.py      # verdict table, ~10s (needs the pinned codex
 
 1. **See the result** — the chart below. 41 probe commands replayed against Codex's own policy checker. The finding is how often the rulebook *doesn't answer*.
 2. **Run it yourself** — one command, ~10 seconds: `python3 tools/run_fixtures.py` (needs the pinned `codex` CLI, v0.149.0). It prints the verdict table and writes raw evidence JSON to `evidence/reruns/`. Run it again against the next harness release and the diff between the two runs is the conformance signal, not either run alone.
-3. **Skim the evidence** — `evidence/day1-baseline-2026-10-21/` holds the frozen Day-1 raw outputs; `docs/COMPETITOR_BASELINES.md` shows the same tests run against the closest existing tools.
+3. **Skim the evidence** — `evidence/day1-baseline-2026-10-21/` holds the frozen Oct 21 baseline raw outputs; `docs/COMPETITOR_BASELINES.md` shows the same tests run against the closest existing tools.
 4. **Read the one-page status** — [docs/DASHBOARD.md](docs/DASHBOARD.md): objectives, the 5 invariants in plain English, the grants pipeline, the publish queue, and what's waiting on the founder.
 
-## The sprint result
+## The measured result
 
 ![Decision breakdown across the 41-case probe corpus](docs/assets/decisions_donut.png)
 
@@ -114,7 +114,7 @@ A measurement that only reports is half an inspector. Every finding is paired wi
 - **Closed-source targets → a public write-up**: the stated limit, the measured behaviour, the layer attribution, and the clause that would close the gap.
 - **Otherwise → drafted policy clauses + a vendor disclosure note**, with private disclosure to the vendor before anything is published.
 
-The honest boundary, once: a skill fixes at the **policy/config layer around** a target; a defect inside a vendor's closed binary still needs the vendor's patch — the skill carries compensating clauses until then, and says so on its face. This repo's own sprint already ran the loop once: the Day-5 fix began as a conformance finding and a drafted rule change, and the post-fix evidence bundle is that fix re-measured and sealed, not asserted. **Inspector who drafts fixes, never enforcer.** FinePrint writes the clause; the owner decides whether to adopt it.
+The honest boundary, once: a skill fixes at the **policy/config layer around** a target; a defect inside a vendor's closed binary still needs the vendor's patch — the skill carries compensating clauses until then, and says so on its face. This repo already ran the loop once: the Oct 22 fix began as a conformance finding and a drafted rule change, and the post-fix evidence bundle is that fix re-measured and sealed, not asserted. **Inspector who drafts fixes, never enforcer.** FinePrint writes the clause; the owner decides whether to adopt it.
 
 ## Why this matters — verified incidents
 
@@ -135,7 +135,7 @@ These are not hypotheticals. Each incident below is **verified** (primary source
 | Document | What it is |
 |---|---|
 | [docs/DASHBOARD.md](docs/DASHBOARD.md) | **The living status page — read this first** |
-| [docs/EXPLAINER.md](docs/EXPLAINER.md) | **Start here if the idea is new to you** — the full plain-language foundation: the building-inspector metaphor, policy, declarative policy, why defaults aren't enough, conformance, the first measurement, the sprint-end verdict, and references |
+| [docs/EXPLAINER.md](docs/EXPLAINER.md) | **Start here if the idea is new to you** — the full plain-language foundation: the building-inspector metaphor, policy, declarative policy, why defaults aren't enough, conformance, the first measurement, the current verdict, and references |
 | [docs/FRAMEWORK.md](docs/FRAMEWORK.md) | The harness-neutral framework: invariant schema, adapter contract, the three layers, the paper-test measurement routes, the all-harness matrix + surveyed field |
 | [docs/MEASUREMENT_MODEL.md](docs/MEASUREMENT_MODEL.md) | The three-layer doctrine of record: routes per layer, confidence = agreeing routes, the keystone rule |
 | [docs/MEASUREMENT_ROUTES.md](docs/MEASUREMENT_ROUTES.md) | The measurement-route assignments with the evidence behind each |
@@ -143,7 +143,7 @@ These are not hypotheticals. Each incident below is **verified** (primary source
 | [docs/EXTENDING.md](docs/EXTENDING.md) | **How to add a harness or framework target** |
 | [docs/NEBIUS_INTEGRATION.md](docs/NEBIUS_INTEGRATION.md) | The Nemotron integration: full demo guide, schema, Token Factory notes, sealed evidence |
 | [docs/catalogue/](docs/catalogue/) | The invariant catalogue: 16 parameterized invariants with per-target translations |
-| [CHANGELOG.md](CHANGELOG.md) | The dated project history — sprint timeline, pre/post-fix numbers, the public flip, the Nebius integration |
+| [CHANGELOG.md](CHANGELOG.md) | The dated project history — pre/post-fix numbers, the public flip, the Nebius integration |
 | [mcp/README.md](mcp/README.md) | **Use FinePrint from your agent** — the MCP server (stdio) + skill: `check_command`, `list_invariants`, `measurement_routes`, `run_check` |
 
 The full document map — every doc, its status, and what it holds — is in **[docs/DOCUMENT_MAP.md](docs/DOCUMENT_MAP.md)**.
@@ -164,7 +164,7 @@ adapter per target, and evidence kept separate from both.
 | `fixtures/` · `security/` · `schemas/` | Probe corpora + sample policies · the invariant contracts under test · versioned finding/evidence schemas |
 | `tests/` · `ci/` · `catalogue-contrib/` | Engine tests · CI wiring · the Catalogue Commons (org overlays stay private by construction; worked examples only) |
 
-**Kill criterion (locked) — verdict delivered:** by Day 7 (Oct 27) the sprint had to show a useful result the baselines miss or explain poorly — or stop, publish the negative result honestly, and offer the fixtures upstream. **Verdict: NARROW** (see [docs/daily/2026-10-27.md](docs/daily/2026-10-27.md)): the method is proven on Codex evidence (two vendor-confirmed Decision-layer routes since Oct 22, when Amp's shipped native offline decision oracle `amp permissions test` was recognized as a vendor-confirmed route); a public multi-harness Index is not earned on the current evidence. The repo stands as the method, limitations on its face.
+**The bar this method had to clear (set Oct 21, judged Oct 27):** show a useful result the baselines miss or explain poorly — or stop, publish the negative result honestly, and offer the fixtures upstream. **Verdict: NARROW** (see [docs/daily/2026-10-27.md](docs/daily/2026-10-27.md)): the method is proven on Codex evidence (two vendor-confirmed Decision-layer routes since Oct 22, when Amp's shipped native offline decision oracle `amp permissions test` was recognized as a vendor-confirmed route); a public multi-harness Index is not earned on the current evidence. The repo stands as the method, limitations on its face.
 
 ## License
 

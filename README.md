@@ -1,6 +1,6 @@
 # Agent Boundary Conformance — the first instrument of **Boundary Measurement**
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE) [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/) [![MCP server](https://img.shields.io/badge/MCP-stdio-green.svg)](mcp/README.md)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE) [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/) [![MCP server](https://img.shields.io/badge/MCP-stdio-green.svg)](mcp/README.md) [![CI](https://github.com/Vroom-Analytics-123/agent-boundary-conformance/actions/workflows/ci.yml/badge.svg)](https://github.com/Vroom-Analytics-123/agent-boundary-conformance/actions/workflows/ci.yml)
 
 **Boundary Measurement** is the independent measurement of whether an AI agent's *enforced* limits match its *stated* limits. Think of it as a **building inspector** for agent policies: the inspector doesn't declare the building safe or unsafe — she checks the building against the code its owner filed, item by item, and writes down what matches and what doesn't. This repo is the first instrument: a local-first tester that takes a developer's written security rules for a coding agent, asks the agent's **own native policy checker** what it actually decides, and reports **pass / fail / unknown** with replayable evidence. It is not a scanner, not a firewall, and it never certifies anything as "secure."
 

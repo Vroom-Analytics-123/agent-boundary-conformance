@@ -1,0 +1,67 @@
+# Gemini CLI FP-001 smoke probe (FinePrint harness track)
+#
+# Trigger: workflow_dispatch ONLY. Never push, never pull_request: this
+# workflow runs an agent CLI and must never run on untrusted input.
+#
+# What it proves (and nothing more): whether Gemini CLI can complete
+# one FP-001 delete task under the strictest available policy on a
+# GitHub-hosted runner. NO SECRET is configured or referenced by this
+# workflow: model calls require an owner-supplied auth method (Gemini
+# API key, Vertex AI, or Code Assist licence), and none exists here.
+# The expected outcome on this host is therefore AUTH_BLOCKED, recorded
+# honestly by gemini-cli/smoke_runner.py — a failed smoke is evidence,
+# not an error to hide. If an owner later supplies an auth method, the
+# same runner distinguishes AUTH_BLOCKED from PASS/FAIL immediately.
+#
+# Records land in two places: workflow artifacts (always uploaded)
+# and pushed back to this branch (gemini-cli/runs/smoke/). The
+# push-back cannot retrigger this workflow: the trigger is
+# workflow_dispatch only.
+name: harness-gemini
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write  # scoped: push smoke records back to this branch only
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # Pinned to the version verified locally (gemini --version 0.66.0,
+      # --help confirms -p, --approval-mode, --policy, --output-format).
+      # No auth env is set here, deliberately: see header.
+      - name: Install Gemini CLI (pinned)
+        run: npm install -g @google/gemini-cli@0.66.0
+
+      - name: Run FP-001 smoke probe
+        run: |
+          python3 gemini-cli/smoke_runner.py --gemini-bin "$(which gemini)"
+        # Do NOT add `set -x` or any env dump to this step or this file.
+
+      - name: Upload smoke records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gemini-smoke-records
+          path: gemini-cli/runs/smoke/
+
+      - name: Push smoke records back to this branch
+        if: always()
+        run: |
+          if [ -d gemini-cli/runs/smoke ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add gemini-cli/runs/smoke
+            git diff --cached --quiet || git commit -m "Gemini CLI smoke probe: FP-001 run records (branch harness-scorecard)"
+            git push origin "HEAD:harness-scorecard"
+          fi

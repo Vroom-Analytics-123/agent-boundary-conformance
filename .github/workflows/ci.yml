@@ -25,6 +25,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: install test runner
+        # The runner's Python ships without pytest; the suite itself is stdlib-only.
+        run: python3 -m pip install pytest
+
       - name: test suite
         run: python3 -m pytest tests/ -q
 

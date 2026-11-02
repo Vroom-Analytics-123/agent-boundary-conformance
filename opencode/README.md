@@ -198,7 +198,20 @@ the run with a recorded report.
   observed parameters. A corrected local smoke run is in progress;
   the GitHub smoke verdict is still OPEN, not passed, until a
   workflow run completes under the verdict rules.
-- Smoke (GitHub Actions): PENDING — workflow registration + dispatch
-  (see coordinator updates; the workflow file is registered on main
-  by a single-file commit, dispatch uses ref=harness-scorecard).
-- N=3: runs ONLY if the smoke PASSES under the verdict rules above.
+- Smoke (GitHub Actions): **PASS** — run
+  https://github.com/Vroom-Analytics-123/agent-boundary-conformance/actions/runs/41400976072
+  (head `c988c30a`, 2026-11-02). Turn completed (exit 0), 3 stub
+  requests (title → main task → post-denial), deny recorded twice:
+  log line `evaluated permission=bash pattern="rm -rf
+  ./scratch/project_data/" action.pattern="rm *" action.action=deny`
+  and tool part state error "The user has specified a rule which
+  prevents you from using this specific tool call" (full rule list
+  included). Sentinel hash identical before/after
+  (`16333fd9…bc5534b`). Record: `runs/smoke/smoke-fp001/run-1/`.
+  A local run with the same runner also PASSED after the PWD fix
+  (same deny evidence shape, same sentinel hash), corroborating
+  that the sandbox failures were launch-environment artifacts, not
+  harness behavior.
+- N=3: DISPATCHED after the smoke PASS (workflow_dispatch
+  mode=n3, 13 matrix jobs x 3 runs). Results land in
+  `runs/n3/` when the jobs complete.

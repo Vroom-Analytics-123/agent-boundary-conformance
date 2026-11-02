@@ -1,0 +1,89 @@
+# STAGED HERE (not .github/workflows/) because the API-scoped GitHub credential
+# lacks the workflow scope — GitHub's Trees API returns 404 for any
+# .github/workflows/ path (same constraint documented in the repo's own
+# ci/README.md). To activate: move this file to
+# .github/workflows/musecode-smoke.yml with a workflow-scoped credential
+# (web-UI file move on this branch works). Until then this branch is NOT
+# triggerable. Content below is the workflow, unchanged.
+
+# Muse Code sandbox smoke probe (FP-001 only)
+#
+# Trigger: workflow_dispatch ONLY. Never push, never pull_request: this
+# workflow runs agent commands with a live API key and must never run
+# on untrusted input (a fork PR must never be able to trigger it).
+#
+# What it proves (and nothing more): whether muse's sandboxed shell
+# genuinely starts and executes on a GitHub-hosted runner under the
+# deterministic deny-all approver. One task (FP-001), one run. If the
+# smoke passes, N=3 follows on this branch; if it fails, N=3 does NOT
+# run on this host.
+#
+# Secret required (created by the owner, never by this workflow):
+#   repo Settings -> Secrets and variables -> Actions -> New
+#   repository secret, name MUSE_HEADLESS_KEY, value = a fresh Muse
+#   headless key (revoke after the pilot). The key travels in env
+#   only; the workflow never echoes it and the runner never prints
+#   env. Do NOT add `set -x` or any env dump to this file.
+#
+# Records land in two places: workflow artifacts (always uploaded)
+# and pushed back to this branch (musecode-smoke/runs/smoke/).
+# The push-back cannot retrigger this workflow: the trigger is
+# workflow_dispatch only.
+name: musecode-smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write  # scoped: push smoke records back to this branch only
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      # Unprivileged-userns fix (established, not assumed): Ubuntu 24.04
+      # restricts unprivileged user namespaces via AppArmor by default,
+      # which breaks bwrap probes out of the box. Codex's own CI sets
+      # this same sysctl. The narrow bwrap-only AppArmor profile is the
+      # future hardening option; the global sysctl below is the
+      # established working fix.
+      - name: Allow unprivileged user namespaces (bwrap sandbox prerequisite)
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      # Install muse fresh via the audited launcher script vendored in
+      # this branch (musecode-smoke/install.sh). MUSE_NO_MODIFY_PATH=1
+      # so no shell profile is touched; the binary lands in runner.temp.
+      - name: Install muse via audited launcher
+        env:
+          MUSE_INSTALL_DIR: ${{ runner.temp }}/muse-bin
+          MUSE_NO_MODIFY_PATH: "1"
+        run: bash musecode-smoke/install.sh
+
+      # The key is in env only. Never echo env, never set -x here.
+      - name: Run FP-001 smoke probe
+        env:
+          MUSE_HEADLESS_KEY: ${{ secrets.MUSE_HEADLESS_KEY }}
+        run: |
+          python3 musecode-smoke/smoke_runner.py \
+            --muse-bin "${{ runner.temp }}/muse-bin/muse"
+
+      - name: Upload smoke records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: musecode-smoke-records
+          path: musecode-smoke/runs/smoke/
+
+      - name: Push smoke records back to this branch
+        if: always()
+        run: |
+          if [ -d musecode-smoke/runs/smoke ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add musecode-smoke/runs/smoke
+            git diff --cached --quiet || git commit -m "Muse Code smoke probe: FP-001 run records (branch musecode-smoke)"
+            git push origin "HEAD:musecode-smoke"
+          fi

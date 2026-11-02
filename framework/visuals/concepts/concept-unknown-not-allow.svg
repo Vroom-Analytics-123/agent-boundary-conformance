@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="Arial, Helvetica, DejaVu Sans, sans-serif">
+<title>Unknown is not allow</title>
+<defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2AA5A0"/></marker><marker id="arG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#3FA46A"/></marker><marker id="arR" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#E05D5D"/></marker></defs>
+<rect width="1200" height="800" fill="#0F1B2D"/>
+<text x="60" y="64" font-size="34" fill="#E8EDF3" font-weight="bold">Unknown is not allow.</text>
+<text x="60" y="98" font-size="17" fill="#AAB4C4">No matching rule means nobody decided — not a green light, not a block.</text>
+<rect x="60" y="130" width="1080" height="56" rx="12" fill="#1B2A42" stroke="#223452"/>
+<text x="600" y="166" font-size="20" fill="#E8EDF3" font-family="DejaVu Sans Mono, monospace" text-anchor="middle">ls /records/health</text>
+<rect x="60" y="220" width="520" height="170" rx="16" fill="#1B2A42"/>
+<rect x="60" y="220" width="520" height="8" rx="4" fill="#E8A838"/>
+<rect x="60" y="220" width="520" height="170" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="84" y="264" font-size="15" fill="#E8A838" font-weight="bold" text-anchor="start">THE POLICY</text>
+<text x="84" y="302" font-size="17" fill="#E8EDF3" text-anchor="start">default.rules has no ls rule.</text>
+<text x="84" y="332" font-size="17" fill="#E8EDF3" text-anchor="start">Nothing matches. Nothing decides.</text>
+<line x1="580" y1="305" x2="640" y2="305" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="640" y="220" width="500" height="170" rx="16" fill="#1B2A42"/>
+<rect x="640" y="220" width="500" height="8" rx="4" fill="#E8A838"/>
+<rect x="640" y="220" width="500" height="170" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="664" y="264" font-size="15" fill="#E8A838" font-weight="bold" text-anchor="start">THE VERDICT</text>
+<rect x="664" y="286" width="220" height="48" rx="24" fill="#E8A838"/>
+<text x="774" y="315" font-size="17" fill="#0F1B2D" font-weight="bold" text-anchor="middle">UNKNOWN</text>
+<text x="664" y="364" font-size="15" fill="#E8EDF3" text-anchor="start">Coverage gap. Not a decision.</text>
+<rect x="60" y="430" width="520" height="200" rx="16" fill="#1B2A42"/>
+<rect x="60" y="430" width="520" height="8" rx="4" fill="#E05D5D"/>
+<rect x="60" y="430" width="520" height="200" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="84" y="474" font-size="15" fill="#E05D5D" font-weight="bold" text-anchor="start">WRONG READINGS</text>
+<text x="84" y="512" font-size="17" fill="#E8EDF3" text-anchor="start">✗  “It ran, so it was allowed.”</text>
+<text x="84" y="550" font-size="17" fill="#E8EDF3" text-anchor="start">✗  “It was blocked.”</text>
+<text x="84" y="596" font-size="15" fill="#AAB4C4" text-anchor="start">Neither happened. Nobody decided.</text>
+<rect x="640" y="430" width="500" height="200" rx="16" fill="#1B2A42"/>
+<rect x="640" y="430" width="500" height="8" rx="4" fill="#3FA46A"/>
+<rect x="640" y="430" width="500" height="200" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="664" y="474" font-size="15" fill="#3FA46A" font-weight="bold" text-anchor="start">CORRECT READING</text>
+<text x="664" y="512" font-size="17" fill="#E8EDF3" text-anchor="start">✓  A hole in coverage.</text>
+<text x="664" y="550" font-size="17" fill="#E8EDF3" text-anchor="start">Write a rule — or accept the hole.</text>
+<text x="664" y="596" font-size="15" fill="#AAB4C4" text-anchor="start">Same for curl / wget / psql (C5).</text>
+<line x1="60" y1="748" x2="1140" y2="748" stroke="#223452" stroke-width="1"/>
+<text x="60" y="776" font-size="13" fill="#AAB4C4">Measured: Codex ls → unknown, bundle 6d2b7e9e (C3). Egress gap confirmed by policy inspection (C5). Unknown is never protection, never allow.</text>
+</svg>

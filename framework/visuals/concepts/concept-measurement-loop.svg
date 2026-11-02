@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="Arial, Helvetica, DejaVu Sans, sans-serif">
+<title>The measurement loop</title>
+<defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2AA5A0"/></marker><marker id="arG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#3FA46A"/></marker><marker id="arR" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#E05D5D"/></marker></defs>
+<rect width="1200" height="800" fill="#0F1B2D"/>
+<text x="60" y="64" font-size="34" fill="#E8EDF3" font-weight="bold">The measurement loop.</text>
+<text x="60" y="98" font-size="17" fill="#AAB4C4">Same loop every time. No step skipped, no claim without a bundle.</text>
+<rect x="60" y="150" width="340" height="190" rx="16" fill="#1B2A42"/>
+<rect x="60" y="150" width="340" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="60" y="150" width="340" height="190" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="84" y="198" font-size="30" fill="#2AA5A0" font-weight="bold" text-anchor="start">1</text>
+<text x="122" y="194" font-size="20" fill="#E8EDF3" font-weight="bold" text-anchor="start">GENERATE</text>
+<text x="84" y="242" font-size="15" fill="#E8EDF3" text-anchor="start">Meta's model writes scenarios</text>
+<text x="84" y="270" font-size="15" fill="#E8EDF3" text-anchor="start">24 scenarios, 11 invariants</text>
+<text x="84" y="298" font-size="15" fill="#E8EDF3" text-anchor="start">SCEN-101–124</text>
+<rect x="430" y="150" width="340" height="190" rx="16" fill="#1B2A42"/>
+<rect x="430" y="150" width="340" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="430" y="150" width="340" height="190" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="454" y="198" font-size="30" fill="#2AA5A0" font-weight="bold" text-anchor="start">2</text>
+<text x="492" y="194" font-size="20" fill="#E8EDF3" font-weight="bold" text-anchor="start">RUN</text>
+<text x="454" y="242" font-size="15" fill="#E8EDF3" text-anchor="start">Engine evaluates each command</text>
+<text x="454" y="270" font-size="15" fill="#E8EDF3" text-anchor="start">Codex oracle 0.149.0</text>
+<text x="454" y="298" font-size="15" fill="#E8EDF3" text-anchor="start">Claude reconstructed 2.1.307</text>
+<rect x="800" y="150" width="340" height="190" rx="16" fill="#1B2A42"/>
+<rect x="800" y="150" width="340" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="800" y="150" width="340" height="190" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="824" y="198" font-size="30" fill="#2AA5A0" font-weight="bold" text-anchor="start">3</text>
+<text x="862" y="194" font-size="20" fill="#E8EDF3" font-weight="bold" text-anchor="start">SEAL</text>
+<text x="824" y="242" font-size="15" fill="#E8EDF3" text-anchor="start">Every verdict sealed in a bundle</text>
+<text x="824" y="270" font-size="15" fill="#E8EDF3" text-anchor="start">50 bundles, all verified</text>
+<text x="824" y="298" font-size="15" fill="#E8EDF3" text-anchor="start">Merkle root per bundle</text>
+<rect x="800" y="430" width="340" height="190" rx="16" fill="#1B2A42"/>
+<rect x="800" y="430" width="340" height="8" rx="4" fill="#3FA46A"/>
+<rect x="800" y="430" width="340" height="190" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="824" y="478" font-size="30" fill="#3FA46A" font-weight="bold" text-anchor="start">4</text>
+<text x="862" y="474" font-size="20" fill="#E8EDF3" font-weight="bold" text-anchor="start">FINDINGS</text>
+<text x="824" y="522" font-size="15" fill="#E8EDF3" text-anchor="start">What held, what diverged</text>
+<text x="824" y="550" font-size="15" fill="#E8EDF3" text-anchor="start">C1–C5 confirmed</text>
+<text x="824" y="578" font-size="15" fill="#E8EDF3" text-anchor="start">Partials never promoted</text>
+<rect x="430" y="430" width="340" height="190" rx="16" fill="#1B2A42"/>
+<rect x="430" y="430" width="340" height="8" rx="4" fill="#3FA46A"/>
+<rect x="430" y="430" width="340" height="190" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="454" y="478" font-size="30" fill="#3FA46A" font-weight="bold" text-anchor="start">5</text>
+<text x="492" y="474" font-size="20" fill="#E8EDF3" font-weight="bold" text-anchor="start">FIXES</text>
+<text x="454" y="522" font-size="15" fill="#E8EDF3" text-anchor="start">Patch the policy, not the claim</text>
+<text x="454" y="550" font-size="15" fill="#E8EDF3" text-anchor="start">F-B, F-C, F-D ship</text>
+<text x="454" y="578" font-size="15" fill="#E8EDF3" text-anchor="start">F-A held, F-E documented</text>
+<rect x="60" y="430" width="340" height="190" rx="16" fill="#1B2A42"/>
+<rect x="60" y="430" width="340" height="8" rx="4" fill="#3FA46A"/>
+<rect x="60" y="430" width="340" height="190" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="84" y="478" font-size="30" fill="#3FA46A" font-weight="bold" text-anchor="start">6</text>
+<text x="122" y="474" font-size="20" fill="#E8EDF3" font-weight="bold" text-anchor="start">RE-MEASURE</text>
+<text x="84" y="522" font-size="15" fill="#E8EDF3" text-anchor="start">Run the whole pack again</text>
+<text x="84" y="550" font-size="15" fill="#E8EDF3" text-anchor="start">Combined run: totals unchanged</text>
+<text x="84" y="578" font-size="15" fill="#E8EDF3" text-anchor="start">Flips visible in the table</text>
+<line x1="400" y1="245" x2="428" y2="245" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="770" y1="245" x2="798" y2="245" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="970" y1="340" x2="970" y2="428" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="800" y1="525" x2="772" y2="525" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="430" y1="525" x2="402" y2="525" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
+<line x1="30" y1="525" x2="30" y2="245" stroke="#3FA46A" stroke-width="3" marker-end="url(#arG)"/>
+<line x1="58" y1="525" x2="30" y2="525" stroke="#3FA46A" stroke-width="3"/>
+<text x="14" y="385" font-size="14" fill="#3FA46A" font-weight="bold" text-anchor="middle" transform="rotate(-90 14 385)">and again, every version</text>
+<line x1="60" y1="748" x2="1140" y2="748" stroke="#223452" stroke-width="1"/>
+<text x="60" y="776" font-size="13" fill="#AAB4C4">Measured Nov 1, 2026. Oct 21/23 results are background only, never submission evidence.</text>
+</svg>

@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1420" height="980" viewBox="0 0 1420 980" font-family="Arial, Helvetica, DejaVu Sans, sans-serif">
+<title>FinePrint sample harness scorecard Codex Claude Code</title>
+<rect width="1420" height="980" fill="#0F1B2D"/>
+<text x="60" y="60" font-size="30" fill="#E8EDF3" font-weight="bold" text-anchor="start">Sample scorecard: what was actually measured</text>
+<text x="60" y="90" font-size="15" fill="#AAB4C4" font-weight="normal" text-anchor="start">Badges summarize findings. Read the finding for the verdict. No numeric scores — a single number would hide the trade-offs.</text>
+<rect x="250" y="120" width="178" height="44" rx="8" fill="#1B2A42"/>
+<text x="339.0" y="148" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">POLICY ENGINE</text>
+<rect x="436" y="120" width="178" height="44" rx="8" fill="#1B2A42"/>
+<text x="525.0" y="148" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">TRANSPARENCY</text>
+<rect x="622" y="120" width="178" height="44" rx="8" fill="#1B2A42"/>
+<text x="711.0" y="148" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">CUSTOMIZATION</text>
+<rect x="808" y="120" width="178" height="44" rx="8" fill="#1B2A42"/>
+<text x="897.0" y="148" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">HOLDING POWER</text>
+<rect x="994" y="120" width="178" height="44" rx="8" fill="#1B2A42"/>
+<text x="1083.0" y="148" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">REASONABILITY</text>
+<rect x="1180" y="120" width="178" height="44" rx="8" fill="#1B2A42"/>
+<text x="1269.0" y="148" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">VERSION DRIFT</text>
+<rect x="60" y="180" width="182" height="142" rx="10" fill="#223452"/>
+<text x="151" y="220" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">CODEX</text>
+<text x="151" y="242" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">0.149.0</text>
+<text x="151" y="259" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">vendor oracle</text>
+<rect x="250" y="180" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="262" y="192" width="118" height="26" rx="13" fill="#E8A838"/>
+<text x="321.0" y="209" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">NATIVE · NARROW</text>
+<text x="262" y="234" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">5 prefix rules.</text>
+<text x="262" y="250" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">C2 · 029ff73e</text>
+<rect x="436" y="180" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="448" y="192" width="118" height="26" rx="13" fill="#3FA46A"/>
+<text x="507.0" y="209" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">HOLDS</text>
+<text x="448" y="234" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Sealed bundles,</text>
+<text x="448" y="250" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">merkle roots.</text>
+<text x="448" y="266" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">C1 · 2828e463</text>
+<rect x="622" y="180" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="634" y="192" width="118" height="26" rx="13" fill="#E8A838"/>
+<text x="693.0" y="209" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">PARTIAL</text>
+<text x="634" y="234" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Edit default.rules;</text>
+<text x="634" y="250" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">host matching exceeds</text>
+<text x="634" y="266" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">prefix rules. C5</text>
+<rect x="808" y="180" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="820" y="192" width="118" height="26" rx="13" fill="#E8A838"/>
+<text x="879.0" y="209" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">PARTIAL</text>
+<text x="820" y="234" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Denies hold (C1);</text>
+<text x="820" y="250" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ls → unknown (C3).</text>
+<text x="820" y="266" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">C3 · 6d2b7e9e</text>
+<rect x="994" y="180" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="1006" y="192" width="118" height="26" rx="13" fill="#D95D4E"/>
+<text x="1065.0" y="209" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">DIVERGES</text>
+<text x="1006" y="234" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ls → unknown</text>
+<text x="1006" y="250" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">surprises; unknown</text>
+<text x="1006" y="266" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">≠ allow. C3</text>
+<rect x="1180" y="180" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="1192" y="192" width="118" height="26" rx="13" fill="#8A94A6"/>
+<text x="1251.0" y="209" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">NOT MEASURED</text>
+<text x="1192" y="234" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">One version</text>
+<text x="1192" y="250" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">measured only.</text>
+<rect x="60" y="338" width="182" height="142" rx="10" fill="#223452"/>
+<text x="151" y="378" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">CLAUDE CODE</text>
+<text x="151" y="400" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">2.1.307 docs</text>
+<text x="151" y="417" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">reconstructed *</text>
+<rect x="250" y="338" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="262" y="350" width="118" height="26" rx="13" fill="#3FA46A"/>
+<text x="321.0" y="367" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">HOLDS *</text>
+<text x="262" y="392" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Precedence holds</text>
+<text x="262" y="408" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">any order. *</text>
+<text x="262" y="424" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">C2 · f418db18</text>
+<rect x="436" y="338" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="448" y="350" width="118" height="26" rx="13" fill="#E8A838"/>
+<text x="507.0" y="367" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">PARTIAL *</text>
+<text x="448" y="392" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Reconstructed;</text>
+<text x="448" y="408" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">native output empty. *</text>
+<text x="448" y="424" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">FINDINGS §layers</text>
+<rect x="622" y="338" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="634" y="350" width="118" height="26" rx="13" fill="#E8A838"/>
+<text x="693.0" y="367" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">PARTIAL *</text>
+<text x="634" y="392" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Edit settings.json;</text>
+<text x="634" y="408" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">head-only inexpressible. *</text>
+<text x="634" y="424" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">C4 · 67e3d6c2</text>
+<rect x="808" y="338" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="820" y="350" width="118" height="26" rx="13" fill="#3FA46A"/>
+<text x="879.0" y="367" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">HOLDS *</text>
+<text x="820" y="392" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Denies hold; positives</text>
+<text x="820" y="408" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">allow; compounds deny. *</text>
+<text x="820" y="424" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">C1 · 98b21916</text>
+<rect x="994" y="338" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="1006" y="350" width="118" height="26" rx="13" fill="#D95D4E"/>
+<text x="1065.0" y="367" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">DIVERGES *</text>
+<text x="1006" y="392" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">Deny-any-subcommand</text>
+<text x="1006" y="408" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">surprises head-only</text>
+<text x="1006" y="424" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">expectation. C4 *</text>
+<rect x="1180" y="338" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="1192" y="350" width="118" height="26" rx="13" fill="#8A94A6"/>
+<text x="1251.0" y="367" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">NOT MEASURED</text>
+<text x="1192" y="392" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">One version</text>
+<text x="1192" y="408" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">measured only.</text>
+<text x="60" y="512" font-size="15" fill="#E8A838" font-weight="bold" text-anchor="start">ILLUSTRATIVE ROW — not a real harness. It shows how a complete row reads once all dimensions are measured.</text>
+<rect x="60" y="530" width="182" height="142" rx="10" fill="#223452"/>
+<text x="151" y="570" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">HARNESS X</text>
+<text x="151" y="592" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">ILLUSTRATIVE</text>
+<text x="151" y="609" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">not real</text>
+<rect x="250" y="530" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="262" y="542" width="118" height="26" rx="13" fill="#3FA46A"/>
+<text x="321.0" y="559" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">HOLDS</text>
+<text x="262" y="584" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ILLUSTRATIVE</text>
+<text x="262" y="600" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">example only.</text>
+<rect x="436" y="530" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="448" y="542" width="118" height="26" rx="13" fill="#E8A838"/>
+<text x="507.0" y="559" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">PARTIAL</text>
+<text x="448" y="584" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ILLUSTRATIVE</text>
+<text x="448" y="600" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">example only.</text>
+<rect x="622" y="530" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="634" y="542" width="118" height="26" rx="13" fill="#D95D4E"/>
+<text x="693.0" y="559" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">GAP</text>
+<text x="634" y="584" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ILLUSTRATIVE</text>
+<text x="634" y="600" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">example only.</text>
+<rect x="808" y="530" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="820" y="542" width="118" height="26" rx="13" fill="#3FA46A"/>
+<text x="879.0" y="559" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">HOLDS</text>
+<text x="820" y="584" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ILLUSTRATIVE</text>
+<text x="820" y="600" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">example only.</text>
+<rect x="994" y="530" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="1006" y="542" width="118" height="26" rx="13" fill="#D95D4E"/>
+<text x="1065.0" y="559" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">DIVERGES</text>
+<text x="1006" y="584" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ILLUSTRATIVE</text>
+<text x="1006" y="600" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">example only.</text>
+<rect x="1180" y="530" width="178" height="142" rx="10" fill="#1B2A42"/>
+<rect x="1192" y="542" width="118" height="26" rx="13" fill="#2AA5A0"/>
+<text x="1251.0" y="559" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">IMPROVED</text>
+<text x="1192" y="584" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">ILLUSTRATIVE</text>
+<text x="1192" y="600" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="start">example only.</text>
+<text x="60" y="716" font-size="14" fill="#E8EDF3" font-weight="normal" text-anchor="start">Legend:  HOLDS = confirmed property  ·  PARTIAL = holds in part  ·  DIVERGES = contradicts expectation  ·  GAP = no decision at all</text>
+<text x="60" y="742" font-size="14" fill="#AAB4C4" font-weight="normal" text-anchor="start">GAP is worse than a bad verdict: unknown means no rules-layer decision — never protection, never allow.  * = reconstructed engine, not a native verdict.</text>
+<text x="60" y="768" font-size="14" fill="#AAB4C4" font-weight="normal" text-anchor="start">Approval + Effect: UNTESTABLE on every row — no live agent action was observed.  Evidence: FINDINGS.md (Nov 1, 2026) + EVIDENCE-INVENTORY.json (50 bundles).</text>
+<text x="60" y="794" font-size="14" fill="#AAB4C4" font-weight="normal" text-anchor="start">Citations are bundle merkle prefixes (or the FINDINGS section where the claim is policy-text inspection).  Never a single hiding score.</text>
+<text x="60" y="830" font-size="14" fill="#AAB4C4" font-weight="normal" text-anchor="start">Codex totals: 9 MEASURED / 15 PARTIAL scenarios.  Claude totals: 12 MEASURED / 12 PARTIAL.  Baselines: Codex 55 pass / 10 fail; Claude 51 pass / 14 fail.</text>
+</svg>

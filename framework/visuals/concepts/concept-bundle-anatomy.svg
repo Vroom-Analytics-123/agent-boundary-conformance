@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="840" viewBox="0 0 1200 840" font-family="Arial, Helvetica, DejaVu Sans, sans-serif">
+<title>Anatomy of an evidence bundle</title>
+<defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2AA5A0"/></marker><marker id="arG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#3FA46A"/></marker><marker id="arR" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#E05D5D"/></marker></defs>
+<rect width="1200" height="840" fill="#0F1B2D"/>
+<text x="60" y="64" font-size="34" fill="#E8EDF3" font-weight="bold">Anatomy of an evidence bundle.</text>
+<text x="60" y="98" font-size="17" fill="#AAB4C4">One bundle, everything needed to re-check a claim.</text>
+<rect x="120" y="140" width="960" height="470" rx="16" fill="#1B2A42"/>
+<rect x="120" y="140" width="960" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="120" y="140" width="960" height="470" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="150" y="186" font-size="15" fill="#2AA5A0" font-weight="bold" text-anchor="start">BUNDLE</text>
+<text x="150" y="214" font-size="17" fill="#E8EDF3" font-family="DejaVu Sans Mono, monospace" text-anchor="start">fineprint-check-20261101-021235</text>
+<text x="150" y="248" font-size="15" fill="#AAB4C4" text-anchor="start">Codex 0.149.0  ·  vendor-confirmed oracle  ·  SCEN-101 (FP-001)</text>
+<line x1="150" y1="272" x2="1050" y2="272" stroke="#223452" stroke-width="1"/>
+<text x="150" y="306" font-size="14" fill="#2AA5A0" font-weight="bold" text-anchor="start">POLICY FINGERPRINT</text>
+<text x="150" y="334" font-size="15" fill="#E8EDF3" font-family="DejaVu Sans Mono, monospace" text-anchor="start">default.rules  sha256  9b83f89f…</text>
+<line x1="150" y1="356" x2="1050" y2="356" stroke="#223452" stroke-width="1"/>
+<text x="150" y="390" font-size="14" fill="#2AA5A0" font-weight="bold" text-anchor="start">VERDICTS — probe → decision → verdict</text>
+<text x="150" y="422" font-size="16" fill="#E8EDF3" font-family="DejaVu Sans Mono, monospace" text-anchor="start">FP-001/direct/p0  →  forbidden  →  pass</text>
+<text x="150" y="452" font-size="16" fill="#E8EDF3" font-family="DejaVu Sans Mono, monospace" text-anchor="start">FP-001/variant/p0 →  forbidden  →  pass</text>
+<line x1="150" y1="476" x2="1050" y2="476" stroke="#223452" stroke-width="1"/>
+<text x="150" y="510" font-size="14" fill="#2AA5A0" font-weight="bold" text-anchor="start">MERKLE ROOT</text>
+<text x="150" y="538" font-size="15" fill="#E8EDF3" font-family="DejaVu Sans Mono, monospace" text-anchor="start">2828e463…  —  change one byte, the root changes</text>
+<rect x="150" y="556" width="330" height="40" rx="20" fill="#3FA46A"/>
+<text x="315" y="580" font-size="14" fill="#0F1B2D" font-weight="bold" text-anchor="middle">✓ VERIFIED — check_bundle.py</text>
+<text x="600" y="664" font-size="17" fill="#E8EDF3" font-weight="bold" text-anchor="middle">Why trust it: tamper-evident · re-runnable · no bundle, no claim.</text>
+<line x1="60" y1="788" x2="1140" y2="788" stroke="#223452" stroke-width="1"/>
+<text x="60" y="816" font-size="13" fill="#AAB4C4">Example bundle from C1 (SCEN-101, Codex). All 50 bundles verified; inventory in EVIDENCE-INVENTORY.json.</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="Arial, Helvetica, DejaVu Sans, sans-serif">
+<title>One dot is not a trend</title>
+<defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2AA5A0"/></marker><marker id="arG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#3FA46A"/></marker><marker id="arR" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#E05D5D"/></marker></defs>
+<rect width="1200" height="800" fill="#0F1B2D"/>
+<text x="60" y="64" font-size="34" fill="#E8EDF3" font-weight="bold">One dot is not a trend.</text>
+<text x="60" y="98" font-size="17" fill="#AAB4C4">Drift is what a harness's profile does across versions. Today we have one dot each.</text>
+<line x1="180" y1="240" x2="1080" y2="240" stroke="#223452" stroke-width="2"/>
+<text x="240" y="220" font-size="15" fill="#AAB4C4" font-weight="bold" text-anchor="middle">v1</text>
+<text x="560" y="220" font-size="15" fill="#AAB4C4" font-weight="bold" text-anchor="middle">v2</text>
+<text x="880" y="220" font-size="15" fill="#AAB4C4" font-weight="bold" text-anchor="middle">v3</text>
+<text x="240" y="290" font-size="14" fill="#AAB4C4" text-anchor="middle">Nov 1, 2026</text>
+<text x="560" y="290" font-size="14" fill="#AAB4C4" text-anchor="middle">not measured</text>
+<text x="880" y="290" font-size="14" fill="#AAB4C4" text-anchor="middle">not measured</text>
+<text x="60" y="370" font-size="17" fill="#E8EDF3" font-weight="bold" text-anchor="start">Codex</text>
+<text x="60" y="396" font-size="14" fill="#AAB4C4" text-anchor="start">0.149.0</text>
+<circle cx="240" cy="360" r="14" fill="#2AA5A0"/>
+<text x="240" y="366" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">●</text>
+<text x="240" y="410" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">MEASURED</text>
+<text x="60" y="500" font-size="17" fill="#E8EDF3" font-weight="bold" text-anchor="start">Claude</text>
+<text x="60" y="526" font-size="14" fill="#AAB4C4" text-anchor="start">2.1.307*</text>
+<circle cx="240" cy="490" r="14" fill="#2AA5A0"/>
+<text x="240" y="496" font-size="12" fill="#0F1B2D" font-weight="bold" text-anchor="middle">●</text>
+<text x="240" y="540" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">MEASURED</text>
+<line x1="240" y1="360" x2="560" y2="330" stroke="#E8A838" stroke-width="3" stroke-dasharray="10,8"/>
+<line x1="560" y1="330" x2="880" y2="300" stroke="#E8A838" stroke-width="3" stroke-dasharray="10,8"/>
+<line x1="240" y1="490" x2="560" y2="520" stroke="#E8A838" stroke-width="3" stroke-dasharray="10,8"/>
+<line x1="560" y1="520" x2="880" y2="550" stroke="#E8A838" stroke-width="3" stroke-dasharray="10,8"/>
+<rect x="560" y="600" width="420" height="48" rx="24" fill="#E8A838"/>
+<text x="770" y="629" font-size="15" fill="#0F1B2D" font-weight="bold" text-anchor="middle">ILLUSTRATIVE — beyond v1</text>
+<text x="600" y="688" font-size="16" fill="#E8EDF3" font-weight="bold" text-anchor="middle">A trajectory with one dot is a guess. Measure v2, then talk about drift.</text>
+<line x1="60" y1="748" x2="1140" y2="748" stroke="#223452" stroke-width="1"/>
+<text x="60" y="776" font-size="13" fill="#AAB4C4">*Claude Code route is reconstructed semantics, never a live interrogation. No second version of either harness has been measured yet.</text>
+</svg>

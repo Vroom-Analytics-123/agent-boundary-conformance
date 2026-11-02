@@ -1,0 +1,100 @@
+# Muse Code N=3 pilot matrix (13 tasks x 3 runs).
+#
+# Trigger: workflow_dispatch ONLY. Never push, never pull_request, so
+# records pushed back to musecode-smoke can never retrigger it (the
+# same dispatch-only pattern as musecode-smoke.yml).
+#
+# Registration: this file is copied byte-identical to the same path
+# on main (registration only — the apparatus stays on musecode-smoke).
+# Dispatch runs with ref=musecode-smoke, so the workflow body that
+# executes is the branch copy; the main copy only registers it in
+# GitHub's workflow registry.
+#
+# Design: one job per task (13 jobs), each running its task 3 times
+# sequentially with fresh scratch + fresh session per run. Per-job
+# worst case ~3 x 600s turn timeouts + install, so timeout-minutes 60
+# is generous (well under the 6h cap). Total ~100-160 runner-minutes;
+# public-repo minutes are unlimited. fail-fast: false so one task's
+# failure never cancels the others.
+#
+# Secret: MUSE_HEADLESS_KEY from env only, never printed or logged;
+# the runner scrubs its literal value from written records as defense
+# in depth. Sandbox stays ON (never --disable-sandbox); model pinned
+# muse-spark-1.3; approver policy v1 deny-all (see approver.py).
+#
+# Records: workflow artifacts (always, per task) + push-back to the
+# musecode-smoke branch (retry loop: parallel jobs racing the same
+# branch ref can conflict; artifacts are the primary store, push-back
+# is best-effort with retry).
+name: musecode-matrix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write  # scoped: push matrix records back to musecode-smoke only
+
+jobs:
+  matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        task:
+          - batch-1-task-01
+          - batch-1-task-02
+          - batch-1-task-03
+          - batch-1-task-04
+          - batch-1-task-05
+          - batch-1-task-06
+          - batch-2-task-01
+          - batch-2-task-02
+          - batch-2-task-03
+          - batch-2-task-04
+          - batch-2-task-05
+          - batch-2-task-06
+          - batch-2-task-07
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: musecode-smoke
+
+      - name: Allow unprivileged user namespaces (bwrap sandbox prerequisite)
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      - name: Install muse via audited launcher
+        env:
+          MUSE_INSTALL_DIR: ${{ runner.temp }}/muse-bin
+          MUSE_NO_MODIFY_PATH: "1"
+        run: bash musecode-smoke/install.sh
+
+      - name: Run N=3 pilot for ${{ matrix.task }}
+        env:
+          MUSE_HEADLESS_KEY: ${{ secrets.MUSE_HEADLESS_KEY }}
+        run: |
+          python3 musecode-smoke/pilot_runner.py \
+            --muse-bin "${{ runner.temp }}/muse-bin/muse" \
+            --task "${{ matrix.task }}" --runs 3 \
+            --rundir-base "musecode-smoke/runs/n3"
+
+      - name: Upload matrix records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: musecode-matrix-records-${{ matrix.task }}
+          path: musecode-smoke/runs/n3/${{ matrix.task }}/
+
+      - name: Push matrix records back to this branch
+        if: always()
+        run: |
+          if [ -d "musecode-smoke/runs/n3/${{ matrix.task }}" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add "musecode-smoke/runs/n3/${{ matrix.task }}"
+            git diff --cached --quiet || git commit -m "Muse Code N=3 pilot: ${{ matrix.task }} run records (branch musecode-smoke)"
+            for i in 1 2 3 4 5; do
+              git push origin "HEAD:musecode-smoke" && break
+              git pull --rebase origin musecode-smoke || break
+            done
+          fi

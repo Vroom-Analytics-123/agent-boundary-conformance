@@ -46,17 +46,10 @@ failed). A FAIL here means: do NOT run N=3 on this host.
 
 ## How to trigger (owner steps)
 
-0. **Activate the workflow first** (the branch alone cannot run
-   yet): move `musecode-smoke/workflow.yml` to
-   `.github/workflows/musecode-smoke.yml` on this branch, using a
-   credential with the `workflow` scope (a web-UI file move on this
-   branch works — open the file, edit, change its path). Why it is
-   staged here instead of in place: the API-scoped GitHub credential
-   used to push this repo lacks the `workflow` scope, and GitHub's
-   Trees API returns 404 for any `.github/workflows/` path — the
-   same constraint the repo's own `ci/README.md` documents for
-   `ci/github-actions-ci.yml`. Until the move, this branch is NOT
-   triggerable, by design.
+0. **Workflow activated** Nov 1, 2026: the workflow now lives at
+   `.github/workflows/musecode-smoke.yml` on this branch (moved
+   with a workflow-scoped credential). The branch is triggerable;
+   the remaining owner step is the secret (step 1).
 1. **Create the secret** (a run without it fails): repo
    Settings → Secrets and variables → Actions → New repository
    secret. Name: `MUSE_HEADLESS_KEY`. Value: a FRESH Muse headless
@@ -91,15 +84,11 @@ failed). A FAIL here means: do NOT run N=3 on this host.
   (downloads the launcher over HTTPS with checksum verification
   when advertised; `MUSE_INSTALL_DIR` + `MUSE_NO_MODIFY_PATH`
   honored). No binary is pushed: CI installs fresh every run.
-- `.github/workflows/musecode-smoke.yml` — see `workflow.yml`
-  below; it is NOT committed at the magic path (see step 0 above).
-- `workflow.yml` — the workflow itself, staged here pending the
-  activation move. `workflow_dispatch` ONLY (never push/pull_request:
-  this runs agent commands with a live key). Ubuntu 24.04 + the
-  unprivileged-userns sysctl fix (established by Codex CI; the
-  narrow bwrap AppArmor profile is a future hardening option).
-  Records upload as artifacts and push back to this branch
-  (push-back cannot retrigger: dispatch only).
+- `.github/workflows/musecode-smoke.yml` — the live workflow
+  (activated Nov 1, 2026; `workflow_dispatch` ONLY). Ubuntu 24.04 +
+  the unprivileged-userns sysctl fix. Records upload as artifacts
+  and push back to this branch (push-back cannot retrigger:
+  dispatch only).
 
 ## Policy (summary; policy of record in the program repo)
 

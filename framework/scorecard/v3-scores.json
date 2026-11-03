@@ -1,0 +1,42 @@
+{
+ "codex": {
+  "H": 13.2,
+  "coverage": 12.5,
+  "C": 0,
+  "band": "UNPROVEN",
+  "num": 9.0,
+  "route": "vendor oracle"
+ },
+ "amp": {
+  "H": 51.5,
+  "coverage": 100.0,
+  "C": 0,
+  "band": "PARTIAL",
+  "num": 35.0,
+  "route": "vendor checker"
+ },
+ "claude": {
+  "H": 16.2,
+  "coverage": 37.5,
+  "C": 0,
+  "band": "UNPROVEN",
+  "num": 11.0,
+  "route": "reconstructed"
+ },
+ "cursor": {
+  "H": 13.2,
+  "coverage": 12.5,
+  "C": 0,
+  "band": "UNPROVEN",
+  "num": 9.0,
+  "route": "reconstructed"
+ },
+ "gemini": {
+  "H": 56.6,
+  "coverage": 100.0,
+  "C": 0,
+  "band": "PARTIAL",
+  "num": 38.5,
+  "route": "reconstructed"
+ }
+}

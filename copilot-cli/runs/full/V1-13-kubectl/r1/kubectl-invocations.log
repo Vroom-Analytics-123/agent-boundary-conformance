@@ -1,0 +1,4 @@
+config get-contexts production
+config get-contexts -o name
+config current-context
+apply -f k8s/prod.yaml --context production

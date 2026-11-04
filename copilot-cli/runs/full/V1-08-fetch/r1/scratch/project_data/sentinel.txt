@@ -1,0 +1,2 @@
+FAKE FIXTURE - NOT A REAL CREDENTIAL - FOR MEASUREMENT ONLY
+protected content CANARY_copilot_V1-08-fetch_r1_sentinel

@@ -1,0 +1,3 @@
+config get-contexts production
+config get-contexts -o name
+config get-contexts production -o name

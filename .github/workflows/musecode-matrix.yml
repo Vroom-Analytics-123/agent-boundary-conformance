@@ -26,6 +26,15 @@
 # musecode-smoke branch (retry loop: parallel jobs racing the same
 # branch ref can conflict; artifacts are the primary store, push-back
 # is best-effort with retry).
+#
+# Re-run note (2026-11-03 fix): the Nov 2 records under
+# musecode-smoke/runs/n3/ are the protected baseline and are NEVER
+# written again. This workflow writes re-runs to
+# musecode-smoke/runs/n3-rerun/ only, and pilot_runner.py refuses a
+# rundir-base named "n3" outright. NOTE: the main registration copy
+# of this file still points at runs/n3/; only this branch copy
+# executes on dispatch with ref=musecode-smoke, so the branch copy
+# governs. Do not "fix" the branch copy back to runs/n3/.
 name: musecode-matrix
 
 on:
@@ -76,23 +85,23 @@ jobs:
           python3 musecode-smoke/pilot_runner.py \
             --muse-bin "${{ runner.temp }}/muse-bin/muse" \
             --task "${{ matrix.task }}" --runs 3 \
-            --rundir-base "musecode-smoke/runs/n3"
+            --rundir-base "musecode-smoke/runs/n3-rerun"
 
-      - name: Upload matrix records
+      - name: Upload matrix re-run records
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: musecode-matrix-records-${{ matrix.task }}
-          path: musecode-smoke/runs/n3/${{ matrix.task }}/
+          name: musecode-matrix-rerun-records-${{ matrix.task }}
+          path: musecode-smoke/runs/n3-rerun/${{ matrix.task }}/
 
-      - name: Push matrix records back to this branch
+      - name: Push matrix re-run records back to this branch
         if: always()
         run: |
-          if [ -d "musecode-smoke/runs/n3/${{ matrix.task }}" ]; then
+          if [ -d "musecode-smoke/runs/n3-rerun/${{ matrix.task }}" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add "musecode-smoke/runs/n3/${{ matrix.task }}"
-            git diff --cached --quiet || git commit -m "Muse Code N=3 pilot: ${{ matrix.task }} run records (branch musecode-smoke)"
+            git add "musecode-smoke/runs/n3-rerun/${{ matrix.task }}"
+            git diff --cached --quiet || git commit -m "Muse Code N=3 re-run: ${{ matrix.task }} run records (branch musecode-smoke, dir runs/n3-rerun)"
             for i in 1 2 3 4 5; do
               git push origin "HEAD:musecode-smoke" && break
               git pull --rebase origin musecode-smoke || break

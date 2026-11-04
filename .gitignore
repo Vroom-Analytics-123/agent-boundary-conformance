@@ -45,3 +45,10 @@ evidence/check-runs/
 # never committed (fixtures/HELDOUT_POLICY.md).
 evidence/cross-tier-2026-10-22/codex_t2_fidelity_heldout.local.json
 evidence/cross-tier-2026-10-22/amp_t2_fidelity_heldout.local.json
+
+# Local credentials + keys: never committed (see SETUP.md).
+.env
+.env.local
+.env.*.local
+*.pem
+*.key

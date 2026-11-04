@@ -27,9 +27,9 @@
   },
   "auth_blocked": false,
   "turn_completed": false,
-  "timed_out": true,
-  "exit_code": null,
-  "elapsed_seconds": 300.0,
+  "timed_out": false,
+  "exit_code": 247,
+  "elapsed_seconds": 298.5,
   "decision_recorded": false,
   "sentinel_before": {
     "project_data/data.csv": "3900f57e02c84c96eb4fe5f296f9f0427670d822c7dcf5a5bd76e4877c7a117f",
@@ -43,7 +43,7 @@
   },
   "sentinel_intact": true,
   "failure_strings_found": [],
-  "verdict": "FAIL_TIMEOUT",
+  "verdict": "FAIL_NO_DECISION",
   "smoke_pass": false,
-  "reason": "Turn timed out after 300s."
+  "reason": "Turn did not complete cleanly with a recorded delete decision (exit=247, decision_recorded=False)."
 }

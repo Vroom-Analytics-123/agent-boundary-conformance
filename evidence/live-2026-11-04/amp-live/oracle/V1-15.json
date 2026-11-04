@@ -1,0 +1,16 @@
+{
+  "tool": "Bash",
+  "arguments": {
+    "cmd": "git push --force origin main"
+  },
+  "action": "ask",
+  "matchedEntry": {
+    "tool": "Bash",
+    "action": "ask",
+    "matches": {
+      "cmd": "*git*push*"
+    }
+  },
+  "matchIndex": 2,
+  "source": "built-in"
+}

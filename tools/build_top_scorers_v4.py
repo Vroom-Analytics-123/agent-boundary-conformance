@@ -11,11 +11,7 @@ on the same scale, tagged '(of 75)' — never silently scaled to 100.
 Palette matches the repo visual polish (dark navy).
 Footer carries the Meta/Muse attribution line (scenarios generated with
 Meta muse-spark-1.3; built with Muse AI) — deliberate credit, kept on every
-regeneration. The Muse Code strip below is HARDCODED FP-corpus text (n3-rerun
-tallies), not data-file content — same precedent as the historical 'Amp was
-12.87' annotation: a labeled, never-ranked strip carrying no score, because
-Muse Code's live data is on the FP corpus, not the v1 scenario set, so the
-scorer computes no v4 number for it.
+regeneration. Muse Code now carries a live v1-basis row (48 cells, v1.1 tallies); the FP-corpus strip was removed when that row landed.
 """
 import json
 import os
@@ -53,10 +49,10 @@ def segs(d, a, e):
 
 def main():
     rows = {r["harness"]: r for r in json.load(open(DATA))["rows"]}
-    full = ["Amp", "OpenClaw", "Claude Code (live)", "Hermes Agent", "Omnigent"]
-    of75 = ["Gemini CLI", "Copilot CLI"]
+    full = ["Amp", "OpenClaw", "Claude Code (live)", "Muse Code", "Hermes Agent", "Omnigent"]
+    of75 = ["Gemini CLI", "Codex", "Copilot CLI"]
     rest = ["OpenCode", "Goose", "Strands Agents", "LangGraph", "CrewAI"]
-    dec_only = ["Claude Code", "Codex", "Cursor", "Pi"]
+    dec_only = ["Claude Code", "Cursor", "Pi"]
 
     y, parts = 0, []
     parts.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="900" viewBox="0 0 {W} 900" font-family="Inter, DejaVu Sans, sans-serif">')
@@ -99,15 +95,8 @@ def main():
     parts.append(f'<line x1="40" y1="{y + 4}" x2="1160" y2="{y + 4}" stroke="{BORDER}" stroke-width="1"/>')
     parts.append(f'<text x="40" y="{y + 30}" font-size="15" font-weight="bold" fill="{MUTED}">Decision-only — NOT ranked against live rows</text>')
     dec_txt = " · ".join(f"{n} {rows[n]['total']:.2f}" for n in dec_only)
-    parts.append(f'<text x="40" y="{y + 54}" font-size="14" fill="{MUTED}">Paper / oracle: {esc(dec_txt)} (Amp was 12.87 here — now live above)</text>')
+    parts.append(f'<text x="40" y="{y + 54}" font-size="14" fill="{MUTED}">Paper / oracle: {esc(dec_txt)} (Amp was 12.87, Codex was 3.31 here — now live above)</text>')
     y += 84
-    # Muse Code strip — HARDCODED FP-corpus tallies (see docstring). Visually
-    # separate from every ranked section; never a row, never a score.
-    parts.append(f'<line x1="40" y1="{y + 4}" x2="1160" y2="{y + 4}" stroke="{BORDER}" stroke-width="1"/>')
-    parts.append(f'<text x="40" y="{y + 30}" font-size="15" font-weight="bold" fill="{MUTED}">Not v1 — no v4 score, never ranked</text>')
-    parts.append(f'<text x="40" y="{y + 54}" font-size="14" fill="{MUTED}">Muse Code (FP corpus — not v1, no v4 score): 39 runs, PASS 13 / FAIL 26, harm 7 — denial is not prevention (5 of 7 harm runs despite the approver denying)</text>')
-    parts.append(f'<text x="40" y="{y + 76}" font-size="13" fill="{MUTED}">Headless workflow runs · sandbox: no claim from these runs · UNSEALED · source: framework/scorecard/musecode-n3-rerun/ (Nov 3 genuine rerun; n3 pilot superseded)</text>')
-    y += 106
     parts.append(f'<text x="40" y="{y + 10}" font-size="14" fill="{TEXT}">Scenarios generated with Meta muse-spark-1.3 · Built with Muse AI</text>')
     parts.append(f'<text x="40" y="{y + 32}" font-size="13" fill="{MUTED}">Coverage + route travel with every number. Computed by tools/build_v4_scorecard.py from v4-cells.json — never hand-set.</text>')
     parts.append('</svg>')

@@ -62,7 +62,8 @@ def donut(counts, merkle, pin):
     labels = [f"{k}\n{v}" for k, v in zip(order, vals)]
 
     fig, ax = plt.subplots(figsize=(7.2, 5.4), dpi=150)
-    fig.patch.set_facecolor("white")
+    fig.patch.set_facecolor("#0F1B2D")
+    ax.set_facecolor("#0F1B2D")
     wedges, _ = ax.pie(
         vals,
         wedgeprops=dict(width=0.42, edgecolor="white", linewidth=2),
@@ -70,21 +71,22 @@ def donut(counts, merkle, pin):
         colors=[COLORS[k] for k in order],
     )
     ax.text(0, 0.08, "41/41\npass", ha="center", va="center",
-            fontsize=20, fontweight="bold", color="#222222")
+            fontsize=20, fontweight="bold", color="#E8EDF3")
     ax.text(0, -0.22, "41-case corpus", ha="center", va="center",
-            fontsize=10, color="#666666")
-    ax.legend(wedges, labels, loc="center left", bbox_to_anchor=(0.92, 0.5),
+            fontsize=10, color="#AAB4C4")
+    _leg = ax.legend(wedges, labels, loc="center left", bbox_to_anchor=(0.92, 0.5),
               fontsize=11, frameon=False, title="Native decisions",
-              title_fontsize=11)
+              title_fontsize=11, labelcolor="#E8EDF3")
+    _leg.get_title().set_color("#AAB4C4")
     ax.set_title("Decision breakdown — pinned native oracle\n"
                  f"codex-cli 0.149.0 · six agreeing runs", fontsize=13,
-                 fontweight="bold", pad=14, color="#222222")
+                 fontweight="bold", pad=14, color="#E8EDF3")
     fig.text(0.5, 0.055,
              f"Sealed bundle Merkle root {merkle[:16]}…",
-             ha="center", fontsize=8.5, color="#777777")
+             ha="center", fontsize=8.5, color="#8A94A6")
     fig.text(0.5, 0.015,
              "54% unknown is a property of this synthetic probe set — never a real-world rate.",
-             ha="center", fontsize=8.5, color="#777777")
+             ha="center", fontsize=8.5, color="#8A94A6")
     fig.tight_layout(rect=[0, 0.08, 1, 0.95])
     out = ASSETS / "decisions_donut.png"
     fig.savefig(out)
@@ -94,49 +96,50 @@ def donut(counts, merkle, pin):
 
 def three_layers():
     fig, ax = plt.subplots(figsize=(9.0, 4.6), dpi=150)
-    fig.patch.set_facecolor("white")
+    fig.patch.set_facecolor("#0F1B2D")
     ax.axis("off")
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 5)
 
     ax.text(5, 4.55, "The three layers Boundary Measurement compares",
-            fontsize=14, fontweight="bold", color="#222222", ha="center",
+            fontsize=14, fontweight="bold", color="#E8EDF3", ha="center",
             va="top")
 
     # Founder model (2026-10-22): Layer 1 = what the rules decide; Layer 2 =
     # the approval moment; Layer 3 = what actually happens (observed effect)
     # — ground truth, the most important layer.
     boxes = [
-        (0.35, 1.15, 2.7, 2.4, "#2b3a4a",
+        (0.35, 1.15, 2.7, 2.4, "#1B2A42",
          "Layer 1 ·\nWhat the rules\ndecide", "the paper test\nthe harness's own\ndecision surface"),
-        (3.65, 1.15, 2.7, 2.4, "#5b7ba5",
+        (3.65, 1.15, 2.7, 2.4, "#2A3D5E",
          "Layer 2 ·\nThe approval\nmoment", "the human/classifier\ngate: ask, approve,\noverride"),
-        (6.95, 1.15, 2.7, 2.4, "#8a6d3b",
+        (6.95, 1.15, 2.7, 2.4, "#E8A838",
          "Layer 3 ·\nWhat actually\nhappens", "the live test\nobserved runtime\noutcome —\nGROUND TRUTH"),
     ]
-    for x, y, w, h, bg, title, body in boxes:
+    _tc = ["#E8EDF3", "#E8EDF3", "#1B2A42"]
+    for (x, y, w, h, bg, title, body), tc in zip(boxes, _tc):
         ax.add_patch(mpatches.FancyBboxPatch(
             (x, y), w, h, boxstyle="round,pad=0.02,rounding_size=0.12",
-            facecolor=bg, edgecolor="#1d2733", linewidth=1.2))
+            facecolor=bg, edgecolor="#223452", linewidth=1.2))
         ax.text(x + w / 2, y + h - 0.30, title, ha="center", va="top",
-                fontsize=11, fontweight="bold", color="white", linespacing=1.4)
+                fontsize=11, fontweight="bold", color=tc, linespacing=1.4)
         ax.text(x + w / 2, y + h - 1.10, body, ha="center", va="top",
-                fontsize=10, color="white", linespacing=1.5)
+                fontsize=10, color=tc, linespacing=1.5)
 
     # Arrows between layers
     for xa, xb in [(3.05, 3.65), (6.35, 6.95)]:
         ax.annotate("", xy=(xb, 2.35), xytext=(xa, 2.35),
-                    arrowprops=dict(arrowstyle="-|>", color="#444444",
+                    arrowprops=dict(arrowstyle="-|>", color="#AAB4C4",
                                     lw=1.6, shrinkA=2, shrinkB=2))
 
     fig.text(0.5, 0.16,
              "Cross-Examination compares the layers against each other —\n"
              "a disagreement between any two is a finding.",
-             ha="center", fontsize=9.5, color="#555555")
+             ha="center", fontsize=9.5, color="#AAB4C4")
     fig.text(0.5, 0.07,
              "Layer 3 is ground truth: paper findings are provisional until the live test\n"
              "confirms or refutes them. Silence is reported as unknown — never as allow.",
-             ha="center", fontsize=9.5, color="#555555")
+             ha="center", fontsize=9.5, color="#AAB4C4")
     out = ASSETS / "three_layers.png"
     fig.savefig(out)  # fixed canvas: no tight-crop
     plt.close(fig)

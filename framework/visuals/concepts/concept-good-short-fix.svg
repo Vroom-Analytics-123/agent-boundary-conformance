@@ -5,7 +5,7 @@
 <text x="60" y="64" font-size="34" fill="#E8EDF3" font-weight="bold">Good. Short. Fix.</text>
 <text x="60" y="98" font-size="17" fill="#AAB4C4">The story FinePrint tells for each harness — Codex 0.149.0 shown.</text>
 <rect x="60" y="150" width="340" height="300" rx="16" fill="#1B2A42"/>
-<rect x="60" y="150" width="340" height="8" rx="4" fill="#3FA46A"/>
+<rect x="68" y="150" width="324" height="8" rx="4" fill="#3FA46A"/>
 <rect x="60" y="150" width="340" height="300" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="230" y="200" font-size="26" fill="#E8EDF3" font-weight="bold" text-anchor="middle">GOOD</text>
 <text x="230" y="232" font-size="14" fill="#AAB4C4" text-anchor="middle">Where it holds</text>
@@ -13,7 +13,7 @@
 <text x="84" y="320" font-size="15" fill="#E8EDF3" text-anchor="start">rm -rf, rm -fr, long form</text>
 <text x="84" y="350" font-size="15" fill="#E8EDF3" text-anchor="start">C1 · bundle 2828e463</text>
 <rect x="430" y="150" width="340" height="300" rx="16" fill="#1B2A42"/>
-<rect x="430" y="150" width="340" height="8" rx="4" fill="#E05D5D"/>
+<rect x="438" y="150" width="324" height="8" rx="4" fill="#E05D5D"/>
 <rect x="430" y="150" width="340" height="300" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="600" y="200" font-size="26" fill="#E8EDF3" font-weight="bold" text-anchor="middle">SHORT</text>
 <text x="600" y="232" font-size="14" fill="#AAB4C4" text-anchor="middle">Where it falls short</text>
@@ -21,7 +21,7 @@
 <text x="454" y="320" font-size="15" fill="#E8EDF3" text-anchor="start">curl, wget, psql → unknown</text>
 <text x="454" y="350" font-size="15" fill="#E8EDF3" text-anchor="start">C5 · policy inspection</text>
 <rect x="800" y="150" width="340" height="300" rx="16" fill="#1B2A42"/>
-<rect x="800" y="150" width="340" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="808" y="150" width="324" height="8" rx="4" fill="#2AA5A0"/>
 <rect x="800" y="150" width="340" height="300" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="970" y="200" font-size="26" fill="#E8EDF3" font-weight="bold" text-anchor="middle">FIX</text>
 <text x="970" y="232" font-size="14" fill="#AAB4C4" text-anchor="middle">How FinePrint fixes it</text>

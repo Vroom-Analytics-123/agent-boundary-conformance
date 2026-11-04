@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="880" viewBox="0 0 1200 880" font-family="Arial, Helvetica, DejaVu Sans, sans-serif">
+<title>How FinePrint works</title>
+<defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#2AA5A0"/></marker></defs>
+<rect width="1200" height="880" fill="#0F1B2D"/>
+<text x="60" y="62" font-size="32" fill="#E8EDF3" font-weight="bold">How FinePrint works.</text>
+<text x="60" y="94" font-size="16" fill="#AAB4C4">An early testing and assurance framework — inspector, never enforcer.</text>
+
+<!-- Row 1: problem -> rule -> probe -->
+<rect x="60" y="128" width="340" height="150" rx="16" fill="#1B2A42"/>
+<rect x="76" y="128" width="308" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="60" y="128" width="340" height="150" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="230" y="172" font-size="19" fill="#2AA5A0" font-weight="bold" text-anchor="middle">1 · THE PROBLEM</text>
+<text x="230" y="202" font-size="15" fill="#E8EDF3" text-anchor="middle">An agent must never do X.</text>
+<text x="230" y="224" font-size="15" fill="#E8EDF3" text-anchor="middle">But does it actually stop?</text>
+<text x="230" y="246" font-size="15" fill="#AAB4C4" text-anchor="middle">Delete, exfiltrate, deploy —</text>
+<text x="230" y="268" font-size="15" fill="#AAB4C4" text-anchor="middle">whatever you forbade.</text>
+<line x1="404" y1="203" x2="426" y2="203" stroke="#2AA5A0" stroke-width="2" marker-end="url(#ar)"/>
+
+<rect x="430" y="128" width="340" height="150" rx="16" fill="#1B2A42"/>
+<rect x="446" y="128" width="308" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="430" y="128" width="340" height="150" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="600" y="172" font-size="19" fill="#2AA5A0" font-weight="bold" text-anchor="middle">2 · THE RULE</text>
+<text x="600" y="202" font-size="15" fill="#E8EDF3" text-anchor="middle">You write the rule as an</text>
+<text x="600" y="224" font-size="15" fill="#E8EDF3" text-anchor="middle">invariant — a statement</text>
+<text x="600" y="246" font-size="15" fill="#E8EDF3" text-anchor="middle">of intent, in plain words.</text>
+<text x="600" y="268" font-size="15" fill="#AAB4C4" text-anchor="middle">“Never silently delete.”</text>
+<line x1="774" y1="203" x2="796" y2="203" stroke="#2AA5A0" stroke-width="2" marker-end="url(#ar)"/>
+
+<rect x="800" y="128" width="340" height="150" rx="16" fill="#1B2A42"/>
+<rect x="816" y="128" width="308" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="800" y="128" width="340" height="150" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="970" y="172" font-size="19" fill="#2AA5A0" font-weight="bold" text-anchor="middle">3 · THE PROBE</text>
+<text x="970" y="202" font-size="15" fill="#E8EDF3" text-anchor="middle">FinePrint replays probe</text>
+<text x="970" y="224" font-size="15" fill="#E8EDF3" text-anchor="middle">commands against the</text>
+<text x="970" y="246" font-size="15" fill="#E8EDF3" text-anchor="middle">harness's own checker.</text>
+<text x="970" y="268" font-size="15" fill="#AAB4C4" text-anchor="middle">Never a re-implementation.</text>
+
+<!-- Row 2: three layers, compared -->
+<text x="60" y="330" font-size="19" fill="#E8EDF3" font-weight="bold">4 · THE THREE LAYERS — compared, not chained</text>
+<text x="60" y="354" font-size="15" fill="#AAB4C4">One probe, three answers. FinePrint reads all three and compares them against each other.</text>
+
+<rect x="60" y="380" width="340" height="168" rx="16" fill="#1B2A42"/>
+<rect x="76" y="380" width="308" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="60" y="380" width="340" height="168" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="230" y="424" font-size="19" fill="#E8EDF3" font-weight="bold" text-anchor="middle">DECISION</text>
+<text x="230" y="452" font-size="15" fill="#AAB4C4" text-anchor="middle">What the policy decides:</text>
+<text x="230" y="474" font-size="15" fill="#E8EDF3" text-anchor="middle">allow · prompt · forbid ·</text>
+<text x="230" y="496" font-size="15" fill="#E8EDF3" text-anchor="middle">no decision</text>
+<text x="230" y="524" font-size="15" fill="#AAB4C4" text-anchor="middle">The paper test.</text>
+
+<rect x="430" y="380" width="340" height="168" rx="16" fill="#1B2A42"/>
+<rect x="446" y="380" width="308" height="8" rx="4" fill="#E8A838"/>
+<rect x="430" y="380" width="340" height="168" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="600" y="424" font-size="19" fill="#E8EDF3" font-weight="bold" text-anchor="middle">APPROVAL</text>
+<text x="600" y="452" font-size="15" fill="#AAB4C4" text-anchor="middle">Does a human gate</text>
+<text x="600" y="474" font-size="15" fill="#AAB4C4" text-anchor="middle">intervene — ask, approve,</text>
+<text x="600" y="496" font-size="15" fill="#AAB4C4" text-anchor="middle">override — or nothing?</text>
+<text x="600" y="524" font-size="15" fill="#AAB4C4" text-anchor="middle">The approval moment.</text>
+
+<rect x="800" y="380" width="340" height="168" rx="16" fill="#1B2A42"/>
+<rect x="816" y="380" width="308" height="8" rx="4" fill="#3FA46A"/>
+<rect x="800" y="380" width="340" height="168" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
+<text x="970" y="424" font-size="19" fill="#E8EDF3" font-weight="bold" text-anchor="middle">EFFECT</text>
+<text x="970" y="452" font-size="15" fill="#AAB4C4" text-anchor="middle">What actually happened:</text>
+<text x="970" y="474" font-size="15" fill="#E8EDF3" text-anchor="middle">the observed runtime</text>
+<text x="970" y="496" font-size="15" fill="#E8EDF3" text-anchor="middle">outcome — GROUND TRUTH.</text>
+<text x="970" y="524" font-size="15" fill="#AAB4C4" text-anchor="middle">The live test.</text>
+
+<text x="600" y="582" font-size="16" fill="#E8EDF3" font-weight="bold" text-anchor="middle">Cross-Examination: a disagreement between any two layers is a finding.</text>
+<text x="600" y="606" font-size="15" fill="#AAB4C4" text-anchor="middle">Silence is reported as unknown — never as allow. Paper findings stay provisional until the live test confirms them.</text>
+
+<!-- Row 3: finding -> fix -> re-measure -->
+<rect x="60" y="634" width="1080" height="84" rx="16" fill="#1B2A42" stroke="#223452" stroke-width="1"/>
+<text x="84" y="668" font-size="19" fill="#E8A838" font-weight="bold">5 · FINDING → FIX → RE-MEASURE</text>
+<text x="84" y="698" font-size="15" fill="#E8EDF3">Every finding ships with a drafted fix. The fix only closes when the suite re-runs and re-verifies it. Then the loop runs again.</text>
+
+<rect x="60" y="736" width="1080" height="64" rx="16" fill="#1B2A42" stroke="#223452" stroke-width="1"/>
+<rect x="68" y="736" width="1064" height="8" rx="4" fill="#E8A838"/>
+<text x="84" y="764" font-size="15" fill="#E8A838" font-weight="bold">PROOF IT WORKS — CODEX</text>
+<text x="84" y="788" font-size="15" fill="#E8EDF3">Forbidden 9 → 11 after the fix, sealed bundle, re-measured. A dangerous gap found, fixed, and re-tested.</text>
+
+<text x="60" y="848" font-size="14" fill="#8A94A6">No harness is certified safe. A score is never a security grade — every number travels with its coverage, its route, and a plain-English finding.</text>
+</svg>

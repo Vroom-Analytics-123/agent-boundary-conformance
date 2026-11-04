@@ -5,7 +5,7 @@
 <text x="60" y="64" font-size="34" fill="#E8EDF3" font-weight="bold">Visible is not foreseeable.</text>
 <text x="60" y="98" font-size="17" fill="#AAB4C4">Transparency shows you the rule. Reasonability asks whether you could have guessed the verdict.</text>
 <rect x="60" y="140" width="340" height="300" rx="16" fill="#1B2A42"/>
-<rect x="60" y="140" width="340" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="68" y="140" width="324" height="8" rx="4" fill="#2AA5A0"/>
 <rect x="60" y="140" width="340" height="300" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="84" y="184" font-size="15" fill="#2AA5A0" font-weight="bold" text-anchor="start">1 · WHAT YOU CAN SEE</text>
 <text x="84" y="224" font-size="16" fill="#E8EDF3" text-anchor="start">The rules, fully visible:</text>
@@ -15,7 +15,7 @@
 <text x="84" y="374" font-size="15" fill="#AAB4C4" text-anchor="start">Nothing redacted.</text>
 <line x1="400" y1="290" x2="428" y2="290" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
 <rect x="430" y="140" width="340" height="300" rx="16" fill="#1B2A42"/>
-<rect x="430" y="140" width="340" height="8" rx="4" fill="#E8A838"/>
+<rect x="438" y="140" width="324" height="8" rx="4" fill="#E8A838"/>
 <rect x="430" y="140" width="340" height="300" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="454" y="184" font-size="15" fill="#E8A838" font-weight="bold" text-anchor="start">2 · WHAT YOU'D PREDICT</text>
 <text x="454" y="224" font-size="16" fill="#E8EDF3" text-anchor="start">Head segment is git status,</text>
@@ -25,7 +25,7 @@
 <text x="544" y="336" font-size="14" fill="#0F1B2D" font-weight="bold" text-anchor="middle">ALLOW (expected)</text>
 <line x1="770" y1="290" x2="798" y2="290" stroke="#2AA5A0" stroke-width="3" marker-end="url(#ar)"/>
 <rect x="800" y="140" width="340" height="300" rx="16" fill="#1B2A42"/>
-<rect x="800" y="140" width="340" height="8" rx="4" fill="#E05D5D"/>
+<rect x="808" y="140" width="324" height="8" rx="4" fill="#E05D5D"/>
 <rect x="800" y="140" width="340" height="300" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="824" y="184" font-size="15" fill="#E05D5D" font-weight="bold" text-anchor="start">3 · WHAT ACTUALLY HAPPENS</text>
 <text x="824" y="224" font-size="16" fill="#E8EDF3" text-anchor="start">Deny applies to ANY</text>

@@ -162,7 +162,7 @@ became a harness-neutral framework (founder's direction, Oct 21): Codex's
 Decision-layer route is vendor-confirmed (the vendor's own checker);
 Claude Code, Cursor, Gemini CLI, and OpenCode are reconstructed (evaluation
 from documented semantics, no measured verdicts yet) — see
-`docs/FRAMEWORK.md` and `docs/assets/measurement_routes.png`. The Day-5
+`docs/FRAMEWORK.md` and `docs/MEASUREMENT_ROUTES.md`. The Day-5
 proposed fix to the sample
 policy is AWAITING the founder's approval and was NOT applied; all
 results above are pre-fix, labelled as such.

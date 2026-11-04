@@ -83,8 +83,6 @@ OpenCode appears in two routes for two different tests: the paper test is recons
 
 **Coverage — the six former Wave A targets are now measured.** **Omnigent**, **Hermes Agent**, and **OpenClaw** were measured live on Oct 23 (route dossiers in `adapters/<key>-assessment.md`, evidence in `evidence/live-campaign-2026-10-23/`); **LangGraph**, **Strands Agents**, and **CrewAI** were measured live the same day through instrumented reference agents, since frameworks have no declarative policy to read. Adding a target follows **[docs/EXTENDING.md](docs/EXTENDING.md)** and the re-measurement protocol in **[framework/REMEASUREMENT.md](framework/REMEASUREMENT.md)**.
 
-![The paper-test route matrix](docs/assets/measurement_routes.png)
-
 ```mermaid
 flowchart LR
     A["Your stated rules<br/>(invariants, security/invariants.yaml)"] --> B["Probe cases<br/>fixtures/fixtures.json — 41 cases"]

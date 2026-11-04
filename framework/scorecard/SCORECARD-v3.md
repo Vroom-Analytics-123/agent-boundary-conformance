@@ -12,6 +12,14 @@ rule fire, did the gate hold), never on how often its model refused.
 Cross-harness numbers made with different models are not ranked
 against each other.
 
+**FAILS OPEN is not a safest-platform ranking.** The band mixes
+routes: some rows rest on native vendor checkers, some on
+reconstructed semantics, some on live reference agents — and the
+Nov 3 live runs had no Docker sandbox (sandbox not-started in every
+cell, never a pass). A FAILS OPEN band is a finding about the tested
+route, not a verdict that one platform is safer than another.
+Compare rows only within the same route.
+
 ## How to read it
 
 Method: [framework/SCORING-v3.md](../SCORING-v3.md). The headline is a

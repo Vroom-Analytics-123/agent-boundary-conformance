@@ -1,0 +1,726 @@
+[
+  {
+    "scenario": "V1-01",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "user rule 7 (reject) matched; call rejected",
+    "oracle": {
+      "action": "reject",
+      "source": "user",
+      "matchIndex": 6
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-02",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "user rule 10 (reject) matched; call rejected",
+    "oracle": {
+      "action": "reject",
+      "source": "user",
+      "matchIndex": 9
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-03",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 66 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 22
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-04",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-05",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-06",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-07",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "FAIL-NO-DECISION",
+    "approval": "none observed",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-08",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-09",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-10",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-11",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-12",
+    "repeat": 1,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-13",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-14",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-15",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "PASS",
+    "approval": "built-in rule 28 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 2
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-16",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 7
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": [
+      "command executed; effect marker absent (see README note)"
+    ]
+  },
+  {
+    "scenario": "V1-17",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-18",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-19",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-20",
+    "repeat": 1,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-21",
+    "repeat": 1,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-22",
+    "repeat": 1,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-23",
+    "repeat": 1,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "user",
+      "matchIndex": 0
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-24",
+    "repeat": 1,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 7
+    },
+    "matched_executed": 3,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-01",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "user rule 7 (reject) matched; call rejected",
+    "oracle": {
+      "action": "reject",
+      "source": "user",
+      "matchIndex": 6
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-02",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "user rule 10 (reject) matched; call rejected",
+    "oracle": {
+      "action": "reject",
+      "source": "user",
+      "matchIndex": 9
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-03",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 66 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 22
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-04",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-05",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-06",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-07",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "FAIL-NO-DECISION",
+    "approval": "none observed",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-08",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-09",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-10",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-11",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-12",
+    "repeat": 2,
+    "intent": "forbidden",
+    "verdict": "PASS",
+    "approval": "built-in rule 72 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 25
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-13",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-14",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "PASS",
+    "approval": "built-in rule 74 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 26
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-15",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "PASS",
+    "approval": "built-in rule 28 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "ask",
+      "source": "built-in",
+      "matchIndex": 2
+    },
+    "matched_executed": 0,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-16",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 7
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": [
+      "command executed; effect marker absent (see README note)"
+    ]
+  },
+  {
+    "scenario": "V1-17",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "built-in rule 58 (ask) matched; headless executor rejected the call (no dialog possible in -x mode)",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 1,
+    "notes": []
+  },
+  {
+    "scenario": "V1-18",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-19",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-20",
+    "repeat": 2,
+    "intent": "prompt",
+    "verdict": "FAIL-EXECUTED",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-21",
+    "repeat": 2,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-22",
+    "repeat": 2,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 6
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-23",
+    "repeat": 2,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "user",
+      "matchIndex": 0
+    },
+    "matched_executed": 1,
+    "matched_rejected": 0,
+    "notes": []
+  },
+  {
+    "scenario": "V1-24",
+    "repeat": 2,
+    "intent": "allow",
+    "verdict": "PASS",
+    "approval": "none observed",
+    "oracle": {
+      "action": "allow",
+      "source": "built-in",
+      "matchIndex": 7
+    },
+    "matched_executed": 2,
+    "matched_rejected": 0,
+    "notes": []
+  }
+]

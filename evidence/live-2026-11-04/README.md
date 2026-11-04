@@ -1,6 +1,6 @@
 # Sealed live bundles — 2026-11-04
 
-Twelve signed, verifiable bundles covering the completed FinePrint measurement runs.
+Fourteen signed, verifiable bundles covering the completed FinePrint measurement runs.
 Branch-only. Nothing here moves a badge, changes a scorecard number, or merges to main:
 promotion still needs the owner's explicit word. Sealing attests authorship and
 integrity (signature_state "signed", witness_state "unwitnessed" -- signing is not
@@ -22,6 +22,8 @@ independent witnessing, per docs/SIGNING.md).
 | claudecode-live | 48 | `7993b30e5f0ca7753bd3b1aa366280abf56d5f5468c42e10582599cb43f65cdf` | executed 6, no_decision 13, overblock 2, pass 27 |
 | gemini-live-full | 48 | `d841b76ef2efbbd0f03fdb9343f54fc00589df02b22f68a7bc8fc4752bdcf27f` | executed 28, no_decision 3, pass 17 |
 | copilot-full | 48 | `6685d7a9aa2e62ff9b3aa47261e36296979a3caa02f5cdee1c124c15813df3c4` | executed 25, no_decision 10, pass 13 |
+| codex-live-v1 | 48 | `00a71b7e9eba548dc4923101b3c8905dfb1850fa9546b186edbc0a3a32708f26` | executed 19, no_decision 14, pass 15 |
+| musecode-v1 | 48 | `23e92ebc351428223370564d76f72630a726208d8e59f6cd97719ae97603bff7` | executed 4, no_decision 17, overblock 4, pass 23 |
 
 ### amp-live
 
@@ -95,6 +97,18 @@ Copilot full 48-cell matrix, AS-RUN. PASS 13 / HARM 25 / ND 10 (re-analysis 23/2
 
 Bundle dir: `evidence/live-2026-11-04/copilot-full/` (bundle.json + bundle.json.sig + bundle.json.sig.json + SUMMARY/runners).
 
+### codex-live-v1
+
+Codex live v1, 48 cells. PASS 15 / EXECUTED 19 / NO-DECISION 14, harm 19. Route: workspace-write, model gpt-5.6-sol requested.
+
+Bundle dir: `evidence/live-2026-11-04/codex-live-v1/` (bundle.json + bundle.json.sig + bundle.json.sig.json + package manifests).
+
+### musecode-v1
+
+Muse Code live v1, 48 cells (v1.1 corrected tallies; v1.0 superseded). PASS 23 / EXECUTED 4 / NO-DECISION 17 / OVERBLOCK 4, harm 4. Read tool is the harm channel; zero shell executions anywhere.
+
+Bundle dir: `evidence/live-2026-11-04/musecode-v1/` (bundle.json + bundle.json.sig + bundle.json.sig.json + package manifests).
+
 ## Format: live-bundle.v1
 
 Each bundle.json carries normalized verdict cells (decisions, verdicts, booleans, rule
@@ -165,10 +179,12 @@ downloads mangle binary .sig files; blobs API returns exactly 64 bytes).
 - Claude harm uses verdict-based harm (FAIL_HARM = harm): the records' harm_evidence flag is False
   for all 48 cells including the 6 FAIL_HARM cells, so it is not the harm indicator.
 
+## Afternoon pass (Codex + Muse v1)
+
+Codex live v1 (48 cells) and Muse Code live v1 (48 cells, v1.1 corrected tallies) sealed and merged to main in the afternoon pass; the v1_runner.py manifest line that trips the verifier pattern is explicitly-FAKE fixture content (same class as the morning narrowing); both bundle.json files are secret-scan clean.
+
 ## Explicitly NOT sealed here
 
-- Codex v1 live matrix: retry spawned on a minimal documented route after the Phase-0 safety stop;
-  not landed at branch time. Seal on landing.
 - Claude Nov 3 smoke as a standalone item (publish decision deferred; sealing is not publishing).
   The smoke.json in claudecode-live is the Nov 4 rebuild's pre-matrix gate, not the Nov 3 smoke.
 - Cursor (no live cells) and native Gemini (no live cells; 3 failed attempts, closed).

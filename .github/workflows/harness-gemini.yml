@@ -5,13 +5,12 @@
 #
 # What it proves (and nothing more): whether Gemini CLI can complete
 # one FP-001 delete task under the strictest available policy on a
-# GitHub-hosted runner. NO SECRET is configured or referenced by this
-# workflow: model calls require an owner-supplied auth method (Gemini
-# API key, Vertex AI, or Code Assist licence), and none exists here.
-# The expected outcome on this host is therefore AUTH_BLOCKED, recorded
-# honestly by gemini-cli/smoke_runner.py — a failed smoke is evidence,
-# not an error to hide. If an owner later supplies an auth method, the
-# same runner distinguishes AUTH_BLOCKED from PASS/FAIL immediately.
+# GitHub-hosted runner. Auth method: repo secret GEMINI_API_KEY
+# (owner-created 2026-11-03, never by this workflow), passed via env
+# only; the workflow never echoes it. The runner records auth env
+# PRESENCE by name only, never values, and distinguishes AUTH_BLOCKED
+# from PASS/FAIL immediately — a failed smoke is evidence, not an
+# error to hide.
 #
 # Records land in two places: workflow artifacts (always uploaded)
 # and pushed back to this branch (gemini-cli/runs/smoke/). The
@@ -44,6 +43,8 @@ jobs:
         run: npm install -g @google/gemini-cli@0.66.0
 
       - name: Run FP-001 smoke probe
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 gemini-cli/smoke_runner.py --gemini-bin "$(which gemini)"
         # Do NOT add `set -x` or any env dump to this step or this file.

@@ -1,0 +1,87 @@
+# Copilot CLI FP-001 smoke probe (FinePrint harness track)
+#
+# Trigger: workflow_dispatch ONLY. Never push, never pull_request: this
+# workflow runs an agent CLI and must never run on untrusted input.
+#
+# What it proves (and nothing more): whether Copilot CLI can complete
+# one FP-001 delete task under the strictest available policy on a
+# GitHub-hosted runner. Auth method: repo secret COPILOT_GITHUB_TOKEN
+# (owner-created, never by this workflow), passed via env on the runner
+# step ONLY; the workflow never echoes it. The runner records auth env
+# PRESENCE by name only, never values, and distinguishes MISSING_AUTH
+# (no usable PAT in env) and AUTH_FAILED (PAT present but rejected)
+# from PASS/FAIL immediately — a failed smoke is evidence, not an
+# error to hide.
+#
+# APPROVAL-MODE HONESTY (read before dispatching): Copilot CLI's
+# non-interactive mode (-p) REQUIRES --allow-all-tools. This smoke
+# therefore does NOT measure native ask/deny dialog behavior — -p
+# cannot show it. The only permission signal in this mode is the
+# --deny-tool rule (denial always takes precedence over allow, even
+# --allow-all-tools, per `copilot help permissions`). The runner
+# records the exact approval mode verbatim in every record; running
+# allow-all and calling it a permission measurement, without the deny
+# rule and this note, would be dishonest.
+#
+# NOTE: the secret does NOT exist yet (2026-11-03). Dispatching now
+# records MISSING_AUTH by design. Dispatch only after the owner adds
+# COPILOT_GITHUB_TOKEN (fine-grained PAT, Copilot Requests permission,
+# personal account — see copilot-cli/README.md).
+#
+# Records land in two places: workflow artifacts (always uploaded)
+# and pushed back to this branch (copilot-cli/runs/smoke/). The
+# push-back cannot retrigger this workflow: the trigger is
+# workflow_dispatch only.
+name: harness-copilot
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write  # scoped: push smoke records back to this branch only
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # Pinned to the version verified locally (copilot --version
+      # 1.0.105, 2026-11-03; --help confirms -p, --allow-all-tools,
+      # --deny-tool, --trust-folder, --no-ask-user, --no-auto-update,
+      # --secret-env-vars, --output-format json).
+      - name: Install Copilot CLI (pinned)
+        run: npm install -g @github/copilot@1.0.105
+
+      - name: Run FP-001 smoke probe
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          python3 copilot-cli/smoke_runner.py --copilot-bin "$(which copilot)"
+        # Do NOT add `set -x` or any env dump to this step or this file.
+        # The runner step is the ONLY step that receives the token;
+        # no other step (including push-back) gets it.
+
+      - name: Upload smoke records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: copilot-smoke-records
+          path: copilot-cli/runs/smoke/
+
+      - name: Push smoke records back to this branch
+        if: always()
+        run: |
+          if [ -d copilot-cli/runs/smoke ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add copilot-cli/runs/smoke
+            git diff --cached --quiet || git commit -m "Copilot CLI smoke probe: FP-001 run records (branch copilot-harness-nov3)"
+            git push origin "HEAD:copilot-harness-nov3"
+          fi

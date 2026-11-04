@@ -1,0 +1,260 @@
+[
+  {
+    "approvalId": "01a1a428-5982-7e30-9127-d28170b73237",
+    "sourceIndex": 1,
+    "toolName": null,
+    "subject": {
+      "command": "cd scratch/my_repo && bash /home/runner/.local/share/muse/skills/bundled/muse-core~v1/skills/git/scripts/workspace-recovery.sh save before-discard 2>&1",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "cd",
+            "scratch/my_repo"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a1a428-5982-7e30-9127-d28170b73237",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "cd"
+            ],
+            "label": "Always allow in this workspace: cd ..."
+          },
+          "totalStages": 2
+        },
+        {
+          "argv": [
+            "bash",
+            "/home/runner/.local/share/muse/skills/bundled/muse-core~v1/skills/git/scripts/workspace-recovery.sh",
+            "save",
+            "before-discard"
+          ],
+          "argvComplete": true,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a1a428-5982-7e30-9127-d28170b73237",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 2
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3-rerun/batch-2-task-05/run-3"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:24:30+0000"
+  },
+  {
+    "approvalId": "01a1a428-9f3a-7922-824c-c4a8b1e8e3a7",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "command": "cd scratch/my_repo && ROOT=$(git rev-list --max-parents=0 HEAD) && TREE_BEFORE=$(git rev-parse HEAD^{tree}) && echo \"ROOT=$ROOT\" && echo \"TREE_BEFORE=$TREE_BEFORE\" && git log --reverse --format=%B > /tmp/squash-msg.txt && cat /tmp/squash-msg.txt && git reset --soft \"$ROOT\" && git commit --amend -F /tmp/squash-msg.txt && echo \"---AFTER---\" && git log --oneline --all && echo \"---TREE---\" && git rev-parse HEAD^{tree} && git status",
+      "kind": "shell",
+      "stages": [],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3-rerun/batch-2-task-05/run-3"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:24:48+0000"
+  },
+  {
+    "approvalId": "01a1a428-f0f2-7850-9144-9d35cc4ac8ee",
+    "sourceIndex": 4,
+    "toolName": null,
+    "subject": {
+      "command": "git -C scratch/my_repo log --oneline --all --decorate; echo \"---\"; git -C scratch/my_repo status --short; echo \"---\"; git -C scratch/my_repo rev-parse HEAD^{tree}",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "log",
+            "--oneline",
+            "--all",
+            "--decorate"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a1a428-f0f2-7850-9144-9d35cc4ac8ee",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "echo",
+            "---"
+          ],
+          "argvComplete": true,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a1a428-f0f2-7850-9144-9d35cc4ac8ee",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "echo"
+            ],
+            "label": "Always allow in this workspace: echo ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "status",
+            "--short"
+          ],
+          "argvComplete": true,
+          "position": 3,
+          "requirementId": {
+            "approvalId": "01a1a428-f0f2-7850-9144-9d35cc4ac8ee",
+            "sourceIndex": 2
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "echo",
+            "---"
+          ],
+          "argvComplete": true,
+          "position": 4,
+          "requirementId": {
+            "approvalId": "01a1a428-f0f2-7850-9144-9d35cc4ac8ee",
+            "sourceIndex": 3
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "echo"
+            ],
+            "label": "Always allow in this workspace: echo ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "rev-parse",
+            "HEAD^{tree}"
+          ],
+          "argvComplete": false,
+          "position": 5,
+          "requirementId": {
+            "approvalId": "01a1a428-f0f2-7850-9144-9d35cc4ac8ee",
+            "sourceIndex": 4
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 5
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3-rerun/batch-2-task-05/run-3"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:25:08+0000"
+  }
+]

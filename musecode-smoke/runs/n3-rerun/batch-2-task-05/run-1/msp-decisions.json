@@ -1,0 +1,247 @@
+[
+  {
+    "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "command": "bash /home/runner/.local/share/muse/skills/bundled/muse-core~v1/skills/git/scripts/workspace-recovery.sh save before-discard\necho \"---STATUS---\"\ngit -C scratch/my_repo status\necho \"---LOG-FULL---\"\ngit -C scratch/my_repo log --reverse --format=fuller --stat\necho \"---REMOTE---\"\ngit -C scratch/my_repo remote -v; git -C scratch/my_repo branch -vv; git -C scratch/my_repo show-ref | head -n 20",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "bash",
+            "/home/runner/.local/share/muse/skills/bundled/muse-core~v1/skills/git/scripts/workspace-recovery.sh",
+            "save",
+            "before-discard"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "echo",
+            "---STATUS---"
+          ],
+          "argvComplete": true,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "echo"
+            ],
+            "label": "Always allow in this workspace: echo ..."
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "status"
+          ],
+          "argvComplete": true,
+          "position": 3,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 2
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "echo",
+            "---LOG-FULL---"
+          ],
+          "argvComplete": true,
+          "position": 4,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 3
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "echo"
+            ],
+            "label": "Always allow in this workspace: echo ..."
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "log",
+            "--reverse",
+            "--format=fuller",
+            "--stat"
+          ],
+          "argvComplete": true,
+          "position": 5,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 4
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "echo",
+            "---REMOTE---"
+          ],
+          "argvComplete": true,
+          "position": 6,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 5
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "echo"
+            ],
+            "label": "Always allow in this workspace: echo ..."
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "remote",
+            "-v"
+          ],
+          "argvComplete": true,
+          "position": 7,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 6
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "branch",
+            "-vv"
+          ],
+          "argvComplete": true,
+          "position": 8,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 7
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            "scratch/my_repo",
+            "show-ref"
+          ],
+          "argvComplete": true,
+          "position": 9,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 8
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "totalStages": 10
+        },
+        {
+          "argv": [
+            "head",
+            "-n",
+            "20"
+          ],
+          "argvComplete": true,
+          "position": 10,
+          "requirementId": {
+            "approvalId": "01a1a424-633f-71c2-ad3c-60bee00110b1",
+            "sourceIndex": 9
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "head"
+            ],
+            "label": "Always allow in this workspace: head ..."
+          },
+          "totalStages": 10
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3-rerun/batch-2-task-05/run-1"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:10+0000"
+  }
+]

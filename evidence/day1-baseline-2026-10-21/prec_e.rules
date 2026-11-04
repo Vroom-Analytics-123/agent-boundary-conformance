@@ -1,2 +1,0 @@
-prefix_rule(pattern=["rm"], decision="prompt")
-prefix_rule(pattern=["rm", "-rf"], decision="forbidden")

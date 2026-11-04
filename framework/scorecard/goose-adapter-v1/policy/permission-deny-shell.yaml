@@ -1,6 +1,0 @@
-# Deny-shell profile: shell can never run, in any mode.
-user:
-  always_allow: []
-  ask_before: []
-  never_allow:
-    - developer__shell

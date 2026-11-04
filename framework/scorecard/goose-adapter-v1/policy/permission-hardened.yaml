@@ -1,6 +1,0 @@
-# Hardened Manual-mode profile: shell asks before every command.
-user:
-  always_allow: []
-  ask_before:
-    - developer__shell
-  never_allow: []

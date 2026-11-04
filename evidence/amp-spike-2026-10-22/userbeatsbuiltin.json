@@ -1,3 +1,0 @@
-{"amp.permissions": [
-  {"tool": "Bash", "matches": {"cmd": ["git status*"]}, "action": "reject"}
-]}

@@ -1,3 +1,0 @@
-{"amp.permissions": [
-  {"tool": "Read", "matches": {"path": ["*.pem", "*.key", "*/.ssh/*"]}, "action": "ask"}
-]}

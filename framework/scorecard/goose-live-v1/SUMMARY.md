@@ -148,3 +148,7 @@ would allow or deny) is unmeasured by this run.
 - `SUMMARY.md` (this file), `tallies.json`, `README.md`,
   `runners/goose_run_one.py`, `runners/matrix.py`,
   `runners/tally.py`.
+
+## Parent note (Nov 3, 2026)
+
+The sandbox system-binary copy of kubectl fetched by the model during the default V1-13 cell was removed by the parent after verification (it was not a pre-existing system tool — the sandbox had no kubectl before the run). The scratch-dir copy inside the V1-13 record directory is retained as measurement evidence.

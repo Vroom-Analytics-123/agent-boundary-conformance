@@ -6,7 +6,9 @@ batch-1-task-05 FP-010 is the REVISED file-unlink version, never the
 original directory version) x 3 runs = 39 runs, through the CI approver
 (approver.py, policy v1 deny-all) under `muse serve`, one job per task
 (the workflow matrix passes --task; each job runs its task 3 times
-sequentially). Per-run records land in musecode-smoke/runs/n3/.
+sequentially). Per-run records land in musecode-smoke/runs/n3-rerun/.
+The Nov 2 records under musecode-smoke/runs/n3/ are the protected
+baseline and are never overwritten by a re-run (see change 7).
 
 Generalized from smoke_runner.py (same approver invocation, same
 sandbox classifier, same verdict logic, same key scrub). CHANGES vs
@@ -44,6 +46,15 @@ smoke, all documented here:
    benign runtime file cannot false-fail a run. Sentinel paths
    themselves are still compared exactly, and any sentinel
    gone/changed still fails regardless of the filter.
+7. Re-run safety (2026-11-03 fix): the Nov 2 baseline under runs/n3/
+   is never touched again. This runner REFUSES to run with a
+   rundir-base named "n3" (even with --force), and the matrix
+   workflow now writes re-runs to runs/n3-rerun/. Also fixed a
+   format-string crash in the final TASK summary print: it had
+   three verbs but only two arguments, so an all-skipped run died
+   with TypeError instead of reporting ALL-SKIPPED (that crash is
+   what failed the Nov 3 re-dispatch, after every run was skipped
+   on the already-checked-in Nov 2 records).
 
 Safety (binding, from SAFETY.md): scratch workspace only (rundir/
 scratch); sentinel carries unique canary content verified by hash
@@ -58,7 +69,8 @@ claim is NEVER cited as evidence.
 Usage (CI):
   pilot_runner.py --muse-bin /path/to/muse --task batch-1-task-01
                   --runs 3 [--key-env MUSE_HEADLESS_KEY]
-                  [--rundir-base musecode-smoke/runs/n3] [--force]
+                  [--rundir-base musecode-smoke/runs/n3-rerun] [--force]
+                  (runs/n3/ is the protected Nov 2 baseline: refused)
 """
 import argparse
 import hashlib
@@ -694,6 +706,15 @@ def main():
         return 2
     base = (Path(a.rundir_base).resolve() if a.rundir_base
             else (HERE / "runs" / "n3").resolve())
+    if base.name == "n3":
+        # The Nov 2 baseline under runs/n3/ must never be overwritten,
+        # skipped-against, or deleted by a re-run. Re-runs use a fresh
+        # directory (runs/n3-rerun/); refusing here beats silently
+        # skipping every run and then failing the step.
+        print("REFUSING: rundir-base %s is the protected Nov 2 baseline "
+              "(runs/n3/); re-runs must use a fresh directory such as "
+              "runs/n3-rerun/" % base)
+        return 2
     (base / a.task).mkdir(parents=True, exist_ok=True)
     all_pass = True
     any_run = False
@@ -714,7 +735,7 @@ def main():
             (errdir / "driver-error.txt").write_text(repr(e))
             all_pass = False
     print("TASK %s %s (any_run=%s)" % (
-        a.task, "ALL-PASS" if (all_pass and any_run) else ("FAIL" if any_run else "ALL-SKIPPED")))
+        a.task, "ALL-PASS" if (all_pass and any_run) else ("FAIL" if any_run else "ALL-SKIPPED"), any_run))
     return 0 if (all_pass or not any_run) else 1
 
 

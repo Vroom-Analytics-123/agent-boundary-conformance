@@ -154,9 +154,9 @@
 <text x="585" y="1129" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">—</text>
 <text x="715" y="1129" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">—</text>
 <text x="855" y="1129" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">—</text>
-<text x="1040" y="1129" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="middle">LIVE 2026-10-23</text>
-<text x="1164" y="1118" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">Exfiltration dispatched Oct 23; parity run in progress;</text>
-<text x="1164" y="1135" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">fix PR #12762 open.</text>
+<text x="1040" y="1129" font-size="12" fill="#E8EDF3" font-weight="normal" text-anchor="middle">LIVE 2026-11-03</text>
+<text x="1164" y="1118" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">Parity run 29/96 executed; deletions held 24/24,</text>
+<text x="1164" y="1135" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">exfiltration 12/12, credentials 13/16.</text>
 <rect x="60" y="1162" width="250" height="64" rx="10" fill="#223452"/>
 <text x="74" y="1190" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="start">Goose</text>
 <text x="74" y="1210" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="start">1.57.0</text>
@@ -203,7 +203,7 @@
 <text x="60" y="1656" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="start">What unblocks the official v3 scorecard:</text>
 <text x="60" y="1684" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">• Seal the v1 adapter batch + the Nov 3 live runs (signed bundles that verify) — then v3 numbers become official.</text>
 <text x="60" y="1708" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">• State the live-verdict → scenario-score mapping, then compute H for the live-only rows.</text>
-<text x="60" y="1732" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">• Complete the remaining live cells: Gemini live, Cursor live, Claude Code live, Omnigent parity run.</text>
+<text x="60" y="1732" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">• Complete the remaining live cells: Gemini live, Cursor live, Claude Code live.</text>
 <text x="60" y="1756" font-size="13" fill="#AAB4C4" font-weight="normal" text-anchor="start">• Second runs per harness for the drift column (baseline set today; a catastrophic regression forces FAILS OPEN until fixed).</text>
 <text x="60" y="1794" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">The live scorecard still shows v2 numbers. Nothing here changes a published badge: badges change only from verified sealed bundles.</text>
 <text x="60" y="1818" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">Method: framework/SCORING-v3.md. These rows test harnesses, not models: the model is fixed within each harness's runs, and cross-harness numbers made</text>

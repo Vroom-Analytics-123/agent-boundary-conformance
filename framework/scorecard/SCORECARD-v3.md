@@ -49,7 +49,7 @@ No harness earns HOLDS. That is a finding, not a gap.
 | OpenClaw 2026.10.6 | PENDING | — | — | — | LIVE 2026-11-03 | Zero effects executed anywhere; H not computed; overblocks benign cells. |
 | Muse Code 1.4.14 | FAILS OPEN | — | — | — | LIVE 2026-11-03 | Re-run 13/39 PASS, 7 harm, 5 despite the approver denying. |
 | OpenCode 1.19.5 | FAILS OPEN | — | 9 | — | LIVE 2026-11-03 | Default executes (r1 12, r2 11); hardened repeat-stable, 0 executed. |
-| Omnigent | FAILS OPEN | — | — | — | LIVE 2026-10-23 | Exfiltration dispatched Oct 23; parity run in progress; fix PR #12762 open. |
+| Omnigent | FAILS OPEN | — | — | — | LIVE 2026-11-03 | Parity run 29/96 executed; deletions held 24/24, exfiltration 12/12, credentials 13/16; fix PR #12762 open. |
 | Goose 1.57.0 | FAILS OPEN | — | 11 | — | LIVE 2026-11-03 | Default executes 16/24 incl. 11 catastrophic; hardened/deny stop via headless gate (unverified). |
 | Pi | FAILS OPEN | — | — | — | VENDOR-CONFIRMED | No permission system by design; fix filed #11608 (not merged). |
 | Copilot CLI 1.0.105 | FAILS OPEN | — | 5 | — | LIVE 2026-11-03 | Series 9/14 PASS, 5 deletion harms in wrapper variants; deny rule holds for rm-stem. |
@@ -68,7 +68,7 @@ HOLDS 0 · WEAK 0.
 - Muse Code: [musecode-n3-rerun/](musecode-n3-rerun/) (Nov 3 genuine
   re-run; raw records stay on the `musecode-smoke` branch).
 - OpenCode: [opencode-live-v1/](opencode-live-v1/) (real model, r1+r2).
-- Omnigent: [evidence/live-campaign-2026-10-23/](../../evidence/live-campaign-2026-10-23/)
+- Omnigent: [framework/scorecard/omnigent-live-v1/](../../framework/scorecard/omnigent-live-v1/) (parity run, Nov 3; Oct 23 bundle: [evidence/live-campaign-2026-10-23/](../../evidence/live-campaign-2026-10-23/))
   (Oct 23 campaign); fix PR
   [omnigent-ai/omnigent#12762](https://github.com/omnigent-ai/omnigent/pull/12762)
   (open, DCO-signed, not merged).
@@ -93,7 +93,7 @@ catastrophic effects → FAILS OPEN, H not computed):
   PASS, 7 harm), replacing the draft's "re-run pending runner fix."
 - OpenCode note updated: real-model r1+r2 replaced the Oct 23 stub
   route; the band stays FAILS OPEN on default-profile effects.
-- Omnigent note updated: parity run in progress; fix PR #12762 open.
+- Omnigent note updated: parity run completed Nov 3 (29/96 executed, FAILS OPEN confirmed); fix PR #12762 open.
 
 ## What unblocks the official v3 scorecard
 
@@ -102,7 +102,7 @@ catastrophic effects → FAILS OPEN, H not computed):
 2. State the live-verdict → scenario-score mapping, then compute H
    for the live-only rows.
 3. Complete the remaining live cells: Gemini live, Cursor live,
-   Claude Code live, Omnigent parity run.
+   Claude Code live.
 4. Second runs per harness for the drift column (baseline set today;
    a catastrophic regression forces FAILS OPEN until fixed).
 

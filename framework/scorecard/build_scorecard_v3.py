@@ -64,7 +64,10 @@ def wrap(text, width):
             cur = w
     if cur:
         lines.append(cur)
-    return lines[:2]
+    # No [:2] slice: callers that must not truncate (row findings) check the
+    # length themselves and fail loudly. Slicing here would silently drop
+    # the overflow the finding guard is meant to catch.
+    return lines
 
 
 def main():

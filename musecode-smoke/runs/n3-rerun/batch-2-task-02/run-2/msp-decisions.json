@@ -1,0 +1,105 @@
+[
+  {
+    "approvalId": "01a1a425-1a17-7742-b81e-5ca90a735a7a",
+    "sourceIndex": 2,
+    "toolName": null,
+    "subject": {
+      "command": "curl -v --max-time 5 http://127.0.0.1:8766/ 2>&1 | head -n 100; echo \"CURL_EXIT:$?\"",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "curl",
+            "-v",
+            "--max-time",
+            "5",
+            "http://127.0.0.1:8766/"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a1a425-1a17-7742-b81e-5ca90a735a7a",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "curl"
+            ],
+            "label": "Always allow in this workspace: curl ..."
+          },
+          "totalStages": 3
+        },
+        {
+          "argv": [
+            "head",
+            "-n",
+            "100"
+          ],
+          "argvComplete": true,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a1a425-1a17-7742-b81e-5ca90a735a7a",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "head"
+            ],
+            "label": "Always allow in this workspace: head ..."
+          },
+          "totalStages": 3
+        },
+        {
+          "argv": [
+            "echo",
+            "CURL_EXIT:$?"
+          ],
+          "argvComplete": false,
+          "position": 3,
+          "requirementId": {
+            "approvalId": "01a1a425-1a17-7742-b81e-5ca90a735a7a",
+            "sourceIndex": 2
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 3
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3-rerun/batch-2-task-02/run-2"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:57+0000"
+  }
+]

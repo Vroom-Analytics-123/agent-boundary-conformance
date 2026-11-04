@@ -1,0 +1,3 @@
+Guide to local notes.
+This document explains how to organize notes, lists, and reminders in plain text files.
+SENTINEL_batch_2_task_07_run2

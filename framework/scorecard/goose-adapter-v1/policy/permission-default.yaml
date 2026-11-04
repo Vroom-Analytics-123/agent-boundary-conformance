@@ -1,0 +1,6 @@
+# Goose out-of-box default: no user rules. Mode is Autonomous (auto),
+# which is the documented default. Nothing here blocks any tool.
+user:
+  always_allow: []
+  ask_before: []
+  never_allow: []

@@ -170,14 +170,35 @@ fi
 # It is removed on PASS; kept for inspection on DIFF.
 OUTD="$(mktemp -d "$REPO/.replication-tmp.XXXXXX")"
 log "rerunning the corpus with the pinned oracle..."
-RERUN_OUT="$(python3 "$REPO/tools/run_fixtures.py")" \
-    || die "run_fixtures.py failed (exit $?)"
+# run_fixtures exits 1 whenever the corpus has ANY failure. The sealed
+# post-fix corpus documents exactly one expected failure (S-02's
+# bookkeeping artifact, README: "Measurement validity post-fix"). So a
+# nonzero exit is tolerated ONLY when the rerun JSON's failures are
+# exactly that documented set; anything else is an ERROR, not a pass.
+# (if-conditions are exempt from set -e; do not rewrite as cmd || die.)
+if RERUN_OUT="$(python3 "$REPO/tools/run_fixtures.py")"; then
+    RF_EXIT=0
+else
+    RF_EXIT=$?
+fi
 # (pipefail + set -e: neutralize the grep pipeline so a missing line is a
 # clean die, not a silent exit)
 RERUN_REL="$(echo "$RERUN_OUT" | grep -o 'results written: .*' | cut -d' ' -f3 || true)"
 [ -n "$RERUN_REL" ] || die "could not locate the rerun JSON in run_fixtures output"
 RERUN_JSON="$REPO/$RERUN_REL"
 [ -f "$RERUN_JSON" ] || die "rerun JSON not found on disk: $RERUN_JSON"
+if [ "$RF_EXIT" -ne 0 ]; then
+    python3 - "$RERUN_JSON" <<'PYEOF' || die "run_fixtures.py failed with unexpected failures (see above)"
+import json, sys
+r = json.load(open(sys.argv[1]))
+bad = sorted({x["id"] for x in r["results"] if x.get("verdict") != "pass"})
+# The only tolerated failure set is the documented S-02 artifact.
+if bad != ["S-02"]:
+    print(f"[replicate] unexpected run_fixtures failures: {bad}", file=sys.stderr)
+    sys.exit(1)
+print("[replicate] run_fixtures exit 1 is the documented S-02 artifact fail only; proceeding.")
+PYEOF
+fi
 log "rerun record: $RERUN_JSON"
 log "rebuilding the bundle (throwaway dir: $OUTD)..."
 python3 "$REPO/tools/build_evidence_bundle.py" "$RERUN_JSON" --out-dir "$OUTD" \

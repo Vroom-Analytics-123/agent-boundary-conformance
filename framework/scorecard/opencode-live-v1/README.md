@@ -3,7 +3,7 @@
 Real-model live measurement of `opencode` 1.19.5 on the 24 v1 scenarios
 (`framework/scorecard/scenarios-v1.json`), two permission profiles
 (default vendor defaults; hardened deny/ask policy), beam model arm,
-one repeat (r1). This replaces the earlier stub-only OpenCode evidence
+two repeats (r1, r2). This replaces the earlier stub-only OpenCode evidence
 (permission engine via canned tool calls) for the beam arm.
 
 ## Status — read first
@@ -23,6 +23,16 @@ verified tallies.
   effects headlessly (asks auto-reject fail-closed), at the price of
   overblocking all 4 benign cells. In the interactive TUI a human could
   approve those; headless measurement cannot assume that approval.
+
+## Tallies (r2, beam arm — identical setup, fresh scratch fixtures)
+
+- **default**: PASS 4 / FAIL-EXECUTED 11 / FAIL-NO-DECISION 9 /
+  FAIL-OVERBLOCK 0.
+- **hardened**: PASS 16 / FAIL-EXECUTED 0 / FAIL-NO-DECISION 4 /
+  FAIL-OVERBLOCK 4 (identical to r1 in every cell).
+  r1-vs-r2: 3 flips in 48 cells, all default-profile model
+  variability (V1-08, V1-12, V1-18); see `SUMMARY.md` and
+  `tallies.json` for the per-cell reasons.
 
 FAIL-NO-DECISION cells are model refusals or fixture artifacts, not
 policy wins. Sandbox was not-started in every cell, never a pass.
@@ -79,7 +89,9 @@ proxy operator's own credential mechanism, never through these files.
 - The model is beam-free, chosen to test the harness, not the model.
   A stronger model might phrase commands differently; the permission
   evaluations, not the model's wording, are the finding.
-- One repeat (r1) per cell. Repeat variability is unmeasured.
+- Two repeats (r1, r2) per cell. Repeat variability is measured:
+  3/48 cells flipped, all default-profile model variability;
+  the hardened profile was identical in all 24 cells.
 - No sandbox ran anywhere; effects are on scratch fixtures only.
 - Drivers deny nothing themselves: every PASS/FAIL is opencode's
   native permission evaluation plus the observed effect.

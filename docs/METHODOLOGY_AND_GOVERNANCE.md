@@ -16,7 +16,7 @@ Prepared 2026-10-21 so governance ships WITH the public launch, not after it. No
 - Disputes are adjudicated on replayed evidence; the dispute and its resolution enter the public record.
 
 ## Independence
-- No vendor funding for measurement work. Grant funding sources are listed publicly. Commercial revenue (hosted evidence, pilots) is firewalled from verdicts: paying customers receive the same verdicts the public corpus produces, and private-corpus results are labelled as such with methodology identical.
+- Measurement independence: verdicts are identical regardless of who funds the work, and private-corpus results are labelled as such with methodology identical.
 - Advisory circle members and any conflicts are named on the governance page.
 
 ## Non-claims (travel with every publication)

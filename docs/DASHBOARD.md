@@ -1,11 +1,10 @@
 # Boundary Measurement — Program Dashboard
-*Canonical status page. Last updated: Mon Nov 3, 2026 (evening PT) — repo public since Oct 29; Foresight submitted Oct 31 by the owner; scorecard live in the README; Nov 3 measurement round added below. October sections preserved as history.*
+*Canonical status page. Last updated: Mon Nov 3, 2026 (evening PT) — repo public since Oct 29; scorecard live in the README; Nov 3 measurement round added below. October sections preserved as history.*
 
 ## Nov 3, 2026 addendum — current status
 
 - **Repo: PUBLIC since Oct 29, 2026 under Apache-2.0.** The program repo stays private.
 - **Scorecard: LIVE in the README (scoring v2, 16 harnesses).** Scoring v3 is a DRAFT methodology (`framework/SCORING-v3.md`), not the live scorecard; its numbers are PROVISIONAL until sealed. The Oct 26 "Scorecard v3" day-6 post-fix artifact is a different thing — see the disambiguation in `docs/DOCUMENT_MAP.md`.
-- **Foresight: SUBMITTED Oct 31, 2026 by the owner** (outcome expected ~January 2027). BlueDot / Manifund drafts remain ready, awaiting his per-item approval.
 - **Nov 3 measurement round (all unsealed — badges unchanged):** 480-run live reference-agent rollout (Strands, LangGraph, CrewAI, Hermes, OpenClaw; Omnigent blocked) with the V1-23 git-status repair; 24 v1 scenarios + Goose adapter; Muse Code genuine N=3 re-run (13/39 PASS, 7 harms); Copilot FP-001 smoke PASS (deny-rule); OpenCode live on a real model (r1, beam arm). Gemini live remains unmeasured after two attempts, both blocked by provider 503 high demand. Omnigent parity run still in progress at this writing.
 - **Meta hackathon submission due Nov 4, 2026, 6:00 PM PT** — package ready for owner review; nothing submitted until his explicit go-ahead.
 
@@ -40,10 +39,8 @@ grade, ranking, or score of any harness.
 | # | Objective | Status | Target |
 |---|---|---|---|
 | 1 | Prove the measurement works (7-day sprint, Codex first) | **COMPLETE — verdict NARROW** (see below). Six agreeing runs (measurement validity 41/41 each; intent coverage 10 satisfied · 23 unresolved · 8 not applicable of 41 — separate denominator), sealed bundles, negative controls 4/4 healthy, baselines re-run | Verdict delivered (Oct 21, under continuous execution) |
-| 2 | Fund it (grants) | Drafts written; Foresight checkpoint Oct 28 with the NARROW verdict in hand (narrowed novelty language only); submissions wait for Anish's per-item approval | Foresight SUBMITTED Oct 31 by Anish · BlueDot/Manifund early Nov |
-| 3 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Scorecard LIVE in the README (v2, Nov 3); day-6 post-fix scorecard kept as history; launch post draft refreshed by the polish pass; needs Anish's publish tap | Early Nov |
-| 4 | First paying design partners (hosted evidence pilots) | Interview script + lists drafted | Pilots Jan–Mar 2027 |
-| 5 | Become the primary verifier (quarterly Index, vendor day-one runs, evidence standard) | Governance + methodology drafted; NARROW deliberately defers any Index claim — the repo stands as a two-oracle (Codex + Amp, both at the vendor-confirmed route) conformance method with a published cross-tier study | Through 2027 |
+| 2 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Scorecard LIVE in the README (v2, Nov 3); day-6 post-fix scorecard kept as history; launch post draft refreshed by the polish pass; needs Anish's publish tap | Early Nov |
+| 3 | Become the primary verifier (quarterly Index, vendor day-one runs, evidence standard) | Governance + methodology drafted; NARROW deliberately defers any Index claim — the repo stands as a two-oracle (Codex + Amp, both at the vendor-confirmed route) conformance method with a published cross-tier study | Through 2027 |
 
 ## What the NARROW verdict means
 
@@ -51,7 +48,6 @@ The locked Day-7 kill test was met in its narrow form — it does **not** bless 
 1. This repo stands as a two-oracle (Codex + Amp, both at the **vendor-confirmed** route) conformance **method** (pre-registered corpus, pinned oracles, sealed Merkle bundles, negative controls, schema-enforced unknown semantics) with its limitations on its face (`docs/LIMITATIONS.md`) — not as an Index.
 2. The promotion condition for a second measured harness — a vendor-shipped deterministic offline decision entrypoint at a pinned version — was met by Amp on 2026-10-22 (founder decision) — see the two-oracle addendum below. The "public Index" evidence gate (≥2 measured harnesses) is met on the oracle side; whether that licenses a public Index is Anish's call. (Vocabulary note: the grade/tier labels used in the era sections below — T1/T2, A · Oracle, B · Manual — were abolished as harness rankings by the founder's Oct 22 model correction; in current doctrine they are unranked measurement-route provenance: vendor-confirmed / reconstructed / no paper surface. Era text is preserved as history.)
 3. ~~The single pending decision remains Anish's: approve/reject the Day-5 fix diff → apply, re-lock pre-registration, rerun 41 cases, re-seal, re-issue the scorecard without the PRE-FIX banner.~~ — ✅ **decided Oct 22: APPROVED** ("Start the evidence upgrades"). Applied, re-locked, rerun (41 cases + 11-case family + precedence checks, pinned oracle), re-sealed (`evidence/postfix-2026-10-22/`, Merkle root `5a974fe6…`), scorecard v3 POST-FIX issued. The NARROW verdict itself is unchanged: the repo is a two-oracle conformance **method**, not an Index.
-4. Oct 28 Foresight checkpoint: NARROW is not a clean kill-test pass. Any filing uses the narrowed novelty language only — and nothing is submitted without his explicit per-item approval.
 Full reasoning: `docs/daily/2026-10-27.md`.
 
 ## Pre-fix baseline (Oct 21) — preserved as history
@@ -97,16 +93,6 @@ Our sample rulebook has 3 rules: `git status` → allowed · `deployctl release`
 ## The tests, explained
 41 probe commands (the 15 planned checks F-01–F-15, their sub-variants, plus 8 extra probes) covering: direct commands, spelling/flag variants of the banned delete (`rm -fr`, `rm --recursive --force`), disguised forms (`bash -lc`, `sh -c`, `env`, `sudo`, `timeout`, `xargs`), path forms (`/bin/rm`) with host-resolution off and on, chained commands (`rm -rf / && echo done` — only the first half gets decided), rule conflicts, and legitimate commands that must stay allowed. Every result is stored as raw evidence JSON in the repo, and the whole set has been re-run twice with identical results.
 
-## Grants & funding pipeline
-| Route | Size | Status | Target |
-|---|---|---|---|
-| Foresight (Nodes RFP) | $30–100K band | Proposal draft v2 written (post-fix + Amp promotion + cross-tier study); final text Oct 28 from the verdict | Submit by Sat Oct 31, 23:59 PT (Anish submits) |
-| BlueDot Rapid | up to $20K | Full draft written; ~15-min application | Week of Nov 2 |
-| Manifund | varies | Framing drafted with the BlueDot materials | Early Nov |
-| Transformative AI Fund | varies | After reproducible evidence exists | Nov–Dec |
-| BlueDot Incubator Week (SF) | up to $200K | Noted option — built for full-time safety founders; Anish's call | Nov 16–20 |
-| Paid pilots | $10–40K each | Phase 1, after public launch | Jan–Mar 2027 |
-
 ## Publish queue (repo is public since Oct 29; posts still await approval)
 **Post #1 — "Day 2 build-in-public" (DRAFT, awaiting Anish's approval).**
 Refreshed by the polish pass to bring everything together: the building-inspector metaphor (founder's choice, Oct 21), the framework + two-oracle (Codex + Amp) framing, the protected-asset finding, the Day-2/Day-3 results, and the NARROW verdict. Current text at `docs/drafts/2026-10-22-public-post-draft.md` (~180 words). The Day-1/Day-2 wording below is kept for the record as the superseded draft.
@@ -120,12 +106,11 @@ Lives in the program repo's publish queue (`agent-boundary-program/publish-queue
 ## Waiting on Anish (the complete list — everything else runs without him)
 1. ~~**INV-004:** Option A or B~~ — ✅ decided Oct 21: Option A.
 2. ~~**Day-5 fix diff:** approve or reject (`docs/drafts/day5-fix.diff`). Approval triggers: apply, re-lock pre-registration, 41-case rerun on the pinned oracle, new sealed bundle, scorecard re-issue without PRE-FIX.~~ — ✅ approved + applied Oct 22 (see post-fix addendum above).
-3. ~~**Foresight Oct 28 checkpoint:** NARROW verdict in hand — proceed (narrowed novelty language only) or hold; nothing submitted without his explicit per-item approval.~~ — ✅ **decided + submitted Oct 31 by Anish.**
-4. ~~**Repo-public call:** the repo is limitation-honest and shareable-first, but goes nowhere without his explicit per-item approval.~~ — ✅ **decided: flipped public Oct 29, 2026 under Apache-2.0.**
-5. **Post #1:** approve / edit / hold + pick the channel(s).
-6. **Invitation lists:** approve names + texts (researchers who wrote the field's key papers — replication asks + advisory circle).
-7. ~~**Create one GitHub repo** (private) for plans + publish queue + memory dumps — suggested name `agent-boundary-program`~~ — ✅ created Oct 21; plans, publish queue, and the first memory dump live there.
-8. **Optional:** Snyk token, if he wants that one competitor cell filled.
+3. ~~**Repo-public call:** the repo is limitation-honest and shareable-first, but goes nowhere without his explicit per-item approval.~~ — ✅ **decided: flipped public Oct 29, 2026 under Apache-2.0.**
+4. **Post #1:** approve / edit / hold + pick the channel(s).
+5. **Invitation lists:** approve names + texts (researchers who wrote the field's key papers — replication asks + advisory circle).
+6. ~~**Create one GitHub repo** (private) for plans + publish queue + memory dumps — suggested name `agent-boundary-program`~~ — ✅ created Oct 21; plans, publish queue, and the first memory dump live there.
+7. **Optional:** Snyk token, if he wants that one competitor cell filled.
 
 ## How work runs now (continuous mode)
 Daily work sessions each morning (targets, not gates): build → write the day's brief into this repo → commit → push (cryptographically tree-verified) → report. Between sessions, work pulls forward. Code lives in this repo (`Vroom-Analytics-123/agent-boundary-conformance`, public since Oct 29, 2026, Apache-2.0). Plans and publish items will live in the program repo once created. A memory dump (project memory + status) will be pushed to the program repo weekly.

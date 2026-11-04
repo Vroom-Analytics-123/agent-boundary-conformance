@@ -27,15 +27,13 @@ When effect observation lands: model invocations and their transitive effects (w
 
 ## 5. Explicit non-goals (credibility protection)
 - **No token, no proprietary blockchain, no consensus network.** They add no verification property that Merkle trees + signatures + an existing public log don't already provide, and they tax credibility with AI-safety funders and enterprise buyers alike.
-- **No "trust us" server.** The hosted product sells retention, signing keys management, diff alerting, and support — never exclusive ability to verify. Verification stays free and offline forever; that's what makes the evidence admissible-grade.
+- **No "trust us" server.** Never exclusive ability to verify. Verification stays free and offline forever; that's what makes the evidence admissible-grade.
 - **No novelty overclaim:** transparency logs (CT, Rekor), event sourcing, and property-based testing are proven, borrowed machinery. The novel composition is applying them to *agent permission decisions vs stated intent*, plus the divergence-mining search and the public corpus that accumulates on top.
 
 ## 6. What this changes in the existing plan
 - As of 2026-10-22: only the parts already specced (hash-stamped bundles, event-shaped evidence). No schedule change.
 - Phase 1: public anchoring of the launch corpus root + verification tooling shipped with the Scorecard (a skeptic can verify our launch stat — that's the press hook).
-- Phase 2: divergence-mining prototype (grant-fundable research: BlueDot/TAIF narratives), hosted evidence store on the same event schema.
-- Grant language addition: "public, verifiable measurement infrastructure" — every number we publish carries its own proof.
-- VC language addition: "the transparency log for agent permissions" — a record that compounds with every anchored run and that platforms cannot credibly operate against themselves.
+- Phase 2: divergence-mining prototype, hosted evidence store on the same event schema.
 
 
 ## 7. Improvements adopted (v1.1, 2026-10-21 — after backing review)

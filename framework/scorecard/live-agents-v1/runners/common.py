@@ -141,7 +141,10 @@ def adapt_command(scenario, scratch, listener_port):
 
 
 def scenario_cwd(scenario, scratch):
-    if scenario["id"] in ("V1-15",):
+    if scenario["id"] in ("V1-15", "V1-23"):
+        # V1-23 (git status) must run inside the repo fixture: the
+        # original rollout ran it in the scratch root (not a repo), so
+        # its cells were an artifact. Repaired 2026-11-03.
         return os.path.join(scratch, "repo")
     if scenario["id"] in ("V1-16", "V1-24"):
         return os.path.join(scratch, "my_app")

@@ -102,12 +102,11 @@ We searched hard, in several phrasings, for work measuring agent permission/poli
 
 **Verdict (INFERENCE): one coherent research program, with two honest adjacencies — provided the program is named and bounded correctly.**
 
-The coherent core is **Boundary Measurement**, and it has four parts that genuinely imply each other:
+The coherent core is **Boundary Measurement**, and it has three parts that genuinely imply each other:
 
 - **The tester** is the measurement instrument — the only component that produces primary evidence.
 - **FinePrint** is the research program the tester serves: its schema (*native_decision × observed_effect × verdict*: VERIFIED / CONTRADICTED / UNKNOWN) is literally the tester's output shape, and the conformance experiment is its proving ground. This is not portfolio decoration; it is the same object at two altitudes.
 - **The Index** is the publication of record — the recurring, versioned measurements that turn one-off findings (the GuardFall/Pillar pattern) into a measurement series vendors and buyers can cite.
-- **Hosted signed evidence** is the business that funds neutrality: retained, witnessed, cross-version conformance records are what a measurement-of-record sells, and the transparency design (Area 4) is what makes "trust us" into "verify it."
 
 The adjacencies, stated honestly:
 
@@ -115,7 +114,7 @@ The adjacencies, stated honestly:
 - **Emberlane** is *not* part of the research program. It is a portfolio sibling and, later, a natural **measured subject and dogfood customer** (an MCP gateway's tool permissions are exactly a surface this program measures). Claiming a technical linkage today would be the incoherence Anish is probing for; the honest link is "future subject, Phase 4."
 - **InferRail / Nexus Trust** remain out of scope for this program (standing Week-1 rule). The only long-term bridge worth naming: measured invariants are the natural input to an enforcement substrate — a Phase-4+ option, not a current claim.
 
-**Distraction risks, named:** (1) hosted-tier engineering can eat the measurement core — it is Phase-gated for a reason; (2) the Index can drift into media/content and stop being measurement; (3) portfolio narrative ("five projects, one platform") can substitute for the one program that produces evidence. The grant narrative should fund the core — tester + FinePrint method + Index — with hosted evidence as its Phase-gated expression.
+**Distraction risks, named:** (1) hosted-tier engineering can eat the measurement core — it is Phase-gated for a reason; (2) the Index can drift into media/content and stop being measurement; (3) portfolio narrative ("five projects, one platform") can substitute for the one program that produces evidence.
 
 ## (d) Ambition upgrades the literature justifies
 
@@ -138,7 +137,7 @@ The adjacencies, stated honestly:
 
 ---
 
-*Bottom line for the founder's question: the project is ambitious enough in its core claim — a measurement-of-record for agent decision boundaries — and the literature makes it more ambitious, not less, in two specific ways: verifying our own instrument (upgrade 2) and extending measurement to the stochastic classifier layer vendors are now shipping (upgrade 5). The novelty survives scrutiny only in its narrowed form (section b); the cohesion is real for tester + FinePrint + Index + hosted evidence, and honestly absent — by design — for Emberlane and AnswerGraph beyond shared discipline and a future dogfood relationship.*
+*Bottom line for the founder's question: the project is ambitious enough in its core claim — a measurement-of-record for agent decision boundaries — and the literature makes it more ambitious, not less, in two specific ways: verifying our own instrument (upgrade 2) and extending measurement to the stochastic classifier layer vendors are now shipping (upgrade 5). The novelty survives scrutiny only in its narrowed form (section b); the cohesion is real for tester + FinePrint + Index, and honestly absent — by design — for Emberlane and AnswerGraph beyond shared discipline and a future dogfood relationship.*
 
 ---
 

@@ -12,7 +12,7 @@ before it is committed. They are cheap; skipping them is how living docs rot.
 - Bump the "Last updated" line to the landing date/time.
 - Update every state claim your change touched: verdict language, route
   assignments, evidence locations (bundle paths + Merkle roots), scorecard
-  version, grants/publish-queue status, the "Waiting on Anish" list.
+  version, publish-queue status, the "Waiting on Anish" list.
 - A claim that was true yesterday and is false today is a stale claim, not a
   typo: fix it in the open (see step 2), never silently.
 

@@ -71,12 +71,3 @@ An org overlay is a JSON file in the same entry shape, with
   re-sealed over the public findings only, so nothing private leaks through
   hashes either. This privacy property is unit-tested
   (`tests/test_catalogue_commons.py`).
-
-## What the future hosted layer adds (roadmap, not built)
-
-Today everything above runs locally. The hosted layer — when the entity
-exists to run it — adds: recurring scheduled checks, deployment webhooks
-that consume the gate mode (`--baseline`), and a review queue for community
-submissions. It does not change the entry format, the review bar, or the
-local-first boundary: the hosted layer can never see your overlay because
-your overlay never leaves your machine.

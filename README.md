@@ -64,7 +64,7 @@ mismatch — that is the gate working, not a code defect.
 1. **See the result** — the chart below. 41 probe commands replayed against Codex's own policy checker. The finding is how often the rulebook *doesn't answer*.
 2. **Run it yourself** — one command, ~10 seconds: `python3 tools/run_fixtures.py` (needs the pinned `codex` CLI, v0.149.0 — restore it first, see Try it above). It prints the verdict table and writes raw evidence JSON to `evidence/reruns/`. Run it again against the next harness release and the diff between the two runs is the conformance signal, not either run alone.
 3. **Skim the evidence** — `evidence/day1-baseline-2026-10-21/` holds the frozen baseline raw outputs; `docs/COMPETITOR_BASELINES.md` shows the same tests run against the closest existing tools.
-4. **Read the one-page status** — [docs/DASHBOARD.md](docs/DASHBOARD.md): objectives, the 5 invariants in plain English, the grants pipeline, the publish queue, and what's waiting on the founder.
+4. **Read the one-page status** — [docs/DASHBOARD.md](docs/DASHBOARD.md): objectives, the 5 invariants in plain English, the publish queue, and what's waiting on the founder.
 
 ## The measured result
 

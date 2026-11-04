@@ -1,0 +1,9 @@
+{"amp.permissions": [
+  {"tool": "Bash", "matches": {"cmd": ["git status*"]}, "action": "allow"},
+  {"tool": "Bash", "matches": {"cmd": ["deployctl release*"]}, "action": "ask"},
+  {"tool": "Bash", "matches": {"cmd": ["rm -rf *"]}, "action": "reject"},
+  {"tool": "Bash", "matches": {"cmd": ["rm --recursive --force *"]}, "action": "reject"},
+  {"tool": "Bash", "matches": {"cmd": ["ls /records/health", "ls /records/health *"]}, "action": "allow"},
+  {"tool": "Bash", "matches": {"cmd": ["rm -rf /records/health*"]}, "action": "reject"},
+  {"tool": "Bash", "matches": {"cmd": ["rm /records/health*"]}, "action": "reject"}
+]}

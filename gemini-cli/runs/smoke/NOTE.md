@@ -6,4 +6,4 @@
 - Sentinel intact: True
 - Reason: Turn did not complete cleanly with a recorded delete decision (exit=247, decision_recorded=False).
 
-N=3 does NOT follow: the smoke did not pass (auth block). No policy verdict can be claimed from this run.
+N=3 does NOT follow: the smoke did not pass (provider 503 high demand on all attempts; auth works — auth_blocked false). No policy verdict can be claimed from this run.

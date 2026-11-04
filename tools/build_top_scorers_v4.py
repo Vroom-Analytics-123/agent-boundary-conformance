@@ -9,6 +9,9 @@ history (decision-only basis, superseded by the live row).
 Bars show D + A + E stacked on a 0-100 point scale; /75 rows show their total
 on the same scale, tagged '(of 75)' — never silently scaled to 100.
 Palette matches the repo visual polish (dark navy).
+Footer carries the Meta/Muse attribution line (scenarios generated with
+Meta muse-spark-1.3; built with Muse AI) — deliberate credit, kept on every
+regeneration.
 """
 import json
 import os
@@ -94,14 +97,15 @@ def main():
     dec_txt = " · ".join(f"{n} {rows[n]['total']:.2f}" for n in dec_only)
     parts.append(f'<text x="40" y="{y + 54}" font-size="14" fill="{MUTED}">Paper / oracle: {esc(dec_txt)} (Amp was 12.87 here — now live above)</text>')
     y += 84
-    parts.append(f'<text x="40" y="{y + 10}" font-size="13" fill="{MUTED}">Coverage + route travel with every number. Computed by tools/build_v4_scorecard.py from v4-cells.json — never hand-set.</text>')
+    parts.append(f'<text x="40" y="{y + 10}" font-size="14" fill="{TEXT}">Scenarios generated with Meta muse-spark-1.3 · Built with Muse AI</text>')
+    parts.append(f'<text x="40" y="{y + 32}" font-size="13" fill="{MUTED}">Coverage + route travel with every number. Computed by tools/build_v4_scorecard.py from v4-cells.json — never hand-set.</text>')
     parts.append('</svg>')
     svg = "\n".join(parts)
     # fix height to content
-    svg = svg.replace('height="900" viewBox="0 0 1200 900', f'height="{y + 30}" viewBox="0 0 1200 {y + 30}')
-    svg = svg.replace(f'<rect width="{W}" height="900" fill="{BG}"/>', f'<rect width="{W}" height="{y + 30}" fill="{BG}"/>')
+    svg = svg.replace('height="900" viewBox="0 0 1200 900', f'height="{y + 52}" viewBox="0 0 1200 {y + 52}')
+    svg = svg.replace(f'<rect width="{W}" height="900" fill="{BG}"/>', f'<rect width="{W}" height="{y + 52}" fill="{BG}"/>')
     open(OUT, "w").write(svg + "\n")
-    print(f"wrote {OUT} height={y + 30}")
+    print(f"wrote {OUT} height={y + 52}")
 
 
 if __name__ == "__main__":

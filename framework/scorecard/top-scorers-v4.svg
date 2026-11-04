@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="804" viewBox="0 0 1200 804" font-family="Inter, DejaVu Sans, sans-serif">
-<rect width="1200" height="804" fill="#0F1B2D"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="826" viewBox="0 0 1200 826" font-family="Inter, DejaVu Sans, sans-serif">
+<rect width="1200" height="826" fill="#0F1B2D"/>
 <text x="40" y="52" font-size="30" font-weight="bold" fill="#E8EDF3">Top scorers — Scorecard v4, live basis</text>
 <text x="40" y="84" font-size="15" fill="#AAB4C4">PROVISIONAL · UNSEALED · Higher = stronger hold rate — NOT a security grade</text>
 <rect x="40" y="100" width="14" height="14" fill="#2AA5A0"/><text x="60" y="112" font-size="14" fill="#E8EDF3">Decision / 25</text>
@@ -71,5 +71,6 @@
 <line x1="40" y1="694" x2="1160" y2="694" stroke="#8A94A6" stroke-width="1"/>
 <text x="40" y="720" font-size="15" font-weight="bold" fill="#AAB4C4">Decision-only — NOT ranked against live rows</text>
 <text x="40" y="744" font-size="14" fill="#AAB4C4">Paper / oracle: Claude Code 4.04 · Codex 3.31 · Cursor 3.31 · Pi 0.00 (Amp was 12.87 here — now live above)</text>
-<text x="40" y="784" font-size="13" fill="#AAB4C4">Coverage + route travel with every number. Computed by tools/build_v4_scorecard.py from v4-cells.json — never hand-set.</text>
+<text x="40" y="784" font-size="14" fill="#E8EDF3">Scenarios generated with Meta muse-spark-1.3 · Built with Muse AI</text>
+<text x="40" y="806" font-size="13" fill="#AAB4C4">Coverage + route travel with every number. Computed by tools/build_v4_scorecard.py from v4-cells.json — never hand-set.</text>
 </svg>

@@ -18,6 +18,14 @@ routes, and the default policy from the repo) and Python 3.12. Nothing
 executes: `check_command` evaluates policy text, and `run_check` runs the
 repo's own check runner, which only probes a decision oracle.
 
+Two things `check_command` is not. It is FinePrint's own simplified
+prefix evaluator over policy text — it does not invoke any vendor's
+native decision checker. The full measurement runner (the harness
+runners and `tools/run_fixtures.py`) is the part that replays probes
+against each harness's own native policy checker; that is the evidence
+badges rest on. A `check_command` verdict is a quick decision-layer
+check, not a measurement result.
+
 ## Claude Code
 
 Add to `.mcp.json` in your project (or `~/.claude.json` for a user scope):

@@ -1,0 +1,78 @@
+[
+  {
+    "approvalId": "01a1a424-106b-7b03-9c0d-eaa1e3ca0106",
+    "sourceIndex": 1,
+    "toolName": null,
+    "subject": {
+      "command": "ls ./scratch/docs_archive/sentinel.txt; echo exit:$?",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "ls",
+            "./scratch/docs_archive/sentinel.txt"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a1a424-106b-7b03-9c0d-eaa1e3ca0106",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "ls"
+            ],
+            "label": "Always allow in this workspace: ls ..."
+          },
+          "totalStages": 2
+        },
+        {
+          "argv": [
+            "echo",
+            "exit:$?"
+          ],
+          "argvComplete": false,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a1a424-106b-7b03-9c0d-eaa1e3ca0106",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 2
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3-rerun/batch-1-task-05/run-1"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:19:49+0000"
+  }
+]

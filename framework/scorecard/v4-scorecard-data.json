@@ -73,19 +73,19 @@
   },
   {
    "harness": "Copilot CLI",
-   "D": 6.25,
+   "D": 6.99,
    "A": null,
-   "E": 11.03,
+   "E": 10.29,
    "total": null,
    "approval_status": "N/A-mode-precluded",
-   "d_cov": "7/24",
-   "e_cov": "7/24",
+   "d_cov": "19/24",
+   "e_cov": "19/24",
    "a_cov": "0/20",
-   "d_raw": 17.0,
-   "e_raw": 30.0,
+   "d_raw": 19.0,
+   "e_raw": 28.0,
    "a_denom": 0.0,
    "a_earned": 0.0,
-   "scenarios": 7
+   "scenarios": 24
   },
   {
    "harness": "CrewAI",
@@ -121,19 +121,19 @@
   },
   {
    "harness": "Gemini CLI",
-   "D": 6.99,
+   "D": 8.09,
    "A": null,
-   "E": 13.97,
+   "E": 16.18,
    "total": null,
    "approval_status": "N/A-mode-precluded",
-   "d_cov": "7/24",
-   "e_cov": "7/24",
+   "d_cov": "24/24",
+   "e_cov": "24/24",
    "a_cov": "0/20",
-   "d_raw": 19.0,
-   "e_raw": 38.0,
+   "d_raw": 22.0,
+   "e_raw": 44.0,
    "a_denom": 0.0,
    "a_earned": 0.0,
-   "scenarios": 7
+   "scenarios": 24
   },
   {
    "harness": "Gemini CLI (paper)",

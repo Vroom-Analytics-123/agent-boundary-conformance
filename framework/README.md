@@ -23,7 +23,10 @@ verdicts — what held, what diverged, what was never decided at all.
 - **Effect.** What actually happened when a command ran? Measured live
   on Muse Code (39 runs), OpenCode (39 stub-provider runs), and the
   Oct 23 live campaign (Omnigent, Hermes Agent, OpenClaw, CrewAI,
-  LangGraph, Strands). Untested on the Codex and Claude Code rows,
+  LangGraph, Strands). Nov 3 added the 480-run reference-agent rollout
+  (the same five frameworks/agents minus Omnigent, which was blocked),
+  OpenCode on a real model (r1, beam arm), and a Copilot FP-001 smoke
+  cell — all unsealed. Untested on the Codex and Claude Code rows,
   where the oracle evaluates command strings only.
 
 Layers say *where*. Dimensions say *how good*.
@@ -43,10 +46,13 @@ Layers say *where*. Dimensions say *how good*.
 6. **Version drift** — every dimension re-measured on each new version.
    Rankings carry a date, or they lie.
 
-Measured October 21 – November 2, 2026: sixteen harnesses, from
+Measured October 21 – November 3, 2026: sixteen harnesses, from
 vendor-confirmed oracles (Codex, Amp) through live effect runs (Muse
 Code, OpenCode, the Oct 23 campaign) to survey and assessment rows
-(Pi, Goose, Copilot CLI). The full grid is the scorecard below.
+(Pi, Goose, Copilot CLI). Nov 3 added the 480-run live rollout, the
+Goose adapter, the Muse N=3 re-run, the Copilot smoke PASS, and the
+OpenCode real-model run — all unsealed, so the v2 grid above is
+unchanged; see `framework/scorecard/` for each package. The full grid is the scorecard below.
 
 ![Layers by dimensions](visuals/layers-x-dimensions.svg)
 
@@ -132,10 +138,13 @@ a result.
 ## What exists today
 
 Sixteen harnesses on the scorecard above, scoring v2, evidence window
-October 21 – November 2, 2026. Highest score: Amp 64% (decision-layer
+October 21 – November 3, 2026. Highest score: Amp 64% (decision-layer
 evidence only). Lowest scored: Pi 0% (no permission system by design).
-Goose and Copilot CLI score 0% with 0 of 6 measured — documented or
-assessed, never evaluated here. Regenerate the scorecard from its data
+Goose scores 0% with 0 of 6 measured — T2-evaluated Nov 3
+(`framework/scorecard/goose-adapter-v1/`, unsealed; badges unchanged).
+Copilot CLI scores 0% with 0 of 6 measured — one FP-001 smoke cell
+passed Nov 3 (`copilot-cli/runs/smoke/`, deny-rule; unsealed, not a
+badge). Regenerate the scorecard from its data
 with `python3 framework/scorecard/build_scorecard.py`; contribute a new
 row by following [REMEASUREMENT.md](REMEASUREMENT.md) and the data
 file's shape.

@@ -29,7 +29,7 @@ is the short version of this page.
 | [schemas/](../schemas/) | CURRENT | Versioned schemas: invariant v1, finding v1 + v2 (dual-verdict extension), evidence-bundle v1 + serialization guards |
 | [preregistration/](preregistration/) | CURRENT | Hash-locked pre-registration of the Day-2 run (corpus, thresholds, inclusion rules). Correction Oct 21: Day 1 was exploratory; Day 2 pre-registered a CONFIRMATION/replication of the explored hypothesis, not initial discovery (held-out: stratified alternation) |
 | [daily/](daily/) | DAILY LOG | One brief per sprint day; each is a snapshot of its day |
-| [../evidence/reports/day6-scorecard-v3-postfix/](../evidence/reports/day6-scorecard-v3-postfix/) | **CURRENT** | The Boundary Scorecard v3 (POST-FIX): `scorecard.json`/`scorecard.html` + `tier-matrix.json` — the shareable-first export |
+| [../evidence/reports/day6-scorecard-v3-postfix/](../evidence/reports/day6-scorecard-v3-postfix/) | HISTORY (Oct 26 artifact — the day-6 post-fix scorecard, NOT the Nov 3 scoring-v3 methodology; see SCORING-v3.md) | The Boundary Scorecard v3 (POST-FIX): `scorecard.json`/`scorecard.html` + `tier-matrix.json` — the shareable-first export |
 | [../evidence/postfix-2026-10-22/](../evidence/postfix-2026-10-22/) | **CURRENT** | Sealed post-fix evidence: `bundle.json` (41-case corpus, Merkle root `5a974fe6…`) + `bundle-protected.json` (11-case family, Merkle root `29768240…`); both verify clean, with detached Ed25519 post-seal attestations (sealed before signing existed, so `signature_state` honestly remains `unsigned`) |
 | [../evidence/amp-2026-10-22/](../evidence/amp-2026-10-22/) | **CURRENT** | Sealed Amp promotion evidence: `bundle.json` (41-case corpus + 11-case family, Merkle root `cb6eccf0…`, Ed25519-signed) + `rerun.json` raw oracle outputs |
 | [../evidence/reports/day6-scorecard/](../evidence/reports/day6-scorecard/) | HISTORY (pre-fix) | The Boundary Scorecard v2 (PRE-FIX) — kept as the pre-fix baseline |
@@ -38,3 +38,17 @@ is the short version of this page.
 | [DAY1_INVARIANT_REVIEW_PREP.md](DAY1_INVARIANT_REVIEW_PREP.md) | HISTORICAL | Prep for the founder's invariant review |
 | [CATCH_UP_READING.md](CATCH_UP_READING.md) | REFERENCE | The founder's reading plan for the field |
 | [IMPLEMENTATION_DESIGN.md](IMPLEMENTATION_DESIGN.md) | REFERENCE | Stack design notes (Rust path, probe design) |
+| [../framework/README.md](../framework/README.md) | CURRENT | Framework dimensions + what exists today (Nov 3 round included) |
+| [../framework/SCORING.md](../framework/SCORING.md) | CURRENT | Live scoring formula v2 + worked examples |
+| [../framework/SCORING-v3.md](../framework/SCORING-v3.md) | CURRENT (DRAFT methodology, not live) | Scoring v3: verdict bands, impact-weighted H, catastrophic veto; PROVISIONAL until sealed. NOT the Oct 26 day-6 "Scorecard v3" artifact |
+| [../framework/REMEASUREMENT.md](../framework/REMEASUREMENT.md) | CURRENT | Consistent re-measurement protocol: one Meta-model scenario set, run against every harness |
+| [../framework/scorecard/](../framework/scorecard/) | CURRENT | Live v2 scorecard data + generator (`scorecard-data.json`, `build_scorecard.py`) + live SVG (`../framework/visuals/scorecard.svg`) |
+| [../framework/scorecard/scenarios-v1.json](../framework/scorecard/scenarios-v1.json) | CURRENT | 24 v1 scenarios (Meta-model generated, human-reviewed) |
+| [../framework/scorecard/remeasure-v1-results.json](../framework/scorecard/remeasure-v1-results.json) | CURRENT (unsealed) | v1 adapter runs (Codex, Amp, Claude, Cursor, Gemini) |
+| [../framework/scorecard/pilot-2026-11-03.json](../framework/scorecard/pilot-2026-11-03.json) | CURRENT (unsealed) | v1 pilot record |
+| [../framework/scorecard/v3-scores.json](../framework/scorecard/v3-scores.json) | CURRENT (DRAFT numbers, provisional) | Worked v3 scores from the v1 rows |
+| [../framework/scorecard/live-agents-v1/](../framework/scorecard/live-agents-v1/) | CURRENT (unsealed) | Nov 3 480-run live reference-agent rollout (raw record trees stay local) |
+| [../framework/scorecard/goose-adapter-v1/](../framework/scorecard/goose-adapter-v1/) | CURRENT (unsealed) | Goose T2 adapter (Goose 1.57.0; rules attach to tools, never command text) |
+| [../framework/scorecard/opencode-live-v1/](../framework/scorecard/opencode-live-v1/) | CURRENT (unsealed, r1) | OpenCode real-model live run Nov 3 (opencode 1.19.5, beam arm) |
+| [../framework/scorecard/musecode-n3-rerun/](../framework/scorecard/musecode-n3-rerun/) | CURRENT | Muse Code genuine N=3 re-run summary Nov 3 (records on branch `musecode-smoke`) |
+| [../copilot-cli/](../copilot-cli/) | CURRENT | Copilot CLI FP-001 smoke harness + PASS record Nov 3 |

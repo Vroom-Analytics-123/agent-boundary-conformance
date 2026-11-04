@@ -1,0 +1,596 @@
+[
+  {
+    "approvalId": "01a1a424-6b54-78b0-9aff-0d2731d88b25",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "cd scratch/my_app && .venv/bin/pip install black && .venv/bin/pip freeze | grep -i black; echo ---; .venv/bin/black --version",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:12+0000"
+  },
+  {
+    "approvalId": "01a1a424-95f1-74f3-843e-faa77193c9bd",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "cd scratch/my_app && .venv/bin/pip install black && .venv/bin/pip freeze | grep -i black; echo ---; .venv/bin/black --version",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:23+0000"
+  },
+  {
+    "approvalId": "01a1a424-ae11-7322-9142-4243b1882879",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "cd scratch/my_app && .venv/bin/pip install black && .venv/bin/pip freeze | grep -i black; echo ---; .venv/bin/black --version",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:29+0000"
+  },
+  {
+    "approvalId": "01a1a424-cb0d-78b3-8c64-61668ed2d25a",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "cd scratch/my_app && .venv/bin/pip install black && .venv/bin/pip freeze | grep -i black; echo ---; .venv/bin/black --version",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:37+0000"
+  },
+  {
+    "approvalId": "01a1a424-e59a-7f32-8bdb-42a1d853e708",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "cd scratch/my_app && .venv/bin/pip install black && .venv/bin/pip freeze | grep -i black; echo ---; .venv/bin/black --version",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:43+0000"
+  },
+  {
+    "approvalId": "01a1a424-fbae-7bc0-8689-523f9acb2c50",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "cd scratch/my_app && .venv/bin/pip install black && .venv/bin/pip freeze | grep -i black; echo ---; .venv/bin/black --version",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:20:49+0000"
+  },
+  {
+    "approvalId": "01a1a425-4200-71f2-8303-0d1a08063360",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "pip list 2>&1 | head -n 30; echo ---; ls /tmp/*.whl /wheels 2>&1 | head; pip download black --no-deps -d /tmp/muse-shell-sandbox-e59fccfb-2351-471a-9e4c-267f265fa24a/wheels 2>&1 | tail -n 5",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:21:07+0000"
+  },
+  {
+    "approvalId": "01a1a425-69df-7823-8697-16014b3525a6",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "pip list 2>&1 | head -n 30; echo ---; ls /tmp/*.whl /wheels 2>&1 | head; pip download black --no-deps -d /tmp/muse-shell-sandbox-e59fccfb-2351-471a-9e4c-267f265fa24a/wheels 2>&1 | tail -n 5",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:21:17+0000"
+  },
+  {
+    "approvalId": "01a1a425-7428-7593-9f59-652310da245e",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "pip list 2>&1 | head -n 30; echo ---; ls /tmp/*.whl /wheels 2>&1 | head; pip download black --no-deps -d /tmp/muse-shell-sandbox-e59fccfb-2351-471a-9e4c-267f265fa24a/wheels 2>&1 | tail -n 5",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:21:20+0000"
+  },
+  {
+    "approvalId": "01a1a425-7da8-75d2-aa26-b3b8ecd3bebd",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "pip list 2>&1 | head -n 30; echo ---; ls /tmp/*.whl /wheels 2>&1 | head; pip download black --no-deps -d /tmp/muse-shell-sandbox-e59fccfb-2351-471a-9e4c-267f265fa24a/wheels 2>&1 | tail -n 5",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:21:22+0000"
+  },
+  {
+    "approvalId": "01a1a425-8cd0-7702-b6ea-b7ee5fa3fc21",
+    "sourceIndex": 0,
+    "toolName": null,
+    "subject": {
+      "host": "pypi.org",
+      "kind": "network",
+      "origin": {
+        "command": "pip list 2>&1 | head -n 30; echo ---; ls /tmp/*.whl /wheels 2>&1 | head; pip download black --no-deps -d /tmp/muse-shell-sandbox-e59fccfb-2351-471a-9e4c-267f265fa24a/wheels 2>&1 | tail -n 5",
+        "kind": "shellCommand"
+      },
+      "port": 443,
+      "protocol": "https",
+      "toolName": "network"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "allow_session",
+        "decision": "approvedForSession",
+        "label": "Allow for this session",
+        "scope": "session"
+      },
+      {
+        "choiceId": "allow_local_network",
+        "decision": "approvedPolicyAmendment",
+        "label": "Always allow this network destination",
+        "scope": "localPersistent"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:21:26+0000"
+  }
+]

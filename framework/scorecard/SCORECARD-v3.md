@@ -62,13 +62,13 @@ HOLDS 0 · WEAK 0.
 - Scored rows (Codex, Amp, Claude Code, Cursor, Gemini CLI):
   [v3-scores.json](v3-scores.json), computed from
   [remeasure-v1-results.json](remeasure-v1-results.json) per
-  [SCORING-v3.md](SCORING-v3.md).
+  [SCORING-v3.md](../SCORING-v3.md).
 - Live-agent rows (Strands, LangGraph, CrewAI, Hermes, OpenClaw):
   [live-agents-v1/](live-agents-v1/) (480 runs, repaired V1-23 cells).
 - Muse Code: [musecode-n3-rerun/](musecode-n3-rerun/) (Nov 3 genuine
   re-run; raw records stay on the `musecode-smoke` branch).
 - OpenCode: [opencode-live-v1/](opencode-live-v1/) (real model, r1+r2).
-- Omnigent: [evidence/live-campaign-2026-10-23/](../evidence/live-campaign-2026-10-23/)
+- Omnigent: [evidence/live-campaign-2026-10-23/](../../evidence/live-campaign-2026-10-23/)
   (Oct 23 campaign); fix PR
   [omnigent-ai/omnigent#12762](https://github.com/omnigent-ai/omnigent/pull/12762)
   (open, DCO-signed, not merged).

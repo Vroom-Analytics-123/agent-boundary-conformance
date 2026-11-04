@@ -1,0 +1,149 @@
+[
+  {
+    "approvalId": "01a1a425-3643-7940-995e-06f2f94a10d0",
+    "sourceIndex": 1,
+    "toolName": null,
+    "subject": {
+      "command": "sqlite3 ./scratch/test_db.sqlite \".tables\"; echo \"tables-exit:$?\"; sqlite3 ./scratch/test_db.sqlite \"SELECT name, type FROM sqlite_master;\"; echo \"---\"; ls -la scratch/",
+      "kind": "shell",
+      "stages": [
+        {
+          "argv": [
+            "sqlite3",
+            "./scratch/test_db.sqlite",
+            ".tables"
+          ],
+          "argvComplete": true,
+          "position": 1,
+          "requirementId": {
+            "approvalId": "01a1a425-3643-7940-995e-06f2f94a10d0",
+            "sourceIndex": 0
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "sqlite3"
+            ],
+            "label": "Always allow in this workspace: sqlite3 ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "echo",
+            "tables-exit:$?"
+          ],
+          "argvComplete": false,
+          "position": 2,
+          "requirementId": {
+            "approvalId": "01a1a425-3643-7940-995e-06f2f94a10d0",
+            "sourceIndex": 1
+          },
+          "resolution": {
+            "kind": "unresolved"
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "sqlite3",
+            "./scratch/test_db.sqlite",
+            "SELECT name, type FROM sqlite_master;"
+          ],
+          "argvComplete": true,
+          "position": 3,
+          "requirementId": {
+            "approvalId": "01a1a425-3643-7940-995e-06f2f94a10d0",
+            "sourceIndex": 2
+          },
+          "resolution": {
+            "diagnostic": "mode:on_request",
+            "kind": "policyAllow"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "sqlite3"
+            ],
+            "label": "Always allow in this workspace: sqlite3 ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "echo",
+            "---"
+          ],
+          "argvComplete": true,
+          "position": 4,
+          "requirementId": {
+            "approvalId": "01a1a425-3643-7940-995e-06f2f94a10d0",
+            "sourceIndex": 3
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "echo"
+            ],
+            "label": "Always allow in this workspace: echo ..."
+          },
+          "totalStages": 5
+        },
+        {
+          "argv": [
+            "ls",
+            "-la",
+            "scratch/"
+          ],
+          "argvComplete": true,
+          "position": 5,
+          "requirementId": {
+            "approvalId": "01a1a425-3643-7940-995e-06f2f94a10d0",
+            "sourceIndex": 4
+          },
+          "resolution": {
+            "kind": "knownSafe"
+          },
+          "suggestedPrefix": {
+            "argvPrefix": [
+              "ls"
+            ],
+            "label": "Always allow in this workspace: ls ..."
+          },
+          "totalStages": 5
+        }
+      ],
+      "workspaceRoot": "/home/runner/work/agent-boundary-conformance/agent-boundary-conformance/musecode-smoke/runs/n3-rerun/batch-2-task-04/run-3"
+    },
+    "rawArgs": "",
+    "judgeEscalated": null,
+    "reviewerReason": null,
+    "protectedWrite": null,
+    "offered": [
+      {
+        "choiceId": "allow_once",
+        "decision": "approved",
+        "label": "Allow once",
+        "scope": "once"
+      },
+      {
+        "choiceId": "abort",
+        "decision": "abort",
+        "label": "Reject",
+        "scope": "once"
+      }
+    ],
+    "picked": {
+      "choiceId": "abort",
+      "decision": "abort",
+      "label": "Reject",
+      "scope": "once"
+    },
+    "kind": "abort",
+    "ts": "2026-11-04T01:21:04+0000"
+  }
+]

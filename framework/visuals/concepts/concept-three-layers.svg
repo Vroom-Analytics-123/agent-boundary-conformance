@@ -7,7 +7,7 @@
 <rect x="60" y="130" width="1080" height="56" rx="12" fill="#1B2A42" stroke="#223452"/>
 <text x="600" y="166" font-size="20" fill="#E8EDF3" font-family="DejaVu Sans Mono, monospace" text-anchor="middle">git status &amp;&amp; rm -rf /tmp/x</text>
 <rect x="60" y="220" width="340" height="400" rx="16" fill="#1B2A42"/>
-<rect x="60" y="220" width="340" height="8" rx="4" fill="#2AA5A0"/>
+<rect x="68" y="220" width="324" height="8" rx="4" fill="#2AA5A0"/>
 <rect x="60" y="220" width="340" height="400" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="230" y="272" font-size="22" fill="#E8EDF3" font-weight="bold" text-anchor="middle">DECISION</text>
 <text x="230" y="306" font-size="14" fill="#AAB4C4" text-anchor="middle">What does the policy decide?</text>
@@ -19,7 +19,7 @@
 <text x="84" y="524" font-size="15" fill="#AAB4C4" text-anchor="start">Bundle 67e3d6c2 (C4)</text>
 <text x="230" y="560" font-size="15" fill="#2AA5A0" font-weight="bold" text-anchor="middle">MEASURED</text>
 <rect x="430" y="220" width="340" height="400" rx="16" fill="#1B2A42"/>
-<rect x="430" y="220" width="340" height="8" rx="4" fill="#E8A838"/>
+<rect x="438" y="220" width="324" height="8" rx="4" fill="#E8A838"/>
 <rect x="430" y="220" width="340" height="400" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="600" y="272" font-size="22" fill="#E8EDF3" font-weight="bold" text-anchor="middle">APPROVAL</text>
 <text x="600" y="306" font-size="14" fill="#AAB4C4" text-anchor="middle">Does a human gate intervene?</text>
@@ -31,7 +31,7 @@
 <text x="454" y="524" font-size="15" fill="#AAB4C4" text-anchor="start">Every row, both targets</text>
 <text x="600" y="560" font-size="15" fill="#E8A838" font-weight="bold" text-anchor="middle">UNTESTABLE</text>
 <rect x="800" y="220" width="340" height="400" rx="16" fill="#1B2A42"/>
-<rect x="800" y="220" width="340" height="8" rx="4" fill="#E8A838"/>
+<rect x="808" y="220" width="324" height="8" rx="4" fill="#E8A838"/>
 <rect x="800" y="220" width="340" height="400" rx="16" fill="none" stroke="#223452" stroke-width="1"/>
 <text x="970" y="272" font-size="22" fill="#E8EDF3" font-weight="bold" text-anchor="middle">EFFECT</text>
 <text x="970" y="306" font-size="14" fill="#AAB4C4" text-anchor="middle">What actually happened?</text>

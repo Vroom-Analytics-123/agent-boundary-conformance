@@ -85,29 +85,25 @@ Measurement validity post-fix: 40/41 (the single FAIL is S-02's bookkeeping arti
 
 ## How it works
 
-![The three layers Boundary Measurement compares](docs/assets/three_layers.png)
+![How FinePrint works](framework/visuals/how-it-works.svg)
 
-The project is a **harness-neutral framework** with labelled adapters, not a single-harness tool. **Codex** and **Amp** are measured at the **vendor-confirmed** Decision-layer route (the vendor's own checker answers: pinned codex-cli 0.149.0, pinned amp 0.0.1792680614-g8973a3); **Claude Code, Cursor, Gemini CLI, and OpenCode** are measured at the **reconstructed** route (config-evaluations from documented semantics — labelled evaluation, never interrogation); **Omnigent, Hermes Agent, OpenClaw, CrewAI, LangGraph, and Strands Agents** are measured at the **live** route (Oct 23 campaign, effect as ground truth); **Muse Code** has **no paper surface** (no decision interface located; its live N=3 runs measure Approval and Effect instead); **Pi** is a **survey** row (vendor README states no permission system); **Goose** is **T2-evaluated** (Nov 3 adapter) and **measured live** (Nov 3, 72 cells, unsealed; default executes, hardened/deny stop via the headless mode gate) and **Copilot CLI** has a **FP-001 smoke PASS** plus a **14-cell deletion series** (Nov 3, unsealed) — both rows stay 0% with 0 of 6 measured in the v2 scorecard until sealed evidence lands. These routes are unranked: ease of measurement never makes a harness better or worse. No harness is described as generically "supported" — it is described by its measurement route.
+FinePrint is an **early testing and assurance framework** — inspector, never enforcer. It does not block, filter, or approve anything itself. It checks whether an agent's own limits do what they claim, and writes down what matches and what doesn't. No harness is certified safe.
 
-OpenCode appears in two routes for two different tests: the paper test is reconstructed (config-evaluation from documented semantics), while the live runs measure the permission engine + effects — first with a localhost stub returning canned tool calls (Oct 23 campaign; never model choice), then on a real model (opencode 1.19.5, beam arm, Nov 3, r1+r2, UNSEALED — see `framework/scorecard/opencode-live-v1/`).
+**Depth first.** The method was proven on two harnesses in depth before it was spread across sixteen. The hero case is **Codex**: the founding measurement replayed 41 probes against Codex's own policy checker and found the rulebook silent on the dangerous spellings — forbidden 9, unknown 22. The fix was drafted, applied, and re-measured: forbidden 11, unknown 20, sealed bundle. A dangerous gap found, fixed, and re-tested, with the outcome shown. **Claude Code** is the second deep case: reconstructed from its documented semantics (labelled evaluation, never interrogation), with the same three-layer comparison.
 
-**Coverage — the six former Wave A targets are now measured.** **Omnigent**, **Hermes Agent**, and **OpenClaw** were measured live on Oct 23 (route dossiers in `adapters/<key>-assessment.md`, evidence in `evidence/live-campaign-2026-10-23/`); **LangGraph**, **Strands Agents**, and **CrewAI** were measured live the same day through instrumented reference agents, since frameworks have no declarative policy to read. Adding a target follows **[docs/EXTENDING.md](docs/EXTENDING.md)** and the re-measurement protocol in **[framework/REMEASUREMENT.md](framework/REMEASUREMENT.md)**.
+**Then breadth, with its caveat.** The scorecard now covers 16 harnesses, but its rows mix three different kinds of evidence — native (vendor-confirmed), reconstructed (from docs), and live (effect as ground truth) — and the Nov 3 live runs had no Docker sandbox (not-started, never a pass). FAILS OPEN is not a safest-platform ranking: compare rows only within the same route. Which harness is measured how: [docs/MEASUREMENT_ROUTES.md](docs/MEASUREMENT_ROUTES.md).
 
-```mermaid
-flowchart LR
-    A["Your stated rules<br/>(invariants, security/invariants.yaml)"] --> B["Probe cases<br/>fixtures/fixtures.json — 41 cases"]
-    B --> C["Native oracle<br/>codex execpolicy check<br/>(pinned v0.149.0, never re-implemented)"]
-    C --> D{"Verdict per case"}
-    D -->|matches intent| E["PASS"]
-    D -->|contradicts intent| F["FAIL"]
-    D -->|no native decision| G["UNKNOWN<br/>+ layer attribution"]
-    E --> H["Evidence bundle<br/>raw JSON, hash-stamped, replayable"]
-    F --> H
-    G --> H
-```
+How one probe flows through the framework:
 
-Key verified mechanics: when several rules match one command, the **strictest decision wins**, regardless of order (verified six ways). Path forms flip with configuration (`/bin/rm -rf` is unknown by default, forbidden with `--resolve-host-executables`) — which is exactly why every result records its pinned configuration.
+1. **The problem** — an agent must never do X: delete, exfiltrate, deploy, whatever you forbade. But does it actually stop?
+2. **The rule** — you write the rule as an invariant, a statement of intent in plain words ("never silently delete").
+3. **The probe** — FinePrint replays probe commands against the harness's own checker. Never a re-implementation.
+4. **The three layers, compared not chained** — Decision (what the policy decides: allow, prompt, forbid, or no decision), Approval (does a human gate intervene), Effect (what actually happened — ground truth). Cross-Examination compares all three; a disagreement between any two is a finding. Silence is reported as unknown — never as allow. Paper findings stay provisional until the live test confirms them.
+5. **Finding → fix → re-measure** — every finding ships with a drafted fix, and the fix only closes when the suite re-runs and re-verifies it.
 
+Two mechanics keep every result honest. When several rules match one command, the **strictest decision wins**, regardless of order (verified six ways). And path forms flip with configuration (`/bin/rm -rf` is unknown by default, forbidden with `--resolve-host-executables`) — which is exactly why every result records its pinned configuration.
+
+Adding a target follows [docs/EXTENDING.md](docs/EXTENDING.md) and the re-measurement protocol in [framework/REMEASUREMENT.md](framework/REMEASUREMENT.md).
 ## Nebius × NVIDIA: Nemotron proposes, the checker decides
 
 FinePrint's first live model integration — and the model is deliberately **not** the judge. **Nemotron-3-Super on Nebius Token Factory** proposes adversarial scenario variants for a given invariant set (`tools/nemotron_scenarios.py`); the deterministic checker (pinned codex execpolicy oracle) returns the Decision verdict for each; the demo script (`tools/run_nemotron_demo.py`) adds the Effect observation in a throwaway sandbox. Proposed commands are **never executed** — the only executed command is one allow-verdict benign command (or the labelled `ls` positive control), and the sentinel file must survive intact.

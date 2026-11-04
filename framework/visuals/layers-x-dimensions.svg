@@ -7,26 +7,20 @@
 <text x="275.0" y="154" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">POLICY</text>
 <text x="275.0" y="174" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">ENGINE</text>
 <rect x="358" y="130" width="150" height="56" rx="10" fill="#1B2A42"/>
-<text x="433.0" y="154" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">TRANSPARE-</text>
-<text x="433.0" y="174" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">ENCY</text>
+<text x="433.0" y="164" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">TRANSPARENCY</text>
 <rect x="516" y="130" width="150" height="56" rx="10" fill="#1B2A42"/>
-<text x="591.0" y="154" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">CUSTOMI-</text>
-<text x="591.0" y="174" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">ZATION</text>
+<text x="591.0" y="164" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">CUSTOMIZATION</text>
 <rect x="674" y="130" width="150" height="56" rx="10" fill="#1B2A42"/>
 <text x="749.0" y="154" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">HOLDING</text>
 <text x="749.0" y="174" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">POWER</text>
 <rect x="832" y="130" width="150" height="56" rx="10" fill="#1B2A42"/>
-<text x="907.0" y="154" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">REASON-</text>
-<text x="907.0" y="174" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">ABILITY</text>
+<text x="907.0" y="164" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">REASONABILITY</text>
 <rect x="990" y="130" width="150" height="56" rx="10" fill="#1B2A42"/>
 <text x="1065.0" y="154" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">VERSION</text>
 <text x="1065.0" y="174" font-size="13" fill="#2AA5A0" font-weight="bold" text-anchor="middle">DRIFT</text>
 <rect x="60" y="194" width="132" height="140" rx="10" fill="#223452"/>
 <text x="126" y="238" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">DECISION</text>
-<text x="126" y="262" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">What</text>
-<text x="126" y="279" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">the</text>
-<text x="126" y="296" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">policy</text>
-<text x="126" y="313" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">decides</text>
+<text x="126" y="270" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">What the policy</text><text x="126" y="287" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">decides</text>
 <rect x="200" y="194" width="150" height="140" rx="10" fill="#1B2A42"/>
 <text x="212" y="246" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">Native engine?</text>
 <text x="212" y="268" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">or just a guess?</text>
@@ -47,11 +41,7 @@
 <text x="1002" y="268" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">next version?</text>
 <rect x="60" y="344" width="132" height="140" rx="10" fill="#223452"/>
 <text x="126" y="388" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">APPROVAL</text>
-<text x="126" y="412" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">Whether</text>
-<text x="126" y="429" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">a</text>
-<text x="126" y="446" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">human</text>
-<text x="126" y="463" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">gate</text>
-<text x="126" y="480" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">intervenes</text>
+<text x="126" y="420" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">Whether a human</text><text x="126" y="437" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">gate intervenes</text>
 <rect x="200" y="344" width="150" height="140" rx="10" fill="#1B2A42"/>
 <text x="212" y="396" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">Prompt rules?</text>
 <text x="212" y="418" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">expressible?</text>
@@ -72,9 +62,7 @@
 <text x="1002" y="418" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">changed?</text>
 <rect x="60" y="494" width="132" height="140" rx="10" fill="#223452"/>
 <text x="126" y="538" font-size="15" fill="#E8EDF3" font-weight="bold" text-anchor="middle">EFFECT</text>
-<text x="126" y="562" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">What</text>
-<text x="126" y="579" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">actually</text>
-<text x="126" y="596" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">happened</text>
+<text x="126" y="570" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">What actually</text><text x="126" y="587" font-size="11" fill="#AAB4C4" font-weight="normal" text-anchor="middle">happened</text>
 <rect x="200" y="494" width="150" height="140" rx="10" fill="#1B2A42"/>
 <text x="212" y="546" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">Enforced at</text>
 <text x="212" y="568" font-size="13" fill="#E8EDF3" font-weight="normal" text-anchor="start">a real boundary?</text>

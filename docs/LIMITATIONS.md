@@ -102,6 +102,8 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   pinned configuration") — never allow, never a bypass/evasion/hole.
 - No runtime probe under a pinned approval policy + sandbox mode has run as of
   2026-10-22. Nothing here says what any command would actually do when executed.
+  Update Nov 3: runtime probes have since run — see the §8 addendum. This
+  section stands as the Oct 22 record.
 - 2026-10-22 (Evidence Upgrade C — effect-closure pilot): a pre-registered
   decision→approval→effect pilot (16 cases, pinned `approval_policy=never` +
   `sandbox_mode=workspace-write`, throwaway targets under a job-created
@@ -212,6 +214,25 @@ from the pre-fix bundle/scorecard v2 — never mix them.
   only for the contained 12 cases under the locked configs — zero
   pre-registration changes needed. Until then this limitation stands.
 
+### Addendum (2026-11-03) — live measurement now exists; the Oct 22 wave's blank is lifted, its locked protocol is not the vehicle
+
+The blanket statement above — no live cases executed for any harness —
+no longer holds. Live cases have since executed: the Oct 23 live
+campaign (Omnigent, Hermes Agent, OpenClaw, CrewAI, LangGraph, Strands
+Agents; evidence in `evidence/live-campaign-2026-10-23/`), Muse Code's
+live N=3 runs (Nov 2: 16/39 PASS; Nov 3 genuine re-run: 13/39 PASS,
+7 harms — summary on main at `framework/scorecard/musecode-n3-rerun/`,
+records on branch `musecode-smoke`), the Nov 3 480-run reference-agent
+rollout (`framework/scorecard/live-agents-v1/`, UNSEALED), the Copilot
+FP-001 smoke PASS (Nov 3, `copilot-cli/runs/smoke/`), and OpenCode live
+on a real model (Nov 3, `framework/scorecard/opencode-live-v1/`,
+UNSEALED, r1 only). Caveats travel with these: no sandbox ran anywhere
+(Docker absent — "not started," never a pass); Nov 3 runs are unsealed
+and move no badge. The Oct 22 wave's own 12 locked cases + 9 pinned
+configs in `docs/live-test/` remain as committed-but-unexecuted history
+— they were not the vehicle for the later live runs. Any citation must
+now name which wave it cites.
+
 ## 9. What would change these limitations
 
 | Limitation | Evidence that would lift it |
@@ -219,6 +240,6 @@ from the pre-fix bundle/scorecard v2 — never mix them.
 | Single harness | LIFTED 2026-10-22: Amp's Decision-layer route recognized as vendor-confirmed — `amp permissions test` at the pinned version replayed the corpus + protected family byte-identically; sealed `evidence/amp-2026-10-22/` (Merkle `cb6eccf0…`, Ed25519-signed). Measured verdicts now exist for two harnesses. |
 | Corpus artifact | A second corpus sampled from real policy files / observed command traffic, pre-registered before running |
 | Pre-fix | LIFTED 2026-10-22: founder approved the Day-5 diff → applied, re-locked, reran 41 cases + 11-case family + precedence checks, re-sealed (`evidence/postfix-2026-10-22/`), re-issued scorecard v3 POST-FIX |
-| Rules-layer only | 2026-10-22: first live wave pre-registered + run — 9/9 harnesses blocked-by-auth at the runnability gate (no local model provider, no executing offline mode); 12 cases + 9 pinned configs locked and committed unexecuted in `docs/live-test/`; unblock = founder-supplied auth per harness. Live layer still UNRESOLVED. |
+| Rules-layer only | 2026-10-22: first live wave pre-registered + run — 9/9 harnesses blocked-by-auth at the runnability gate (no local model provider, no executing offline mode); 12 cases + 9 pinned configs locked and committed unexecuted in `docs/live-test/`; unblock = founder-supplied auth per harness. PARTIALLY LIFTED Nov 3: live Effect measured for the Oct 23 six, Muse Code N=3, the Nov 3 rollout five, Copilot smoke, and OpenCode real-model (see §8 addendum); the Oct 22 12-case protocol itself remains unexecuted. |
 | Snyk not tested | Founder supplies a token from his own account (or explicitly deprioritizes Snyk) |
 | Unwitnessed | Independent witness re-runs (signing done 2026-10-22; see docs/SIGNING.md) |

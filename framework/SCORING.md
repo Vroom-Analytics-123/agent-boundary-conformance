@@ -39,7 +39,7 @@ finding line says what is missing and why. The two 0% rows therefore
 read differently, and honestly:
 
 - Pi 0%, 5 of 6 measured: tested, and the boundary is absent.
-- Goose 0%, 0 of 6 measured: documented modes, never evaluated here.
+- Goose 0%, 0 of 6 measured: T2-evaluated Nov 3 via `framework/scorecard/goose-adapter-v1/` (unsealed; badges unchanged) — default profile all-24 allow, hardened all-24 prompt, deny-shell all-24 forbidden.
 - Copilot CLI 0%, 0 of 6 measured: assessment only, account-walled.
 
 If a dimension is later measured, its badge replaces NOT MEASURED and

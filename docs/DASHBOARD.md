@@ -1,5 +1,13 @@
 # Boundary Measurement — Program Dashboard
-*Canonical status page. Last updated: Thu Oct 22, 2026, ~18:35 PDT (America/Los_Angeles) — naming hygiene (PAPER TEST / LIVE TEST; grades A · Oracle / B · Manual / C · No paper); stale-claim sweep; Amp promoted to grade A · Oracle (second oracle); cross-tier study sealed (grade-B fidelity: Codex 100%, Amp 40.4%); post-fix evidence sealed (bundle `5a974fe6…`, scorecard v3 POST-FIX). Sprint verdict NARROW stands. Dates below are TARGETS we aim at, not gates — work runs continuously and pulls forward.*
+*Canonical status page. Last updated: Mon Nov 3, 2026 (evening PT) — repo public since Oct 29; Foresight submitted Oct 31 by the owner; scorecard live in the README; Nov 3 measurement round added below. October sections preserved as history.*
+
+## Nov 3, 2026 addendum — current status
+
+- **Repo: PUBLIC since Oct 29, 2026 under Apache-2.0.** The program repo stays private.
+- **Scorecard: LIVE in the README (scoring v2, 16 harnesses).** Scoring v3 is a DRAFT methodology (`framework/SCORING-v3.md`), not the live scorecard; its numbers are PROVISIONAL until sealed. The Oct 26 "Scorecard v3" day-6 post-fix artifact is a different thing — see the disambiguation in `docs/DOCUMENT_MAP.md`.
+- **Foresight: SUBMITTED Oct 31, 2026 by the owner** (outcome expected ~January 2027). BlueDot / Manifund drafts remain ready, awaiting his per-item approval.
+- **Nov 3 measurement round (all unsealed — badges unchanged):** 480-run live reference-agent rollout (Strands, LangGraph, CrewAI, Hermes, OpenClaw; Omnigent blocked) with the V1-23 git-status repair; 24 v1 scenarios + Goose adapter; Muse Code genuine N=3 re-run (13/39 PASS, 7 harms); Copilot FP-001 smoke PASS (deny-rule); OpenCode live on a real model (r1, beam arm). Gemini live remains unmeasured after two attempts, both blocked by provider 503 high demand. Omnigent parity run still in progress at this writing.
+- **Meta hackathon submission due Nov 4, 2026, 6:00 PM PT** — package ready for owner review; nothing submitted until his explicit go-ahead.
 
 ## What this is, in one paragraph
 We are founding a discipline called **Boundary Measurement**: independently checking whether an AI coding agent's enforced limits match the limits its operator stated — comparing (1) stated intent, (2) what the agent's own rulebook actually decides, and (3) what observably happens — for each version of each agent tool, and publishing the differences with replayable, cryptographically verifiable evidence. The research program is **FinePrint**; the public measurements will be the **Agent Boundary Index**. The long-term position we are building toward is the independent verifier for agents (the "UL for agents"): the referee vendors, buyers, auditors, and insurers rely on. The three-way comparison is called **Cross-Examination** — the method's core move: for each invariant, the declared intent, the policy engine's decision, and the observed effect are examined against each other; a disagreement between any two is a finding (founder's name, 2026-10-22 — chosen over Triangulation / Layercheck).
@@ -32,8 +40,8 @@ grade, ranking, or score of any harness.
 | # | Objective | Status | Target |
 |---|---|---|---|
 | 1 | Prove the measurement works (7-day sprint, Codex first) | **COMPLETE — verdict NARROW** (see below). Six agreeing runs (measurement validity 41/41 each; intent coverage 10 satisfied · 23 unresolved · 8 not applicable of 41 — separate denominator), sealed bundles, negative controls 4/4 healthy, baselines re-run | Verdict delivered (Oct 21, under continuous execution) |
-| 2 | Fund it (grants) | Drafts written; Foresight checkpoint Oct 28 with the NARROW verdict in hand (narrowed novelty language only); submissions wait for Anish's per-item approval | Foresight by Sat Oct 31 · BlueDot/Manifund early Nov |
-| 3 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Scorecard v3 built and sealed (POST-FIX, shareable-first, not published); pre-fix v2 kept alongside; launch post draft refreshed by the polish pass; needs Anish's publish tap | Early Nov |
+| 2 | Fund it (grants) | Drafts written; Foresight checkpoint Oct 28 with the NARROW verdict in hand (narrowed novelty language only); submissions wait for Anish's per-item approval | Foresight SUBMITTED Oct 31 by Anish · BlueDot/Manifund early Nov |
+| 3 | Launch publicly (open-source repo + 60-second Boundary Scorecard + launch post) | Scorecard LIVE in the README (v2, Nov 3); day-6 post-fix scorecard kept as history; launch post draft refreshed by the polish pass; needs Anish's publish tap | Early Nov |
 | 4 | First paying design partners (hosted evidence pilots) | Interview script + lists drafted | Pilots Jan–Mar 2027 |
 | 5 | Become the primary verifier (quarterly Index, vendor day-one runs, evidence standard) | Governance + methodology drafted; NARROW deliberately defers any Index claim — the repo stands as a two-oracle (Codex + Amp, both at the vendor-confirmed route) conformance method with a published cross-tier study | Through 2027 |
 
@@ -99,7 +107,7 @@ Our sample rulebook has 3 rules: `git status` → allowed · `deployctl release`
 | BlueDot Incubator Week (SF) | up to $200K | Noted option — built for full-time safety founders; Anish's call | Nov 16–20 |
 | Paid pilots | $10–40K each | Phase 1, after public launch | Jan–Mar 2027 |
 
-## Publish queue (nothing here is public yet)
+## Publish queue (repo is public since Oct 29; posts still await approval)
 **Post #1 — "Day 2 build-in-public" (DRAFT, awaiting Anish's approval).**
 Refreshed by the polish pass to bring everything together: the building-inspector metaphor (founder's choice, Oct 21), the framework + two-oracle (Codex + Amp) framing, the protected-asset finding, the Day-2/Day-3 results, and the NARROW verdict. Current text at `docs/drafts/2026-10-22-public-post-draft.md` (~180 words). The Day-1/Day-2 wording below is kept for the record as the superseded draft.
 
@@ -112,12 +120,12 @@ Lives in the program repo's publish queue (`agent-boundary-program/publish-queue
 ## Waiting on Anish (the complete list — everything else runs without him)
 1. ~~**INV-004:** Option A or B~~ — ✅ decided Oct 21: Option A.
 2. ~~**Day-5 fix diff:** approve or reject (`docs/drafts/day5-fix.diff`). Approval triggers: apply, re-lock pre-registration, 41-case rerun on the pinned oracle, new sealed bundle, scorecard re-issue without PRE-FIX.~~ — ✅ approved + applied Oct 22 (see post-fix addendum above).
-3. **Foresight Oct 28 checkpoint:** NARROW verdict in hand — proceed (narrowed novelty language only) or hold; nothing submitted without his explicit per-item approval.
-4. **Repo-public call:** the repo is limitation-honest and shareable-first, but goes nowhere without his explicit per-item approval.
+3. ~~**Foresight Oct 28 checkpoint:** NARROW verdict in hand — proceed (narrowed novelty language only) or hold; nothing submitted without his explicit per-item approval.~~ — ✅ **decided + submitted Oct 31 by Anish.**
+4. ~~**Repo-public call:** the repo is limitation-honest and shareable-first, but goes nowhere without his explicit per-item approval.~~ — ✅ **decided: flipped public Oct 29, 2026 under Apache-2.0.**
 5. **Post #1:** approve / edit / hold + pick the channel(s).
 6. **Invitation lists:** approve names + texts (researchers who wrote the field's key papers — replication asks + advisory circle).
 7. ~~**Create one GitHub repo** (private) for plans + publish queue + memory dumps — suggested name `agent-boundary-program`~~ — ✅ created Oct 21; plans, publish queue, and the first memory dump live there.
 8. **Optional:** Snyk token, if he wants that one competitor cell filled.
 
 ## How work runs now (continuous mode)
-Daily work sessions each morning (targets, not gates): build → write the day's brief into this repo → commit → push (cryptographically tree-verified) → report. Between sessions, work pulls forward. Code lives in this repo (`Vroom-Analytics-123/agent-boundary-conformance`, private). Plans and publish items will live in the program repo once created. A memory dump (project memory + status) will be pushed to the program repo weekly.
+Daily work sessions each morning (targets, not gates): build → write the day's brief into this repo → commit → push (cryptographically tree-verified) → report. Between sessions, work pulls forward. Code lives in this repo (`Vroom-Analytics-123/agent-boundary-conformance`, public since Oct 29, 2026, Apache-2.0). Plans and publish items will live in the program repo once created. A memory dump (project memory + status) will be pushed to the program repo weekly.

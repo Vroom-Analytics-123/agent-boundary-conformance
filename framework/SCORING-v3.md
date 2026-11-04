@@ -1,6 +1,9 @@
 # How the harness scorecard is scored (scoring v3, draft Nov 3, 2026)
 
 Status: DRAFT methodology, not yet applied to the published scorecard.
+Disambiguation: this file is the Nov 3 scoring methodology — it is NOT
+the Oct 26 "Scorecard v3" day-6 post-fix artifact at
+`evidence/reports/day6-scorecard-v3-postfix/`.
 It supersedes v2 for every row with scenario-level runs, and it is
 demonstrated below on the v1 runs (24 Meta-generated scenarios, Nov 3,
 2026). Those v1 runs are NOT yet sealed, so every v3 number below is

@@ -8,12 +8,16 @@ is in CI via tests/test_scorecard_v1.py and the script's own assertions.
 
 Outputs (docs/assets/):
   decisions_donut.png   — native decision distribution, 41-case main corpus
-  measurement_routes.png — the paper-test measurement-route matrix (living
-                           source: docs/assets/measurement-routes-current.json)
   three_layers.png      — the three layers Boundary Measurement compares
                           (founder model: Layer 1 = what the rules decide;
                           Layer 2 = the approval moment; Layer 3 = what
                           actually happens — ground truth)
+
+Route assignments live in docs/MEASUREMENT_ROUTES.md (data:
+docs/assets/measurement-routes-current.json, also read by mcp/server.py).
+The retired route-matrix graphic (docs/assets/measurement_routes.png,
+removed Nov 3, 2026 as redundant with MEASUREMENT_ROUTES.md and stale
+at 8 harnesses) is no longer generated.
 """
 import json
 import sys
@@ -88,86 +92,6 @@ def donut(counts, merkle, pin):
     return out
 
 
-def measurement_routes():
-    # Living source (founder model correction, 2026-10-22):
-    # docs/assets/measurement-routes-current.json carries the current
-    # measurement-route assignments. Routes are provenance of the Layer-1
-    # measurement only — unranked, never harness quality.
-    tm = json.loads((ASSETS / "measurement-routes-current.json").read_text())
-    hs = tm["harnesses"]
-    assert len(hs) == 8, [h["harness"] for h in hs]
-
-    rows = []
-    for h in hs:
-        rows.append([h["harness"], h["measurement_route"],
-                     h["oracle_type"].replace("-", " "),
-                     h["verdicts"], h["evidence_class"]])
-    # Deterministic presentation order: vendor-confirmed, reconstructed,
-    # no paper surface.
-    order = {"vendor-confirmed": 0, "reconstructed": 1, "no paper surface": 2}
-    rows.sort(key=lambda r: (order[r[1]], r[0]))
-
-    fig, ax = plt.subplots(figsize=(10.8, 6.6), dpi=150)
-    fig.patch.set_facecolor("white")
-    ax.axis("off")
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-
-    ax.text(0.02, 0.94, "Paper-test measurement routes (Oct 22, 2026)",
-            fontsize=14, fontweight="bold", color="#222222", ha="left", va="top")
-    ax.text(0.02, 0.885,
-            "A harness is described by its measurement route, never as generically "
-            "'supported'. Routes are provenance of the Layer-1 measurement only \u2014 "
-            "unranked, never harness quality.",
-            fontsize=10.5, color="#555555", ha="left", va="top")
-
-    cols = ["Harness", "Measurement route", "Oracle type", "Verdicts", "Evidence class"]
-    widths = [0.13, 0.18, 0.17, 0.22, 0.26]
-    x0 = 0.02
-    y_top = 0.82
-    rh = 0.075
-
-    def cell(x, y, w, h, text, **kw):
-        ax.add_patch(plt.Rectangle((x, y), w, h, fill=kw.pop("fill", True),
-                                   facecolor=kw.pop("facecolor", "white"),
-                                   edgecolor="#cccccc", linewidth=1))
-        ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
-                fontsize=kw.pop("fontsize", 10), color=kw.pop("color", "#222222"),
-                fontweight=kw.pop("fontweight", "normal"), wrap=True)
-
-    x = x0
-    for c, w in zip(cols, widths):
-        cell(x, y_top - rh, w, rh, c, facecolor="#2b3a4a", color="white",
-             fontweight="bold", fontsize=10)
-        x += w
-
-    route_colors = {"vendor-confirmed": "#e8f2ea", "reconstructed": "#fdf3e0",
-                    "no paper surface": "#f0e8f5"}
-    y = y_top - rh
-    for r in rows:
-        y -= rh
-        x = x0
-        face = route_colors.get(r[1], "white")
-        for c, w in zip(r, widths):
-            fw = "bold" if w == 0.20 and c == r[1] else "normal"
-            cell(x, y, w, rh, c, facecolor=face, fontweight=fw,
-                 fontsize=9 if len(c) > 24 else 10)
-            x += w
-
-    fig.text(0.02, 0.03,
-             "Founder model correction 2026-10-22: Grade A/B/C and T1/T2/T3 ranking "
-             "labels are abolished \u2014 ease of measurement never makes a harness "
-             "better or worse.\n"
-             "Amp's route is vendor-confirmed via its own checker "
-             "(`amp permissions test`, pinned 0.0.1792680614-g8973a3).",
-             fontsize=8.5, color="#777777", ha="left", va="bottom")
-    fig.tight_layout()
-    out = ASSETS / "measurement_routes.png"
-    fig.savefig(out, bbox_inches="tight")
-    plt.close(fig)
-    return out
-
-
 def three_layers():
     fig, ax = plt.subplots(figsize=(9.0, 4.6), dpi=150)
     fig.patch.set_facecolor("white")
@@ -224,7 +148,7 @@ def main():
     # Cross-check the two headline numbers against the bundle's own verdicts.
     assert counts["unknown"] == 22 and counts["allow"] == 6 \
         and counts["prompt"] == 4 and counts["forbidden"] == 9, counts
-    for path in (donut(counts, merkle, pin), measurement_routes(), three_layers()):
+    for path in (donut(counts, merkle, pin), three_layers()):
         print("wrote", path)
 
 

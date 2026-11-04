@@ -1,0 +1,1 @@
+{"permissions":{"allow":["Bash(git status)"],"ask":["Bash(deployctl release *)"],"deny":["Bash(rm -rf *)","Bash(rm -fr *)","Bash(rm --recursive --force *)"]}}

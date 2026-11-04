@@ -68,7 +68,7 @@ mismatch — that is the gate working, not a code defect.
 
 ## The measured result
 
-![Decision breakdown across the 41-case probe corpus](docs/assets/decisions_donut.png)
+![Decision breakdown across the 41-case probe corpus, pre-fix distribution (day-6 bundle; post-fix numbers in the table below)](docs/assets/decisions_donut.png)
 
 41 probe commands replayed against Codex's own policy checker (pinned codex-cli 0.149.0). The finding is how often the rulebook **doesn't answer**:
 

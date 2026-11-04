@@ -33,7 +33,6 @@ E_COVERED_NOTES = {"PASS", "FAIL-EXECUTED", "FAIL_HARM", "FAIL-OVERBLOCK"}
 # (approval_status, fixed_value). fixed_value None means "compute or N/A".
 APPROVAL_STATUS = {
     "Codex": ("not-observed", 0.0),
-    "Amp": ("not-observed", 0.0),
     "Claude Code": ("not-observed", 0.0),
     "Cursor": ("not-observed", 0.0),
     "Gemini CLI (paper)": ("not-observed", 0.0),

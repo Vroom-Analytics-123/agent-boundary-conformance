@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="804" viewBox="0 0 1200 804" font-family="Inter, DejaVu Sans, sans-serif">
+<rect width="1200" height="804" fill="#0F1B2D"/>
+<text x="40" y="52" font-size="30" font-weight="bold" fill="#E8EDF3">Top scorers — Scorecard v4, live basis</text>
+<text x="40" y="84" font-size="15" fill="#AAB4C4">PROVISIONAL · UNSEALED · Higher = stronger hold rate — NOT a security grade</text>
+<rect x="40" y="100" width="14" height="14" fill="#2AA5A0"/><text x="60" y="112" font-size="14" fill="#E8EDF3">Decision / 25</text>
+<rect x="190" y="100" width="14" height="14" fill="#E8A838"/><text x="210" y="112" font-size="14" fill="#E8EDF3">Approval / 25</text>
+<rect x="340" y="100" width="14" height="14" fill="#3FA46A"/><text x="360" y="112" font-size="14" fill="#E8EDF3">Effect / 50</text>
+<text x="40" y="160" font-size="20" font-weight="bold" fill="#E8EDF3">Amp</text>
+<text x="1160" y="160" font-size="22" font-weight="bold" fill="#E8EDF3" text-anchor="end">72.03</text>
+<rect x="40" y="170" width="640" height="22" fill="#223452" stroke="#8A94A6" stroke-width="1"/>
+<rect x="40.0" y="170" width="77.6" height="22" fill="#2AA5A0"/>
+<text x="78.8" y="186" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">12.13</text>
+<rect x="117.6" y="170" width="129.2" height="22" fill="#E8A838"/>
+<text x="182.2" y="186" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">20.19</text>
+<rect x="246.8" y="170" width="254.1" height="22" fill="#3FA46A"/>
+<text x="373.9" y="186" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">39.71</text>
+<text x="694" y="186" font-size="14" fill="#AAB4C4">live · D 23/24 · E 23/24 · A 17/20</text>
+<text x="40" y="226" font-size="20" font-weight="bold" fill="#E8EDF3">OpenClaw</text>
+<text x="1160" y="226" font-size="22" font-weight="bold" fill="#E8EDF3" text-anchor="end">62.68</text>
+<rect x="40" y="236" width="640" height="22" fill="#223452" stroke="#8A94A6" stroke-width="1"/>
+<rect x="40.0" y="236" width="160.0" height="22" fill="#E8A838"/>
+<text x="120.0" y="252" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">25.00</text>
+<rect x="200.0" y="236" width="241.2" height="22" fill="#3FA46A"/>
+<text x="320.6" y="252" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">37.68</text>
+<text x="694" y="252" font-size="14" fill="#AAB4C4">live · D 0/24 · E 23/24 · A 19/20</text>
+<text x="40" y="292" font-size="20" font-weight="bold" fill="#E8EDF3">Claude Code (live)</text>
+<text x="1160" y="292" font-size="22" font-weight="bold" fill="#E8EDF3" text-anchor="end">54.26</text>
+<rect x="40" y="302" width="640" height="22" fill="#223452" stroke="#8A94A6" stroke-width="1"/>
+<rect x="40.0" y="302" width="54.1" height="22" fill="#2AA5A0"/>
+<text x="67.1" y="318" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">8.46</text>
+<rect x="94.1" y="302" width="114.3" height="22" fill="#E8A838"/>
+<text x="151.3" y="318" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">17.86</text>
+<rect x="208.4" y="302" width="178.8" height="22" fill="#3FA46A"/>
+<text x="297.9" y="318" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">27.94</text>
+<text x="694" y="318" font-size="14" fill="#AAB4C4">live · D 18/24 · E 18/24 · A 9/20</text>
+<text x="40" y="358" font-size="20" font-weight="bold" fill="#E8EDF3">Hermes Agent</text>
+<text x="1160" y="358" font-size="22" font-weight="bold" fill="#E8EDF3" text-anchor="end">42.89</text>
+<rect x="40" y="368" width="640" height="22" fill="#223452" stroke="#8A94A6" stroke-width="1"/>
+<rect x="40.0" y="368" width="115.6" height="22" fill="#E8A838"/>
+<text x="97.8" y="384" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">18.07</text>
+<rect x="155.6" y="368" width="158.8" height="22" fill="#3FA46A"/>
+<text x="235.1" y="384" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">24.82</text>
+<text x="694" y="384" font-size="14" fill="#AAB4C4">live · D 0/24 · E 19/24 · A 15/20</text>
+<text x="40" y="424" font-size="20" font-weight="bold" fill="#E8EDF3">Omnigent</text>
+<text x="1160" y="424" font-size="22" font-weight="bold" fill="#E8EDF3" text-anchor="end">36.39</text>
+<rect x="40" y="434" width="640" height="22" fill="#223452" stroke="#8A94A6" stroke-width="1"/>
+<rect x="40.0" y="434" width="77.6" height="22" fill="#2AA5A0"/>
+<text x="78.8" y="450" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">12.13</text>
+<rect x="117.6" y="434" width="155.3" height="22" fill="#3FA46A"/>
+<text x="195.3" y="450" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">24.26</text>
+<text x="694" y="450" font-size="14" fill="#AAB4C4">live · D 21/24 · E 21/24 · A 8/20</text>
+<line x1="40" y1="474" x2="1160" y2="474" stroke="#8A94A6" stroke-width="1"/>
+<text x="40" y="500" font-size="15" font-weight="bold" fill="#E8A838">Out of 75 — approval N/A (headless modes preclude dialogs)</text>
+<text x="40" y="534" font-size="20" font-weight="bold" fill="#E8EDF3">Gemini CLI</text>
+<text x="1160" y="534" font-size="22" font-weight="bold" fill="#E8EDF3" text-anchor="end">20.96 (of 75)</text>
+<rect x="40" y="544" width="640" height="22" fill="#223452" stroke="#8A94A6" stroke-width="1"/>
+<rect x="40.0" y="544" width="44.7" height="22" fill="#2AA5A0"/>
+<text x="62.4" y="560" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">6.99</text>
+<rect x="84.7" y="544" width="89.4" height="22" fill="#3FA46A"/>
+<text x="129.4" y="560" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">13.97</text>
+<text x="694" y="560" font-size="14" fill="#AAB4C4">approval N/A · live · D 7/24 · E 7/24</text>
+<text x="40" y="600" font-size="20" font-weight="bold" fill="#E8EDF3">Copilot CLI</text>
+<text x="1160" y="600" font-size="22" font-weight="bold" fill="#E8EDF3" text-anchor="end">17.28 (of 75)</text>
+<rect x="40" y="610" width="640" height="22" fill="#223452" stroke="#8A94A6" stroke-width="1"/>
+<rect x="40.0" y="610" width="40.0" height="22" fill="#2AA5A0"/>
+<text x="60.0" y="626" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">6.25</text>
+<rect x="80.0" y="610" width="70.6" height="22" fill="#3FA46A"/>
+<text x="115.3" y="626" text-anchor="middle" font-size="12" fill="#0F1B2D" font-weight="bold">11.03</text>
+<text x="694" y="626" font-size="14" fill="#AAB4C4">approval N/A · live · D 7/24 · E 7/24</text>
+<text x="40" y="668" font-size="14" fill="#AAB4C4">Also live: OpenCode 4.41 · Goose 4.41 · Strands Agents 2.94 · LangGraph 2.94 · CrewAI 2.94</text>
+<line x1="40" y1="694" x2="1160" y2="694" stroke="#8A94A6" stroke-width="1"/>
+<text x="40" y="720" font-size="15" font-weight="bold" fill="#AAB4C4">Decision-only — NOT ranked against live rows</text>
+<text x="40" y="744" font-size="14" fill="#AAB4C4">Paper / oracle: Claude Code 4.04 · Codex 3.31 · Cursor 3.31 · Pi 0.00 (Amp was 12.87 here — now live above)</text>
+<text x="40" y="784" font-size="13" fill="#AAB4C4">Coverage + route travel with every number. Computed by tools/build_v4_scorecard.py from v4-cells.json — never hand-set.</text>
+</svg>

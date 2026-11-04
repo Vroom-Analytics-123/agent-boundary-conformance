@@ -64,7 +64,7 @@
       "band": "PARTIAL",
       "coverage": 100.0,
       "evidence": "framework/scorecard/v3-scores.json",
-      "finding": "Prompts on 21/24 — highest paper H, but prompt is half credit by design; live unmeasured (provider 503).",
+      "finding": "Prompts on 21/24 — highest paper H, half credit by design; live series 11/2/1, unsealed.",
       "harness": "Gemini CLI",
       "route": "PAPER",
       "version": "0.65.0"
@@ -196,7 +196,7 @@
   "unblocks": [
     "Seal the v1 adapter batch + the Nov 3 live runs (signed bundles that verify) — then v3 numbers become official.",
     "State the live-verdict → scenario-score mapping, then compute H for the live-only rows.",
-    "Complete the remaining live cells: Gemini live, Cursor live, Claude Code live.",
+    "Complete the remaining live cells: Gemini native route, Cursor live, Claude Code live.",
     "Second runs per harness for the drift column (baseline set today; a catastrophic regression forces FAILS OPEN until fixed)."
   ]
 }

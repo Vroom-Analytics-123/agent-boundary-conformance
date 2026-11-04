@@ -5,7 +5,7 @@ is the short version of this page.
 
 | Document | Status | What it is |
 |---|---|---|
-| [DASHBOARD.md](DASHBOARD.md) | **CURRENT** | The living status page — read this first |
+| [PROJECT_PATHWAY.md](PROJECT_PATHWAY.md) | **CURRENT** | The living status + pathway page — read this first |
 | [EXPLAINER.md](EXPLAINER.md) | CURRENT | **Start here if the idea is new to you** — the full plain-language foundation: the building-inspector metaphor, policy, declarative policy, why defaults aren't enough, conformance, the first measurement, the sprint-end verdict, and references |
 | [FRAMEWORK.md](FRAMEWORK.md) | **CURRENT** | The harness-neutral framework: invariant schema, adapter contract, the three layers (Decision = what the rules decide; Approval = the approval moment; Effect = what actually happens — ground truth), the paper-test measurement routes (vendor-confirmed / reconstructed / no paper surface — provenance of the Decision-layer measurement only, never a harness ranking), the all-harness matrix + surveyed field |
 | [DIRECTION-2026-10-22.md](DIRECTION-2026-10-22.md) | DIRECTION LOG | Founder direction 2026-10-22: layer primacy (cross-layer checking = the core method; Effect is ground truth and the most important layer), measurement-route provenance (unranked labels attached to Decision-layer results only), the layer-failure-dominates scoring rule, catalogue transferability as a first-class design goal. Cross-layer check named **Cross-Examination** (founder's tap, 2026-10-22 — chosen over Triangulation / Layercheck) |
@@ -52,3 +52,11 @@ is the short version of this page.
 | [../framework/scorecard/opencode-live-v1/](../framework/scorecard/opencode-live-v1/) | CURRENT (unsealed, r1) | OpenCode real-model live run Nov 3 (opencode 1.19.5, beam arm) |
 | [../framework/scorecard/musecode-n3-rerun/](../framework/scorecard/musecode-n3-rerun/) | CURRENT | Muse Code genuine N=3 re-run summary Nov 3 (records on branch `musecode-smoke`) |
 | [../copilot-cli/](../copilot-cli/) | CURRENT | Copilot CLI FP-001 smoke harness + PASS record Nov 3 |
+| [../framework/scorecard/gemini-live-v1/](../framework/scorecard/gemini-live-v1/) | CURRENT (unsealed) | Gemini cheaper-route deletion series Nov 3 (14 cells: 11 PASS / 2 harm / 1 no-decision; gemini-2.5-flash via translating proxy) |
+| [../framework/scorecard/goose-live-v1/](../framework/scorecard/goose-live-v1/) | CURRENT (unsealed) | Goose live run Nov 3 (72 cells over 3 profiles; hardened/deny stops via the headless mode gate, not verified rule firings) |
+| [../framework/scorecard/omnigent-live-v1/](../framework/scorecard/omnigent-live-v1/) | CURRENT (unsealed) | Omnigent parity run Nov 3 (96 cells: 48 PASS / 29 executed / 18 no-decision / 1 timeout; FAILS OPEN confirmed) |
+| [../framework/scorecard/copilot-live-v1/](../framework/scorecard/copilot-live-v1/) | CURRENT (unsealed) | Copilot deletion series Nov 3 (14 cells: 9 PASS / 5 harm, all harms in wrapper variants; headless `-p` mode only) |
+| [../SETUP.md](../SETUP.md) | CURRENT | Fresh-clone setup guide: no-key commands with exact outcomes, Codex restore recipe, per-harness install/key/run table, known gaps |
+| [../mcp/](../mcp/) | CURRENT | MCP server (stdio) + skill: `check_command`, `list_invariants`, `measurement_routes`, `run_check` |
+| [../framework/visuals/measured-result.svg](../framework/visuals/measured-result.svg) | CURRENT | Before/after measured-result visual (41 probes against Codex's own checker; pre 6/4/9/22, post 6/4/11/20) |
+| [../tools/build_measured_result.py](../tools/build_measured_result.py) | CURRENT | Generator for measured-result.svg (reads both sealed bundles, asserts counts, deterministic) |

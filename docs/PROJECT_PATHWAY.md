@@ -1,5 +1,5 @@
-# Boundary Measurement — Program Dashboard
-*Canonical status page. Last updated: Mon Nov 3, 2026 (evening PT) — repo public since Oct 29; scorecard live in the README; Nov 3 measurement round added below. October sections preserved as history.*
+# Boundary Measurement — Project Pathway
+*Canonical status page. Last updated: Tue Nov 4, 2026 (morning PT) — repo public since Oct 29; scorecard live in the README; Nov 3 measurement round added below. October sections preserved as history.*
 
 ## Nov 3, 2026 addendum — current status
 

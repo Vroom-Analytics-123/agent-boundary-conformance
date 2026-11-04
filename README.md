@@ -6,7 +6,7 @@
 
 Harnesses change under their owners — a new release, a new feature, a new flag can move a decision the last version got right — so the suite **re-runs on every harness version upgrade and feature change**, and the version-over-version regression diff is the product's heartbeat: **measure → re-measure → fix → re-verify**.
 
-**Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The harness scorecard below covers 16 harnesses; the Index verdict stays NARROW until the consistent re-measurement protocol completes. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/DASHBOARD.md](docs/DASHBOARD.md)**.
+**Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The harness scorecard below covers 16 harnesses; the Index verdict stays NARROW until the consistent re-measurement protocol completes. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md)**.
 
 ## The harness scorecard
 
@@ -64,7 +64,7 @@ mismatch — that is the gate working, not a code defect.
 1. **See the result** — the chart below. 41 probe commands replayed against Codex's own policy checker. The finding is how often the rulebook *doesn't answer*.
 2. **Run it yourself** — one command, ~10 seconds: `python3 tools/run_fixtures.py` (needs the pinned `codex` CLI, v0.149.0 — restore it first, see Try it above). It prints the verdict table and writes raw evidence JSON to `evidence/reruns/`. Run it again against the next harness release and the diff between the two runs is the conformance signal, not either run alone.
 3. **Skim the evidence** — `evidence/day1-baseline-2026-10-21/` holds the frozen baseline raw outputs; `docs/COMPETITOR_BASELINES.md` shows the same tests run against the closest existing tools.
-4. **Read the one-page status** — [docs/DASHBOARD.md](docs/DASHBOARD.md): objectives, the 5 invariants in plain English, the publish queue, and what's waiting on the founder.
+4. **Read the one-page status** — [docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md): objectives, the 5 invariants in plain English, the publish queue, and what's waiting on the founder.
 
 ## The measured result
 
@@ -174,7 +174,7 @@ These are not hypotheticals. Each incident below is **verified** (primary source
 
 | Document | What it is |
 |---|---|
-| [docs/DASHBOARD.md](docs/DASHBOARD.md) | **The living status page — read this first** |
+| [docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md) | **The living status page — read this first** |
 | [docs/EXPLAINER.md](docs/EXPLAINER.md) | **Start here if the idea is new to you** — the full plain-language foundation: the building-inspector metaphor, policy, declarative policy, why defaults aren't enough, conformance, the first measurement, the current verdict, and references |
 | [docs/FRAMEWORK.md](docs/FRAMEWORK.md) | The harness-neutral framework: invariant schema, adapter contract, the three layers, the paper-test measurement routes, the all-harness matrix + surveyed field |
 | [docs/MEASUREMENT_MODEL.md](docs/MEASUREMENT_MODEL.md) | The three-layer doctrine of record: routes per layer, confidence = agreeing routes, the keystone rule |
@@ -200,7 +200,7 @@ adapter per target, and evidence kept separate from both.
 | `tools/` | **The measurement machinery** — fixture replay, catalogue generator, evidence bundling/sealing/verification, approval witness, effect instrumentation |
 | `evidence/` | **Sealed run records** — frozen bundles, reruns, scorecards. Sealed bundles are never edited; corrections land as new bundles |
 | `mcp/` | **The MCP server** — `server.py` (stdio, stdlib only), `SKILL.md` for agents, client configs in `examples/` |
-| `docs/` | **Doctrine + status** — the measurement model, framework, route assignments, dashboard, limitations, the extension guide, daily briefs (history) |
+| `docs/` | **Doctrine + status** — the measurement model, framework, route assignments, project pathway, limitations, the extension guide, daily briefs (history) |
 | `fixtures/` · `security/` · `schemas/` | Probe corpora + sample policies · the invariant contracts under test · versioned finding/evidence schemas |
 | `tests/` · `ci/` · `catalogue-contrib/` | Engine tests · CI wiring · the Catalogue Commons (org overlays stay private by construction; worked examples only) |
 

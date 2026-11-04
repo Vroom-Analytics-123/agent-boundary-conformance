@@ -1,13 +1,13 @@
 # Maintenance checklist — landing discipline for every work item
 
-*Standing rule (founder direction, 2026-10-22): the dashboard and the GitHub
+*Standing rule (founder direction, 2026-10-22): the project pathway and the GitHub
 repository are kept up to date, and outdated information is removed in
 follow-up commits — never by rewriting history.*
 
 Every work item that lands in this repo MUST complete all four steps below
 before it is committed. They are cheap; skipping them is how living docs rot.
 
-## 1. Refresh the dashboard's state claims (`docs/DASHBOARD.md`)
+## 1. Refresh the project pathway's state claims (`docs/PROJECT_PATHWAY.md`)
 
 - Bump the "Last updated" line to the landing date/time.
 - Update every state claim your change touched: verdict language, route
@@ -19,7 +19,7 @@ before it is committed. They are cheap; skipping them is how living docs rot.
 ## 2. Sweep the living docs for claims your change just made stale
 
 - **Living docs** (must stay true): `README.md`, `docs/EXPLAINER.md`,
-  `docs/FRAMEWORK.md`, `docs/DASHBOARD.md`, `docs/MEASUREMENT_ROUTES.md`,
+  `docs/FRAMEWORK.md`, `docs/PROJECT_PATHWAY.md`, `docs/MEASUREMENT_ROUTES.md`,
   `docs/catalogue/CATALOGUE.md`, `docs/LIMITATIONS.md`, `docs/SIGNING.md`,
   `docs/COMPETITOR_BASELINES.md`, `docs/COMPETITIVE_EVIDENCE_MATRIX.md`,
   `docs/METHODOLOGY_AND_GOVERNANCE.md`, `docs/VERIFIABLE_EVIDENCE_ARCHITECTURE.md`,
@@ -63,7 +63,7 @@ before it is committed. They are cheap; skipping them is how living docs rot.
   mechanism: append a new dated paragraph that states what changed and what
   it supersedes. Do not edit the superseded paragraph's claims — its
   datedness is the record.
-- Living sections (dashboard status, README status line, route tables' current
+- Living sections (project-pathway status, README status line, route tables' current
   rows) get updated in place AND get a dated addendum entry when the change
   is material (route recognition, verdict, sealed evidence).
 - Generated files (`docs/catalogue/CATALOGUE.md`, `docs/catalogue/catalogue.json`)

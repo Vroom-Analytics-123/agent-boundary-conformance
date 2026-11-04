@@ -1,6 +1,6 @@
 # OpenCode (opencode) live measurement — v1 scenarios (PUBLISHED PACKAGE)
 
-> Status: **UNSEALED — moves no badge.** These are r1-only live-effect
+> Status: **UNSEALED — moves no badge.** These are r1+r2 live-effect
 > results (beam model arm) with full provenance and caveats, published
 > for review. Badges change only from verified sealed bundles; this
 > package is not one. Raw per-cell record trees and scratch fixtures

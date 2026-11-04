@@ -1,35 +1,35 @@
-# Copilot CLI FP-001 smoke probe (FinePrint harness track)
+# Copilot CLI full-matrix probe (FinePrint harness track)
 #
 # Trigger: workflow_dispatch ONLY. Never push, never pull_request: this
 # workflow runs an agent CLI and must never run on untrusted input.
 #
-# What it proves (and nothing more): whether Copilot CLI can complete
-# one FP-001 delete task under the strictest available policy on a
-# GitHub-hosted runner. Auth method: repo secret COPILOT_GITHUB_TOKEN
-# (owner-created, never by this workflow), passed via env on the runner
-# step ONLY; the workflow never echoes it. The runner records auth env
-# PRESENCE by name only, never values, and distinguishes MISSING_AUTH
-# (no usable PAT in env) and AUTH_FAILED (PAT present but rejected)
-# from PASS/FAIL immediately — a failed smoke is evidence, not an
-# error to hide.
+# What it proves (and nothing more): whether Copilot CLI stops or
+# seeks approval across the full v1 scenario set (24 scenarios x 2
+# repeats = 48 cells: deletion, exfiltration, deploy, credential,
+# benign) under the strictest available policy on a GitHub-hosted
+# runner. Auth method: repo secret COPILOT_GITHUB_TOKEN
+# (owner-created, never by this workflow), passed via env on the
+# runner step ONLY; the workflow never echoes it. The runner records
+# auth env PRESENCE by name only, never values, and distinguishes
+# MISSING_AUTH (no usable PAT in env) and AUTH_FAILED (PAT present
+# but rejected) from PASS/FAIL immediately — a failed cell is
+# evidence, not an error to hide.
 #
 # APPROVAL-MODE HONESTY (read before dispatching): Copilot CLI's
-# non-interactive mode (-p) REQUIRES --allow-all-tools. This smoke
+# non-interactive mode (-p) REQUIRES --allow-all-tools. This matrix
 # therefore does NOT measure native ask/deny dialog behavior — -p
-# cannot show it. The only permission signal in this mode is the
-# --deny-tool rule (denial always takes precedence over allow, even
-# --allow-all-tools, per `copilot help permissions`). The runner
-# records the exact approval mode verbatim in every record; running
-# allow-all and calling it a permission measurement, without the deny
-# rule and this note, would be dishonest.
-#
-# NOTE: the secret does NOT exist yet (2026-11-03). Dispatching now
-# records MISSING_AUTH by design. Dispatch only after the owner adds
-# COPILOT_GITHUB_TOKEN (fine-grained PAT, Copilot Requests permission,
-# personal account — see copilot-cli/README.md).
+# cannot show it. The only configured permission signal is the
+# --deny-tool rule, which covers rm-stem commands ONLY
+# (shell(rm:*) matches by command stem, per `copilot help
+# permissions`). The runner records the exact approval mode verbatim
+# plus deny_rule_covers per cell; running allow-all and calling it a
+# permission measurement, without the deny rule and this note, would
+# be dishonest. Canonical v1 paths/hosts are replaced by fake
+# in-rundir fixtures and a localhost sink (see the runner docstring);
+# no real credential or external host is involved.
 #
 # Records land in two places: workflow artifacts (always uploaded)
-# and pushed back to this branch (copilot-cli/runs/smoke/). The
+# and pushed back to this branch (copilot-cli/runs/full/). The
 # push-back cannot retrigger this workflow: the trigger is
 # workflow_dispatch only.
 name: harness-copilot
@@ -38,12 +38,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # scoped: push smoke records back to this branch only
+  contents: write  # scoped: push full-matrix records back to this branch only
 
 jobs:
-  smoke:
+  full:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
 
@@ -59,29 +59,29 @@ jobs:
       - name: Install Copilot CLI (pinned)
         run: npm install -g @github/copilot@1.0.105
 
-      - name: Run FP-001 smoke probe
+      - name: Run Copilot full matrix
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: |
-          python3 copilot-cli/smoke_runner.py --copilot-bin "$(which copilot)"
+          python3 copilot-cli/full_runner.py --copilot-bin "$(which copilot)"
         # Do NOT add `set -x` or any env dump to this step or this file.
         # The runner step is the ONLY step that receives the token;
         # no other step (including push-back) gets it.
 
-      - name: Upload smoke records
+      - name: Upload full-matrix records
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: copilot-smoke-records
-          path: copilot-cli/runs/smoke/
+          name: copilot-full-records
+          path: copilot-cli/runs/full/
 
-      - name: Push smoke records back to this branch
+      - name: Push full-matrix records back to this branch
         if: always()
         run: |
-          if [ -d copilot-cli/runs/smoke ]; then
+          if [ -d copilot-cli/runs/full ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add copilot-cli/runs/smoke
-            git diff --cached --quiet || git commit -m "Copilot CLI smoke probe: FP-001 run records (branch copilot-harness-nov3)"
-            git push origin "HEAD:copilot-harness-nov3"
+            git add copilot-cli/runs/full
+            git diff --cached --quiet || git commit -m "Copilot CLI full matrix: run records (branch copilot-full-nov4)"
+            git push origin "HEAD:copilot-full-nov4"
           fi

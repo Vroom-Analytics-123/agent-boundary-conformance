@@ -170,7 +170,7 @@ results above are pre-fix, labelled as such.
 **Update (Oct 22, 2026) — the record above stands; current state moved on:**
 the Day-5 fix was approved and applied; post-fix evidence is sealed
 (`evidence/postfix-2026-10-22/`, Boundary Scorecard v3 POST-FIX) — see
-`docs/DASHBOARD.md`. Amp's Decision-layer route was recognized as
+`docs/PROJECT_PATHWAY.md`. Amp's Decision-layer route was recognized as
 **vendor-confirmed** (founder decision 2026-10-22; the earlier "promotion"
 framing was rank-framed and is dropped): FinePrint now has two
 vendor-confirmed Decision-layer routes (Codex + `amp permissions test`),

@@ -9,7 +9,7 @@ and standards bodies can adopt.*
 ## Where this fits (cross-links)
 
 - The plain-language foundation and the building-inspector metaphor: [EXPLAINER.md](EXPLAINER.md)
-- The living status page (verdict NARROW, objectives, what's waiting on the founder): [DASHBOARD.md](DASHBOARD.md)
+- The living status page (verdict NARROW, objectives, what's waiting on the founder): [PROJECT_PATHWAY.md](PROJECT_PATHWAY.md)
 - The measurement-route assignments with the evidence behind each harness:
 - The measurement model (semantics, dual verdicts, evidence classes): [MEASUREMENT_MODEL.md](MEASUREMENT_MODEL.md) — the route assignments with the evidence behind each harness: [MEASUREMENT_ROUTES.md](MEASUREMENT_ROUTES.md)
 - The evidence the routes are measured against: [evidence/](../evidence/) — sealed bundles under `evidence/day*-2026-10-*`, daily briefs in [daily/](daily/)

@@ -1,0 +1,35 @@
+{
+  "harness": "opencode",
+  "version": "1.19.5",
+  "route": "live effect runs (real binary, real model, native permission evaluation)",
+  "model": "localproxy/beam-free",
+  "arm": "beam",
+  "repeat": "r1 only",
+  "cells_per_profile": 24,
+  "profiles": {
+    "default": {
+      "PASS": 4,
+      "FAIL-EXECUTED": 12,
+      "FAIL-NO-DECISION": 8,
+      "FAIL-OVERBLOCK": 0,
+      "note": "Vendor defaults: every bash evaluation resolved allow via the catch-all * rule; no deny, no ask, in any cell."
+    },
+    "hardened": {
+      "PASS": 16,
+      "FAIL-EXECUTED": 0,
+      "FAIL-NO-DECISION": 4,
+      "FAIL-OVERBLOCK": 4,
+      "note": "Deny/ask policy (deny rm/sudo/bash/env/curl/cp/git push/kubectl, bash catch-all ask, webfetch deny, edit deny, read allow except *.env ask). Headless asks auto-reject fail-closed; all 4 overblocks are benign cells."
+    }
+  },
+  "status": "UNSEALED \u2014 moves no badge",
+  "caveats": [
+    "One repeat (r1) per cell; repeat variability unmeasured.",
+    "Headless ask auto-rejects; in the interactive TUI a human could approve benign cells, so headless overblock is not TUI overblock.",
+    "Zen free-model arm BLOCKED (free usage limit from the measurement sandbox IP); no Zen numbers reported or mixed in.",
+    "Sandbox not-started in every cell; never recorded as a pass.",
+    "FAIL-NO-DECISION cells are model refusals or fixture artifacts, not policy wins.",
+    "Model is beam-free (cheapest route), chosen to test the harness, not the model.",
+    "Raw record trees, scratch fixtures, and proxy logs are NOT published; tallies here were independently re-tallied from all 48 record.json files."
+  ]
+}

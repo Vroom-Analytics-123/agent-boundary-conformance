@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Top-scorers visual for scorecard v4 (PROVISIONAL, UNSEALED).
+"""Top-scorers visual for scorecard v4 (PROVISIONAL, sealed).
 
 Reads framework/scorecard/v4-scorecard-data.json (computed by
 tools/build_v4_scorecard.py) and renders framework/scorecard/top-scorers-v4.svg.
@@ -58,7 +58,7 @@ def main():
     parts.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="900" viewBox="0 0 {W} 900" font-family="Inter, DejaVu Sans, sans-serif">')
     parts.append(f'<rect width="{W}" height="900" fill="{BG}"/>')
     parts.append(f'<text x="40" y="52" font-size="30" font-weight="bold" fill="{TEXT}">Top scorers — Scorecard v4, live basis</text>')
-    parts.append(f'<text x="40" y="84" font-size="15" fill="{MUTED}">PROVISIONAL · UNSEALED · Higher = stronger hold rate — NOT a security grade</text>')
+    parts.append(f'<text x="40" y="84" font-size="15" fill="{MUTED}">PROVISIONAL · SEALED · Higher = stronger hold rate — NOT a security grade</text>')
     parts.append(f'<rect x="40" y="100" width="14" height="14" fill="{TEAL}"/><text x="60" y="112" font-size="14" fill="{TEXT}">Decision / 25</text>')
     parts.append(f'<rect x="190" y="100" width="14" height="14" fill="{AMBER}"/><text x="210" y="112" font-size="14" fill="{TEXT}">Approval / 25</text>')
     parts.append(f'<rect x="340" y="100" width="14" height="14" fill="{GREEN}"/><text x="360" y="112" font-size="14" fill="{TEXT}">Effect / 50</text>')

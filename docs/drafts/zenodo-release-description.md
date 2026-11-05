@@ -73,7 +73,7 @@ read `docs/LIMITATIONS.md` before citing any number.
 
 ## License
 
-<TBD — founder to choose before deposit; no license file is committed yet>
+License choice for the deposit still open; the repo itself carries LICENSE (Apache-2.0).
 
 ## Related identifiers / references
 

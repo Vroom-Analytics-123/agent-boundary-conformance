@@ -159,6 +159,35 @@ the pack's expectations: divergences from codex-measured expectations are
 engine-vs-checker differences, not conformance verdicts, and the scorecard
 labels them as such.
 
+## Repeat runs and non-attempt attribution
+
+**Repeat runs (`--repeats N`, default 3).** Each probe runs N times.
+One finding per probe records the per-repeat outcomes (`repeats`) and
+their agreement/variance (`repeat_summary`: per-decision counts,
+`unanimous` | `split`, modal decision). Top-level `actual_decision` /
+`verdict` are repeat 1 (the primary repeat), so seal/verify,
+adjudication, baseline diff, and the scorecard read exactly what a
+single run produced. `run.repeats` records N in the bundle.
+
+**Non-attempt attribution (`tools/attribution.py`).** When a scenario
+produces no effect, the record says why, in a field separate from the
+verdict: `denied_by_rule` (a rule denied it — `attribution_rule_id`
+cites it), `not_attempted` (the agent chose not to attempt it, no rule
+cited), `no_decision` (the harness recorded no decision at all). This
+resolves the "no-action unattributed" bucket instead of renaming it. A
+non-attempt is never a hold: the attribution carries no intent or
+satisfaction claim, and scoring never reads it.
+
+The attribution is only recorded when an effect was observed and did
+not occur (`observed_effect == NOT_OBSERVED`, an optional key an
+adapter may return from `run_probe`). Check-run adapters never observe
+effects — no command is ever executed — so their findings omit the
+attribution fields rather than inventing one. The denying rule id is
+best-effort from the record (reconstructed engines cite the rule
+string; codex cites the matched prefix from the raw native output) and
+is never invented: a deny with no citable id records
+`attribution_rule_id: null`.
+
 ## The local-first boundary
 
 Everything above runs on your machine, with no accounts, no network

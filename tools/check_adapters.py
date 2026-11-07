@@ -12,6 +12,12 @@ Adapter contract (see docs/CATALOGUE_COMMONS.md, "Adapter contract"):
       layer          "rules-layer" (codex, vendor-confirmed) or "rules"
                      (reconstructed engines)
       error          None, or a string when actual == "error"
+      observed_effect  OPTIONAL, one of BLOCKED|OCCURRED|NOT_OBSERVED|
+                     NOT_TESTED. Present only when the adapter observed an
+                     effect (a live harness that executed the command).
+                     Absent (or NOT_TESTED) for ruling-only adapters: the
+                     runner then records no non-attempt attribution
+                     (tools/attribution.py) rather than inventing one.
 
 Registered adapters (measurement routes are provenance of the Layer-1
 measurement only — unranked, never harness quality; founder correction

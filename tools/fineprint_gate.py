@@ -71,6 +71,7 @@ import fnmatch
 import hashlib
 import json
 import os
+import shlex
 import subprocess
 import sys
 import threading
@@ -307,23 +308,286 @@ class Gate:
                     fnmatch.fnmatch(argv[0], pattern):
                 return Decision(True, f"command {base!r} explicitly "
                                       f"allowed by policy")
+        # Unwrap wrappers (F1): every effective command is checked
+        # against the denylist, not just the outer argv[0] — `bash -lc
+        # "rm -rf …"` and `env rm -rf …` used to delete straight
+        # through the wall.
+        for inner in unwrap_argv(argv):
+            decision = self._check_single_command(inner, argv)
+            if not decision.allowed:
+                return decision
+        return Decision(True, "command not denied")
+
+    def _check_single_command(self, inner, outer):
+        """One effective argv against the denylist."""
+        if not inner:
+            return Decision(True, "no command")
+        base = os.path.basename(inner[0])
+        # An explicitly allowed inner command overrides the denylist.
+        for pattern in self.policy.allowed_commands:
+            if fnmatch.fnmatch(base, pattern) or \
+                    fnmatch.fnmatch(inner[0], pattern):
+                return Decision(True, f"command {base!r} explicitly "
+                                      f"allowed by policy")
+        wrapped = (" (unwrapped from " + " ".join(outer) + ")"
+                   if inner != outer else "")
         # Exfiltration: a copy/send command naming a protected file.
         if base in ("cp", "scp", "rsync", "curl", "wget"):
-            for tok in argv[1:]:
+            for tok in inner[1:]:
                 if tok.startswith("-"):
                     continue
                 real = _realpath(tok)
                 if self.policy._denied_path_rule(real, self.rules):
                     return Decision(False, f"exfiltration of a protected "
                                            f"file: {tok!r} resolves to "
-                                           f"{real!r}", rule="DENY-EXFIL")
-        rule = D.command_rule(argv, self.rules)
+                                           f"{real!r}{wrapped}",
+                                    rule="DENY-EXFIL")
+        rule = D.command_rule(inner, self.rules)
         if rule:
             desc = next((r.get("description", "") for r in self.rules
                          if r["id"] == rule), "")
             return Decision(False, f"command denied by definitions "
-                                   f"({desc}): {' '.join(argv)}", rule=rule)
+                                   f"({desc}): {' '.join(inner)}{wrapped}",
+                            rule=rule)
         return Decision(True, "command not denied")
+
+
+# ---------------------------------------------------------------------------
+# Wrapper unwrapping (F1)
+# ---------------------------------------------------------------------------
+# A tripwire that only looks at argv[0] is trivially routed around:
+# `bash -lc "rm -rf …"` and `env rm -rf …` deleted the target through
+# the wall, and `sudo rm -rf …` survived only because sudo itself broke
+# inside the user namespace. So the tripwire unwraps the wrappers an
+# agent reaches for — sudo/doas, env, su -c, nice/time/xargs, and shells
+# with -c — and re-checks the inner command against the denylist.
+# Every effective command is checked; a shell -c string is split on
+# operators (;, &&, ||, |) and commands inside $(...), `...`, <(...) and
+# >(...) are checked too, because they still execute. What this does
+# NOT do: parse arbitrary shell. A -c string shlex cannot parse is one
+# bash itself rejects (unbalanced quote), so nothing executes; the
+# original argv is checked instead. A command hidden in a script file
+# (`bash deploy.sh`) is out of scope for the tripwire — the wall hides
+# protected paths, and deploy-via-script is recorded as not-covered
+# (see docs/FREE_GATE.md).
+
+_SHELL_NAMES = {"bash", "sh", "zsh", "dash", "ksh", "fish"}
+_SUDO_LIKE = {"sudo", "doas"}
+_SU_LIKE = {"su", "runuser"}
+_NICE_LIKE = {"nice", "time"}
+# Short-option characters that take a value (the rest of the bundle,
+# else the next token, is the value).
+_SUDO_SHORT_VALUE = set("ughpCDrtU")
+_SUDO_LONG_VALUE = {"--user", "--group", "--host", "--prompt", "--chdir",
+                    "--role", "--type"}
+_ENV_SHORT_VALUE = set("uCS")
+_ENV_LONG_VALUE = {"--unset", "--chdir", "--split-string"}
+_NICE_SHORT_VALUE = set("n")
+_NICE_LONG_VALUE = {"--adjustment"}
+_TIME_SHORT_VALUE = set()
+_TIME_LONG_VALUE = {"--output", "--format"}
+_XARGS_SHORT_VALUE = set("InPLdEas")
+_XARGS_LONG_VALUE = {"--replace", "--max-args", "--max-procs",
+                     "--max-lines", "--delimiter", "--eof", "--arg-file",
+                     "--max-chars"}
+
+
+def _skip_options(args, i, short_value, long_value):
+    """Index of the first non-option token at/after i.
+
+    Skips short bundles ("-nu" — a value-opt char consumes the rest
+    of the bundle or the next token), long options ("--opt" /
+    "--opt=v", value-taking ones consume the next token when no "="
+    is present), and "--" (everything after it is the command)."""
+    n = len(args)
+    while i < n:
+        tok = args[i]
+        if tok == "--":
+            return i + 1
+        if tok.startswith("--"):
+            name, eq, _ = tok.partition("=")
+            if name in long_value and not eq:
+                i += 2
+                continue
+            i += 1
+            continue
+        if tok.startswith("-") and len(tok) > 1:
+            chars = tok[1:]
+            j = 0
+            take_next = False
+            while j < len(chars):
+                if chars[j] in short_value:
+                    if j + 1 == len(chars):
+                        take_next = True
+                    break
+                j += 1
+            i += 2 if take_next else 1
+            continue
+        return i
+    return i
+
+
+def _shell_command_string(args):
+    """The command string of a `sh -c "…"` invocation, or None.
+
+    Handles "-c", "-lc", "-ic" (the 'c' in a short bundle takes the
+    rest of the bundle, else the next token, as its argument). A
+    bare "-" is a skippable option (login shell). A non-option token
+    first means a script file, not -c."""
+    i = 0
+    while i < len(args):
+        tok = args[i]
+        if tok == "--":
+            return None
+        if tok == "-":
+            i += 1
+            continue
+        if tok.startswith("--"):
+            i += 1
+            continue
+        if tok.startswith("-") and len(tok) > 1:
+            chars = tok[1:]
+            if "c" in chars:
+                pos = chars.index("c")
+                if pos + 1 < len(chars):
+                    return chars[pos + 1:]
+                if i + 1 < len(args):
+                    return args[i + 1]
+                return None
+            i += 1
+            continue
+        return None
+    return None
+
+
+def _subshell_strings(s):
+    """Command strings inside $(...), `...`, <(...) and >(...) in s.
+
+    Quote-naive (a quoted literal is treated as executed): it may
+    overblock a literal, never underblock an executed command."""
+    out = []
+    i = 0
+    n = len(s)
+    while i < n:
+        if s.startswith("$(", i) or s.startswith("<(", i) or \
+                s.startswith(">(", i):
+            depth = 1
+            j = i + 2
+            while j < n and depth:
+                if s[j] == "(":
+                    depth += 1
+                elif s[j] == ")":
+                    depth -= 1
+                j += 1
+            out.append(s[i + 2:j - 1])
+            i = j
+        elif s[i] == "`":
+            j = s.find("`", i + 1)
+            if j == -1:
+                break
+            out.append(s[i + 1:j])
+            i = j + 1
+        else:
+            i += 1
+    return out
+
+
+def _shell_command_argvs(cmd_string):
+    """A `sh -c` string as a list of per-command argvs.
+
+    Splits on shell operators (;, &&, ||, |) and checks commands
+    inside $(...), `...`, <(...) and >(...) too. Returns None when
+    the string cannot be parsed — bash itself rejects such strings
+    (unbalanced quote), so nothing executes; the caller then checks
+    the original argv."""
+    lexer = shlex.shlex(cmd_string, posix=True, punctuation_chars=";|&")
+    lexer.commenters = ""  # a '#' is literal here, never a comment
+    try:
+        tokens = list(lexer)
+    except ValueError:
+        return None
+    segments, cur = [], []
+    for tok in tokens:
+        if tok in (";", "|", "&", "&&", "||"):
+            if cur:
+                segments.append(cur)
+                cur = []
+        else:
+            cur.append(tok)
+    if cur:
+        segments.append(cur)
+    for inner in _subshell_strings(cmd_string):
+        sub = _shell_command_argvs(inner)
+        if sub is None:
+            return None
+        segments.extend(sub)
+    return segments
+
+
+def unwrap_argv(argv):
+    """The effective command(s) behind wrappers, as a list of argvs.
+
+    `sudo rm -rf x` -> [["rm", "-rf", "x"]]; `bash -lc "rm -rf x"`
+    -> [["rm", "-rf", "x"]]; a plain command unwraps to itself. A
+    shell -c string with several commands yields one argv per
+    command. Unwrapping is recursive (`sudo env bash -c …`)."""
+    if not argv:
+        return []
+    base = os.path.basename(argv[0])
+    if base in _SHELL_NAMES:
+        cmd = _shell_command_string(argv[1:])
+        if cmd is None:
+            return [list(argv)]
+        segments = _shell_command_argvs(cmd)
+        if segments is None:
+            return [list(argv)]
+        out = []
+        for seg in segments:
+            out.extend(unwrap_argv(seg))
+        return out or [list(argv)]
+    if base in _SUDO_LIKE:
+        i = _skip_options(argv, 1, _SUDO_SHORT_VALUE, _SUDO_LONG_VALUE)
+        if i >= len(argv):
+            return [list(argv)]
+        return unwrap_argv(argv[i:])
+    if base == "env":
+        i = _skip_options(argv, 1, _ENV_SHORT_VALUE, _ENV_LONG_VALUE)
+        # VAR=value assignments are not the command.
+        while i < len(argv) and "=" in argv[i] and \
+                not argv[i].startswith("-"):
+            i += 1
+        if i >= len(argv):
+            return [list(argv)]
+        return unwrap_argv(argv[i:])
+    if base in _SU_LIKE:
+        args = argv[1:]
+        if args and not args[0].startswith("-"):
+            args = args[1:]  # the user
+        cmd = _shell_command_string(args)
+        if cmd is None:
+            return [list(argv)]
+        segments = _shell_command_argvs(cmd)
+        if segments is None:
+            return [list(argv)]
+        out = []
+        for seg in segments:
+            out.extend(unwrap_argv(seg))
+        return out or [list(argv)]
+    if base in _NICE_LIKE:
+        if base == "nice":
+            short, long = _NICE_SHORT_VALUE, _NICE_LONG_VALUE
+        else:
+            short, long = _TIME_SHORT_VALUE, _TIME_LONG_VALUE
+        i = _skip_options(argv, 1, short, long)
+        if i >= len(argv):
+            return [list(argv)]
+        return unwrap_argv(argv[i:])
+    if base == "xargs":
+        i = _skip_options(argv, 1, _XARGS_SHORT_VALUE, _XARGS_LONG_VALUE)
+        if i >= len(argv):
+            return [list(argv)]
+        return unwrap_argv(argv[i:])
+    return [list(argv)]
 
 
 def scan_argv(argv):
@@ -376,13 +640,17 @@ def run_guarded(policy, log, argv, cwd=None, wall=True, confine=False,
               + (f" (rule {decision.rule})" if decision.rule else ""))
         print("refusing to run: " + " ".join(argv))
         return EXIT_DENY
-    for action in scan_argv(argv):
-        decision = gate.evaluate(action, note="pre-flight: " + " ".join(argv))
-        if not decision.allowed:
-            print(f"GATE: DENY — {decision.reason}"
-                  + (f" (rule {decision.rule})" if decision.rule else ""))
-            print("refusing to run: " + " ".join(argv))
-            return EXIT_DENY
+    # Scan the unwrapped tokens too: `bash -c "cat /tmp/x/.env"`
+    # names a protected file the outer argv never shows.
+    for inner in unwrap_argv(argv):
+        for action in scan_argv(inner):
+            decision = gate.evaluate(action,
+                                     note="pre-flight: " + " ".join(argv))
+            if not decision.allowed:
+                print(f"GATE: DENY — {decision.reason}"
+                      + (f" (rule {decision.rule})" if decision.rule else ""))
+                print("refusing to run: " + " ".join(argv))
+                return EXIT_DENY
     if wall:
         import fineprint_wall as W
         try:

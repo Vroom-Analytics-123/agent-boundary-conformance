@@ -41,6 +41,19 @@ Run `fineprint gate definitions` to see the list in force, with its
 version. New discovered issues become new rules in a signed
 definitions pack (below).
 
+## Wrappers are unwrapped
+
+The tripwire checks the command that would actually run, not just
+the first word on the line. `sudo rm -rf …`, `env rm -rf …`, and
+`bash -lc "rm -rf …"` are all refused with DENY-DELETE, exactly like
+a plain `rm -rf …` — the tripwire unwraps `sudo`/`doas`, `env`,
+`su -c`, `nice`/`time`/`xargs`, and shells with `-c`, and re-checks
+the inner command (including a second command after `;`/`&&`/`||`
+and a command hidden in `$(…)` or backticks). A command hidden
+inside a script file (`bash deploy.sh`) is still out of scope for
+the tripwire — the wall hides the protected paths, and
+deploy-via-script is recorded as not-covered, never as a hold.
+
 ## One command, locally
 
 ```bash

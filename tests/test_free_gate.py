@@ -242,5 +242,153 @@ class TestGateRun(unittest.TestCase):
             self.assertEqual(bad.returncode, 2, bad.stdout)
 
 
+class TestUnwrapWrappers(unittest.TestCase):
+    """F1: the tripwire must unwrap wrappers (sudo, env, bash -lc,
+    sh -c and equivalents) and re-check the inner command against
+    the denylist. Before F1, `bash -lc "rm -rf …"` and `env rm -rf …`
+    deleted the target through the wall, and `sudo rm -rf …` survived
+    only because sudo itself broke inside the user namespace."""
+
+    def _gate(self):
+        return FG.Gate(FG.Policy((".",), (), mode="deny"))
+
+    def _deny(self, argv):
+        d = self._gate().check_command(argv)
+        return d
+
+    def test_plain_rm_still_denied(self):
+        d = self._deny(["rm", "-rf", "target.txt"])
+        self.assertFalse(d.allowed)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_sudo_rm_denied(self):
+        d = self._deny(["sudo", "rm", "-rf", "target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_sudo_with_user_flag_denied(self):
+        d = self._deny(["sudo", "-u", "root", "rm", "-rf", "target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_env_rm_denied(self):
+        d = self._deny(["env", "rm", "-rf", "target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_env_with_assignment_denied(self):
+        d = self._deny(["env", "FOO=bar", "rm", "-rf", "target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_bash_lc_rm_denied(self):
+        d = self._deny(["bash", "-lc", "rm -rf target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_sh_c_rm_denied(self):
+        d = self._deny(["sh", "-c", "rm -rf target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_bash_c_second_command_denied(self):
+        # A dangerous command after a benign one in the same -c string.
+        d = self._deny(["bash", "-c", "echo hi; rm -rf target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_bash_c_and_chain_denied(self):
+        d = self._deny(["bash", "-c", "echo hi && rm -rf target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_bash_c_unlink_denied(self):
+        d = self._deny(["bash", "-c", "unlink target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-UNLINK")
+
+    def test_bash_c_subshell_rm_denied(self):
+        # A delete hidden in a command substitution still executes.
+        d = self._deny(["bash", "-c", "echo $(rm -rf target.txt)"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_nested_wrappers_denied(self):
+        d = self._deny(["sudo", "env", "bash", "-c", "rm -rf target.txt"])
+        self.assertFalse(d.allowed, d.reason)
+        self.assertEqual(d.rule, "DENY-DELETE")
+
+    def test_bash_c_benign_allowed(self):
+        d = self._deny(["bash", "-c", "echo hello"])
+        self.assertTrue(d.allowed, d.reason)
+
+    def test_sudo_benign_allowed(self):
+        d = self._deny(["sudo", "echo", "hello"])
+        self.assertTrue(d.allowed, d.reason)
+
+    def test_unwrap_plain_unchanged(self):
+        self.assertEqual(FG.unwrap_argv(["rm", "-rf", "x"]),
+                         [["rm", "-rf", "x"]])
+
+    def test_unwrap_bash_lc(self):
+        self.assertEqual(
+            FG.unwrap_argv(["bash", "-lc", "rm -rf target.txt"]),
+            [["rm", "-rf", "target.txt"]])
+
+    def test_unwrapped_env_path_is_scanned(self):
+        # `bash -c "cat /tmp/x/.env"`: the unwrapped tokens must reach
+        # the path scan, so the credential rule fires.
+        with tempfile.TemporaryDirectory() as tmp:
+            secret = Path(tmp) / ".env"
+            secret.write_text("AWS_SECRET=x\n")
+            g = self._gate()
+            inner = FG.unwrap_argv(
+                ["bash", "-c", f"cat {secret}"])[0]
+            denied = [g.evaluate(a) for a in FG.scan_argv(inner)]
+            self.assertTrue(any(not d.allowed for d in denied))
+            self.assertEqual(
+                next(d.rule for d in denied if not d.allowed),
+                "DENY-CRED-ENV")
+
+
+class TestGateRunWrappers(unittest.TestCase):
+    """End to end: the wrapped deletes must exit 2 at the tripwire
+    and the target file must survive (smoke test T2–T4)."""
+
+    def _run_wrapped(self, tmp, argv):
+        target = Path(tmp) / "target.txt"
+        target.write_text("do not delete\n")
+        proc = subprocess.run(
+            [sys.executable, str(FINEPRINT), "gate", "run",
+             "--log", str(Path(tmp) / "audit.jsonl"),
+             "--no-wall", "--"] + argv,
+            capture_output=True, text=True, cwd=tmp)
+        return proc, target
+
+    def test_sudo_rm_exit_2_file_intact(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            proc, target = self._run_wrapped(
+                tmp, ["sudo", "rm", "-rf", "target.txt"])
+            self.assertEqual(proc.returncode, 2, proc.stdout)
+            self.assertIn("DENY-DELETE", proc.stdout)
+            self.assertTrue(target.exists())
+
+    def test_bash_lc_rm_exit_2_file_intact(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            proc, target = self._run_wrapped(
+                tmp, ["bash", "-lc", "rm -rf target.txt"])
+            self.assertEqual(proc.returncode, 2, proc.stdout)
+            self.assertIn("DENY-DELETE", proc.stdout)
+            self.assertTrue(target.exists())
+
+    def test_env_rm_exit_2_file_intact(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            proc, target = self._run_wrapped(
+                tmp, ["env", "rm", "-rf", "target.txt"])
+            self.assertEqual(proc.returncode, 2, proc.stdout)
+            self.assertIn("DENY-DELETE", proc.stdout)
+            self.assertTrue(target.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

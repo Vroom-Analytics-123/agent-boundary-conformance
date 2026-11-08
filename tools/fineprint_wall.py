@@ -548,13 +548,17 @@ def _denied_hosts_with_rules(policy, rules):
     return denied
 
 
-def run_walled(policy, argv, log=None, cwd=None, definitions=None):
+def run_walled(policy, argv, log=None, cwd=None, definitions=None,
+               capture_stdout=None, capture_stderr=None):
     """Run `argv` inside the wall. The tripwire pre-flight already ran
     (see fineprint_gate.run_guarded); this is the enforcement. Returns
     the child's exit code. Raises WallUnavailable (clear message) when
     the wall cannot run, and fineprint_definitions.DefinitionsError
     when a definitions pack does not verify — the caller turns both
-    into exit 3 and never runs the command unprotected."""
+    into exit 3 and never runs the command unprotected.
+    capture_stdout / capture_stderr are file paths the child's
+    output is written to (the canary check reads them back); when
+    they are None the output is inherited, as before."""
     import fineprint_definitions as D
     import fineprint_gate as G
 
@@ -680,10 +684,21 @@ def run_walled(policy, argv, log=None, cwd=None, definitions=None):
         env["FINEPRINT_WALL_POLICY_FILE"] = str(policy_file)
         unshare_argv = (["unshare"] + flags +
                         [py, inner_script, "--inner", "--"] + list(argv))
+        out_f = err_f = None
         try:
-            proc = subprocess.run(unshare_argv, cwd=str(cwd), env=env)
+            out_f = (open(capture_stdout, "wb")
+                     if capture_stdout else None)
+            err_f = (open(capture_stderr, "wb")
+                     if capture_stderr else None)
+            proc = subprocess.run(unshare_argv, cwd=str(cwd), env=env,
+                                  stdout=out_f, stderr=err_f)
         except FileNotFoundError as e:
             raise WallUnavailable(f"wall failed to start: {e}")
+        finally:
+            if out_f is not None:
+                out_f.close()
+            if err_f is not None:
+                err_f.close()
         rc = proc.returncode
     finally:
         if proxy is not None:

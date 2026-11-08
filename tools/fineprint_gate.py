@@ -27,6 +27,9 @@ hidden, in confine mode everything outside the allowed scope is
 hidden). `gate check` answers one allow/deny question.
 `gate definitions` reports the denylist version in force.
 `gate log` renders the audit log as readable notifications.
+`gate canary` runs a command inside the wall with a unique-marker
+file planted in a protected spot and reports the objective-level
+verdict: did the marker reach the agent (FAILED) or not (HELD).
 `gate verify-log` checks the audit log's hash chain.
 
 Every blocked attempt is a structured event: what the agent tried,
@@ -61,8 +64,9 @@ Stdlib only. Usage:
   python3 tools/fineprint_gate.py check --file PATH --policy FILE
   python3 tools/fineprint_gate.py check --host HOST --policy FILE
   python3 tools/fineprint_gate.py run --policy FILE [--log FILE] [--no-wall] [--confine] -- CMD...
+  python3 tools/fineprint_gate.py canary [--dir DIR] [--log FILE] [--policy FILE] [--keep] -- CMD...
   python3 tools/fineprint_gate.py definitions
-  python3 tools/fineprint_gate.py log --log FILE
+  python3 tools/fineprint_gate.py log --log FILE [--summary]
   python3 tools/fineprint_gate.py verify-log --log FILE
   (the `fineprint` CLI wraps these; see `fineprint gate --help`)
 """
@@ -621,14 +625,16 @@ def _token_actions(tok):
 
 
 def run_guarded(policy, log, argv, cwd=None, wall=True, confine=False,
-                gate=None):
+                gate=None, capture_stdout=None, capture_stderr=None):
     """Pre-flight scan (tripwire): the command itself, then its
     arguments. Refuse (exit 2, no execution) on the first deny, else
     run the command inside the wall (unless wall is False, the
     explicit --no-wall opt-out) and return its exit code. When the
     wall cannot run here, or the definitions do not verify, refuse
     (exit 3) instead of running unprotected. Every decision is
-    audited."""
+    audited. capture_stdout / capture_stderr are file paths the
+    child's output is written to (the canary check reads them back);
+    when they are None the output is inherited, as before."""
     if confine:
         policy.mode = "confine"
     try:
@@ -657,20 +663,29 @@ def run_guarded(policy, log, argv, cwd=None, wall=True, confine=False,
         import fineprint_wall as W
         try:
             return W.run_walled(policy, argv, log=log, cwd=cwd,
-                                definitions=gate.definitions)
+                                definitions=gate.definitions,
+                                capture_stdout=capture_stdout,
+                                capture_stderr=capture_stderr)
         except (W.WallUnavailable, D.DefinitionsError) as e:
             print(f"wall: {e}")
             return EXIT_ERROR
     print("wall: OFF (--no-wall) — tripwire only, not enforced "
           "(see docs/FREE_GATE.md)")
+    out_f = open(capture_stdout, "wb") if capture_stdout else None
+    err_f = open(capture_stderr, "wb") if capture_stderr else None
     try:
-        proc = subprocess.run(argv, cwd=cwd)
+        proc = subprocess.run(argv, cwd=cwd, stdout=out_f, stderr=err_f)
     except FileNotFoundError as e:
         print(f"GATE: error — command not found: {e}")
         return EXIT_ERROR
     except Exception as e:  # noqa: BLE001
         print(f"GATE: error — {e}")
         return EXIT_ERROR
+    finally:
+        if out_f is not None:
+            out_f.close()
+        if err_f is not None:
+            err_f.close()
     if log is not None:
         log.append(Action("exec", " ".join(argv)),
                    Decision(True, f"ran, exit {proc.returncode}"),
@@ -731,6 +746,12 @@ def _render_log_entry(entry):
         host = entry.get("action", {}).get("target", "?")
         return (f"tried {host} -> blocked by rule "
                 f"{rule} -> will always be blocked")
+    if event == "CANARY":
+        routes = entry.get("routes") or []
+        if entry.get("reached"):
+            return (f"canary: FAILED — the marker reached the agent"
+                    f" via {', '.join(routes)}")
+        return "canary: HELD — the marker did not reach the agent"
     action = entry.get("action", {})
     target = action.get("target", "?")
     if entry.get("allowed"):
@@ -740,6 +761,116 @@ def _render_log_entry(entry):
         return (f"tried {target} -> blocked by rule {rule} -> "
                 f"will always be blocked")
     return f"tried {target} -> blocked -> will always be blocked"
+
+
+def cmd_canary(policy, log, argv, scratch_dir=None, keep=False):
+    """The canary check: plant a unique marker in a protected file,
+    run the command inside the wall, and trace whether the marker
+    reached the agent. The verdict is objective-level — HELD (exit 0)
+    or FAILED (exit 2) — and is written to the audit log as a CANARY
+    event, so it is part of the sealed evidence. The canary file is
+    protected for this run only: the tripwire denies any argv naming
+    it, and the wall hides it (it is added to the run policy's
+    denied_paths, so the check does not depend on any one rule).
+    The agent's output is captured (never shown live) so the trace
+    can read it back; it is printed after the verdict."""
+    import copy
+    import shutil
+    import tempfile
+
+    import fineprint_canary as C
+    if not argv:
+        print("gate canary: a command is required after --")
+        return EXIT_ERROR
+    owned_dir = scratch_dir is None
+    if owned_dir:
+        scratch = Path(tempfile.mkdtemp(prefix="fp-canary-"))
+    else:
+        scratch = Path(scratch_dir)
+        scratch.mkdir(parents=True, exist_ok=True)
+    canary_path = scratch / C.CANARY_FILENAME
+    try:
+        marker = C.plant_canary(canary_path)
+    except FileExistsError as e:
+        print(f"gate canary: {e}")
+        return EXIT_ERROR
+    run_policy = copy.copy(policy)
+    run_policy.denied_paths = (policy.denied_paths +
+                               (str(canary_path.resolve()),))
+    capdir = Path(tempfile.mkdtemp(prefix="fp-canary-out-"))
+    out_path = capdir / "stdout.txt"
+    err_path = capdir / "stderr.txt"
+    print(f"canary: {marker}")
+    print(f"canary: planted at {canary_path} (protected for this run)")
+    rc = run_guarded(run_policy, log, argv, cwd=str(scratch),
+                     capture_stdout=str(out_path),
+                     capture_stderr=str(err_path))
+    ran = out_path.exists() or err_path.exists()
+    if rc == EXIT_ERROR:
+        print("canary: the check could not run "
+              f"(gate exit {rc}) — no verdict")
+        _cleanup_canary(scratch, capdir, canary_path, owned_dir, keep)
+        return EXIT_ERROR
+    stdout_text = (out_path.read_text(errors="ignore")
+                   if out_path.exists() else "")
+    stderr_text = (err_path.read_text(errors="ignore")
+                   if err_path.exists() else "")
+    routes = C.trace_marker(marker, {"stdout": stdout_text,
+                                     "stderr": stderr_text})
+    file_hits = C.scan_written_files(marker, scratch,
+                                     exclude={canary_path})
+    if file_hits:
+        routes.append("written_files")
+    verdict = C.canary_verdict(marker, routes)
+    if not ran:
+        # The tripwire denied the command before it ran, so the
+        # marker could not reach the agent. That is a hold — via the
+        # tripwire, not the wall — and the verdict says so.
+        print(f"CANARY: HELD — the tripwire denied the command "
+              f"before it ran, so {verdict['line']}")
+    else:
+        print(f"CANARY: {verdict['verdict']} — {verdict['line']}")
+        if file_hits:
+            for hit in file_hits:
+                print(f"  marker found in written file: {hit['file']}")
+    print(f"agent command exited {rc}")
+    if log is not None:
+        log.append(Action("canary", marker),
+                   Decision(not verdict["reached"], verdict["line"]),
+                   note="canary check", event="CANARY",
+                   extra={"marker": marker,
+                          "reached": verdict["reached"],
+                          "routes": routes,
+                          "files": [h["file"] for h in file_hits],
+                          "verdict": verdict["verdict"]})
+    if stdout_text or stderr_text:
+        print("agent output:")
+        print(stdout_text, end="")
+        print(stderr_text, end="")
+    if keep:
+        print(f"canary: kept scratch dir {scratch} and output {capdir}")
+    _cleanup_canary(scratch, capdir, canary_path, owned_dir, keep)
+    return EXIT_ALLOW if not verdict["reached"] else EXIT_DENY
+
+
+def _cleanup_canary(scratch, capdir, canary_path, owned_dir, keep):
+    """Remove the canary run's scratch files (unless --keep). A
+    user-supplied --dir is never deleted whole — only the canary
+    file we planted is removed from it."""
+    import shutil
+    if keep:
+        return
+    try:
+        if owned_dir:
+            shutil.rmtree(scratch, ignore_errors=True)
+        else:
+            try:
+                canary_path.unlink()
+            except OSError:
+                pass
+        shutil.rmtree(capdir, ignore_errors=True)
+    except OSError:
+        pass
 
 
 def cmd_log(log_path):
@@ -770,6 +901,8 @@ def main(argv):
     log_path = None
     no_wall = False
     confine = False
+    canary_dir = None
+    canary_keep = False
     i = 0
     args = []
     while i < len(rest):
@@ -784,6 +917,12 @@ def main(argv):
             i += 1
         elif rest[i] == "--confine":
             confine = True
+            i += 1
+        elif rest[i] == "--dir":
+            canary_dir = rest[i + 1]
+            i += 2
+        elif rest[i] == "--keep":
+            canary_keep = True
             i += 1
         elif rest[i] == "--":
             args = rest[i + 1:]
@@ -809,6 +948,9 @@ def main(argv):
     except D.DefinitionsError as e:
         print(f"definitions: {e}")
         return EXIT_ERROR
+    if cmd == "canary":
+        return cmd_canary(policy, log, args, scratch_dir=canary_dir,
+                          keep=canary_keep)
     if cmd == "check":
         action = None
         j = 0

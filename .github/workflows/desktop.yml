@@ -22,13 +22,27 @@ jobs:
         run: |
           cd apps/desktop
           npm test
+      - name: Check user-namespace availability
+        # F6: the wall needs `unshare --user`. The GitHub Ubuntu 26
+        # runner refuses user-namespace creation, so the two
+        # wall-dependent real-CLI tests (T2 allow, T3) skip there with
+        # the reason named — they are not failures. This step prints
+        # the probe result so a skip is visible in the CI log.
+        run: |
+          if unshare --user --map-root-user --mount --net true 2>/dev/null; then
+            echo "user namespaces: available — all real-CLI tests run"
+          else
+            echo "user namespaces: UNAVAILABLE on this runner — T2/T3 real-CLI tests will skip (see apps/desktop/tests/test-real-cli.js)"
+          fi
       - name: Real-CLI integration tests
         run: |
           cd apps/desktop
           FINEPRINT_REAL_CLI=1 FINEPRINT_REAL_CLI_PATH="$GITHUB_WORKSPACE/fineprint" npm run test:real-cli
         # The real CLI is this repo's own free-check-gate work: when the
         # workflow runs on a checkout that has it, the test runs against
-        # it; otherwise it is skipped by the test itself.
+        # it; otherwise it is skipped by the test itself. When the
+        # runner cannot create user namespaces, the wall-dependent
+        # tests skip with the reason named (F6) — a skip, not a fail.
 
   build:
     needs: test

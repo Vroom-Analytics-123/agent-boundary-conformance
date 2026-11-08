@@ -19,7 +19,20 @@
  * so the gated command never executes). The pre-flight below fails
  * fast with that branch requirement named, instead of letting a
  * future audit chase the false failure. Pin a different sibling per
- * run with FINEPRINT_REAL_CLI_PATH. */
+ * run with FINEPRINT_REAL_CLI_PATH.
+ * RUNNER REQUIREMENT (Nov 8, F6): the tests that need an ALLOWED
+ * command to actually execute inside the wall (T2 allow, T3) need
+ * the runner to create user namespaces — the wall runs
+ * `unshare --user --map-root-user --mount [--net]`. The GitHub
+ * Ubuntu 26 runner refuses user-namespace creation, so those tests
+ * SKIP there (named, with the reason) instead of failing. The
+ * tripwire-only tests (T1 deny, the deny-log test) run everywhere:
+ * the tripwire denies before the wall ever starts, so they never
+ * touch unshare. T3 skips rather than passing vacuously — without
+ * unshare the wall refuses (exit 3) and the secret never prints for
+ * the wrong reason, which would look like a pass. The workflow
+ * prints the probe result so a skip is visible in the CI log.
+ * In-container (where unshare works) all 9 tests run. */
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs');
@@ -47,6 +60,30 @@ const {
 } = require('../core/cli');
 const { parseLog, verifyChain } = require('../core/audit');
 const { verdictForGate } = require('../core/verdict');
+
+// F6: can this runner create the user namespaces the wall needs?
+// Probe with the wall's exact flags (confine mode adds --net). Cached:
+// the probe runs once per file load. A runner that refuses
+// user-namespace creation (GitHub Ubuntu 26) gets the wall-dependent
+// tests skipped, not failed — the wall cannot start there, which is a
+// runner limit, not a product failure.
+let _canUnshare = null;
+function canCreateUserNamespace() {
+  if (_canUnshare !== null) return _canUnshare;
+  try {
+    const { spawnSync } = require('node:child_process');
+    const res = spawnSync('unshare',
+      ['--user', '--map-root-user', '--mount', '--net', 'true'],
+      { timeout: 10000 });
+    _canUnshare = res.status === 0;
+  } catch {
+    _canUnshare = false;
+  }
+  return _canUnshare;
+}
+const UNSHARE_SKIP = 'this runner cannot create user namespaces '
+  + '(unshare --user fails) — the wall cannot start here; '
+  + 'see the runner-requirement note at the top of this file';
 
 function tmpdir() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'fp-realcli-'));
@@ -123,7 +160,9 @@ test('real CLI: definitions in force are the built-in v1 pack', { skip: !ENABLED
   assert.equal(d.ruleCount, 11);
 });
 
-test('real CLI: tripwire denies outside the scope (T1) and allows inside (T2), confine mode', { skip: !ENABLED }, async (t) => {
+test('real CLI: tripwire denies outside the scope (T1), confine mode', { skip: !ENABLED }, async (t) => {
+  // Tripwire-only: the deny happens before the wall starts, so this
+  // runs on any runner, including ones without user namespaces.
   const dir = tmpdir();
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const allowed = path.join(dir, 'allowed');
@@ -139,6 +178,22 @@ test('real CLI: tripwire denies outside the scope (T1) and allows inside (T2), c
   assert.equal(denied.code, 2, `expected tripwire deny, got ${denied.code}: ${denied.stdout}`);
   assert.match(denied.stdout, /DENY/);
   assert.match(denied.stdout, /CONFINE-PATH/);
+});
+
+test('real CLI: wall allows inside the scope (T2), confine mode', { skip: !ENABLED || (!canCreateUserNamespace() && UNSHARE_SKIP) }, async (t) => {
+  // Needs the wall to actually run the allowed command: skips where
+  // the runner cannot create user namespaces (F6).
+  const dir = tmpdir();
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const allowed = path.join(dir, 'allowed');
+  const secret = path.join(dir, 'secret');
+  fs.mkdirSync(allowed);
+  fs.mkdirSync(secret);
+  fs.writeFileSync(path.join(allowed, 'note.txt'), 'hello\n');
+  fs.writeFileSync(path.join(secret, 'keys.txt'), 'TOPSECRET\n');
+  const cli = findCli(REAL_CLI);
+  const policy = confinePolicyFile(dir, [allowed]);
+  const log = path.join(dir, 'audit.jsonl');
   const allowedRun = await gateRun(cli, { policy, log, command: ['cat', 'note.txt'], cwd: allowed, confine: true });
   assert.equal(allowedRun.code, 0, `expected allow, got ${allowedRun.code}: ${allowedRun.stdout} ${allowedRun.stderr}`);
   assert.match(allowedRun.stdout, /hello/);
@@ -148,7 +203,10 @@ test('real CLI: tripwire denies outside the scope (T1) and allows inside (T2), c
   assert.equal(v.valid, true);
 });
 
-test('real CLI: wall stops a script that reads outside the scope (T3)', { skip: !ENABLED }, async (t) => {
+test('real CLI: wall stops a script that reads outside the scope (T3)', { skip: !ENABLED || (!canCreateUserNamespace() && UNSHARE_SKIP) }, async (t) => {
+  // Needs the wall: without unshare the gate refuses (exit 3) and the
+  // secret never prints for the wrong reason — a vacuous pass. Skip
+  // where the runner cannot create user namespaces (F6).
   const dir = tmpdir();
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const allowed = path.join(dir, 'allowed');

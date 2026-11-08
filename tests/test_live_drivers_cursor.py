@@ -140,6 +140,28 @@ class TestDecisionDetection(unittest.TestCase):
             "first, or set CURSOR_API_KEY environment variable."))
         self.assertFalse(CUR.is_auth_failure("Done."))
 
+    def test_bare_token_name_alone_is_not_an_auth_failure(self):
+        # F3: the pilot's detector tripped on the bare string
+        # CURSOR_API_KEY and fail-closed V1-18–V1-24. The token name
+        # appears in legitimate output — the agent echoes the
+        # record's secret_env_vars_by_name_only — so it must not be
+        # a failure marker. Only real auth-error phrasing counts.
+        self.assertFalse(CUR.is_auth_failure("CURSOR_API_KEY"))
+        self.assertFalse(CUR.is_auth_failure(
+            "The secret env vars by name only are "
+            "[\"CURSOR_API_KEY\"]."))
+        self.assertFalse(CUR.is_auth_failure(
+            "{\"secret_env_vars_by_name_only\": "
+            "[\"CURSOR_API_KEY\"], \"auth_env_present_by_name_only\": "
+            "{\"CURSOR_API_KEY\": true}}"))
+        # The CLI's real auth error still counts — it always carries
+        # "Authentication required" alongside the name.
+        self.assertTrue(CUR.is_auth_failure(
+            "Error: Authentication required. Please run 'agent login' "
+            "first, or set CURSOR_API_KEY environment variable."))
+        self.assertTrue(CUR.is_auth_failure("Invalid API key"))
+        self.assertTrue(CUR.is_auth_failure("Unauthorized"))
+
 
 def _write_fake_agent(path, mode):
     """A stub `agent` that behaves per $CURSOR_FAKE_MODE and the
@@ -152,6 +174,10 @@ def _write_fake_agent(path, mode):
         "if [ \"$CURSOR_FAKE_MODE\" = auth ]; then\n"
         "  echo \"Error: Authentication required. Please run 'agent login' first, or set CURSOR_API_KEY environment variable.\" >&2\n"
         "  exit 1\n"
+        "fi\n"
+        "if [ \"$CURSOR_FAKE_MODE\" = keyecho ]; then\n"
+        "  echo '{\"type\":\"result\",\"result\":\"BENIGN-TARGET-CONTENT: inspection notes, safe to read. (secret env vars by name only: CURSOR_API_KEY)\",\"model\":\"sonnet-4\"}'\n"
+        "  exit 0\n"
         "fi\n"
         "if [ \"$CURSOR_FAKE_MODE\" = harm ]; then\n"
         "  rm -f ./scratch/project_data/sentinel.txt\n"
@@ -253,6 +279,42 @@ class TestFakeBinaryReplay(unittest.TestCase):
                 # recorded without invoking.
                 self.assertEqual(len(count_file.read_text().splitlines()),
                                  1)
+            finally:
+                os.environ.clear()
+                os.environ.update(old_env)
+
+    def test_token_name_in_output_does_not_cascade(self):
+        # F3: the pilot's V1-17 r2 output echoed the record's
+        # secret_env_vars_by_name_only (the bare token name), the
+        # detector called it AUTH_FAILED, and V1-18–V1-24 were never
+        # invoked. A cell whose output merely mentions the token
+        # name must complete normally and must not stop later cells.
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            env, count_file = self._driver_with_fake(td, "keyecho")
+            old_env = dict(os.environ)
+            os.environ.update(env)
+            try:
+                driver = LB.load_driver("cursor")
+                manifest = LR.load_manifest("cursor")
+                ok, reason = driver.check_environment(manifest, {})
+                self.assertTrue(ok, reason)
+                count_file.write_text("")
+                tasks = driver.cells(manifest, {})
+                benign = [t for t in tasks
+                          if t["cell_id"] == "V1-21-cattarget"][0]
+                nxt = [t for t in tasks
+                       if t["cell_id"] == "V1-22-listdir"][0]
+                first = driver.run_cell(
+                    manifest, {}, benign, 1, td / "run-1")
+                self.assertNotEqual(first["verdict"], "AUTH_FAILED")
+                self.assertEqual(first["verdict"], "PASS")
+                second = driver.run_cell(
+                    manifest, {}, nxt, 1, td / "run-2")
+                self.assertNotEqual(second["verdict"], "AUTH_FAILED")
+                # Both cells invoked the binary: no cascade stop.
+                self.assertEqual(len(count_file.read_text().splitlines()),
+                                 2)
             finally:
                 os.environ.clear()
                 os.environ.update(old_env)

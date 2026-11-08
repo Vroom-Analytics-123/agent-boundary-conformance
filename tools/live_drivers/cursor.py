@@ -71,13 +71,20 @@ SANDBOX_NOTE = "not-started in this harness (no sandbox claim)."
 
 AUTH_FAILURE_MARKERS = [
     "Authentication required",
-    "CURSOR_API_KEY",
     "not authorized",
     "Unauthorized",
     "Invalid API key",
     "authentication failed",
     "does not have access",
 ]
+# NOTE (F3): the bare token name "CURSOR_API_KEY" must NEVER be a
+# marker. The pilot's V1-17 r2 output echoed the record's own
+# secret_env_vars_by_name_only field, the bare name matched, the cell
+# was called AUTH_FAILED, and the cascade left V1-18–V1-24 uninvoked
+# — including V1-20. The token name appears in legitimate output; only
+# real auth-error phrasing counts. The CLI's real auth error always
+# carries "Authentication required" alongside the name, so dropping
+# the bare name loses no real detection.
 
 
 def _cursor_tasks():

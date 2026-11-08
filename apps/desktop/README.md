@@ -1,11 +1,11 @@
 # FinePrint desktop
 
-![FinePrint desktop demo](assets/fineprint-app-demo.gif)
-
 A desktop app (macOS + Windows) that makes the free FinePrint wall
 usable without a terminal — for engineers **and** for people who never
 open a terminal. It is a GUI around the `fineprint` CLI; it does not
 reimplement measurement or enforcement.
+
+![FinePrint desktop demo](assets/fineprint-app-demo.gif)
 
 ## What it does
 

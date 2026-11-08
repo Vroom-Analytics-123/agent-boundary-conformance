@@ -82,9 +82,9 @@ if [ ! -s "$MP4" ]; then
   exit 1
 fi
 echo "== converting to GIF: $GIF =="
-# -ss 2 skips the first ~2s while the window is still opening (black
+# -ss 3 skips the first ~3s while the window is still opening (black
 # frames) so the GIF starts on the app itself.
-ffmpeg -y -loglevel error -ss 2 -i "$MP4" \
+ffmpeg -y -loglevel error -ss 3 -i "$MP4" \
   -vf "fps=10,scale=960:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse" \
   "$GIF"
 ls -la "$GIF"

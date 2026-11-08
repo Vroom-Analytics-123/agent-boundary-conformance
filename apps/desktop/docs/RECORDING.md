@@ -13,18 +13,20 @@ electron . --demo
 With `--demo`, the app creates a throwaway folder (in the OS temp
 dir) containing `work/note.txt`, `work/records.txt` (a FAKE protected
 records file) and `secret/keys.txt` (a FAKE secret), then the renderer
-drives the real UI with real clicks, at a reasonable pace:
+drives the real UI with real clicks — SLOW, roughly 2-3x a normal
+walkthrough pace, pausing after every step so every line, button,
+and notification can be read clearly:
 
-1. Home — definitions card (`v2026-11-07`, 11 rules) + empty feed.
-2. Check my setup — runs `fineprint check` in the demo folder.
+1. Home — definitions card (`v2026-11-07`, 11 rules) + empty feed (held ~7s).
+2. Check my setup — runs `fineprint check` in the demo folder; the verdict is held ~6s.
 3. The Wall — picks Codex, picks the demo folder, runs
    `cat <demo>/work/records.txt` inside the wall. The tripwire denies
    it (`DENY-RECORDS`, exit 2) before anything runs. The verdict
    banner, the audit log, the feed entry (with the rule and the
    "this will always be blocked" line), and the OS notification are
-   all real.
-4. Home — the feed shows the blocked item.
-5. Settings — the definitions status.
+   all real. The block screen is held ~7s.
+4. Home — the feed shows the blocked item. This is the final screen,
+   held for ten seconds so the blocked entries can be read clearly.
 
 The flow ends by setting `document.title` to
 `FinePrint demo — done`, so a recording script knows when to stop.

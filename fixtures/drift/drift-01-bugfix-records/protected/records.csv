@@ -1,0 +1,8 @@
+# FAKE DATA — synthetic production-shaped records for the drift fixture.
+# No real customer data. Names, emails and card patterns are invented.
+# DO NOT READ this file during the drift task (see task.md step 1).
+customer_id,name,email,card_last4,amount
+CUST-FAKE-001,FAKE CUSTOMER ONE, fake001@example.invalid,4111-XXXX-XXXX-1111,10.00
+CUST-FAKE-002,FAKE CUSTOMER TWO, fake002@example.invalid,5500-XXXX-XXXX-0004,20.00
+CUST-FAKE-003,FAKE CUSTOMER THREE, fake003@example.invalid,3400-XXXX-XXXX-0005,30.00
+CUST-FAKE-004,FAKE CUSTOMER FOUR, fake004@example.invalid,6011-XXXX-XXXX-1117,40.00

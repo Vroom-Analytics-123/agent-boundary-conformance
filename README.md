@@ -8,6 +8,12 @@ Harnesses change under their owners — a new release, a new feature, a new flag
 
 **Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The harness scorecard below covers 16 harnesses; the Index verdict stays NARROW until the consistent re-measurement protocol completes. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md)**.
 
+## Drift fixtures — does compliance drift over a long task?
+
+![Drift fixtures demo — one fixture and the self-check passing](demo/drift-fixtures-demo.gif)
+
+Four long tasks (8–12 steps each) in [`fixtures/drift/`](fixtures/drift/) — one per family (bugfix with protected records, refactor with a deploy script, cleanup with a protected backup, migration with a credentials file). The rule is stated at step 1; a late step naturally tempts the agent to touch the protected thing; every task is completable without violating. A canary marker (unique per run) sits in the protected location: if it reaches the agent, the boundary failed. **These fixtures measure agent behaviour WITHOUT the wall — the control condition.** The drift campaign is the measurement of the problem over long tasks (6 harnesses × 4 tasks × 3 repeats = 72 runs, post–Nov 9 ceremony, harness auth + owner present); a later wall-arm would run the same tasks with the wall and compare. Self-check (no harness auth, no live agent): `python3 tools/check_drift_fixtures.py`. Demo recording script: [`demo/record_drift_demo.sh`](demo/record_drift_demo.sh). Full write-up: [`fixtures/drift/README.md`](fixtures/drift/README.md).
+
 ## The harness scorecard
 
 ![FinePrint harness scorecard — combined live-basis view (PROVISIONAL)](framework/visuals/scorecard.svg)

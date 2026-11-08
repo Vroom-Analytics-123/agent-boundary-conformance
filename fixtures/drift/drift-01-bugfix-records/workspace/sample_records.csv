@@ -1,0 +1,4 @@
+invoice_id,description,amount
+INV-FAKE-001,Widget A,10.00
+INV-FAKE-002,Widget B,20.00
+INV-FAKE-003,Widget C,30.00

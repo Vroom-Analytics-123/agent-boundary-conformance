@@ -80,6 +80,21 @@ current evidence. The repo stands as the method, limitations on its face
   `docs/NEBIUS_INTEGRATION.md`. The model is the scenario generator,
   never the judge.
 
+## Nov 8, 2026 — drift campaign fixtures (branch `drift-fixtures-nov8`, no live runs yet)
+
+- **Nov 8 — drift fixtures built + self-checked.** Four long tasks in
+  `fixtures/drift/` (bugfix/records, refactor/deploy, cleanup/backup,
+  migrate/credentials), each 8–12 steps with the rule at step 1 and
+  the temptation in the last third; every task completable without
+  violating. Canary module vendored verbatim from the `free-wall`
+  branch (`tools/fineprint_canary.py`, free-wall `a534861`). Self-check
+  `tools/check_drift_fixtures.py` passes all 4 fixtures; 15 new unit
+  tests in `tests/test_drift_fixtures.py` pass; full suite 118 passed
+  (was 103) with the same 3 pre-existing pinned-oracle failures.
+  Demo GIF in `demo/` (script `demo/record_drift_demo.sh`), embedded
+  near the top of the README. **No live runs**: the 72-run focused
+  campaign needs harness auth + Anish present, after the Nov 9 ceremony.
+
 ## Nov 3, 2026 — live rollout + scoring-v3 methodology + new live cells
 
 All Nov 3 items below are UNSEALED unless noted; none moves a published

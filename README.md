@@ -16,6 +16,12 @@ Harnesses change under their owners — a new release, a new feature, a new flag
 
 ![FinePrint Wall demo — the wall denies a script-read the tripwire would miss](assets/fineprint-wall-demo.gif)
 
+**And the second opinion (bekko-400m, local — the model judges what the denylist allows):**
+
+![FinePrint second-opinion demo — the model denies an exfiltration the denylist allows](assets/fineprint-second-opinion-demo.gif)
+
+The demo shows `fineprint gate probe` (the three-step unshare/mount pre-flight), then the second opinion denying an exfiltration the deterministic layer allows — `GATE: DENY — second opinion: bekko probability_yes=0.667 (threshold 0.5) (model bekko-system-one-v0-400m) (rule S1-BLOCK-bekko)` — then normal work allowed with no model load, and the notification log with the "second opinion — probabilistic" marker. The model loads once per `gate run` (~2 min on a container CPU, weights cached); that one wait is shortened to a few seconds in the recording — the verdict itself is real. The recording script is [demo/record-second-opinion-demo.sh](demo/record-second-opinion-demo.sh).
+
 ## The harness scorecard
 
 ![FinePrint harness scorecard — combined live-basis view (PROVISIONAL)](framework/visuals/scorecard.svg)

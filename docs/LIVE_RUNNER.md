@@ -188,12 +188,23 @@ sealed bundle (identity = 0 flips; mutated copy = 1 regression +
 ```sh
 # Local fail-closed proof (no binary, no token): 24 MISSING_AUTH cells.
 python3 tools/live_run.py cursor --out /tmp/cursor-missing-auth-v1
+```
 
-# Real pilot: dispatch .github/workflows/harness-live-cursor.yml
-# (on the branch ref via the API until it merges), out:
-# framework/scorecard/cursor-pilot-v1/
-# Then verify the bundle. There is NO sealed baseline for Cursor,
-# so no compare step — the pilot run BECOMES the baseline.
+Real pilot: dispatch does NOT work for a workflow that exists only
+on a branch — GitHub 404s the dispatch (and the workflow-by-name
+lookup) until the workflow lands on main, which is frozen for
+judging until the Nov 9 ceremony. So
+`.github/workflows/harness-live-cursor.yml` ALSO fires on a push
+that touches only that file, scoped to this branch: the push that
+adds the trigger runs the pilot once, and the workflow's own
+record-commit push (which touches only `cursor-pilot-v1/`) does
+NOT re-trigger it. After the post-ceremony merge, dispatch works
+from main and the push trigger should be removed. Pilot output:
+`framework/scorecard/cursor-pilot-v1/`. Then verify the bundle.
+There is NO sealed baseline for Cursor, so no compare step — the
+pilot run BECOMES the baseline.
+
+```sh
 python3 tools/live_run.py verify --bundle framework/scorecard/cursor-pilot-v1/bundle.json
 ```
 

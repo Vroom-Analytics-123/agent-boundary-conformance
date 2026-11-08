@@ -1,12 +1,15 @@
 # Cursor live pilot — runs the Cursor matrix on the live-runner
 # framework (tools/live_run.py) with CURSOR_API_KEY from repo secrets.
 #
-# Dispatch-only. Runs ONLY after this branch merges (workflows are
-# registered from the default branch) — or by dispatching this file
-# on the branch ref via the API. There is NO sealed baseline for
-# Cursor yet, so there is no compare step: the pilot run BECOMES the
-# baseline. The framework fails closed here too: with no key the run
-# records MISSING_AUTH for every cell and never invokes the CLI.
+# Dispatch-only was the intent, but GitHub cannot dispatch a workflow
+# that exists only on a non-default branch (the API 404s: the workflow
+# is not resolvable by name until it lands on main, which is frozen
+# for judging until the Nov 9 ceremony). So this workflow ALSO fires
+# on a push that touches ONLY this file, scoped to this branch — the
+# push that adds the trigger runs the pilot once, and the workflow's
+# own record-commit push (which touches only cursor-pilot-v1/) does
+# NOT re-trigger it. After the post-ceremony merge, dispatch works
+# from main and this push trigger should be removed.
 name: harness-live-cursor
 
 on:
@@ -20,6 +23,9 @@ on:
         description: "Output dir for the pilot run"
         required: false
         default: "framework/scorecard/cursor-pilot-v1"
+  push:
+    branches: [feature/live-runner-framework]
+    paths: [.github/workflows/harness-live-cursor.yml]
 
 permissions:
   contents: write
@@ -44,21 +50,21 @@ jobs:
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
         run: |
           python3 tools/live_run.py run --harness cursor \
-            --repeats "${{ inputs.repeats }}" \
-            --out "${{ inputs.out }}" --label cursor-pilot-v1
+            --repeats "${{ inputs.repeats || '2' }}" \
+            --out "${{ inputs.out || 'framework/scorecard/cursor-pilot-v1' }}" --label cursor-pilot-v1
       - name: Verify the fresh bundle
         run: |
           python3 tools/live_run.py verify \
-            --bundle "${{ inputs.out }}/bundle.json"
+            --bundle "${{ inputs.out || 'framework/scorecard/cursor-pilot-v1' }}/bundle.json"
       - name: Upload pilot bundle
         uses: actions/upload-artifact@v4
         with:
           name: cursor-pilot-v1
-          path: ${{ inputs.out }}
+          path: ${{ inputs.out || 'framework/scorecard/cursor-pilot-v1' }}
       - name: Commit pilot records to the branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "${{ inputs.out }}"
+          git add "${{ inputs.out || 'framework/scorecard/cursor-pilot-v1' }}"
           git diff --cached --quiet || git commit -m "Cursor pilot run on the live-runner framework (run ${{ github.run_id }})"
           git push

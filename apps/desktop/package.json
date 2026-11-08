@@ -1,6 +1,7 @@
 {
   "author": "Vroom Analytics",
-  "description": "FinePrint desktop app \u2014 the free wall without a terminal. A GUI around the fineprint CLI; it never reimplements measurement or enforcement.",
+  "description": "FinePrint desktop app — the free wall without a terminal. A GUI around the fineprint CLI; it never reimplements measurement or enforcement.",
+  "homepage": "https://github.com/Vroom-Analytics-123/agent-boundary-conformance",
   "devDependencies": {
     "electron": "^33.0.0",
     "electron-builder": "^25.1.8",
@@ -10,7 +11,7 @@
   "main": "main.js",
   "name": "fineprint-desktop",
   "scripts": {
-    "package:linux": "electron-packager . FinePrint --platform=linux --arch=x64 --out=dist --overwrite",
+    "package:linux": "bash packaging/build-linux.sh",
     "package:mac": "bash packaging/build-mac.sh",
     "package:win": "bash packaging/build-win.sh",
     "record-demo": "bash packaging/record-demo.sh",
@@ -30,17 +31,25 @@
     ],
     "mac": {
       "target": "dmg",
-      "category": "public.app-category.developer-tools"
+      "category": "public.app-category.developer-tools",
+      "icon": "assets/fineprint.icns"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/fineprint.ico"
     },
     "nsis": {
       "oneClick": true,
       "perMachine": false
     },
     "linux": {
-      "target": "AppImage"
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/fineprint.png",
+      "category": "Development",
+      "maintainer": "Vroom Analytics"
     }
   },
   "version": "0.1.0"

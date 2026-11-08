@@ -16,12 +16,14 @@ APP_NAME="FinePrint"
 OUT="dist"
 
 echo "== packaging macOS .app =="
-# No --icon: there is no .icns asset yet (see README "needs a real
-# Mac/Windows machine" — a proper app icon is still to be made).
+# Icon: assets/fineprint.icns (made by packaging/make-icon.py — navy
+# canvas, teal shield, white check; a first icon, not a brand mark).
 npx electron-packager . "$APP_NAME" \
   --platform=darwin --arch=x64 \
   --out="$OUT" --overwrite \
   --app-version=0.1.0 \
+  --icon=assets/fineprint.icns \
+  --ignore=^/dist/ \
   --app-bundle-id=com.vroomanalytics.fineprint
 
 APP_PATH="$OUT/$APP_NAME-darwin-x64/$APP_NAME.app"
@@ -35,7 +37,11 @@ python3 -c "import plistlib; d=plistlib.load(open('$APP_PATH/Contents/Info.plist
 # Sanity: the packaged app must contain the Electron binary and our code.
 test -x "$APP_PATH/Contents/MacOS/$APP_NAME" || { echo "ERROR: no app binary in the bundle" >&2; exit 1; }
 test -f "$APP_PATH/Contents/Resources/app/main.js" || { echo "ERROR: main.js missing from the bundle" >&2; exit 1; }
-echo ".app verified: binary + main.js present."
+# The icon lands as electron.icns (packager copies it over the default
+# name) — verify it is ours, not the Electron default.
+cmp -s assets/fineprint.icns "$APP_PATH/Contents/Resources/electron.icns" \
+  || { echo "ERROR: app icon did not land in the bundle" >&2; exit 1; }
+echo ".app verified: binary + main.js + icon present."
 
 DMG="$OUT/$APP_NAME-0.1.0-mac.dmg"
 echo "== building .dmg: $DMG =="

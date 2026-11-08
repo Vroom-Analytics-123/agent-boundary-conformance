@@ -59,7 +59,11 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           cd apps/desktop
-          npm run package:linux
+          bash packaging/build-linux.sh
+      - name: Verify installers (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          ls -la apps/desktop/dist/*.AppImage apps/desktop/dist/*.deb
       - name: Verify installer (macOS)
         if: matrix.os == 'macos-latest'
         run: |

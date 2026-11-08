@@ -873,8 +873,54 @@ def _cleanup_canary(scratch, capdir, canary_path, owned_dir, keep):
         pass
 
 
-def cmd_log(log_path):
-    """Render the audit log as readable notifications."""
+def summarize_log_entries(entries):
+    """The boundaries-under-test view of an audit log: which rules
+    fire most, which agents keep testing them, and the canary
+    verdicts. A view on existing entries, not new measurement.
+    Returns {"total", "denied", "allowed", "wall_events",
+    "by_rule": [(rule, count), ...] most-blocked first,
+    "by_agent": [(agent, count), ...] most-blocked first,
+    "canary": {"held": n, "failed": n}}.
+    Denials are the blocked attempts (a gate decision, or a wall
+    proxy deny). A failed canary is a boundary failure, not a
+    denial, and is counted under "canary" only. "by_agent" counts
+    denials carrying an "agent" field; when no entry carries one it
+    is empty (the log does not record the agent)."""
+    from collections import Counter
+    total = len(entries)
+    denied = allowed = wall_events = 0
+    by_rule = Counter()
+    by_agent = Counter()
+    canary = {"held": 0, "failed": 0}
+    for e in entries:
+        event = e.get("event")
+        if event in ("WALL_START", "WALL_END"):
+            wall_events += 1
+            continue
+        if event == "CANARY":
+            if e.get("reached"):
+                canary["failed"] += 1
+            else:
+                canary["held"] += 1
+            continue
+        if e.get("allowed"):
+            allowed += 1
+            continue
+        denied += 1
+        by_rule[e.get("rule") or "no rule"] += 1
+        if e.get("agent"):
+            by_agent[e["agent"]] += 1
+    by_rule = sorted(by_rule.items(), key=lambda kv: (-kv[1], kv[0]))
+    by_agent = sorted(by_agent.items(), key=lambda kv: (-kv[1], kv[0]))
+    return {"total": total, "denied": denied, "allowed": allowed,
+            "wall_events": wall_events, "by_rule": by_rule,
+            "by_agent": by_agent, "canary": canary}
+
+
+def cmd_log(log_path, summary=False):
+    """Render the audit log as readable notifications, or — with
+    --summary — as the boundaries-under-test view: which rules fire
+    most, which agents keep testing them, and the canary verdicts."""
     if not os.path.exists(log_path):
         print(f"gate log: no such file: {log_path}")
         return EXIT_ERROR
@@ -885,6 +931,27 @@ def cmd_log(log_path):
         print(f"audit log {log_path}: BROKEN — the hash chain does not "
               f"verify (entries below are untrusted)")
         return EXIT_DENY
+    if summary:
+        s = summarize_log_entries(entries)
+        print(f"audit log {log_path}: valid ({s['total']} entries)")
+        print(f"denials: {s['denied']} · allowed: {s['allowed']} · "
+              f"wall events: {s['wall_events']}")
+        print("by rule (most blocked first):")
+        if s["by_rule"]:
+            for rule, count in s["by_rule"]:
+                print(f"  {rule:<16} {count}")
+        else:
+            print("  (no denials recorded)")
+        if s["by_agent"]:
+            print("by agent (most blocked first):")
+            for agent, count in s["by_agent"]:
+                print(f"  {agent:<16} {count}")
+        else:
+            print("by agent: (no agent recorded in this log)")
+        if s["canary"]["held"] or s["canary"]["failed"]:
+            print(f"canary: {s['canary']['held']} held, "
+                  f"{s['canary']['failed']} failed")
+        return EXIT_ALLOW
     print(f"audit log {log_path}: valid ({len(entries)} entries)")
     for entry in entries:
         print(_render_log_entry(entry))
@@ -903,6 +970,7 @@ def main(argv):
     confine = False
     canary_dir = None
     canary_keep = False
+    summary = False
     i = 0
     args = []
     while i < len(rest):
@@ -924,6 +992,9 @@ def main(argv):
         elif rest[i] == "--keep":
             canary_keep = True
             i += 1
+        elif rest[i] == "--summary":
+            summary = True
+            i += 1
         elif rest[i] == "--":
             args = rest[i + 1:]
             break
@@ -936,7 +1007,7 @@ def main(argv):
         if log_path is None:
             print("gate log: --log FILE is required")
             return EXIT_ERROR
-        return cmd_log(log_path)
+        return cmd_log(log_path, summary=summary)
     if policy is None:
         policy, policy_note = default_policy()
         print(policy_note)

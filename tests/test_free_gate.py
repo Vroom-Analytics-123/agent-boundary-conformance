@@ -435,5 +435,127 @@ class TestGateRunWrappers(unittest.TestCase):
             self.assertTrue(target.exists())
 
 
+class TestGateLogSummary(unittest.TestCase):
+    """`gate log --summary`: the boundaries-under-test view — which
+    rules fire most, which agents keep testing them. A view on the
+    existing audit log, not new measurement."""
+
+    def _log_with_denials(self, tmp):
+        path = Path(tmp) / "audit.jsonl"
+        log = FG.AuditLog(str(path))
+        p = policy_for(tmp)
+        g = FG.Gate(p, log)
+        # 3 denials by DENY-CRED-ENV, 1 by DENY-DELETE, 1 allow.
+        # The .env rule matches a file NAMED .env (**/.env), so each
+        # denial needs its own directory.
+        for name in ("a", "b", "c"):
+            sub = Path(tmp) / name
+            sub.mkdir()
+            target = sub / ".env"
+            target.write_text("x\n")
+            g.evaluate(FG.Action("file_read", str(target)))
+        target = Path(tmp) / "target.txt"
+        target.write_text("x\n")
+        g.check_command(["rm", "-rf", str(target)])
+        g.evaluate(FG.Action("file_read", str(Path(tmp) / "notes.txt")))
+        return path
+
+    def test_summary_counts_denials_by_rule_most_blocked_first(self):
+        import io
+        from contextlib import redirect_stdout
+        with tempfile.TemporaryDirectory() as tmp:
+            path = self._log_with_denials(tmp)
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                self.assertEqual(FG.cmd_log(str(path), summary=True), 0)
+            out = buf.getvalue()
+            self.assertIn("denials: 4", out)
+            self.assertIn("DENY-CRED-ENV", out)
+            self.assertIn("DENY-DELETE", out)
+            # Most-blocked first: the .env rule (3) before rm (1).
+            self.assertLess(out.index("DENY-CRED-ENV"),
+                            out.index("DENY-DELETE"))
+
+    def test_summarize_log_entries(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = self._log_with_denials(tmp)
+            entries = [json.loads(l) for l in
+                       path.read_text().splitlines() if l.strip()]
+            s = FG.summarize_log_entries(entries)
+            self.assertEqual(s["total"], 5)
+            self.assertEqual(s["denied"], 4)
+            self.assertEqual(s["allowed"], 1)
+            self.assertEqual(s["by_rule"],
+                             [("DENY-CRED-ENV", 3), ("DENY-DELETE", 1)])
+            self.assertEqual(s["by_agent"], [])
+            self.assertEqual(s["canary"], {"held": 0, "failed": 0})
+
+    def test_summary_counts_by_agent_when_the_log_carries_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            log = FG.AuditLog(str(path))
+            for agent in ("codex", "codex", "claude"):
+                target = Path(tmp) / f"{agent}.env"
+                target.write_text("x\n")
+                log.append(FG.Action("file_read", str(target)),
+                           FG.Decision(False, "denied", rule="DENY-CRED-ENV"),
+                           note="test", extra={"agent": agent})
+            entries = [json.loads(l) for l in
+                       path.read_text().splitlines() if l.strip()]
+            s = FG.summarize_log_entries(entries)
+            self.assertEqual(s["by_agent"],
+                             [("codex", 2), ("claude", 1)])
+
+    def test_summary_counts_canary_verdicts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            log = FG.AuditLog(str(path))
+            log.append(FG.Action("canary", "FINEPRINT-CANARY-aaa"),
+                       FG.Decision(True, "held"), note="canary check",
+                       event="CANARY",
+                       extra={"marker": "FINEPRINT-CANARY-aaa",
+                              "reached": False, "routes": [],
+                              "verdict": "HELD"})
+            log.append(FG.Action("canary", "FINEPRINT-CANARY-bbb"),
+                       FG.Decision(False, "failed"), note="canary check",
+                       event="CANARY",
+                       extra={"marker": "FINEPRINT-CANARY-bbb",
+                              "reached": True, "routes": ["stdout"],
+                              "verdict": "FAILED"})
+            entries = [json.loads(l) for l in
+                       path.read_text().splitlines() if l.strip()]
+            s = FG.summarize_log_entries(entries)
+            self.assertEqual(s["canary"], {"held": 1, "failed": 1})
+            # A failed canary is a boundary failure, not a denial.
+            self.assertEqual(s["denied"], 0)
+
+    def test_summary_on_an_empty_log(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            path.write_text("")
+            s = FG.summarize_log_entries([])
+            self.assertEqual(s["total"], 0)
+            self.assertEqual(s["denied"], 0)
+            self.assertEqual(s["by_rule"], [])
+            self.assertEqual(s["by_agent"], [])
+            self.assertEqual(s["canary"], {"held": 0, "failed": 0})
+            self.assertEqual(FG.cmd_log(str(path), summary=True), 0)
+
+    def test_summary_via_the_cli(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = self._log_with_denials(tmp)
+            proc = subprocess.run(
+                [sys.executable, str(FINEPRINT), "gate", "log",
+                 "--log", str(path), "--summary"],
+                cwd=tmp, capture_output=True, text=True, timeout=60)
+            self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+            self.assertIn("DENY-CRED-ENV", proc.stdout)
+            self.assertIn("3", proc.stdout)
+            self.assertIn("DENY-DELETE", proc.stdout)
+            self.assertIn("no agent recorded", proc.stdout)
+            # The per-entry lines are NOT printed in summary mode.
+            self.assertNotIn("tried", proc.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -60,6 +60,15 @@ jobs:
         run: |
           cd apps/desktop
           npm run package:linux
+      - name: Verify installer (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          ls -la apps/desktop/dist/*.dmg
+      - name: Verify installer (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: |
+          ls -la apps/desktop/dist/*.exe
       - name: Upload installers
         uses: actions/upload-artifact@v4
         with:

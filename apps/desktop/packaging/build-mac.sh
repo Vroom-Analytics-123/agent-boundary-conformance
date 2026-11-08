@@ -41,6 +41,7 @@ DMG="$OUT/$APP_NAME-0.1.0-mac.dmg"
 echo "== building .dmg: $DMG =="
 if command -v hdiutil >/dev/null 2>&1; then
   hdiutil create -volname "$APP_NAME" -srcfolder "$APP_PATH" -ov -format UDZO "$DMG"
+  test -s "$DMG" || { echo "ERROR: $DMG was not created" >&2; exit 1; }
   ls -la "$DMG"
   echo "done."
 else

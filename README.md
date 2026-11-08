@@ -47,6 +47,7 @@ cd agent-boundary-conformance
 cd /tmp && mkdir codex-restore && cd codex-restore
 npm pack "@openai/codex@0.149.0-linux-x64"
 mkdir lin && tar -xzf openai-codex-0.149.0-linux-x64.tgz -C lin
+mkdir -p <repo>/tools/vendor/codex/0.149.0/bin   # bin/ is git-ignored; it does not exist in a fresh clone
 cp lin/package/vendor/x86_64-unknown-linux-musl/bin/codex <repo>/tools/vendor/codex/0.149.0/bin/codex
 # sha256 must print bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827
 cd <repo>

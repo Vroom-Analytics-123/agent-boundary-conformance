@@ -135,6 +135,19 @@ class TestDefinitions(unittest.TestCase):
         self.assertIn("definitions", r.stdout.lower())
         self.assertIn("DENY-CRED-SSH", r.stdout)
 
+    def test_synthetic_exfil_rule_declared_not_in_pack(self):
+        # F2: DENY-EXFIL is a synthetic tripwire rule, declared in the
+        # definitions module — never a rule id that lives nowhere.
+        # The pack itself stays 11 rules, v2026-11-07 (the app's
+        # real-CLI tests pin both).
+        import fineprint_definitions as D
+        self.assertIn(D.DENY_EXFIL_ID,
+                      [r["id"] for r in D.SYNTHETIC_RULES])
+        pack_ids = [r["id"] for r in D.builtin_rules()]
+        self.assertNotIn(D.DENY_EXFIL_ID, pack_ids)
+        self.assertEqual(len(pack_ids), 11)
+        self.assertEqual(D.BUILTIN_VERSION, "2026-11-07")
+
 
 if __name__ == "__main__":
     unittest.main()

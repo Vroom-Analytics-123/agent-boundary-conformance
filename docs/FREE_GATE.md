@@ -37,6 +37,14 @@ needed:
 | Unapproved deploy | DENY-DEPLOY | any command named `*deploy*` |
 | Copying a protected file out | DENY-EXFIL | `cp ~/.ssh/id_rsa /tmp/x` |
 
+DENY-EXFIL is a synthetic tripwire rule, not a pack rule: it fires
+when a copy/send command names a protected file, which the pack
+schema cannot express as one rule. It is declared in
+`tools/fineprint_definitions.py` (SYNTHETIC_RULES) and printed by
+`fineprint gate definitions` under "synthetic rules", so no evidence
+cites a rule id that lives nowhere. It is not counted in the pack's
+rule count and does not change the pack version.
+
 Run `fineprint gate definitions` to see the list in force, with its
 version. New discovered issues become new rules in a signed
 definitions pack (below).

@@ -332,6 +332,8 @@ class Gate:
         wrapped = (" (unwrapped from " + " ".join(outer) + ")"
                    if inner != outer else "")
         # Exfiltration: a copy/send command naming a protected file.
+        # The rule id is synthetic (F2): declared in
+        # fineprint_definitions.SYNTHETIC_RULES, not a pack rule.
         if base in ("cp", "scp", "rsync", "curl", "wget"):
             for tok in inner[1:]:
                 if tok.startswith("-"):
@@ -341,7 +343,7 @@ class Gate:
                     return Decision(False, f"exfiltration of a protected "
                                            f"file: {tok!r} resolves to "
                                            f"{real!r}{wrapped}",
-                                    rule="DENY-EXFIL")
+                                    rule=D.DENY_EXFIL_ID)
         rule = D.command_rule(inner, self.rules)
         if rule:
             desc = next((r.get("description", "") for r in self.rules
@@ -704,6 +706,9 @@ def cmd_definitions():
     print(f"definitions: v{version} ({source})")
     print(f"rules: {len(rules)}")
     print(D.describe(rules))
+    print("synthetic rules (tripwire only, not pack rules — not "
+          "counted above):")
+    print(D.describe(D.SYNTHETIC_RULES))
     print("update: a new pack ships with a FinePrint release "
           "(git pull, or a new release) — the wall verifies its "
           "signature before applying it.")

@@ -242,6 +242,51 @@ class TestGateRun(unittest.TestCase):
             self.assertEqual(bad.returncode, 2, bad.stdout)
 
 
+class TestExfil(unittest.TestCase):
+    """F2: DENY-EXFIL is a synthetic tripwire rule, declared in the
+    definitions module and printed by `gate definitions` — never a
+    rule id that lives nowhere. The pack stays 11 rules, v2026-11-07
+    (the app's real-CLI tests pin both)."""
+
+    def test_cp_protected_file_denied_exfil(self):
+        import fineprint_definitions as D
+        with tempfile.TemporaryDirectory() as tmp:
+            secret = Path(tmp) / ".env"
+            secret.write_text("AWS_SECRET=x\n")
+            g = FG.Gate(FG.Policy((".",), (), mode="deny"))
+            d = g.check_command(["cp", str(secret), "/tmp/x"])
+            self.assertFalse(d.allowed, d.reason)
+            self.assertEqual(d.rule, D.DENY_EXFIL_ID)
+
+    def test_exfil_rule_id_is_declared(self):
+        import fineprint_definitions as D
+        with tempfile.TemporaryDirectory() as tmp:
+            secret = Path(tmp) / ".env"
+            secret.write_text("AWS_SECRET=x\n")
+            g = FG.Gate(FG.Policy((".",), (), mode="deny"))
+            d = g.check_command(["cp", str(secret), "/tmp/x"])
+            declared = [r["id"] for r in D.SYNTHETIC_RULES]
+            self.assertIn(d.rule, declared)
+
+    def test_cp_normal_file_allowed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            normal = Path(tmp) / "notes.txt"
+            normal.write_text("hi\n")
+            g = FG.Gate(FG.Policy((".",), (), mode="deny"))
+            d = g.check_command(["cp", str(normal), "/tmp/x"])
+            self.assertTrue(d.allowed, d.reason)
+
+    def test_gate_definitions_prints_synthetic_exfil(self):
+        proc = subprocess.run(
+            [sys.executable, str(FINEPRINT), "gate", "definitions"],
+            capture_output=True, text=True, cwd=tempfile.gettempdir())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("DENY-EXFIL", proc.stdout)
+        self.assertIn("synthetic", proc.stdout.lower())
+        self.assertIn("rules: 11", proc.stdout)
+        self.assertIn("v2026-11-07", proc.stdout)
+
+
 class TestUnwrapWrappers(unittest.TestCase):
     """F1: the tripwire must unwrap wrappers (sudo, env, bash -lc,
     sh -c and equivalents) and re-check the inner command against

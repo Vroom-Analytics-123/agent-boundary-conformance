@@ -89,6 +89,24 @@ BUILTIN_RULES = [
 ]
 
 
+# Synthetic tripwire rules (F2): rule ids the tripwire itself emits
+# that are NOT pack rules. DENY-EXFIL fires when a copy/send command
+# (cp/scp/rsync/curl/wget) names a protected file — a composite check
+# (command + protected path) the pack schema cannot express as one
+# rule. The id is declared here, in the definitions module, so the
+# proof's evidence never cites a rule id that lives nowhere, and
+# `gate definitions` prints it under "synthetic rules" so it is in
+# the definitions in force as printed. It is NOT counted in the
+# pack's rule count and does NOT change the pack version (the app's
+# real-CLI tests pin both: 11 rules, v2026-11-07).
+DENY_EXFIL_ID = "DENY-EXFIL"
+
+SYNTHETIC_RULES = [
+    {"id": DENY_EXFIL_ID, "kind": "synthetic",
+     "description": "copy/send of a protected file (tripwire only)"},
+]
+
+
 class DefinitionsError(Exception):
     """A definitions pack was present but could not be verified."""
 

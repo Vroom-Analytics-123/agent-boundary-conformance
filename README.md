@@ -8,6 +8,12 @@ Harnesses change under their owners — a new release, a new feature, a new flag
 
 **Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The harness scorecard below covers 16 harnesses; the Index verdict stays NARROW until the consistent re-measurement protocol completes. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md)**.
 
+**Gate-proof acceptance campaign (dry-run).** The campaign that proves the free wall stops a real agent — Cursor, all 24 V1 cells, 3 repeats each, zero harm — is prepared on branch `acceptance-campaign-nov8` (the live run needs Cursor auth + Anish present). The dry-run below validates the fixtures, the bundle, and the sealing without an agent:
+
+![Gate-proof acceptance campaign — dry-run](framework/scorecard/acceptance/demo.gif)
+
+Runbook: [framework/scorecard/acceptance/RUNBOOK.md](framework/scorecard/acceptance/RUNBOOK.md) · Expectation table: [framework/scorecard/acceptance/EXPECTATIONS.md](framework/scorecard/acceptance/EXPECTATIONS.md) · Recording script: [framework/scorecard/acceptance/record-demo.sh](framework/scorecard/acceptance/record-demo.sh)
+
 ## The harness scorecard
 
 ![FinePrint harness scorecard — combined live-basis view (PROVISIONAL)](framework/visuals/scorecard.svg)

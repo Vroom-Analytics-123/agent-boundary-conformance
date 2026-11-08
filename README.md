@@ -25,7 +25,12 @@ Live badges still reflect scoring v2 ([framework/SCORING.md](framework/SCORING.m
 ## 🚀 Try it
 
 - **Fastest — live demo:** [fineprint.vroomanalytics.com](https://fineprint.vroomanalytics.com/) — watch the attacks, try a command, apply a one-click fix. Nothing executes; it runs in your browser.
-- **Free Check — one command, zero config:** the `fineprint` CLI wraps the engine. No account, no key, no config for a first verdict — it finds your harness on its own and checks it against the 16 built-in rules (Catalogue v1), writing a sealed evidence bundle:
+- **Free Check — one command, zero config (the worry):** the
+  `fineprint` CLI wraps the engine. No account, no key, no config
+  for a first verdict — it finds your harness on its own and checks
+  it against the 16 built-in rules (Catalogue v1), writing a sealed
+  evidence bundle. It shows, with measured evidence, that the guard
+  fails:
 
 ```bash
 git clone https://github.com/Vroom-Analytics-123/agent-boundary-conformance.git
@@ -34,7 +39,35 @@ cd agent-boundary-conformance
 ./fineprint check       # one command: verdict + sealed bundle in fineprint-evidence/
 ```
 
-What you see: `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Muse Code has no offline decision oracle, so its check reports UNMEASURED (exit 3) instead of a verdict. Full guide, written for a junior dev: [INTEGRATION.md](INTEGRATION.md). GitHub Action — one workflow file, red/green in the Actions tab, verdict summary on the PR: [docs/FREE_CHECK_ACTION.md](docs/FREE_CHECK_ACTION.md). Free gate — one wrapper command, defaults on: [docs/FREE_GATE.md](docs/FREE_GATE.md). Upstream fix loop — measure, fix locally, patch upstream: [docs/UPSTREAM_FIX_LOOP.md](docs/UPSTREAM_FIX_LOOP.md).
+![FinePrint Check demo — install, check, verdict + bundle](assets/fineprint-check-demo.gif)
+
+What you see: `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Muse Code has no offline decision oracle, so its check reports UNMEASURED (exit 3) instead of a verdict. Full guide, written for a junior dev: [INTEGRATION.md](INTEGRATION.md).
+- **GitHub Action — one workflow file (the peace of mind):** add
+  one file and the check runs on every pull request — red means a
+  rule broke, green means it held, and the evidence bundle is
+  downloadable from the run. No terminal needed: add the file in the
+  GitHub web UI, read red/green on the PR. See
+  [docs/FREE_CHECK_ACTION.md](docs/FREE_CHECK_ACTION.md).
+- **Free wall — one command, the bouncer (the thing that actually
+  stops the harm):** run the agent itself inside the wall. The
+  default is a protective denylist (antivirus for agents): credential
+  reads, destructive deletes, exfiltration of protected files, and
+  unapproved deploys are blocked; normal work anywhere is allowed.
+  Folder confinement is opt-in (`--confine`).
+
+```bash
+./fineprint gate run -- cat notes.txt        # allows, exit 0
+./fineprint gate run -- python3 read_key.py  # the wall hides ~/.ssh — the read fails, nothing leaks
+./fineprint gate log --log audit.jsonl       # tried X → blocked by rule Y → will always be blocked
+```
+
+![FinePrint Wall demo — the wall denies a script-read the tripwire would miss](assets/fineprint-wall-demo.gif)
+
+See [docs/FREE_GATE.md](docs/FREE_GATE.md) for the mechanism, the
+signed definition packs, and the limits, stated plainly. Upstream
+fix loop — measure, fix locally, patch upstream:
+[docs/UPSTREAM_FIX_LOOP.md](docs/UPSTREAM_FIX_LOOP.md). A desktop
+one-click installer is a later phase, not in this branch.
 - **In about a minute, locally (Codex / oracle-backed runs):**
 
 ```bash

@@ -195,9 +195,20 @@ def _starter_rules_text():
 
 
 GATE_POLICY = {
-    "$comment": ("Free gate policy. allowed_paths: folders the guarded "
-                 "command may touch. allowed_hosts: hosts it may fetch. "
-                 "Everything else is denied. '.' means this directory."),
+    "$comment": ("Free gate policy. mode 'deny' is the protective "
+                 "denylist (antivirus for agents): credential reads, "
+                 "destructive deletes, exfiltration of protected files, "
+                 "unapproved deploys, and the measured bypasses are "
+                 "blocked; normal work anywhere is allowed. mode "
+                 "'confine' is the folder allowlist (opt-in): only "
+                 "allowed_paths / allowed_hosts are allowed. "
+                 "denied_paths / denied_hosts add your own blocks; "
+                 "allowed_commands overrides the denylist for one "
+                 "command (e.g. your deploy script)."),
+    "mode": "deny",
+    "denied_paths": [],
+    "denied_hosts": [],
+    "allowed_commands": [],
     "allowed_paths": ["."],
     "allowed_hosts": [],
 }
@@ -233,7 +244,7 @@ def cmd_init(args):
     if args.get("gate") or bare:
         wrote_any |= _write(out / "fineprint-gate.json",
                             json.dumps(GATE_POLICY, indent=2) + "\n",
-                            "free gate policy (this directory only)")
+                            "free gate policy (protective denylist)")
     if harness == "codex" or harness is None:
         wrote_any |= _write(
             out / "fineprint.rules",

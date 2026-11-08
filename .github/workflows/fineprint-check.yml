@@ -84,21 +84,40 @@ jobs:
           policy: fixtures/policies/default.rules
 
   gate:
-    # One step each: the free gate answers one allow/deny question
-    # (`gate check`) or guards a whole command (`gate run`). The first
-    # step passes (README.md is inside the repo); the second is
-    # expected to be denied, so it runs with continue-on-error and the
-    # log shows the DENY.
+    # The free gate, now enforced by the wall (antivirus for agents):
+    # the default policy is a protective denylist — credential reads,
+    # destructive deletes, exfiltration of protected files, and
+    # unapproved deploys are blocked; normal work anywhere is allowed.
+    # Folder confinement is opt-in (--confine). The tripwire answers
+    # one allow/deny question (`gate check`); the wall enforces the
+    # scope for the whole command (`gate run`). The script-read step
+    # is the case the tripwire alone would MISS: the script reads the
+    # SSH key without naming it on argv, and the wall denies it. The
+    # deny steps are expected to fail, so they run with
+    # continue-on-error and the log shows the denial. The last step
+    # verifies the audit log's hash chain.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: gate allows a file inside the repo
+      - name: gate allows a normal file
         run: python3 fineprint gate check --file README.md
-      - name: gate denies a file outside the allowed scope
+      - name: gate denies a credential read (denylist)
         continue-on-error: true
-        run: python3 fineprint gate check --file /etc/passwd
+        run: python3 fineprint gate check --file ~/.ssh/id_rsa
+      - name: gate denies a file outside the scope (confinement)
+        continue-on-error: true
+        run: python3 fineprint gate run --confine -- cat /etc/passwd
       - name: gate guards a whole command
         run: python3 fineprint gate run -- cat README.md
+      - name: wall denies a script that reads the SSH key
+        continue-on-error: true
+        run: |
+          mkdir -p "$HOME/.ssh"
+          echo "TOPSECRET" > "$HOME/.ssh/id_rsa"
+          printf 'import os\nprint(open(os.path.expanduser("~/.ssh/id_rsa")).read())\n' > read_key.py
+          python3 fineprint gate run --log audit.jsonl -- python3 read_key.py
+      - name: audit log verifies
+        run: python3 fineprint gate verify-log --log audit.jsonl

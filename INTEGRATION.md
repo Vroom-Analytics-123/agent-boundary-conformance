@@ -14,6 +14,28 @@ which ones broke. **BLOCKED** means a rule broke. A **bundle** is the
 sealed evidence file the check writes — proof of what was measured,
 on what date, with which policy.
 
+The free tier works in three steps, in this order:
+
+1. **Check (worry).** Run the check on your machine. It shows, with
+   measured evidence, that the guard fails — which rules break, on
+   what date, with the sealed bundle to prove it. That is the
+   five-minute path below.
+2. **Action (peace of mind).** Add one workflow file to your repo and
+   the check runs on every pull request: red means a rule broke,
+   green means it held, and the evidence bundle is downloadable from
+   the run. No terminal needed — see `docs/FREE_CHECK_ACTION.md`.
+3. **Wall (the bouncer).** Run the agent itself inside the wall
+   (`fineprint gate run -- ...`). The wall is the thing that actually
+   stops the harm: the agent can only see the allowed scope and can
+   only reach allowlisted hosts. See "The gate" below and
+   `docs/FREE_GATE.md`.
+
+If you never open a terminal, step 2 is your surface: the GitHub
+Action. Add one file in the GitHub web UI, read red/green on the
+pull request. The CLI (steps 1 and 3) is one command for engineers.
+A desktop one-click installer is a later phase — it is not in this
+branch.
+
 ## The five-minute path (one command, no config)
 
 You need Python 3.10 or newer and a copy of this repo. Clone it,
@@ -168,33 +190,62 @@ over the findings and compares it with the root recorded in the
 bundle. If a single finding was edited after sealing, verification
 fails. Never edit a bundle by hand.
 
-## The gate: one wrapper command
+## The gate: one wrapper command (the bouncer)
 
-The free gate guards a command before it runs. No config needed:
+The free gate has two parts: a **tripwire** (a fast pre-check of the
+command and its arguments) and a **wall** (the command runs inside a
+sandbox). One command, no config needed — the default is a
+**protective denylist** (antivirus for agents): credential reads,
+destructive deletes, exfiltration of protected files, and unapproved
+deploys are blocked; normal work anywhere is allowed.
 
 ```bash
 fineprint gate run -- cat notes.txt        # allows, exit 0
-fineprint gate check --file /etc/passwd     # DENY, exit 2
+fineprint gate check --file ~/.ssh/id_rsa   # DENY, exit 2 (rule DENY-CRED-SSH)
+fineprint gate run -- rm -rf notes.txt      # DENY, exit 2 (rule DENY-DELETE)
 ```
 
-The deny looks like this (real output):
+The tripwire deny looks like this (real output):
 
 ```
-policy: built-in default (this directory only, no hosts) — run `fineprint init --gate` to save it as fineprint-gate.json
-GATE: DENY — file_read outside allowed paths: '/etc/passwd' resolves to '/etc/passwd'
+policy: built-in default (protective denylist — normal work anywhere is allowed, known-dangerous patterns are blocked; see `fineprint gate definitions`) — run `fineprint init --gate` to save it as fineprint-gate.json
+GATE: DENY — file_read of a protected path: '/home/you/.ssh/id_rsa' resolves to '/home/you/.ssh/id_rsa' (rule DENY-CRED-SSH)
+refusing to run: cat /home/you/.ssh/id_rsa
 ```
 
-Exit code 2, and the command never ran. The default policy allows
-only the current directory and no network hosts. Save it as
-`fineprint-gate.json` with `fineprint init --gate` and edit the two
-lists (`allowed_paths`, `allowed_hosts`) — everything not listed is
-denied.
+Exit code 2, and the command never ran. The rule id is printed,
+and the same action will always be denied — deterministic, not a
+judgment call.
 
-**Read `docs/FREE_GATE.md` before trusting the gate.** It is a
-wrapper-level guard: it stops the common paths and records the
-decision in an audit log. It is not a sandbox, it does not watch
-what a command does while it runs, and it does not stop shell
-tricks. The hardened gate (sandbox + egress proxy) is the paid
+The wall deny looks different: the command runs, then fails inside
+because the file does not exist from its perspective. A script that
+reads the SSH key — something the tripwire cannot see, because the
+path is inside the script, not on the command line — fails with "No
+such file or directory" and nothing leaks. That is the wall doing
+its job.
+
+Folder confinement is opt-in, not the default:
+
+```bash
+fineprint gate run --confine -- cat /etc/passwd   # DENY, exit 2 (rule CONFINE-PATH)
+```
+
+Save the policy as `fineprint-gate.json` with `fineprint init
+--gate` and edit it (`mode`, `denied_paths`, `denied_hosts`,
+`allowed_commands` to approve your own deploy script,
+`allowed_paths` / `allowed_hosts` for confine mode). The denylist
+itself is a signed, versioned pack — see `fineprint gate
+definitions` (the update flow) and `fineprint gate log --log
+audit.jsonl` (readable notifications of every blocked attempt).
+
+**Read `docs/FREE_GATE.md` before trusting the gate.** It explains
+how the wall works (the operating system's `unshare` tool, an
+allowlist proxy for the network, a hash-chained audit log) and its
+limits, stated plainly: the wall enforces scope (paths and hosts),
+not intent — an agent misusing a file *inside* the allowed scope is
+Check's job; the proxy controls egress only for tools that honor
+proxy settings; the process list stays visible. The hardened gate
+(process namespace, socket-level egress blocking) is the paid
 product. The free gate never pretends to be it.
 
 ## Wiring it into a repo (for a coding agent)

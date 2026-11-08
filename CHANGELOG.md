@@ -31,19 +31,87 @@ land as new bundles.
   harness company. BLOCKED fails the build on purpose; the evidence
   bundle uploads as a CI artifact; a verdict summary posts on the
   PR. The Codex job restores the pinned oracle via the documented
-  recipe with SHA-256 verification.
+  recipe with SHA-256 verification. The `gate` job runs the free
+  gate (and the wall) in CI. The Action is the no-terminal surface:
+  add one workflow file in the GitHub web UI, read red/green on the
+  PR — see `docs/FREE_CHECK_ACTION.md`.
 - **Free gate (`tools/fineprint_gate.py`, via `fineprint gate`).**
   A subprocess wrapper plus a CI step, adapted from the paid-product
   prototype's decision logic with symlink resolution added (decisions
   run on realpaths) and hash-chained JSONL audit logging. Default
-  policy: current directory only, no hosts. Limits stated plainly in
-  `docs/FREE_GATE.md`: wrapper-level guard, not a sandbox, not the
-  hardened (paid) gate.
+  policy (since the wall branch): the protective denylist (antivirus
+  for agents) — credential reads, destructive deletes, exfiltration
+  of protected files, unapproved deploys, and the measured bypasses
+  are blocked; normal work anywhere is allowed. Folder confinement
+  is opt-in (`--confine` / policy `"mode": "confine"`). Limits stated
+  plainly in `docs/FREE_GATE.md`.
 - **Docs:** `INTEGRATION.md` (junior-dev integration guide with
-  verbatim real outputs), `docs/FREE_CHECK_ACTION.md`,
+  verbatim real outputs, in funnel order: Check → Action → Wall),
+  `docs/FREE_CHECK_ACTION.md` (incl. the non-developer section),
   `docs/FREE_GATE.md`, `docs/UPSTREAM_FIX_LOOP.md` (Omnigent
   #12762 as the worked example; no upstream PR filed — upstream
   patches need the owner's per-PR approval).
+- **Demo:** `assets/fineprint-check-demo.gif` (recorded with
+  `demo/record-check-demo.sh`) — install → `fineprint check` on a
+  harness that breaks a rule → verdict + bundle, plus `fineprint
+  gate run` allowing a good command and blocking a bad one.
+
+## Nov 8, 2026 — free wall (branch `free-wall`, from `free-check-gate`, unmerged)
+
+- **Free wall (`tools/fineprint_wall.py`, via `fineprint gate run`).**
+  The same command, now enforced by the wall: the agent runs inside
+  a sandbox built from the OS `unshare` primitive (user + mount
+  namespace; a network namespace in confine mode with no hosts).
+  In denylist mode the protected targets are hidden (the wall walks
+  the working directory, /tmp, /var/tmp, plus the well-known
+  credential locations in $HOME — a protected file in another
+  project directory is not hidden unless it is under the working
+  directory or /tmp; see `docs/FREE_GATE.md` for the bound) and a
+  localhost proxy forwards everything except denied hosts. In
+  confine mode everything outside the allowed scope is hidden and
+  egress is allowlisted (or none). The tripwire stays the fast
+  pre-check; the wall is the enforcement — a script that reads a
+  credential without naming it on argv is still denied. CAP_SYS_ADMIN
+  is dropped before the agent runs, so it cannot unmount the covers.
+  If `unshare` is missing the gate refuses (exit 3) rather than
+  silently falling back to the tripwire.
+- **Signed definition packs (`tools/fineprint_definitions.py`).**
+  The denylist is a versioned pack (built-in v1, `2026-11-07`),
+  signed with the maintainers' Ed25519 key (public key in
+  `docs/SIGNING.md`, verified with `tools/ed25519.py`). The wall
+  verifies the signature before applying a pack and never applies an
+  unverified one — a bad or missing signature refuses the run.
+  A new pack ships with a FinePrint release; `fineprint gate
+  definitions` reports the version in force.
+- **Notifications (`fineprint gate log`).** Every blocked attempt is
+  a structured, deterministic event in the hash-chained audit log
+  (what was tried, which rule stopped it, `deterministic: true`).
+  `fineprint gate log --log audit.jsonl` renders it as readable
+  notifications: `tried X → blocked by rule Y → will always be
+  blocked`. The wall enforces scope (paths/hosts), not intent —
+  in-scope misuse is Check's job.
+- **Tests:** 12 wall tests + 7 definitions tests (TDD), plus the
+  phase-1 gate/check/action tests updated for the denylist default
+  (confinement tests now use `--confine` / `"mode": "confine"`).
+  Two real bugs found while building it: the denylist walk from `/`
+  took ~60s and matched public CA bundles as `*.pem` (the walk is
+  now bounded to the working directory + /tmp + the well-known
+  credential locations, ~1s, and the .pem rule matches key-named
+  files only); and the hidden list passed as one env var exceeded
+  the 128KB single-value limit (E2BIG — it is now passed as a file).
+- **Demo:** `assets/fineprint-wall-demo.gif` (recorded with
+  `demo/record-wall-demo.sh`) — the wall denying a script-read of a
+  credential the tripwire would miss, an allowed command passing,
+  and the notification/log line.
+- **CLI contract (frozen for the desktop-app agent):** `fineprint
+  gate run -- CMD` (exit 0 allow/pass-through, 2 deny, 3 error),
+  `fineprint gate check --file/--host`, `fineprint init --gate`
+  writes the policy file, the policy JSON shape, and the hash-chained
+  JSONL audit log shape are unchanged. Additive only: `--confine`,
+  `--no-wall`, `gate definitions`, `gate log`, and the wall entries'
+  `rule` / `deterministic` / `mode` / `definitions` fields. **The
+  default policy changed (flagged): it is now a protective denylist,
+  not cwd-only.**
 
 ## Oct 20–22, 2026 — the sprint
 

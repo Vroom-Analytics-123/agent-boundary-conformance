@@ -24,7 +24,10 @@ import fineprint_gate as FG  # noqa: E402
 
 
 def policy_for(tmp, hosts=()):
-    return FG.Policy(allowed_paths=(str(tmp),), allowed_hosts=tuple(hosts))
+    # Confinement tests: the folder allowlist (opt-in since the
+    # default became the protective denylist).
+    return FG.Policy(allowed_paths=(str(tmp),), allowed_hosts=tuple(hosts),
+                     mode="confine")
 
 
 class TestDecisions(unittest.TestCase):
@@ -59,7 +62,7 @@ class TestDecisions(unittest.TestCase):
             scope.mkdir()
             link = scope / "escape"
             link.symlink_to(outside)
-            p = FG.Policy(allowed_paths=(str(scope),))
+            p = FG.Policy(allowed_paths=(str(scope),), mode="confine")
             d = p.decide(FG.Action("file_read", str(link)))
             self.assertFalse(d.allowed)
             self.assertIn("outside", d.reason)
@@ -72,7 +75,7 @@ class TestDecisions(unittest.TestCase):
             real.write_text("ok")
             link = scope / "alias"
             link.symlink_to(real)
-            p = FG.Policy(allowed_paths=(str(scope),))
+            p = FG.Policy(allowed_paths=(str(scope),), mode="confine")
             d = p.decide(FG.Action("file_read", str(link)))
             self.assertTrue(d.allowed)
 
@@ -126,10 +129,11 @@ class TestAuditLog(unittest.TestCase):
 
 
 class TestGateRun(unittest.TestCase):
-    def _policy_file(self, tmp):
+    def _policy_file(self, tmp, mode="confine"):
         path = Path(tmp) / "gate.json"
         path.write_text(json.dumps(
-            {"allowed_paths": [str(tmp)], "allowed_hosts": []}))
+            {"mode": mode, "allowed_paths": [str(tmp)],
+             "allowed_hosts": []}))
         return str(path)
 
     def test_run_allows_in_scope_command(self):
@@ -170,17 +174,22 @@ class TestGateRun(unittest.TestCase):
                           (proc.stdout + proc.stderr).lower())
 
     def test_run_passes_through_child_exit_code(self):
+        # Deny mode: the `python3 -c` code string is a bare argv token
+        # (a file_read) — confinement would deny it, the denylist
+        # allows it, and the child's exit code passes through.
         with tempfile.TemporaryDirectory() as tmp:
             proc = subprocess.run(
                 [sys.executable, str(FINEPRINT), "gate", "run",
-                 "--policy", self._policy_file(tmp),
+                 "--policy", self._policy_file(tmp, mode="deny"),
                  "--log", str(Path(tmp) / "audit.jsonl"),
                  "--", sys.executable, "-c", "import sys; sys.exit(7)"],
                 capture_output=True, text=True, cwd=tmp)
             self.assertEqual(proc.returncode, 7, proc.stdout)
 
     def test_gate_check_no_policy_uses_default(self):
-        # Zero config: no --policy flag -> this directory only.
+        # Zero config: no --policy flag -> the protective denylist
+        # (normal work anywhere is allowed; a protected file is
+        # denied).
         with tempfile.TemporaryDirectory() as tmp:
             inside = Path(tmp) / "hello.txt"
             inside.write_text("hi\n")
@@ -189,13 +198,18 @@ class TestGateRun(unittest.TestCase):
                  "--file", str(inside)],
                 capture_output=True, text=True, cwd=tmp)
             self.assertEqual(ok.returncode, 0, ok.stdout)
+            secret = Path(tmp) / ".env"
+            secret.write_text("AWS_SECRET=x\n")
             bad = subprocess.run(
                 [sys.executable, str(FINEPRINT), "gate", "check",
-                 "--file", "/etc/passwd"],
+                 "--file", str(secret)],
                 capture_output=True, text=True, cwd=tmp)
             self.assertEqual(bad.returncode, 2, bad.stdout)
+            self.assertIn("DENY-CRED-ENV", bad.stdout)
 
     def test_gate_run_no_policy_uses_default(self):
+        # Zero config: the denylist default allows a normal file and
+        # denies a protected one (a .env), without executing it.
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "hello.txt"
             target.write_text("hello gate\n")
@@ -205,12 +219,14 @@ class TestGateRun(unittest.TestCase):
                 capture_output=True, text=True, cwd=tmp)
             self.assertEqual(proc.returncode, 0, proc.stderr)
             self.assertIn("hello gate", proc.stdout)
+            secret = Path(tmp) / ".env"
+            secret.write_text("AWS_SECRET=x\n")
             proc = subprocess.run(
                 [sys.executable, str(FINEPRINT), "gate", "run",
-                 "--", "cat", "/etc/passwd"],
+                 "--", "cat", str(secret)],
                 capture_output=True, text=True, cwd=tmp)
             self.assertEqual(proc.returncode, 2, proc.stdout)
-            self.assertNotIn("root:", proc.stdout)
+            self.assertNotIn("AWS_SECRET", proc.stdout)
         with tempfile.TemporaryDirectory() as tmp:
             policy = self._policy_file(tmp)
             ok = subprocess.run(

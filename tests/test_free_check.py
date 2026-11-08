@@ -414,13 +414,17 @@ class TestFreshTreeEndToEnd(unittest.TestCase):
             self.assertEqual(proc.returncode, 2,
                              f"{proc.stdout}\n{proc.stderr}")
             self.assertIn("BLOCKED", proc.stdout)
-            # gate denies a disallowed read.
+            # gate denies a disallowed read (a protected file — the
+            # denylist default; confinement would deny /etc/passwd).
+            secret = work / ".env"
+            secret.write_text("AWS_SECRET=x\n")
             proc = subprocess.run(
-                cli + ["gate", "check", "--file", "/etc/passwd",
+                cli + ["gate", "check", "--file", str(secret),
                        "--policy", str(work / "fineprint-gate.json")],
                 capture_output=True, text=True, cwd=work)
             self.assertEqual(proc.returncode, 2, proc.stdout)
             self.assertIn("deny", proc.stdout.lower() + proc.stderr.lower())
+            self.assertIn("DENY-CRED-ENV", proc.stdout)
 
 
 if __name__ == "__main__":

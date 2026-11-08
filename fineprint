@@ -1,0 +1,539 @@
+#!/usr/bin/env python3
+"""FinePrint free Check CLI — one command, zero config for a first verdict.
+
+The free tier is built for the most junior developer, or a person working
+with a harness who is not a developer at all. The first run needs nothing:
+
+  ./fineprint check
+
+That one command finds your harness on its own, runs Catalogue v1
+(the 16 built-in rules, FP-001..FP-016) against it, and writes a sealed
+evidence bundle. No flags, no config file, no account, no network.
+
+What it does, in plain words:
+  - A "harness" is the coding agent you use (Codex, Claude Code,
+    Muse Code, ...). A "policy" is the file of rules you wrote for it.
+  - The check asks the harness's own policy checker what it decides for
+    each rule: forbidden, prompt, allow, or unknown (it does not answer).
+  - It never calls the harness company, never signs in, never uploads
+    anything. Everything runs on your machine.
+
+Exit codes (the whole contract — a script or CI job only needs these):
+  0  pass — no rule was broken (unknowns are reported, not hidden)
+  2  BLOCKED — at least one rule was broken, or a re-check regressed
+  3  unknown/error — the check could not measure anything, or you asked
+     for something that does not exist (bad harness name, missing file)
+
+Commands:
+  fineprint check [options]   run the check (no options needed, see above)
+  fineprint init [--harness H] [--rules FILE] [--gate]
+                              scaffold starter files (no flags = everything)
+  fineprint verify BUNDLE     re-check a bundle's seal (0 = valid)
+  fineprint report BUNDLE     print a bundle as a readable verdict table
+  fineprint gate ...          the free wrapper guard (see `fineprint gate --help`)
+  fineprint harnesses         list the harnesses this CLI knows
+
+Power is behind flags, never in front of the first run: --harness,
+--policy, --rules, --only, --out, --baseline, --bindings, --no-smoke.
+See INTEGRATION.md for the full guide, and the README quickstart.
+Stdlib only.
+"""
+
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+from datetime import datetime, timezone
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent
+TOOLS = REPO / "tools"
+sys.path.insert(0, str(TOOLS))
+sys.stdout.reconfigure(line_buffering=True)
+import check_bundle as CB  # noqa: E402
+
+VERSION = "fineprint free-check 0.1.0"
+DEMO_BINDINGS = REPO / "evidence" / "demo-check-2026-10-22" / "bindings.json"
+CLAUDE_EXAMPLE_POLICY = (REPO / "adapters" / "claude-code" / "policy"
+                         / "settings.json")
+CODEX_EXAMPLE_POLICY = REPO / "fixtures" / "policies" / "default.rules"
+
+EXIT_PASS = 0
+EXIT_BLOCKED = 2
+EXIT_UNKNOWN = 3
+
+
+# --------------------------------------------------------------------------
+# harness auto-detection (zero config)
+# --------------------------------------------------------------------------
+
+def detect_harness(cwd):
+    """Find the harness + policy to check, with no flags.
+
+    Order (first match wins):
+      1. ./fineprint.rules            -> codex
+      2. ./fineprint.settings.json    -> claude-code
+      3. ./.claude/settings.json     -> claude-code
+      4. a `muse` binary on PATH     -> muse-code (reports unmeasured;
+                                         see adapters/muse-code-assessment.md)
+      5. run inside the FinePrint repo itself -> claude-code with the
+         repo's example settings, clearly labelled as an example
+    Returns (harness, policy_path, note) or None when nothing is found.
+    """
+    cwd = Path(cwd)
+    for harness, path in (
+            ("codex", cwd / "fineprint.rules"),
+            ("claude-code", cwd / "fineprint.settings.json"),
+            ("claude-code", cwd / ".claude" / "settings.json")):
+        if path.exists():
+            return harness, str(path), f"found {path.name} in this directory"
+    if shutil.which("muse"):
+        note_path = cwd / "fineprint-muse-code.json"
+        if not note_path.exists():
+            write_muse_code_note(note_path)
+            print(f"wrote {note_path.name} (Muse Code has no local policy "
+                  "file to check — see the file for the live route)")
+        return ("muse-code", str(note_path),
+                "found a muse binary; Muse Code has no offline decision "
+                "oracle, so this run reports what could not be measured")
+    if (cwd / "tools" / "fineprint_check.py").exists():
+        return ("claude-code", str(CLAUDE_EXAMPLE_POLICY),
+                "no harness config found here, so this run checks the "
+                "repo's example Claude Code settings — run `fineprint init` "
+                "to check your own rules")
+    return None
+
+
+def default_policy_for(harness, cwd):
+    """The policy file `init` writes for a harness, if it exists."""
+    names = {"codex": "fineprint.rules",
+             "claude-code": "fineprint.settings.json",
+             "muse-code": "fineprint-muse-code.json"}
+    path = Path(cwd) / names[harness]
+    return str(path) if path.exists() else None
+
+
+# --------------------------------------------------------------------------
+# init scaffolds
+# --------------------------------------------------------------------------
+
+MUSE_CODE_NOTE = {
+    "harness": "muse-code",
+    "policy_kind": "no local policy file",
+    "note": ("Muse Code has no local policy file and no offline decision "
+             "oracle: permission profiles are select-never-create and "
+             "approvals route through an LLM reviewer "
+             "(adapters/muse-code-assessment.md, 2026-10-22). This file "
+             "records that fact so a check run can name what it examined. "
+             "Nothing here is a policy and nothing here is measured."),
+    "live_route": ("Live Approval/Effect measurement runs through the "
+                   "musecode-smoke workflow (approver + muse serve, your "
+                   "own MUSE_HEADLESS_KEY secret) — see INTEGRATION.md."),
+}
+
+DIY_PACK = {
+    "$comment": ("Your own first rule. Edit this file, then run: "
+                 "fineprint check --rules my-rules.json --harness claude-code "
+                 "(or codex). New rules arrive UNMEASURED: they claim nothing "
+                 "until a run measures them."),
+    "entries": [
+        {
+            "id": "FP-LOCAL-001",
+            "name": "local_delete_gate",
+            "intent": ("Deleting the project's data directory must never run "
+                       "silently: the direct form must be forbidden by the "
+                       "harness policy."),
+            "intent_direction": "restrictive",
+            "severity": "high",
+            "family": "protective",
+            "measurement_status": "UNMEASURED",
+            "expectation_basis": "local",
+            "contribution_kind": "community",
+            "private": False,
+            "author": {"name": "you"},
+            "licence": "CC-BY-4.0",
+            "provenance": {"kind": "literature",
+                           "detail": "Local rule, written by the repo owner."},
+            "parameters": [
+                {"slot": "delete_bin", "example": "rm", "required": True,
+                 "description": "Delete binary"},
+                {"slot": "delete_flags", "example": "-rf", "required": True,
+                 "description": "Recursive force flags"},
+                {"slot": "delete_target", "example": "/tmp/x",
+                 "required": True, "description": "Target path"},
+            ],
+            "probe_families": [
+                {"family": "direct", "expected": ["forbidden"],
+                 "probes": [["<delete_bin>", "<delete_flags>",
+                             "<delete_target>"]]},
+                {"family": "variant", "expected": ["unmatched-reported-as-unknown"],
+                 "probes": [["<delete_bin>", "-fr", "<delete_target>"]]},
+            ],
+        }
+    ],
+}
+
+STARTER_RULES_HEADER = """# FinePrint starter policy for Codex.
+# This starts from the repo's demo policy
+# (fixtures/policies/default.rules) plus one rule at the end: allow the
+# benign read control (FP-016, `ls /records/health`). Without it the
+# starter policy fails its own check — the positive control is a rule
+# too, and a fix that breaks it is a regression, not a win. If you use
+# your own --bindings file with a different protected path, change the
+# path in that last rule to match.
+"""
+
+STARTER_RULES_EXTRA = ('prefix_rule(pattern=["ls", "/records/health"], '
+                       'decision="allow")\n')
+
+
+def _starter_rules_text():
+    base = (REPO / "fixtures" / "policies" / "default.rules").read_text()
+    return STARTER_RULES_HEADER + base + STARTER_RULES_EXTRA
+
+
+GATE_POLICY = {
+    "$comment": ("Free gate policy. allowed_paths: folders the guarded "
+                 "command may touch. allowed_hosts: hosts it may fetch. "
+                 "Everything else is denied. '.' means this directory."),
+    "allowed_paths": ["."],
+    "allowed_hosts": [],
+}
+
+
+def write_muse_code_note(path):
+    Path(path).write_text(json.dumps(MUSE_CODE_NOTE, indent=2) + "\n")
+
+
+def _write(path, text, label):
+    path = Path(path)
+    if path.exists():
+        print(f"  already exists, leaving it: {path}")
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text)
+    print(f"  wrote {path} ({label})")
+    return True
+
+
+def cmd_init(args):
+    out = Path(args.get("out") or ".")
+    harness = args.get("harness")
+    bare = harness is None and not args.get("rules") and not args.get("gate")
+    wrote_any = False
+    print("fineprint init — scaffolding starter files in "
+          f"{out.resolve()}:")
+    if args.get("rules"):
+        wrote_any |= _write(out / args["rules"],
+                            json.dumps(DIY_PACK, indent=2) + "\n",
+                            "your first DIY rule (UNMEASURED until a run "
+                            "measures it)")
+    if args.get("gate") or bare:
+        wrote_any |= _write(out / "fineprint-gate.json",
+                            json.dumps(GATE_POLICY, indent=2) + "\n",
+                            "free gate policy (this directory only)")
+    if harness == "codex" or harness is None:
+        wrote_any |= _write(
+            out / "fineprint.rules",
+            _starter_rules_text(),
+            "Codex starter policy (forbids rm -rf, prompts on deploy, "
+            "allows the benign read)")
+    if harness == "claude-code" or harness is None:
+        wrote_any |= _write(
+            out / "fineprint.settings.json",
+            (REPO / "adapters" / "claude-code" / "policy"
+             / "settings.json").read_text(),
+            "Claude Code starter settings")
+    if harness == "muse-code" or harness is None:
+        wrote_any |= _write(out / "fineprint-muse-code.json",
+                            json.dumps(MUSE_CODE_NOTE, indent=2) + "\n",
+                            "Muse Code note (no local policy file exists)")
+        print("  live measurement for Muse Code runs through the "
+              "musecode-smoke workflow — see INTEGRATION.md")
+    if not wrote_any:
+        print("  everything already exists — nothing to do.")
+    print("next: fineprint check")
+    return 0
+
+
+# --------------------------------------------------------------------------
+# check
+# --------------------------------------------------------------------------
+
+def _engine_cmd(extra):
+    return [sys.executable, str(TOOLS / "fineprint_check.py"), *extra]
+
+
+def _load_bundle(path):
+    try:
+        return json.loads(Path(path).read_text())
+    except Exception as e:  # noqa: BLE001
+        print(f"could not read bundle {path}: {e}")
+        return None
+
+
+def _unmeasured(bundle):
+    """True when the run measured nothing: every probe was reported
+    unknown because the harness has no decision source."""
+    rows = [r for res in bundle.get("invariant_results", [])
+            for r in res.get("probe_rows", [])]
+    return bool(rows) and all(
+        r.get("unknown_kind") == "unsupported-adapter" for r in rows)
+
+
+def _not_satisfied(bundle):
+    return [r["invariant_id"]
+            for r in bundle.get("invariant_results", [])
+            if r.get("intent_coverage") == "NOT_SATISFIED"]
+
+
+def cmd_check(args):
+    cwd = Path.cwd()
+    harness = args.get("harness") or None
+    policy = args.get("policy") or None
+    if harness is None or policy is None:
+        found = detect_harness(cwd)
+        if found is None:
+            print("fineprint check: no harness config found in this "
+                  f"directory ({cwd}).")
+            print("Run `fineprint init` first — it scaffolds starter "
+                  "files — then `fineprint check` again.")
+            print("Or point at a policy directly: "
+                  "fineprint check --harness codex --policy ./my.rules")
+            return EXIT_UNKNOWN
+        auto_harness, auto_policy, note = found
+        harness = harness or auto_harness
+        policy = policy or auto_policy
+        print(f"auto-detected: {harness} ({note})")
+    if policy is None:
+        policy = default_policy_for(harness, cwd)
+    if policy is None or not Path(policy).exists():
+        print(f"fineprint check: no policy file found for {harness}.")
+        print(f"Run `fineprint init --harness {harness}`, then "
+              "`fineprint check` again.")
+        return EXIT_UNKNOWN
+
+    out = args.get("out")
+    if not out:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+        base = Path.cwd() / "fineprint-evidence" / f"check-{stamp}"
+        out_path = base
+        n = 1
+        while out_path.exists():
+            # Two runs in the same second must not share (and overwrite)
+            # one evidence directory.
+            n += 1
+            out_path = Path(str(base) + f"-{n}")
+        out = str(out_path)
+    bindings = args.get("bindings")
+    if not bindings:
+        bindings = str(DEMO_BINDINGS)
+        print("bindings: the repo's recorded demo bindings "
+              "(pass --bindings to use your own)")
+
+    cmd = _engine_cmd(["--harness", harness, "--policy", policy,
+                       "--bindings", bindings,
+                       "--out", out, "--label", "check"])
+    if args.get("rules"):
+        cmd += ["--domain-pack", args["rules"]]
+    if args.get("only"):
+        cmd += ["--only", args["only"]]
+    if args.get("baseline"):
+        cmd += ["--baseline", args["baseline"]]
+    print("running the check (Paper Test: what the policy decides)...")
+    proc = subprocess.run(cmd)
+    if proc.returncode == 1:
+        print("check failed to run (see the engine output above).")
+        return EXIT_UNKNOWN
+    if proc.returncode == 2:
+        print("BLOCKED: the fresh run regressed against the baseline "
+              "(see baseline-diff.json in the output directory).")
+        return EXIT_BLOCKED
+
+    bundle = _load_bundle(Path(out) / "bundle.json")
+    if bundle is None:
+        return EXIT_UNKNOWN
+    print(f"bundle: {out}/bundle.json")
+
+    # Live smoke test: one small probe set, run fresh through the real
+    # decision source, plus a re-verification of the sealed bundle.
+    # It proves the measurement path is live, not a cached result.
+    if not args.get("no_smoke"):
+        if bundle.get("run", {}).get("measurement_route") == "no-paper-surface":
+            print("smoke: skipped — no decision source to re-run live")
+        else:
+            smoke_out = str(Path(out) / "smoke")
+            smoke = subprocess.run(_engine_cmd(
+                ["--harness", harness, "--policy", policy,
+                 "--bindings", bindings, "--only", "FP-001",
+                 "--out", smoke_out, "--label", "smoke"]),
+                capture_output=True, text=True)
+            problems = CB.verify_check_bundle(bundle)
+            if smoke.returncode == 0 and not problems:
+                print("smoke: live decision source answered; "
+                      "bundle verifies")
+            else:
+                print("smoke: WARNING — the live re-run or the bundle "
+                      "verification did not pass; the paper result above "
+                      "stands, but treat it as unverified until you "
+                      "re-run the check")
+
+    if _unmeasured(bundle):
+        print("UNMEASURED: this harness has no decision source offline, "
+              "so nothing could be measured. The bundle records the gap "
+              "(every probe is 'unsupported-adapter').")
+        print("For Muse Code, live measurement runs through the "
+              "musecode-smoke workflow — see INTEGRATION.md.")
+        return EXIT_UNKNOWN
+    broken = _not_satisfied(bundle)
+    if broken:
+        print(f"BLOCKED: {len(broken)} rule(s) broken: "
+              + ", ".join(broken))
+        print("What to do: open the scorecard "
+              f"({out}/scorecard.html), find the broken rule, fix the "
+              "policy file so the rule is forbidden or asks first, then "
+              "run `fineprint check` again.")
+        return EXIT_BLOCKED
+    summary = bundle.get("dual_verdict_summary", {}).get(
+        "intent_coverage", {})
+    print(f"PASS: no rule broken. intent: "
+          f"SATISFIED={summary.get('SATISFIED', 0)} "
+          f"UNRESOLVED={summary.get('UNRESOLVED', 0)} "
+          f"(UNRESOLVED = the policy does not answer that probe — "
+          f"reported, not hidden).")
+    return EXIT_PASS
+
+
+# --------------------------------------------------------------------------
+# verify / report / harnesses
+# --------------------------------------------------------------------------
+
+def cmd_verify(args):
+    bundle = _load_bundle(args["bundle"])
+    if bundle is None:
+        return EXIT_UNKNOWN
+    problems = CB.verify_check_bundle(bundle)
+    if problems:
+        print(f"bundle BROKEN ({args['bundle']}):")
+        for p in problems:
+            print(f"  - {p}")
+        return EXIT_BLOCKED
+    print(f"bundle valid: {bundle.get('bundle_id')} "
+          f"({len(bundle.get('findings', []))} findings, Merkle root "
+          f"{bundle.get('merkle', {}).get('root', '')[:16]}…)")
+    return EXIT_PASS
+
+
+def cmd_report(args):
+    bundle = _load_bundle(args["bundle"])
+    if bundle is None:
+        return EXIT_UNKNOWN
+    problems = CB.verify_check_bundle(bundle)
+    run = bundle.get("run", {})
+    print(f"FinePrint report — bundle {bundle.get('bundle_id')}")
+    print(f"harness: {run.get('harness')} "
+          f"({run.get('measurement_route')})")
+    print(f"policy: {run.get('policy', {}).get('path')}")
+    print(f"bundle: {'valid' if not problems else 'BROKEN — see below'}")
+    print()
+    print(f"{'rule':<10} {'name':<32} {'measured':<12} {'intent':<14}")
+    for r in bundle.get("invariant_results", []):
+        print(f"{r['invariant_id']:<10} {r.get('name', '')[:30]:<32} "
+              f"{r.get('measurement_validity', ''):<12} "
+              f"{r.get('intent_coverage', ''):<14}")
+    scope = bundle.get("claim_scope", {})
+    print()
+    print(f"claim: {scope.get('measured_satisfied', 0)} satisfied, "
+          f"{scope.get('measured_not_satisfied', 0)} not satisfied, "
+          f"{scope.get('measured_unresolved', 0)} unresolved, "
+          f"{scope.get('exploratory_invariants', 0)} exploratory "
+          f"(measured entries only)")
+    if problems:
+        print("verification problems:")
+        for p in problems:
+            print(f"  - {p}")
+        return EXIT_BLOCKED
+    return EXIT_PASS
+
+
+def cmd_harnesses(args):
+    proc = subprocess.run(_engine_cmd(["--list-adapters"]),
+                          capture_output=True, text=True)
+    print(proc.stdout, end="")
+    print("muse-code has no offline decision oracle: a check reports "
+          "UNMEASURED and points at the live smoke workflow "
+          "(see adapters/muse-code-assessment.md).")
+    return 0
+
+
+# --------------------------------------------------------------------------
+# argument parsing (no flags required for `check`; empty = unset)
+# --------------------------------------------------------------------------
+
+def _parse(argv):
+    """Tiny flag parser. Flags take a value unless listed as boolean.
+    An empty value ('--harness ""') counts as unset (the Action passes
+    empty inputs through, and empty must mean 'auto-detect')."""
+    boolean = {"--no-smoke", "--gate", "--rules-flag"}
+    args = {}
+    positional = []
+    i = 0
+    while i < len(argv):
+        tok = argv[i]
+        if tok.startswith("--"):
+            if tok in boolean:
+                args[tok[2:].replace("-", "_")] = True
+                i += 1
+            elif i + 1 < len(argv):
+                value = argv[i + 1]
+                if value != "":
+                    args[tok[2:].replace("-", "_")] = value
+                i += 2
+            else:
+                return None, f"flag {tok} needs a value"
+        else:
+            positional.append(tok)
+            i += 1
+    return args, positional
+
+
+def main(argv):
+    if not argv or argv[0] in ("-h", "--help"):
+        print(__doc__)
+        return 0
+    if argv[0] == "--version":
+        print(VERSION)
+        return 0
+    cmd, rest = argv[0], argv[1:]
+    if cmd == "gate":
+        import fineprint_gate as FG  # noqa: E402
+        return FG.main(rest)
+    args, positional = _parse(rest)
+    if args is None:
+        print(positional)
+        return EXIT_UNKNOWN
+    if cmd == "init":
+        return cmd_init(args)
+    if cmd == "check":
+        return cmd_check(args)
+    if cmd == "verify":
+        if not positional:
+            print("usage: fineprint verify BUNDLE.json")
+            return EXIT_UNKNOWN
+        return cmd_verify({"bundle": positional[0]})
+    if cmd == "report":
+        if not positional:
+            print("usage: fineprint report BUNDLE.json")
+            return EXIT_UNKNOWN
+        return cmd_report({"bundle": positional[0]})
+    if cmd == "harnesses":
+        return cmd_harnesses(args)
+    print(f"unknown command {cmd!r}\n")
+    print(__doc__)
+    return EXIT_UNKNOWN
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

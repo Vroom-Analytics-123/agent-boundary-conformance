@@ -91,9 +91,12 @@ def seal_check_bundle(*, label, run_spec, findings, invariant_results,
     leaf_hashes = [S.leaf_hash_for_finding(f) for f in findings]
     root, proofs = S.build_merkle(leaf_hashes)
 
-    created = _utcnow()
-    bundle_id = ("fineprint-check-" + created.replace(":", "")
-                 .replace("-", "").replace("T", "-").replace("Z", ""))
+    now = datetime.now(timezone.utc)
+    created = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    # Microsecond tail: two runs in the same second must not share an
+    # id (the free Check CLI can run twice in one second, and a
+    # duplicate id makes two sealed bundles indistinguishable).
+    bundle_id = "fineprint-check-" + now.strftime("%Y%m%d-%H%M%S-%f")
 
     bundle = {
         "schema_version": SCHEMA_VERSION,

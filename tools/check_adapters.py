@@ -27,6 +27,19 @@ measurement only — unranked, never harness quality; founder correction
                semantics; NEVER interrogates a native oracle (none
                exists). Evidence class "reconstructed-evaluation (never
                interrogated)".
+  muse-code    no-paper-surface — Muse Code has NO offline decision oracle
+               and NO documented declarative per-command rule format
+               (see adapters/muse-code-assessment.md, Oct 22, 2026:
+               no check/evaluate entrypoint, permission profiles are
+               select-never-create, approvals route through an LLM
+               reviewer). This adapter exists so the gap is measured and
+               reported, not hidden: every probe returns unknown with
+               unknown_kind "unsupported-adapter", has_decision_source
+               is False, and the bundle records that nothing was
+               measured. Live Approval/Effect measurement for Muse Code
+               runs through musecode-smoke/ (approver + muse serve),
+               never through this adapter. Registering a reconstructed
+               shim here would be fabrication, not evaluation.
 
 Other T2 engines (cursor, gemini-cli, opencode) expose different
 evaluate() signatures today; they are registered here only when a shim
@@ -37,6 +50,7 @@ Stdlib only (the claude-code engine import is in-repo).
 """
 
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -52,6 +66,43 @@ LAYER_ATTRIBUTION = ("no rules-layer decision; runtime outcome depends on "
 
 EVIDENCE_CLASS_VENDOR_CONFIRMED = "REPRO"
 EVIDENCE_CLASS_RECONSTRUCTED = "reconstructed-evaluation (never interrogated)"
+EVIDENCE_CLASS_NO_DECISION_SOURCE = "no-decision-source (not measured)"
+
+
+# --------------------------------------------------------------------------
+# muse-code (no-paper-surface: the gap is the finding)
+# --------------------------------------------------------------------------
+
+MUSE_CODE_NO_ORACLE_NOTE = (
+    "Muse Code has no offline decision oracle and no documented "
+    "declarative per-command rule format "
+    "(adapters/muse-code-assessment.md, 2026-10-22); this probe was not "
+    "decided by any harness policy. Live Approval/Effect measurement runs "
+    "through musecode-smoke/ (approver + muse serve, owner's key)."
+)
+
+
+def muse_code_check_environment():
+    binary = shutil.which("muse")
+    detail = ("no offline decision oracle: " + MUSE_CODE_NO_ORACLE_NOTE)
+    if binary:
+        detail += f" Local muse binary found at {binary}; it cannot be "
+        detail += "asked offline what a policy decides."
+    else:
+        detail += " No local muse binary found (not required: there is "
+        detail += "nothing offline to ask)."
+    return True, detail
+
+
+def muse_code_run_probe(argv, policy):
+    # The policy argument is recorded in the bundle's run_spec but never
+    # evaluated: there is no documented rule format to evaluate it with.
+    # Returning unknown (never allow, never a fabricated decision) is the
+    # only honest outcome; has_decision_source=False makes adjudication
+    # label every unknown "unsupported-adapter".
+    return {"actual": "unknown", "matched_rules": {},
+            "raw": "", "note": MUSE_CODE_NO_ORACLE_NOTE,
+            "layer": "rules", "error": None}
 
 
 # --------------------------------------------------------------------------
@@ -168,6 +219,16 @@ ADAPTERS = {
         "policy_kind": "Claude Code settings JSON with a 'permissions' object",
         "check_environment": claude_code_check_environment,
         "run_probe": claude_code_run_probe,
+    },
+    "muse-code": {
+        "measurement_route": "no-paper-surface",
+        "evidence_class": EVIDENCE_CLASS_NO_DECISION_SOURCE,
+        "has_decision_source": False,
+        "policy_kind": ("Muse Code has no local policy file; permission "
+                        "profiles are select-never-create "
+                        "(see adapters/muse-code-assessment.md)"),
+        "check_environment": muse_code_check_environment,
+        "run_probe": muse_code_run_probe,
     },
 }
 

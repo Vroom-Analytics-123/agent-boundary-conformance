@@ -1,0 +1,104 @@
+# FinePrint free check — example workflow
+#
+# Copy this file into your repo as .github/workflows/fineprint-check.yml
+# and it runs. No config is needed: the first job calls the Action with
+# no inputs, and the Action finds your harness on its own
+# (fineprint.rules, fineprint.settings.json, .claude/settings.json).
+#
+# In YOUR repo, replace `uses: ./` with:
+#   uses: Vroom-Analytics-123/agent-boundary-conformance@main
+# (here it is `./` so this repo's own CI tests the local Action).
+#
+# What you see: green/red in the Actions tab (red = BLOCKED, a rule
+# broke), a verdict summary on the pull request, and the sealed
+# evidence bundle as a downloadable artifact on the run.
+#
+# The second job shows the explicit form (pin a harness + policy).
+# The third job shows the free gate: one step that refuses a command
+# touching a file outside the allowed scope.
+#
+# Permissions: the Action posts a PR comment, so this workflow needs
+# pull-requests: write. It needs no secrets for the default check.
+# The codex job restores the pinned oracle binary with the repo's
+# documented npm recipe (tools/vendor/codex/0.149.0/VENDORED.md);
+# the claude-code job needs nothing at all.
+
+name: fineprint-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check:
+    # Zero config: no `with:` block. The Action auto-detects the
+    # harness and policy in this repo.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: ./
+
+  check-claude-code-explicit:
+    # Explicit form, no secrets: Claude Code needs no binary, no key,
+    # no network — its check is pure Python.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: ./
+        with:
+          harness: claude-code
+          policy: adapters/claude-code/policy/settings.json
+
+  check-codex-explicit:
+    # Explicit form: pin the harness + policy. Codex needs the pinned
+    # oracle binary first (restored here with the documented recipe,
+    # SHA-256-verified — never run oracle work on an unpinned binary).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: restore pinned oracle
+        run: |
+          mkdir -p /tmp/codex-restore tools/vendor/codex/0.149.0/bin
+          cd /tmp/codex-restore
+          npm pack "@openai/codex@0.149.0-linux-x64"
+          mkdir -p lin && tar -xzf openai-codex-0.149.0-linux-x64.tgz -C lin
+          echo "bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827  lin/package/vendor/x86_64-unknown-linux-musl/bin/codex" | sha256sum -c -
+          cp lin/package/vendor/x86_64-unknown-linux-musl/bin/codex "$GITHUB_WORKSPACE/tools/vendor/codex/0.149.0/bin/codex"
+      - uses: ./
+        with:
+          harness: codex
+          policy: fixtures/policies/default.rules
+
+  gate:
+    # One step each: the free gate answers one allow/deny question
+    # (`gate check`) or guards a whole command (`gate run`). The first
+    # step passes (README.md is inside the repo); the second is
+    # expected to be denied, so it runs with continue-on-error and the
+    # log shows the DENY.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: gate allows a file inside the repo
+        run: python3 fineprint gate check --file README.md
+      - name: gate denies a file outside the allowed scope
+        continue-on-error: true
+        run: python3 fineprint gate check --file /etc/passwd
+      - name: gate guards a whole command
+        run: python3 fineprint gate run -- cat README.md

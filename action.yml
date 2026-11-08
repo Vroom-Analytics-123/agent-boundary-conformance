@@ -1,0 +1,131 @@
+# FinePrint free check — GitHub Action
+#
+# Point-and-click: add the example workflow (.github/workflows/
+# fineprint-check.yml) to your repo and it runs. No config is needed
+# for the default check — the Action finds your harness on its own
+# (fineprint.rules, fineprint.settings.json, .claude/settings.json)
+# and checks it against Catalogue v1 (16 built-in rules).
+#
+# What you see:
+#   - green/red in the Actions tab (red = BLOCKED, a rule broke)
+#   - a verdict summary on the pull request
+#   - the sealed evidence bundle as a downloadable CI artifact
+#
+# No secrets are needed for the default check (Codex and Claude Code
+# run offline). The Codex oracle binary is restored by the workflow
+# itself when the codex harness is used (see the example workflow).
+# Muse Code has no offline decision oracle: a check reports UNMEASURED
+# and points at the musecode-smoke workflow instead.
+name: "FinePrint free check"
+description: >-
+  Check a coding agent's own rules against Catalogue v1 and fail the
+  build when a rule breaks. Free, offline, no secrets for the default
+  check.
+inputs:
+  harness:
+    description: >-
+      Harness to check (codex, claude-code, muse-code). Empty means
+      auto-detect: fineprint.rules, fineprint.settings.json, or
+      .claude/settings.json in your repo.
+    required: false
+    default: ""
+  policy:
+    description: >-
+      Policy file to check. Empty means auto-detect (or the repo's
+      example settings when run inside the FinePrint repo itself).
+    required: false
+    default: ""
+  only:
+    description: >-
+      Comma-separated invariant ids to check (e.g. FP-001,FP-016).
+      Empty means all 16 Catalogue v1 rules.
+    required: false
+    default: ""
+  baseline:
+    description: >-
+      Path to a previous bundle.json to diff against. A regression
+      fails the build (exit 2). Empty means no baseline.
+    required: false
+    default: ""
+  rules:
+    description: >-
+      Path to a DIY rules file (a domain pack, see `fineprint init
+      --rules`). Empty means Catalogue v1 only.
+    required: false
+    default: ""
+  out:
+    description: Directory the evidence bundle is written to.
+    required: false
+    default: "fineprint-evidence"
+runs:
+  using: "composite"
+  steps:
+    - name: FinePrint check
+      shell: bash
+      run: |
+        python3 "${GITHUB_ACTION_PATH}/fineprint" check \
+          --harness "${{ inputs.harness }}" \
+          --policy "${{ inputs.policy }}" \
+          --only "${{ inputs.only }}" \
+          --baseline "${{ inputs.baseline }}" \
+          --rules "${{ inputs.rules }}" \
+          --out "${{ inputs.out }}"
+        # Empty inputs count as unset: the CLI treats "" as
+        # "auto-detect". Exit 2 (BLOCKED) fails this step on purpose —
+        # never swallow it.
+
+    - name: Upload evidence bundle
+      uses: actions/upload-artifact@v4
+      with:
+        name: fineprint-evidence
+        path: ${{ inputs.out }}
+        if-no-files-found: error
+
+    - name: Verdict summary on the PR
+      if: github.event_name == 'pull_request'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        FINEPRINT_OUT: ${{ inputs.out }}
+      run: |
+        python3 - <<'PYEOF'
+        import json, os, urllib.request
+        from pathlib import Path
+        out_dir = Path(os.environ.get("FINEPRINT_OUT", "fineprint-evidence"))
+        scorecard = out_dir / "scorecard.json"
+        if not scorecard.exists():
+            # The CLI writes into --out directly; fall back to a
+            # timestamped check-* directory if one is present.
+            cards = sorted(out_dir.glob("check-*/scorecard.json"))
+            scorecard = cards[-1] if cards else scorecard
+        if not scorecard.exists():
+            print("no scorecard found; skipping PR summary")
+            raise SystemExit(0)
+        doc = json.loads(scorecard.read_text())
+        run = doc.get("run", {})
+        claim = doc.get("claim_scope", {})
+        body = (
+            "## FinePrint check\n\n"
+            f"Harness: **{run.get('harness', '?')}** "
+            f"({run.get('measurement_route', '?')})\n\n"
+            f"Satisfied: {claim.get('measured_satisfied', 0)} · "
+            f"Not satisfied: {claim.get('measured_not_satisfied', 0)} · "
+            f"Unresolved: {claim.get('measured_unresolved', 0)}\n\n"
+            "Evidence bundle: see the `fineprint-evidence` artifact on "
+            "this run. `UNRESOLVED` means the policy does not answer "
+            "that probe — reported, not hidden."
+        )
+        repo = os.environ["GITHUB_REPOSITORY"]
+        event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+        number = event["pull_request"]["number"]
+        url = (f"https://api.github.com/repos/{repo}/issues/{number}/comments")
+        req = urllib.request.Request(
+            url,
+            data=json.dumps({"body": body}).encode(),
+            headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                     "Accept": "application/vnd.github+json",
+                     "User-Agent": "fineprint-action"},
+            method="POST")
+        with urllib.request.urlopen(req) as resp:
+            print("PR comment posted:", resp.status)
+        PYEOF

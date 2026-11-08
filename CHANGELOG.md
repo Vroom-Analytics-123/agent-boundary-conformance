@@ -5,6 +5,46 @@ used to carry: the sprint timeline, the pre/post-fix numbers, and the
 milestones after the sprint. Sealed bundles are never edited; corrections
 land as new bundles.
 
+## Nov 7–8, 2026 — free Check / Action / gate (branch `free-check-gate`, unmerged)
+
+- **Free Check CLI (`fineprint`, repo root).** A thin wrapper around
+  the existing engine (`tools/fineprint_check.py`): `init` scaffolds
+  starter policy files, `check` runs the Paper Test plus a live smoke
+  re-check, `verify` re-checks a bundle's seal, `report` prints a
+  human-readable verdict. Exit codes 0 pass / 2 BLOCKED / 3
+  unknown-error. Zero config for a first verdict: the harness is
+  auto-detected (`fineprint.rules` → codex, `fineprint.settings.json`
+  / `.claude/settings.json` → claude-code, `muse` on PATH →
+  muse-code), Catalogue v1 is the default, every run writes a local
+  Merkle-sealed evidence bundle. Muse Code has no offline decision
+  oracle, so its check reports UNMEASURED (exit 3, bundle records
+  the gap) instead of a verdict. Two real bugs found and fixed while
+  building it: two checks in the same second shared one output
+  directory (the second overwrote the first run's sealed bundle —
+  output dirs now get a `-2` suffix) and shared one bundle id (the
+  engine's id is now microsecond-unique). 52 new tests; see
+  `tests/test_free_check.py`, `tests/test_free_gate.py`,
+  `tests/test_free_action.py`.
+- **GitHub Action (`action.yml`) + example workflow
+  (`.github/workflows/fineprint-check.yml`).** All inputs optional;
+  the default check needs no config, no secrets, no network to any
+  harness company. BLOCKED fails the build on purpose; the evidence
+  bundle uploads as a CI artifact; a verdict summary posts on the
+  PR. The Codex job restores the pinned oracle via the documented
+  recipe with SHA-256 verification.
+- **Free gate (`tools/fineprint_gate.py`, via `fineprint gate`).**
+  A subprocess wrapper plus a CI step, adapted from the paid-product
+  prototype's decision logic with symlink resolution added (decisions
+  run on realpaths) and hash-chained JSONL audit logging. Default
+  policy: current directory only, no hosts. Limits stated plainly in
+  `docs/FREE_GATE.md`: wrapper-level guard, not a sandbox, not the
+  hardened (paid) gate.
+- **Docs:** `INTEGRATION.md` (junior-dev integration guide with
+  verbatim real outputs), `docs/FREE_CHECK_ACTION.md`,
+  `docs/FREE_GATE.md`, `docs/UPSTREAM_FIX_LOOP.md` (Omnigent
+  #12762 as the worked example; no upstream PR filed — upstream
+  patches need the owner's per-PR approval).
+
 ## Oct 20–22, 2026 — the sprint
 
 - **Oct 21 — Day-1 baseline (exploratory).** 41 probe commands replayed

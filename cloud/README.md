@@ -22,6 +22,7 @@
 | `workstations.md` | Google Cloud Workstations custom-image doc. |
 | `agent37.md` | agent37.com custom template + the one exec call + the ToS question. |
 | `nested-unshare-test.sh` | THE test. Run it on a real Docker host FIRST. |
+| `docker/fineprint-seccomp.json` | Least-privilege seccomp profile (Docker default + unconditional `unshare`/`clone`/`mount`) — replaces `seccomp=unconfined` where the wall runs in a container. See `docker/README.md`. |
 | `tests/test_cloud_image.py` | The checks that can run here (no Docker). |
 
 ## Build
@@ -60,31 +61,61 @@ running unprotected). The agent's own exit code passes through.
 
 The wall creates user + mount namespaces with `unshare` INSIDE the
 container. Whether that works in a default Docker container is
-contested between sources (investigation doc §7.2): Docker's docs
-describe an exception for `unshare --user`; independent tests report
-EPERM / bwrap failing. **Do not resolve this from the docs.** Run:
+contested between sources — and the profile itself now explains why
+(investigation doc §12): Docker's default seccomp profile gates
+`unshare` (and `clone`/`mount`) on `CAP_SYS_ADMIN`, which a default
+container does not hold, so the call fails with EPERM; whether a given
+runtime's default permits it anyway depends on whether the calling
+process holds that capability when seccomp evaluates the call. And
+there is a second guard after seccomp: Docker's `docker-default`
+AppArmor profile denies the wall's first mount with EACCES once both
+unshares succeed (KiroCrew's docker guide). **Do not resolve this from
+the docs.** Run:
 
 ```sh
 sh cloud/nested-unshare-test.sh
 ```
 
 on a real Docker host (a Mac with Docker Desktop, a Linux host, a
-cloud VM). It runs the one-command test, then the wall's T1–T7 smoke
-test inside the cloud image, default seccomp first and with
-`--security-opt seccomp=unconfined` second, and prints a verdict:
+cloud VM). It runs the gate's own probe (`fineprint gate probe` —
+three steps: `unshare(CLONE_NEWUSER)`, `unshare(CLONE_NEWNS)`, then
+the mount — plus a cap-drop line) inside the cloud image, then the
+wall's T1–T7 smoke test, in this order: default seccomp first; then
+the least-privilege profile (`docker/fineprint-seccomp.json` — the
+default profile + unconditional `unshare`/`clone`/`mount`) with
+`apparmor=unconfined`; then `seccomp=unconfined` (also with
+`apparmor=unconfined`) as the last resort. It prints a verdict:
 
 - **PASS** — the wall works in containers everywhere.
-- **PASS-WITH-FLAG** — the wall needs `seccomp=unconfined`; it works
-  where you control the runtime (your Docker host, your K8s), NOT on
-  Fargate / Cloud Run / ACI / Autopilot / Codespaces.
+- **PASS-WITH-PROFILE** — the wall needs the seccomp profile +
+  `apparmor=unconfined`; it works where you control the runtime
+  (your Docker host, your K8s — via `seccompProfile: Localhost` +
+  `appArmorProfile: Unconfined`), NOT on Fargate / Cloud Run / ACI /
+  Autopilot / Codespaces.
+- **PASS-WITH-UNCONFINED** — only `seccomp=unconfined` rescues it:
+  the profile was not enough, so something else the wall needs is
+  blocked by the default profile. Record exactly which step failed
+  with the profile before treating this as a pass.
 - **FAIL** — the wall does not start in this container at all.
 
 Until that test runs, **everything in this directory is unverified
 end-to-end**: the image has never been `docker build`ed or run (no
 Docker in the build container, no real Mac/Windows), and no cloud
 shape has been deployed. The checks in `tests/` verify the vendored
-CLI, the Dockerfile wiring, and the snippets — not the container
-story. Say so wherever this image is described.
+CLI, the Dockerfile wiring, the seccomp profile's structure, and the
+snippets — not the container story. Say so wherever this image is
+described.
+
+## PID 1 — tini
+
+The gate is a Python program with no signal handlers, and PID 1
+ignores SIGTERM by default — so without an init, `docker stop` would
+hang until the stop timeout and then SIGKILL. Both images therefore
+run `tini` as PID 1 (the desktop image's ENTRYPOINT; the cloud image
+adds entrypoint.sh after it). Do not also pass `docker run --init`.
+Like the nested-unshare question, the tini install itself is
+unverified at build time — it is asserted structurally by the tests,
+and the first real `docker build` is the verification.
 
 ## Per shape, briefly
 

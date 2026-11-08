@@ -11,7 +11,8 @@
   // the wall creates user + mount namespaces with `unshare` INSIDE the
   // container, and whether that works in a Codespaces container is
   // contested between sources. Run cloud/nested-unshare-test.sh on a
-  // real Docker host first; if it fails there, the wall needs
+  // real Docker host first; if it fails there, the wall needs the
+  // seccomp profile (cloud/docker/fineprint-seccomp.json) or
   // --security-opt seccomp=unconfined, which you CANNOT set on
   // Codespaces. Until that test runs, this devcontainer is a
   // best-effort shape, not a verified one. If the wall cannot start,

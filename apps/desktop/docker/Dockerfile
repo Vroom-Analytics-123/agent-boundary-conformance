@@ -27,8 +27,15 @@
 # with "unable to find image" and the Wall screen says so.
 FROM python:3.12-slim
 
+# tini is the container's init (PID 1): the gate is a Python program
+# with no signal handlers, and PID 1 ignores SIGTERM by default — so
+# without an init, `docker stop` hangs until the stop timeout and then
+# SIGKILLs. tini (PID 1) forwards signals to its child and reaps
+# orphaned grandchildren (the agent's children when the agent dies).
+# Do NOT also pass `docker run --init`: tini is already the
+# ENTRYPOINT, and a second tini under it is harmless but pointless.
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      util-linux curl git ca-certificates \
+      util-linux curl git ca-certificates tini \
     && rm -rf /var/lib/apt/lists/*
 
 # Node.js 22 LTS (NodeSource) — the agent CLIs are Node programs.
@@ -42,3 +49,9 @@ RUN npm install -g @openai/codex@0.167.0 @anthropic-ai/claude-code@2.1.319 \
     && codex --version && claude --version
 
 WORKDIR /work
+
+# tini is PID 1 (see above); the app's explicit command becomes
+# tini's child. `docker run <img> python3 <cli>/fineprint gate run
+# -- ...` therefore runs the gate under tini, and `docker stop`
+# reaches it.
+ENTRYPOINT ["/usr/bin/tini", "--"]

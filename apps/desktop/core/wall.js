@@ -140,17 +140,33 @@ function resolveAgent(agentId, runtime, execFn) {
  *
  * `--security-opt seccomp=unconfined`: the wall creates user + mount
  * namespaces with `unshare` inside the container, and Docker's default
- * seccomp profile is documented as blocking `unshare` with
- * CLONE_NEWUSER. Whether the flag is strictly needed is contested
- * between sources (investigation §7.2); the nested-unshare test on a
- * real machine settles it. Until then the flag stays: if `unshare` is
- * allowed anyway it is harmless, and if it is blocked the flag is what
- * lets the wall start at all.
+ * seccomp profile gates `unshare` (and `clone`/`mount`) on
+ * CAP_SYS_ADMIN, which a default container does not hold — so the
+ * call fails with EPERM. Whether the flag is strictly needed is
+ * contested between sources (investigation §7.2, §12); the
+ * nested-unshare test on a real machine settles it. Until then the
+ * flag stays: if `unshare` is allowed anyway it is harmless, and if
+ * it is blocked the flag is what lets the wall start at all. The
+ * least-privilege replacement is the profile in
+ * cloud/docker/fineprint-seccomp.json (the default profile +
+ * unconditional unshare/clone/mount, KiroCrew's shape) — wiring it
+ * into this argv (the profile file has to ship with the app) is a
+ * follow-up; the flag stays unconfined until then.
+ *
+ * `--security-opt apparmor=unconfined`: the seccomp flag is only half
+ * the change on AppArmor hosts (Ubuntu/Debian families). Docker also
+ * attaches its `docker-default` AppArmor profile, whose `deny mount`
+ * refuses the wall's first mount with EACCES after both unshares
+ * succeed (KiroCrew's docker guide). The flag lifts only AppArmor's
+ * per-container rules; the seccomp profile, the dropped capabilities,
+ * and the wall itself still apply. On a host without AppArmor it is
+ * a no-op.
  */
 function buildDockerRun({ image, workdir, cliDir, policyFile, logFile, command, env = {}, authMounts = [] }) {
   const img = image || DOCKER_IMAGE;
   const argv = ['docker', 'run', '--rm',
     '--security-opt', 'seccomp=unconfined',
+    '--security-opt', 'apparmor=unconfined',
     '-v', `${workdir}:${workdir}`,
     '-v', `${cliDir}:${cliDir}`];
   for (const [name, value] of Object.entries(env)) {

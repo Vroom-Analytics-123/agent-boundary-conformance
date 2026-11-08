@@ -20,9 +20,16 @@
 #                          baked in (the app bind-mounts the CLI).
 #   fineprint-wall:cloud   this image — the base + the gate CLI +
 #                          the gate entrypoint. A strict superset of
-#                          :latest: the app can use it too (its
-#                          bind-mount shadows the baked-in CLI, and its
-#                          explicit command overrides ENTRYPOINT).
+#                          :latest for direct runs. The app does NOT use
+#                          this image as-is: its explicit command does
+#                          NOT override ENTRYPOINT, it becomes the
+#                          ENTRYPOINT's arguments — so `docker run
+#                          :cloud python3 <cli>/fineprint gate run ...`
+#                          would hand entrypoint.sh "python3" as the
+#                          agent command. Use :latest for the app (its
+#                          ENTRYPOINT is just tini, so the command runs
+#                          directly under it), or pass
+#                          `--entrypoint ""` to run :cloud the app's way.
 #
 # What is inside, on top of the base:
 #   - The gate CLI, vendored from the public repo's `free-wall` branch
@@ -35,7 +42,11 @@
 #     only means something if `sudo` exists in the image. Agents also
 #     use it. Tiny, worth having.
 #   - entrypoint.sh: prints the definitions version in force, then
-#     execs `fineprint gate run -- <agent command>`.
+#     execs `fineprint gate run -- <agent command>`. tini is PID 1
+#     (inherited from the base image — see apps/desktop/docker/
+#     Dockerfile): without an init the gate, a Python program with
+#     no signal handlers, would be PID 1 and ignore SIGTERM, so
+#     `docker stop` would hang until the stop timeout.
 #
 # What is NOT inside, and why (same as the desktop image):
 #   - Muse Code (`muse`): not npm-installable — a launcher that
@@ -79,4 +90,7 @@ WORKDIR /work
 
 # The container's command IS the agent command. The entrypoint runs
 # it inside the wall: `docker run fineprint-wall:cloud claude`.
-ENTRYPOINT ["/opt/fineprint/entrypoint.sh"]
+# tini is PID 1 and forwards signals to entrypoint.sh, which execs
+# the gate — so `docker stop` reaches the gate (and through it the
+# agent) instead of hanging until the stop timeout.
+ENTRYPOINT ["/usr/bin/tini", "--", "/opt/fineprint/entrypoint.sh"]

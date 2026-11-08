@@ -21,10 +21,12 @@
 #   ANTHROPIC_API_KEY / OPENAI_API_KEY — passed through to the agent
 #
 # The entrypoint prints the definitions version in force first (the
-# acceptance bar requires it recorded), then execs the gate so signals
-# reach the agent. Exit codes are the gate's: 0 the agent ran, 2 a
-# rule denied the command (it never ran), 3 the gate could not run
-# here (e.g. no `unshare` — it refuses rather than running
+# acceptance bar requires it recorded), then execs the gate. tini is
+# PID 1 (the image's ENTRYPOINT) and forwards signals to this script;
+# exec replaces this script with the gate, so the gate is tini's child
+# and receives those signals. Exit codes are the gate's: 0 the agent
+# ran, 2 a rule denied the command (it never ran), 3 the gate could
+# not run here (e.g. no `unshare` — it refuses rather than running
 # unprotected). The agent's own exit code is passed through.
 set -e
 

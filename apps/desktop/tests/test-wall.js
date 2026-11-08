@@ -87,6 +87,23 @@ test('docker run defaults to the fineprint-wall image and lifts the seccomp bloc
     'seccomp=unconfined so the wall can unshare inside the container');
 });
 
+test('docker run also lifts the AppArmor mount block (KiroCrew: the seccomp flag is only half the change)', () => {
+  const argv = buildDockerRun({
+    workdir: '/Users/ana/work',
+    cliDir: '/Users/ana/fineprint',
+    policyFile: '/Users/ana/work/fineprint-gate.json',
+    logFile: '/Users/ana/work/fineprint-audit.jsonl',
+    command: ['claude', '--help'],
+  });
+  // Docker's docker-default AppArmor profile denies the wall's first
+  // mount with EACCES after both unshares succeed; without this flag
+  // the wall fails on Ubuntu/Debian Docker hosts even with
+  // seccomp=unconfined. On a host without AppArmor it is a no-op.
+  const opts = argv.filter((a, i) => argv[i - 1] === '--security-opt');
+  assert.ok(opts.includes('apparmor=unconfined'),
+    'apparmor=unconfined so the mount is not refused');
+});
+
 test('docker run passes set API keys through and skips unset ones', () => {
   const argv = buildDockerRun({
     workdir: '/w', cliDir: '/c',

@@ -29,7 +29,7 @@ done
     echo "#"
     echo "# The five .py files are verbatim copies of these files from the"
     echo "# public repo's \`free-wall\` branch at the commit below (the latest"
-    echo "# branch head verified by avan: suite 253 tests OK, Nov 8, 2026)."
+    echo "# branch head verified by avan: suite 257 tests OK, Nov 8, 2026)."
     echo "# The cloud image carries the gate only — not the Check engine —"
     echo "# because its job is to run an agent inside the wall, not to run"
     echo "# checks. Re-generate with cloud/sync-cli.sh; verify with"

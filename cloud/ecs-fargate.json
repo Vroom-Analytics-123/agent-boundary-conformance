@@ -4,7 +4,7 @@
     "UNVERIFIED (investigation doc \u00a77.3): whether `unshare` works inside",
     "a Fargate task container is unverified \u2014 no source confirms or denies",
     "it \u2014 and Fargate gives you NO knob to turn: no privileged containers,",
-    "only CAP_SYS_PTRACE addable, no seccomp=unconfined. Run the wall's",
+    "only CAP_SYS_PTRACE addable, no custom seccomp profile, no seccomp=unconfined. Run the wall's",
     "smoke test as a Fargate task first (cloud/nested-unshare-test.sh,",
     "adapted to a task). If it fails, Fargate cannot run the wall, full",
     "stop \u2014 there is nothing to relax.",

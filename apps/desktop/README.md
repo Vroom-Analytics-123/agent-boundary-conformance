@@ -44,9 +44,11 @@ dangerous patterns). Folder limiting is an **opt-in** toggle —
 
 The wall itself is Linux-only (`unshare`). On macOS/Windows the wall
 runs inside a Linux runtime: Docker Desktop (macOS/Windows) or WSL2
-(Windows). If no wall runtime is available, Check still works and
-the Wall screen says so plainly and offers an explicit, labelled
-tripwire-only run — never a silent unprotected run.
+(Windows). Any runtime that exposes the standard `docker` CLI works
+unchanged — OrbStack and Colima are the lighter Mac options (see
+`apps/desktop/docker/README.md`). If no wall runtime is available,
+Check still works and the Wall screen says so plainly and offers an
+explicit, labelled tripwire-only run — never a silent unprotected run.
 
 ## Packaging (what exists, what doesn't)
 

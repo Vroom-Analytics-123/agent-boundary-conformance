@@ -171,12 +171,23 @@ class TestDockerfile(unittest.TestCase):
         self.assertNotIn("@anthropic-ai/claude-code", self.text)
 
     def test_entrypoint_and_copies(self):
-        self.assertIn('ENTRYPOINT ["/opt/fineprint/entrypoint.sh"]', self.text)
+        self.assertIn('ENTRYPOINT ["/usr/bin/tini", "--", '
+                      '"/opt/fineprint/entrypoint.sh"]', self.text)
         for src in ("cloud/cli/tools/", "cloud/cli/fineprint",
                     "cloud/entrypoint.sh"):
             self.assertIn(f"COPY {src}", self.text)
             # the COPY source exists in the repo
             self.assertTrue((REPO / src).exists(), src)
+
+    def test_tini_is_pid_1(self):
+        """tini is PID 1 (the gate has no signal handlers, and PID 1
+        ignores SIGTERM — without an init, `docker stop` hangs until
+        the stop timeout). The base image installs it and sets it as
+        the ENTRYPOINT; this image adds entrypoint.sh after it."""
+        self.assertIn('"/usr/bin/tini", "--"', self.text)
+        base = (REPO / "apps/desktop/docker/Dockerfile").read_text()
+        self.assertIn("tini", base)
+        self.assertIn('ENTRYPOINT ["/usr/bin/tini", "--"]', base)
 
     def test_no_secrets_baked_in(self):
         for secret in ("ANTHROPIC_API_KEY=", "OPENAI_API_KEY=",
@@ -231,14 +242,88 @@ class TestSnippets(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stderr)
         text = (CLOUD / "nested-unshare-test.sh").read_text()
         for needle in ("unshare --map-root-user --mount",
-                       "seccomp=unconfined", "T1", "T7", "verify-log",
-                       "PASS-WITH-FLAG", "smoke test"):
+                       "fineprint-seccomp.json",
+                       "seccomp=unconfined", "apparmor=unconfined",
+                       "probe", "T1", "T7", "verify-log",
+                       "PASS-WITH-PROFILE", "PASS-WITH-UNCONFINED",
+                       "smoke test"):
             self.assertIn(needle, text)
 
     def test_docs_state_unverified(self):
         for name in ("workstations.md", "agent37.md", "README.md"):
             text = (CLOUD / name).read_text()
             self.assertIn("UNVERIFIED", text, name)
+
+
+class TestSeccompProfile(unittest.TestCase):
+    """The least-privilege profile (cloud/docker/fineprint-seccomp.json):
+    Docker's default allow-list plus an unconditional allow for the
+    three syscalls the wall needs (KiroCrew's shape). Structural
+    checks only — the profile has never been used in a real `docker
+    run` (no Docker here); cloud/nested-unshare-test.sh is the
+    runtime check, on a real Docker host."""
+
+    def test_valid_json_and_default_action(self):
+        doc = json.loads(
+            (CLOUD / "docker" / "fineprint-seccomp.json").read_text())
+        self.assertEqual(doc["defaultAction"], "SCMP_ACT_ERRNO")
+        self.assertIn("syscalls", doc)
+        self.assertEqual(len(doc["syscalls"]), 61,
+                         "the upstream default (60 rules) + 1")
+
+    def test_the_three_syscalls_are_unconditionally_allowed(self):
+        doc = json.loads(
+            (CLOUD / "docker" / "fineprint-seccomp.json").read_text())
+        unconditional = set()
+        for rule in doc["syscalls"]:
+            if (rule.get("action") == "SCMP_ACT_ALLOW"
+                    and "args" not in rule
+                    and "includes" not in rule
+                    and "excludes" not in rule):
+                unconditional.update(rule["names"])
+        for name in ("unshare", "clone", "mount"):
+            self.assertIn(name, unconditional, name)
+        # and nothing else was added: the profile is the default plus
+        # exactly those three (setns, pivot_root, umount, bpf stay
+        # gated on CAP_SYS_ADMIN, as upstream).
+        for name in ("setns", "pivot_root", "umount", "bpf"):
+            self.assertNotIn(name, unconditional, name)
+
+    def test_the_default_allowlist_is_intact(self):
+        doc = json.loads(
+            (CLOUD / "docker" / "fineprint-seccomp.json").read_text())
+        unconditional = set()
+        for rule in doc["syscalls"]:
+            if (rule.get("action") == "SCMP_ACT_ALLOW"
+                    and "args" not in rule
+                    and "includes" not in rule
+                    and "excludes" not in rule):
+                unconditional.update(rule["names"])
+        for name in ("execve", "openat", "read", "write",
+                     "landlock_restrict_self", "seccomp", "fork",
+                     "vfork"):
+            self.assertIn(name, unconditional, name)
+        # `socket` is allowed by the default profile, but only with
+        # arg filters (specific address families) — it is not in the
+        # unconditional set, and the profile must not have changed
+        # that: assert it is still allowed-with-args, not newly
+        # unconditional and not dropped.
+        socket_rules = [r for r in doc["syscalls"]
+                        if "socket" in r.get("names", [])
+                        and r.get("action") == "SCMP_ACT_ALLOW"]
+        self.assertTrue(socket_rules, "socket allow rules missing")
+        self.assertTrue(all("args" in r for r in socket_rules),
+                        "socket must stay arg-filtered, not unconditional")
+
+    def test_profile_is_documented_and_referenced(self):
+        readme = (CLOUD / "docker" / "README.md").read_text()
+        self.assertIn("6416b47770785a41ac59073cdc77d9fe98517df2799"
+                      "dc83ef207e622de3053f6", readme)
+        self.assertIn("UNVERIFIED", readme)
+        self.assertIn("fineprint-seccomp.json",
+                      (CLOUD / "nested-unshare-test.sh").read_text())
+        self.assertIn("fineprint-seccomp.json",
+                      (CLOUD / "README.md").read_text())
 
 
 class TestSyncScript(unittest.TestCase):

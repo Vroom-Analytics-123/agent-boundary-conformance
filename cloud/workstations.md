@@ -18,7 +18,8 @@
 # UNVERIFIED — the nested-unshare question (investigation doc §7.2):
 # you do not get the host, only the container, so the question applies
 # inside the container. Run cloud/nested-unshare-test.sh on a real
-# Docker host first; if it fails there, the wall needs
+# Docker host first; if it fails there, the wall needs the seccomp
+# profile (cloud/docker/fineprint-seccomp.json) or
 # --security-opt seccomp=unconfined, which you CANNOT set on
 # Workstations. Until that test runs, this is a best-effort shape, not
 # a verified one. If the wall cannot start, the gate refuses (exit 3)

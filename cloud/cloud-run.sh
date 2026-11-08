@@ -12,7 +12,8 @@
 # namespaces, and cgroups". Gen1 is gVisor (syscall emulation — the
 # wall's `unshare` + mount calls are emulated, and gVisor's record on
 # nested namespaces is poor), so do not run this on a gen1 service.
-# There is no knob for seccomp on Cloud Run. Deploy once, run the
+# There is no knob for seccomp on Cloud Run (no custom profile, no
+# seccomp=unconfined). Deploy once, run the
 # wall's smoke test as a job (cloud/nested-unshare-test.sh, adapted),
 # and accept the answer: if it fails, Cloud Run cannot run the wall.
 #

@@ -44,6 +44,11 @@ land as new bundles.
   `docs/FREE_GATE.md`, `docs/UPSTREAM_FIX_LOOP.md` (Omnigent
   #12762 as the worked example; no upstream PR filed — upstream
   patches need the owner's per-PR approval).
+- **Demo:** `assets/fineprint-check-demo.gif` (recorded with
+  `demo/record-check-demo.sh`, asciinema + agg) — install →
+  `fineprint check` on a harness that breaks a rule → verdict +
+  bundle, plus `fineprint gate run` allowing a good command and
+  blocking a bad one. Real commands, real output.
 
 ## Oct 20–22, 2026 — the sprint
 

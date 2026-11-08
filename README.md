@@ -34,6 +34,8 @@ cd agent-boundary-conformance
 ./fineprint check       # one command: verdict + sealed bundle in fineprint-evidence/
 ```
 
+![FinePrint Check demo — install, check, verdict + bundle](assets/fineprint-check-demo.gif)
+
 What you see: `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Muse Code has no offline decision oracle, so its check reports UNMEASURED (exit 3) instead of a verdict. Full guide, written for a junior dev: [INTEGRATION.md](INTEGRATION.md). GitHub Action — one workflow file, red/green in the Actions tab, verdict summary on the PR: [docs/FREE_CHECK_ACTION.md](docs/FREE_CHECK_ACTION.md). Free gate — one wrapper command, defaults on: [docs/FREE_GATE.md](docs/FREE_GATE.md). Upstream fix loop — measure, fix locally, patch upstream: [docs/UPSTREAM_FIX_LOOP.md](docs/UPSTREAM_FIX_LOOP.md).
 - **In about a minute, locally (Codex / oracle-backed runs):**
 

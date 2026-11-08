@@ -126,11 +126,33 @@ BUILTIN_RULES = [
 # real-CLI tests pin both: 11 rules, v2026-11-07).
 DENY_EXFIL_ID = "DENY-EXFIL"
 
+# Second-opinion rule ids (Nov 8, two-stage gate): the ids the gate
+# emits for the model's verdicts, declared here for the same reason as
+# DENY-EXFIL — so the proof's evidence never cites a rule id that
+# lives nowhere. They are NOT pack rules (the pack stays 11 rules,
+# v2026-11-07) and they are NOT deterministic denials: a model block
+# is a probabilistic judgment, and a model-error block is a
+# fail-closed refusal, not a rule that matched. The audit log marks
+# both with `deterministic: false` and `second_opinion: true`.
+S1_BLOCK_ID = "S1-BLOCK-bekko"
+S1_MODEL_ERROR_ID = "S1-MODEL-ERROR"
+
 SYNTHETIC_RULES = [
     {"id": DENY_EXFIL_ID, "kind": "synthetic",
      "description": "copy/send of a protected file (tripwire only)",
      "reason": "copying a protected file out is how secrets leave "
                "the machine"},
+    {"id": S1_BLOCK_ID, "kind": "synthetic",
+     "description": "second opinion: bekko-400m judged the action "
+                    "should be blocked",
+     "reason": "the second-opinion model judged this action would "
+               "violate the invariant at stake"},
+    {"id": S1_MODEL_ERROR_ID, "kind": "synthetic",
+     "description": "second opinion unavailable: the model errored, "
+                    "so the action was blocked fail-closed",
+     "reason": "the second-opinion model could not be consulted, "
+               "and a serious action is blocked rather than allowed "
+               "unjudged"},
 ]
 
 

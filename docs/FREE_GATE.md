@@ -227,6 +227,68 @@ fineprint gate verify-log --log audit.jsonl
 # audit log audit.jsonl: valid
 ```
 
+## The second opinion (opt-in, off by default)
+
+The deterministic checks above are the guarantee: the same
+known-bad action is always denied, by rule, with no model
+involved. The second opinion is an extra layer on top — a small
+local model that gets a second look at the serious actions the
+deterministic checks allowed. It never weakens the deterministic
+layer: a deterministic denial is final, and the second opinion
+only ever runs on an action the deterministic checks allowed.
+
+When it fires: only when you enable it (`"second_opinion": true`
+in the policy file, or `gate run --second-opinion`), and only for
+serious invariants — deletion and exfiltration at the default
+threshold (severity >= 4). Deploy and credential actions do not
+escalate at the default threshold (severity 2); benign actions
+never escalate. The threshold is configurable in the policy
+(`second_opinion_threshold`) or on the command line
+(`--second-opinion-threshold N`).
+
+What it costs: the model is bekko-system-one-v0-400m, a small
+local model (about 400M parameters, ~1.58 GB of weights, downloaded
+once from a pinned revision and cached — never vendored into the
+repo). The first load takes about 90 seconds on a container CPU
+(about 77s once cached) and a few seconds per escalated action
+after that (mean ~4s, p95 ~5s on the 30-case guard task) — so it is
+a second opinion on a few serious actions per run, not a check on
+every command. The gate itself stays stdlib-only: the model runs
+in a helper subprocess (`tools/fineprint_second_opinion.py`) that
+the gate starts lazily, only when an action actually escalates,
+and keeps alive for the run.
+
+What it does: the model sees the action, the invariant family,
+and the rule's reason — never file contents — and answers one
+question: "Should this action be blocked?" Block means the action
+is denied (exit 2, rule `S1-BLOCK-bekko`). Allow means it runs.
+If the model errors, is unavailable, or times out, the action is
+**blocked fail-closed** (exit 2, rule `S1-MODEL-ERROR`) — a
+missing model never silently allows a serious action.
+
+What it is not: it is probabilistic, not deterministic. The model
+is measured at 15/20 caught and 0/10 false positives on the guard
+task (the 24 V1 cells + 6 benign commands), and it misses all
+four deploy cells and the records-file read — so it is a second
+opinion, not a replacement for the deterministic layer. Every
+second-opinion verdict is logged to the hash-chained audit log
+with the model name + version, the invariant family, the reason
+the model saw, the model's verdict + reason verbatim, and the
+latency — and marked probabilistic (`deterministic: false`), so a
+human reviewing the log can tell a model judgment apart from a
+rule denial at a glance:
+
+```bash
+fineprint gate log --log audit.jsonl
+# tried cp notes.txt /tmp/copy.txt -> blocked [second opinion (bekko-system-one-v0-400m 1960df56) — probabilistic: copying a protected file out is how secrets leave the machine]
+```
+
+The model runs entirely on your machine: no hosted calls, no API
+key, no data leaving the machine. If the model is not installed,
+the second opinion stays off (the gate behaves exactly as before)
+until you enable it — and enabling it without the model installed
+blocks every serious action with a model-error, by design.
+
 ## One step, in CI
 
 ```yaml

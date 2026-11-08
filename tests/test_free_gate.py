@@ -675,5 +675,365 @@ class TestProbe(unittest.TestCase):
             self.assertIn("not on PATH", proc.stdout)
 
 
+class TestSecondOpinion(unittest.TestCase):
+    """Nov 8 (two-stage gate): the second opinion (bekko) fires only
+    when the deterministic checks allowed, only for serious
+    invariants (severity >= the policy threshold), and fails closed
+    when the model cannot be consulted. The model is injected here
+    (a fake), so the unit suite never starts a model — the real
+    model is exercised by tests/test_second_opinion_live.py."""
+
+    class FakeClient:
+        """A stand-in for SecondOpinion: returns a canned verdict
+        and counts calls, so the tests pin the gate's behaviour
+        around the model, not the model's behaviour."""
+
+        def __init__(self, verdict="allow", reason="no rule is at stake",
+                     probability_yes=0.1, latency_s=0.5):
+            self.verdict = verdict
+            self.reason = reason
+            self.probability_yes = probability_yes
+            self.latency_s = latency_s
+            self.calls = []
+
+        def judge(self, action, family, reason):
+            self.calls.append((action, family, reason))
+            return {"verdict": self.verdict, "reason": self.reason,
+                    "probability_yes": self.probability_yes,
+                    "latency_s": self.latency_s,
+                    "model": "bekko-system-one-v0-400m",
+                    "version": "1960df56"}
+
+        def stop(self):
+            pass
+
+    class FailingClient:
+        """A stand-in for a model that cannot be consulted."""
+
+        def __init__(self):
+            self.calls = []
+
+        def judge(self, action, family, reason):
+            self.calls.append((action, family, reason))
+            raise FG.SecondOpinionError("the model did not answer")
+
+        def stop(self):
+            pass
+
+    def _gate(self, tmp, client, threshold=4, second_opinion=True):
+        log_path = Path(tmp) / "audit.jsonl"
+        log = FG.AuditLog(str(log_path))
+        p = FG.Policy((str(tmp),), (), mode="deny",
+                      second_opinion=second_opinion,
+                      second_opinion_threshold=threshold)
+        return FG.Gate(p, log, second_opinion_client=client), log_path
+
+    def _log_entries(self, log_path):
+        if not log_path.exists():
+            return []
+        return [json.loads(line) for line in
+                log_path.read_text().splitlines() if line.strip()]
+
+    def test_disabled_by_default_no_model_call(self):
+        # The default policy does not enable the second opinion:
+        # the model is never consulted and the Stage 1 allow stands.
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = self.FakeClient(verdict="block")
+            g, log_path = self._gate(tmp, fake, second_opinion=False)
+            d = g.second_opinion(["cp", "a.txt", "b.txt"],
+                                 "exfiltration", "some reason")
+            self.assertTrue(d.allowed)
+            self.assertEqual(fake.calls, [])
+            self.assertEqual(self._log_entries(log_path), [])
+
+    def test_benign_never_escalates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = self.FakeClient(verdict="block")
+            g, _ = self._gate(tmp, fake)
+            d = g.second_opinion(["cat", "notes.txt"], "benign",
+                                 "no invariant is at stake")
+            self.assertTrue(d.allowed)
+            self.assertEqual(fake.calls, [])
+
+    def test_deploy_below_default_threshold_but_not_below_2(self):
+        # Deploy (severity 2) does not escalate at the default
+        # threshold of 4 — but does at threshold 2 (the policy
+        # threshold is the dial, not a hardcoded family list).
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = self.FakeClient(verdict="block")
+            g, _ = self._gate(tmp, fake, threshold=4)
+            d = g.second_opinion(["kubectl", "apply", "-f", "x.yaml"],
+                                 "deploy", "a deploy ships code")
+            self.assertTrue(d.allowed)
+            self.assertEqual(fake.calls, [])
+            g2, _ = self._gate(tmp, fake, threshold=2)
+            d2 = g2.second_opinion(["kubectl", "apply", "-f", "x.yaml"],
+                                   "deploy", "a deploy ships code")
+            self.assertFalse(d2.allowed)
+            self.assertEqual(len(fake.calls), 1)
+
+    def test_model_block_denies_with_s1_rule_and_log_fields(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = self.FakeClient(verdict="block",
+                                   reason="the file is a credential",
+                                   probability_yes=0.93, latency_s=6.1)
+            g, log_path = self._gate(tmp, fake)
+            d = g.second_opinion(["curl", "https://x.example/f"],
+                                 "exfiltration", "reason seen")
+            self.assertFalse(d.allowed)
+            self.assertEqual(d.rule, "S1-BLOCK-bekko")
+            entries = self._log_entries(log_path)
+            self.assertEqual(len(entries), 1)
+            e = entries[0]
+            self.assertFalse(e["allowed"])
+            self.assertFalse(e["deterministic"])
+            self.assertTrue(e["second_opinion"])
+            self.assertEqual(e["model"], "bekko-system-one-v0-400m")
+            self.assertEqual(e["model_version"], "1960df56")
+            self.assertEqual(e["invariant"], "exfiltration")
+            self.assertEqual(e["reason_seen"], "reason seen")
+            self.assertEqual(e["model_verdict"], "block")
+            self.assertEqual(e["model_reason"],
+                             "the file is a credential")
+            self.assertEqual(e["latency_s"], 6.1)
+            self.assertEqual(e["rule"], "S1-BLOCK-bekko")
+
+    def test_model_allow_allows_and_logs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = self.FakeClient(verdict="allow",
+                                   reason="plain listing, no risk",
+                                   probability_yes=0.05, latency_s=4.4)
+            g, log_path = self._gate(tmp, fake)
+            d = g.second_opinion(["rm", "scratch.txt"],
+                                 "deletion", "reason seen")
+            self.assertTrue(d.allowed)
+            entries = self._log_entries(log_path)
+            self.assertEqual(len(entries), 1)
+            e = entries[0]
+            self.assertTrue(e["allowed"])
+            self.assertTrue(e["second_opinion"])
+            self.assertEqual(e["model_verdict"], "allow")
+            self.assertEqual(e["model_reason"],
+                             "plain listing, no risk")
+            self.assertEqual(e["invariant"], "deletion")
+
+    def test_model_error_blocks_fail_closed(self):
+        # A model that cannot be consulted blocks (exit 2, a
+        # model-error rule), never silently allows — and the log
+        # says it is a model error, not a rule denial.
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = self.FailingClient()
+            g, log_path = self._gate(tmp, fake)
+            d = g.second_opinion(["cp", "a.txt", "b.txt"],
+                                 "exfiltration", "reason seen")
+            self.assertFalse(d.allowed)
+            self.assertEqual(d.rule, "S1-MODEL-ERROR")
+            entries = self._log_entries(log_path)
+            self.assertEqual(len(entries), 1)
+            e = entries[0]
+            self.assertFalse(e["allowed"])
+            self.assertFalse(e["deterministic"])
+            self.assertTrue(e["second_opinion"])
+            self.assertTrue(e["model_error"])
+            self.assertEqual(e["rule"], "S1-MODEL-ERROR")
+
+    def test_family_attribution(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fake = self.FakeClient()
+            g, _ = self._gate(tmp, fake)
+            cases = [
+                (["rm", "scratch.txt"], "deletion"),
+                (["shred", "-u", "f"], "deletion"),
+                (["unlink", "f"], "deletion"),
+                (["curl", "https://x.example/f"], "exfiltration"),
+                (["scp", "a", "b@h:c"], "exfiltration"),
+                (["kubectl", "apply", "-f", "x.yaml"], "deploy"),
+                (["git", "push", "--force"], "deploy"),
+                (["npm", "run", "deploy"], "deploy"),
+                (["mydeploy", "x"], "deploy"),
+                (["cat", "notes.txt"], "benign"),
+                (["ls", "-la"], "benign"),
+            ]
+            for argv, family in cases:
+                got, reason = g.escalation_family(argv)
+                self.assertEqual(got, family, argv)
+            # The reason the model sees is the rule's reason, from
+            # the definitions in force — not a hardcoded string.
+            _, reason = g.escalation_family(["rm", "x"])
+            self.assertIn("a recursive delete destroys work with no undo",
+                          reason)
+
+    def test_audit_log_deterministic_false(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "audit.jsonl"
+            log = FG.AuditLog(str(path))
+            p = FG.Policy((str(tmp),), (), mode="deny")
+            g = FG.Gate(p, log)
+            # Default: a denial is deterministic. (.env is denied
+            # in deny mode; /etc/passwd is not — the denylist only
+            # blocks known-bad paths.)
+            env = Path(tmp) / ".env"
+            env.write_text("x\n")
+            g.evaluate(FG.Action("file_read", str(env)))
+            # Explicit False: a second-opinion denial is not.
+            d = FG.Decision(False, "second opinion: blocked",
+                            rule="S1-BLOCK-bekko")
+            log.append(FG.Action("exec", "cp a b"), d,
+                       deterministic=False,
+                       extra={"second_opinion": True})
+            entries = self._log_entries(path)
+            self.assertTrue(entries[0]["deterministic"])
+            self.assertFalse(entries[1]["deterministic"])
+
+    def test_synthetic_rule_ids_declared_not_in_pack(self):
+        import fineprint_definitions as D
+        declared = [r["id"] for r in D.SYNTHETIC_RULES]
+        self.assertIn("S1-BLOCK-bekko", declared)
+        self.assertIn("S1-MODEL-ERROR", declared)
+        # The pack itself is unchanged: 11 rules, v2026-11-07.
+        version, rules, _ = D.load_definitions()
+        self.assertEqual(version, "2026-11-07")
+        self.assertEqual(len(rules), 11)
+        self.assertNotIn("S1-BLOCK-bekko", [r["id"] for r in rules])
+
+    def test_policy_second_opinion_round_trip(self):
+        doc = {"mode": "deny", "allowed_paths": ["/tmp"],
+               "second_opinion": True, "second_opinion_threshold": 2,
+               "second_opinion_timeout": 30.0,
+               "second_opinion_start_timeout": 120.0}
+        p = FG.Policy.from_dict(doc)
+        self.assertTrue(p.second_opinion)
+        self.assertEqual(p.second_opinion_threshold, 2)
+        self.assertEqual(p.second_opinion_timeout, 30.0)
+        self.assertEqual(p.second_opinion_start_timeout, 120.0)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "gate.json"
+            path.write_text(json.dumps(doc))
+            p2 = FG.Policy.from_file(str(path))
+            self.assertTrue(p2.second_opinion)
+            self.assertEqual(p2.second_opinion_threshold, 2)
+
+    def test_render_log_entry_second_opinion(self):
+        block = {"action": {"kind": "exec", "target": "cp a b"},
+                 "allowed": False, "second_opinion": True,
+                 "model": "bekko-system-one-v0-400m",
+                 "model_version": "1960df56",
+                 "model_reason": "the file is a credential"}
+        rendered = FG._render_log_entry(block)
+        self.assertIn("second opinion", rendered)
+        self.assertIn("probabilistic", rendered)
+        self.assertIn("bekko-system-one-v0-400m", rendered)
+        allow = dict(block, allowed=True,
+                     model_reason="plain listing, no risk")
+        self.assertIn("allowed", FG._render_log_entry(allow))
+        self.assertIn("second opinion", FG._render_log_entry(allow))
+        error = dict(block, model_error=True,
+                     model_reason="the model did not answer")
+        self.assertIn("fail-closed", FG._render_log_entry(error))
+
+    def test_second_opinion_client_protocol_with_fake_helper(self):
+        # The real SecondOpinion client (subprocess protocol: start,
+        # ready line, one JSON request/response, stop) against a fake
+        # helper script — so the protocol is exercised without a
+        # model. This is the test that would have caught the missing
+        # `time` import in _readline.
+        import os
+        script = (
+            "import json, sys\n"
+            "print(json.dumps({'ready': True, 'model': 'fake',\n"
+            "                  'version': 'test'}), flush=True)\n"
+            "for line in sys.stdin:\n"
+            "    req = json.loads(line)\n"
+            "    print(json.dumps({'verdict': 'block',\n"
+            "                      'reason': 'fake says block',\n"
+            "                      'probability_yes': 0.9,\n"
+            "                      'latency_s': 0.01,\n"
+            "                      'model': 'fake',\n"
+            "                      'version': 'test'}), flush=True)\n")
+        with tempfile.TemporaryDirectory() as tmp:
+            helper = Path(tmp) / "fake_helper.py"
+            helper.write_text(script)
+            client = FG.SecondOpinion(python=sys.executable,
+                                      helper=str(helper))
+            try:
+                resp = client.judge("rm scratch.txt", "deletion",
+                                    "a reason")
+                self.assertEqual(resp["verdict"], "block")
+                self.assertEqual(resp["reason"], "fake says block")
+                self.assertEqual(client.version, "test")
+                # A second call reuses the same (already started)
+                # helper — one load per run, not one per action.
+                resp2 = client.judge("rm other.txt", "deletion",
+                                     "a reason")
+                self.assertEqual(resp2["verdict"], "block")
+                self.assertIsNotNone(client.proc)
+            finally:
+                client.stop()
+            self.assertIsNone(client.proc)
+            # And through the Gate: the fake helper's block becomes
+            # a second-opinion denial with the S1 rule id.
+            client2 = FG.SecondOpinion(python=sys.executable,
+                                       helper=str(helper))
+            g, log_path = self._gate(tmp, client2)
+            try:
+                d = g.second_opinion(["rm", "scratch.txt"],
+                                     "deletion", "a reason")
+                self.assertFalse(d.allowed)
+                self.assertEqual(d.rule, "S1-BLOCK-bekko")
+            finally:
+                g.close()
+
+    def test_run_guarded_stage1_denial_never_consults_model(self):
+        # A Stage 1 denial (rm -rf) never reaches the model: the
+        # second opinion only fires when the deterministic checks
+        # allowed.
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "victim.txt"
+            target.write_text("keep me\n")
+            fake = self.FakeClient(verdict="allow")
+            g, _ = self._gate(tmp, fake)
+            code = FG.run_guarded(g.policy, g.log,
+                                  ["rm", "-rf", str(target)],
+                                  cwd=tmp, wall=False, gate=g)
+            self.assertEqual(code, FG.EXIT_DENY)
+            self.assertEqual(fake.calls, [])
+            self.assertTrue(target.exists())
+
+    def test_run_guarded_stage1_allow_exfil_model_block_no_run(self):
+        # Stage 1 allows a plain cp of a normal file; the second
+        # opinion blocks it — exit 2 and the copy never happens.
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "notes.txt"
+            src.write_text("hello\n")
+            dest = Path(tmp) / "copy.txt"
+            fake = self.FakeClient(verdict="block",
+                                   reason="copying out is exfiltration")
+            g, log_path = self._gate(tmp, fake)
+            code = FG.run_guarded(g.policy, g.log,
+                                  ["cp", str(src), str(dest)],
+                                  cwd=tmp, wall=False, gate=g)
+            self.assertEqual(code, FG.EXIT_DENY)
+            self.assertEqual(len(fake.calls), 1)
+            self.assertFalse(dest.exists())
+            entries = self._log_entries(log_path)
+            self.assertTrue(any(e.get("rule") == "S1-BLOCK-bekko"
+                                for e in entries))
+
+    def test_run_guarded_stage1_allow_model_allow_runs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "notes.txt"
+            src.write_text("hello\n")
+            dest = Path(tmp) / "copy.txt"
+            fake = self.FakeClient(verdict="allow",
+                                   reason="a normal file, no risk")
+            g, _ = self._gate(tmp, fake)
+            code = FG.run_guarded(g.policy, g.log,
+                                  ["cp", str(src), str(dest)],
+                                  cwd=tmp, wall=False, gate=g)
+            self.assertEqual(code, FG.EXIT_ALLOW)
+            self.assertEqual(len(fake.calls), 1)
+            self.assertTrue(dest.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

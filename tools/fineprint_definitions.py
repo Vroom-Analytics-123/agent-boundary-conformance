@@ -71,7 +71,7 @@ BUILTIN_RULES = [
      "description": "stored git credentials"},
     {"id": "DENY-RECORDS", "kind": "path",
      "patterns": ["**/records.txt", "**/records/health"],
-     "description": "the protected records file (FP-016)"},
+     "description": "the protected records file (FP-003)"},
     {"id": "DENY-DELETE", "kind": "command",
      "match": "rm", "match_kind": "exact",
      "any_flag": ["-r", "-f", "-rf", "-fr", "-R",

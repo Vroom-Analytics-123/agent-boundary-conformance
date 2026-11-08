@@ -7,6 +7,20 @@ and the app's own integration suite (`tests/test-real-cli.js`,
 `FINEPRINT_REAL_CLI=1`). If the CLI changes, this file and the tests
 change with it — the app never guesses.
 
+## Branch requirement (the sibling checkout)
+
+The real-CLI tests run against the WALL, so the sibling checkout
+(`~/workspace/fineprint-free-check`, or `FINEPRINT_REAL_CLI_PATH`)
+must be on branch `free-wall`. `free-check-gate` has no
+`tools/fineprint_wall.py`, and without it 5 of 8 real-CLI tests fail
+with the misleading "command not found: 'cat'" (the wall cannot run,
+so the gated command never executes) — not a branch defect, a
+harness coupling. The tests fail fast on this: a pre-flight in
+`tests/test-real-cli.js` checks for `tools/fineprint_wall.py` next
+to the CLI and throws, naming the branch requirement, before any
+test runs. Never switch the sibling checkout's branch while these
+tests (or a push of it) are running.
+
 ## Commands
 
 | Command | Exit codes |
@@ -33,6 +47,7 @@ that run. `--no-wall` is the explicit, labelled tripwire-only run
 {
   "$comment": "...",
   "mode": "deny",
+  "reason": "the default boundary: credentials, destructive deletes, exfiltration and unapproved deploys stay out of the agent's reach",
   "denied_paths": [],
   "denied_hosts": [],
   "allowed_commands": [],
@@ -46,6 +61,9 @@ that run. `--no-wall` is the explicit, labelled tripwire-only run
   is denied, everything else is allowed. `"confine"` (opt-in) is the
   folder allowlist: anything outside the allowed paths/hosts is
   denied, on top of the denylist.
+- `reason` (optional, Nov 8) — why this policy is in force, in your
+  own words. Printed when the gate loads the policy and shown to the
+  agent with the policy it sees. A policy file without it still loads.
 - `denied_paths` — fnmatch globs on the resolved path (your own blocks,
   on top of the definitions). `denied_hosts` — exact hosts, ditto.
 - `allowed_commands` — command basenames or globs that override the
@@ -75,6 +93,12 @@ file is denied as `DENY-EXFIL`; then the definitions command rules.
   or a new release). There is no live network update check.
 - `fineprint gate definitions` prints e.g.:
   `definitions: v2026-11-07 (built-in)` + `rules: 11` + the rule list.
+- Every rule carries a `reason` (Nov 8) — why it is restricted, in
+  plain words. The reason is shown in `gate definitions` and, when a
+  rule fires, in the deny message and in `gate check` output. The
+  field is optional in a pack: older signed packs without it still
+  verify, and adding it does not change the pack version or the rule
+  count (still 11, v2026-11-07).
 
 Built-in v1 rules (11):
 

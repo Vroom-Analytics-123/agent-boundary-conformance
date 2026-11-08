@@ -11,7 +11,15 @@
  * (credential read denied, normal file allowed); the real deny log
  * verifies through the app's own audit module (Python-spaced hash).
  * NOTE: wall runs are slow in-container (~30-60s each: unshare +
- * mount setup). That is the real wall's cost here, not a test bug. */
+ * mount setup). That is the real wall's cost here, not a test bug.
+ * BRANCH REQUIREMENT (Nov 8): these tests run against the WALL, so
+ * the sibling checkout must be on branch `free-wall` — `free-check-gate`
+ * has no `tools/fineprint_wall.py`, and without it 5 of 8 tests fail
+ * with the misleading "command not found: 'cat'" (the wall cannot run,
+ * so the gated command never executes). The pre-flight below fails
+ * fast with that branch requirement named, instead of letting a
+ * future audit chase the false failure. Pin a different sibling per
+ * run with FINEPRINT_REAL_CLI_PATH. */
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs');
@@ -21,6 +29,17 @@ const path = require('path');
 const ENABLED = process.env.FINEPRINT_REAL_CLI === '1';
 const REAL_CLI = process.env.FINEPRINT_REAL_CLI_PATH
   || path.join(os.homedir(), 'workspace', 'fineprint-free-check', 'fineprint');
+
+// Pre-flight (Nov 8): only when the tests are enabled — with them
+// skipped, `npm test` never touches the sibling checkout.
+const REAL_CLI_WALL = path.join(path.dirname(REAL_CLI), 'tools', 'fineprint_wall.py');
+if (ENABLED && !fs.existsSync(REAL_CLI_WALL)) {
+  throw new Error(
+    `real-CLI tests need the sibling CLI on branch free-wall: ${REAL_CLI_WALL} is missing — `
+    + `the sibling checkout (${path.dirname(REAL_CLI)}) is on a branch without the wall `
+    + `(free-check-gate). Switch that checkout to free-wall, or point FINEPRINT_REAL_CLI_PATH `
+    + `at a free-wall checkout.`);
+}
 
 const {
   findCli, check, gateRun, gateCheck, verifyLog, probeDenylistSupport,
@@ -52,6 +71,34 @@ function denyPolicyFile(dir) {
   }));
   return file;
 }
+
+test('real CLI: pre-flight fails fast when the sibling checkout is not free-wall', async (t) => {
+  // The guard is module-level and only active when FINEPRINT_REAL_CLI=1,
+  // so verify it by loading the file in a child with a bad path and
+  // reading its failure. Plain `node <file>` (not `node --test` — the
+  // test runner refuses to run recursively from inside a test file):
+  // the guard throws at load, before any test runs, so this cannot
+  // recurse — the child's own pre-flight test never executes.
+  const { spawnSync } = require('node:child_process');
+  const badDir = tmpdir();
+  t.after(() => fs.rmSync(badDir, { recursive: true, force: true }));
+  const badCli = path.join(badDir, 'fineprint');
+  fs.writeFileSync(badCli, '#!/bin/sh\necho hi\n');
+  const res = spawnSync(process.execPath, [__filename], {
+    env: {
+      ...process.env,
+      FINEPRINT_REAL_CLI: '1',
+      FINEPRINT_REAL_CLI_PATH: badCli,
+    },
+    encoding: 'utf8',
+    timeout: 60000,
+  });
+  assert.notEqual(res.status, 0, 'the child run must fail');
+  const out = (res.stdout || '') + (res.stderr || '');
+  assert.match(out, /free-wall/);
+  assert.match(out, /fineprint_wall\.py/);
+  assert.match(out, /FINEPRINT_REAL_CLI_PATH/);
+});
 
 test('real CLI: found, check runs and the bundle parses when written', { skip: !ENABLED }, async (t) => {
   assert.ok(fs.existsSync(REAL_CLI), `real CLI not found at ${REAL_CLI}`);

@@ -490,7 +490,7 @@ def _parse(argv):
     """Tiny flag parser. Flags take a value unless listed as boolean.
     An empty value ('--harness ""') counts as unset (the Action passes
     empty inputs through, and empty must mean 'auto-detect')."""
-    boolean = {"--no-smoke", "--gate", "--rules-flag"}
+    boolean = {"--no-smoke", "--gate", "--rules-flag", "--help"}
     args = {}
     positional = []
     i = 0
@@ -528,6 +528,12 @@ def main(argv):
     if args is None:
         print(positional)
         return EXIT_UNKNOWN
+    # --help / -h on a subcommand prints the top-level help (Nov 8:
+    # --help used to be parsed as a value-taking flag, so `check
+    # --help` printed "flag --help needs a value").
+    if args.get("help") or "-h" in positional:
+        print(__doc__)
+        return 0
     if cmd == "init":
         return cmd_init(args)
     if cmd == "check":

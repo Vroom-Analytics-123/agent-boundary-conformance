@@ -48,6 +48,27 @@ class TestHelp(unittest.TestCase):
         for sub in ("init", "check", "verify", "report", "gate", "harnesses"):
             self.assertIn(sub, proc.stdout)
 
+    def test_subcommand_help_prints_help(self):
+        # Nov 8: `fineprint check --help` / `init --help` used to
+        # print "flag --help needs a value" — the flag parser treated
+        # --help as a value-taking flag. A subcommand's --help (or -h)
+        # prints the top-level help and exits 0.
+        for args in (["check", "--help"], ["init", "--help"],
+                     ["check", "-h"], ["verify", "--help"]):
+            proc = run_cli(*args)
+            self.assertEqual(proc.returncode, 0,
+                             f"{args}: {proc.stdout} {proc.stderr}")
+            self.assertIn("fineprint", proc.stdout.lower())
+            self.assertIn("check", proc.stdout)
+            self.assertNotIn("needs a value", proc.stdout)
+
+    def test_flag_missing_a_value_still_errors(self):
+        # Genuinely missing a value still errors — the --help fix
+        # must not make every valueless flag silently pass.
+        proc = run_cli("check", "--harness")
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("needs a value", proc.stdout)
+
     def test_harnesses_lists_three(self):
         proc = run_cli("harnesses")
         self.assertEqual(proc.returncode, 0, proc.stderr)

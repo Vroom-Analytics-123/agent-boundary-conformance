@@ -66,6 +66,7 @@ Stdlib only. Usage:
   python3 tools/fineprint_gate.py run --policy FILE [--log FILE] [--no-wall] [--confine] -- CMD...
   python3 tools/fineprint_gate.py canary [--dir DIR] [--log FILE] [--policy FILE] [--keep] -- CMD...
   python3 tools/fineprint_gate.py definitions
+  python3 tools/fineprint_gate.py probe
   python3 tools/fineprint_gate.py log --log FILE [--summary]
   python3 tools/fineprint_gate.py verify-log --log FILE
   (the `fineprint` CLI wraps these; see `fineprint gate --help`)
@@ -76,6 +77,7 @@ import hashlib
 import json
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 import threading
@@ -780,6 +782,91 @@ def cmd_definitions():
     return EXIT_ALLOW
 
 
+def _probe_step(name, argv):
+    """Run one probe step; return (passed, detail)."""
+    try:
+        r = subprocess.run(argv, capture_output=True, text=True,
+                           timeout=30)
+    except FileNotFoundError as e:
+        return False, f"{e.filename or argv[0]}: not found on PATH"
+    except subprocess.TimeoutExpired:
+        return False, "timed out after 30s"
+    if r.returncode == 0:
+        return True, "ok"
+    detail = (r.stderr or r.stdout or "").strip().splitlines()
+    return False, (detail[-1] if detail else f"exit {r.returncode}")
+
+
+def cmd_probe():
+    """Probe the three syscalls the wall needs, in order.
+
+    KiroCrew's shape: their entrypoint probes on first run and reports
+    "no usable backend", fail-closed. Each step runs the real `unshare`
+    binary — the same primitive the wall uses — so a pass here is the
+    wall's own precondition, not a simulation.
+
+    1. unshare(CLONE_NEWUSER) — `unshare --user true`
+    2. unshare(CLONE_NEWNS)  — `unshare --user --mount true`
+       (no --map-root-user here, deliberately: the mapping is a uid_map
+       write, not a gated syscall, and keeping it out isolates a NEWNS
+       failure from a mapping failure)
+    3. mount — `unshare --user --map-root-user --mount sh -c
+       'mount --make-rprivate /'` (the wall's exact flags, plus the
+       remount KiroCrew's probe does — the step Docker's
+       `docker-default` AppArmor profile blocks with EACCES after both
+       unshares succeed)
+
+    Plus a cap-drop line: whether `setpriv` or `capsh` exists. The
+    wall drops CAP_SYS_ADMIN with one of them before the agent runs;
+    if neither exists the wall warns and keeps the capability — the
+    unmount bypass stays open.
+
+    Prints one line per step (PASS/FAIL + detail). Exit 0 when all
+    three steps pass; exit 3 when any fails (fail-closed: the wall
+    cannot run here). A missing setpriv/capsh is a WARN, not a fail —
+    it matches the wall, which warns and runs.
+    """
+    print("probe: the three syscalls the wall needs, in order "
+          "(KiroCrew's probe shape — see docs/FREE_GATE.md)")
+    if shutil.which("unshare") is None:
+        print("probe: FAIL — `unshare` is not on PATH; the wall "
+              "cannot run here (exit 3, refusing rather than running "
+              "unprotected)")
+        return EXIT_ERROR
+    if shutil.which("mount") is None:
+        print("probe: FAIL — `mount` is not on PATH; the wall "
+              "cannot run here")
+        return EXIT_ERROR
+    steps = [
+        ("1 unshare(CLONE_NEWUSER)",
+         ["unshare", "--user", "true"]),
+        ("2 unshare(CLONE_NEWNS)",
+         ["unshare", "--user", "--mount", "true"]),
+        ("3 mount (remount / private inside the namespaces)",
+         ["unshare", "--user", "--map-root-user", "--mount",
+          "sh", "-c", "mount --make-rprivate /"]),
+    ]
+    failed = False
+    for name, argv in steps:
+        passed, detail = _probe_step(name, argv)
+        print(f"probe: {name}: {'PASS' if passed else 'FAIL'} — {detail}")
+        failed = failed or not passed
+    drop = shutil.which("setpriv") or shutil.which("capsh")
+    if drop:
+        print(f"probe: cap-drop: {drop} present — CAP_SYS_ADMIN is "
+              "dropped before the agent runs")
+    else:
+        print("probe: cap-drop: WARN — neither `setpriv` nor `capsh` "
+              "on PATH; the wall warns and keeps CAP_SYS_ADMIN (the "
+              "unmount bypass stays open)")
+    if failed:
+        print("probe: FAIL — the wall cannot run here (exit 3, "
+              "refusing rather than running unprotected)")
+        return EXIT_ERROR
+    print("probe: PASS — all three syscalls work; the wall can run here")
+    return EXIT_ALLOW
+
+
 def _render_log_entry(entry):
     """One readable line: tried X -> blocked by rule Y -> will always
     be blocked. Wall events render as what the wall did."""
@@ -1058,6 +1145,8 @@ def main(argv):
             print("gate log: --log FILE is required")
             return EXIT_ERROR
         return cmd_log(log_path, summary=summary)
+    if cmd == "probe":
+        return cmd_probe()
     if policy is None:
         policy, policy_note = default_policy()
         print(policy_note)

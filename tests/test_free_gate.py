@@ -630,5 +630,50 @@ class TestWallModuleMissing(unittest.TestCase):
             self.assertIn("free-wall", out.getvalue())
 
 
+class TestProbe(unittest.TestCase):
+    """`gate probe` — the three syscalls the wall needs, in order
+    (KiroCrew's probe shape: their entrypoint probes on first run and
+    reports 'no usable backend', fail-closed). A pass here is the
+    wall's own precondition, because each step runs the real `unshare`
+    binary — the same primitive the wall uses."""
+
+    def test_probe_passes_where_the_wall_runs(self):
+        # Live: unshare + mount work in this container (the wall
+        # tests prove it), so the probe must pass here.
+        proc = subprocess.run(
+            [sys.executable, str(FINEPRINT), "gate", "probe"],
+            capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        out = proc.stdout
+        self.assertIn("1 unshare(CLONE_NEWUSER): PASS", out)
+        self.assertIn("2 unshare(CLONE_NEWNS): PASS", out)
+        self.assertIn("3 mount (remount / private inside the "
+                      "namespaces): PASS", out)
+        self.assertIn("probe: PASS", out)
+
+    def test_probe_reports_the_cap_drop(self):
+        proc = subprocess.run(
+            [sys.executable, str(FINEPRINT), "gate", "probe"],
+            capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("cap-drop:", proc.stdout)
+        # setpriv exists in this container (the wall tests rely on it).
+        self.assertIn("setpriv", proc.stdout)
+
+    def test_probe_fails_closed_without_unshare(self):
+        # No `unshare` on PATH: the probe refuses (exit 3) rather
+        # than reporting a pass the wall could not honour.
+        import os
+        with tempfile.TemporaryDirectory() as tmp:
+            env = dict(os.environ, PATH=tmp)
+            proc = subprocess.run(
+                [sys.executable, str(FINEPRINT), "gate", "probe"],
+                capture_output=True, text=True, env=env)
+            self.assertEqual(proc.returncode, 3,
+                             proc.stdout + proc.stderr)
+            self.assertIn("unshare", proc.stdout)
+            self.assertIn("not on PATH", proc.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

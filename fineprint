@@ -206,6 +206,9 @@ GATE_POLICY = {
                  "allowed_commands overrides the denylist for one "
                  "command (e.g. your deploy script)."),
     "mode": "deny",
+    "reason": ("the default boundary: credentials, destructive deletes, "
+               "exfiltration and unapproved deploys stay out of the "
+               "agent's reach"),
     "denied_paths": [],
     "denied_hosts": [],
     "allowed_commands": [],

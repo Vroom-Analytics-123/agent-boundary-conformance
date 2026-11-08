@@ -557,5 +557,53 @@ class TestGateLogSummary(unittest.TestCase):
             self.assertNotIn("tried", proc.stdout)
 
 
+class TestRuleReasons(unittest.TestCase):
+    """Nov 8 (Reddit): every rule carries a reason — why it is
+    restricted — and the reason is surfaced to the agent in the
+    deny message and in `gate check` output, not just in the
+    definitions list."""
+
+    def test_command_deny_carries_the_rule_reason(self):
+        p = FG.Policy((), (), mode="deny")
+        g = FG.Gate(p, None)
+        d = g.check_command(["rm", "-rf", "target.txt"])
+        self.assertFalse(d.allowed)
+        self.assertEqual(d.rule, "DENY-DELETE")
+        self.assertIn("a recursive delete destroys work with no undo",
+                      d.reason)
+
+    def test_path_deny_carries_the_rule_reason(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            env = Path(tmp) / ".env"
+            env.write_text("x\n")
+            p = policy_for(tmp)
+            g = FG.Gate(p, None)
+            d = g.evaluate(FG.Action("file_read", str(env)))
+            self.assertFalse(d.allowed)
+            self.assertEqual(d.rule, "DENY-CRED-ENV")
+            self.assertIn(".env files hold app secrets and API keys",
+                          d.reason)
+
+    def test_gate_check_prints_the_rule_reason(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            env = Path(tmp) / ".env"
+            env.write_text("x\n")
+            proc = subprocess.run(
+                [sys.executable, str(FINEPRINT), "gate", "check",
+                 "--file", str(env)],
+                cwd=tmp, capture_output=True, text=True, timeout=60)
+            self.assertEqual(proc.returncode, 2, proc.stdout + proc.stderr)
+            self.assertIn("DENY-CRED-ENV", proc.stdout)
+            self.assertIn(".env files hold app secrets", proc.stdout)
+
+    def test_policy_reason_round_trip(self):
+        doc = {"mode": "deny",
+               "reason": "we keep prod keys out of the agent's reach"}
+        p = FG.Policy.from_dict(doc)
+        self.assertEqual(p.reason,
+                         "we keep prod keys out of the agent's reach")
+        self.assertEqual(FG.Policy.from_dict({"mode": "deny"}).reason, "")
+
+
 if __name__ == "__main__":
     unittest.main()

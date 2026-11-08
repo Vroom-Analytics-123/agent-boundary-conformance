@@ -110,16 +110,37 @@ def _realpath(path):
     return os.path.realpath(path)
 
 
+def _rule_reason(rules, rule_id):
+    """The rule's reason (Nov 8: why it is restricted), or "" when
+    the rule carries none — older signed packs have no reason field.
+    Synthetic tripwire rules (DENY-EXFIL) are not pack rules, so
+    they are looked up in SYNTHETIC_RULES as a fallback."""
+    for rule in rules:
+        if rule.get("id") == rule_id:
+            return rule.get("reason", "")
+    for rule in D.SYNTHETIC_RULES:
+        if rule.get("id") == rule_id:
+            return rule.get("reason", "")
+    return ""
+
+
 class Policy:
     """Two modes. "deny" (the default) is the protective denylist:
     anything the definitions name is denied, everything else is
     allowed. "confine" is the folder allowlist: anything outside the
     allowed paths/hosts is denied, on top of the denylist. Paths are
     checked on their realpath; hosts are matched exactly
-    (case-insensitive)."""
+    (case-insensitive).
+
+    A policy file may carry an optional top-level "reason" (Nov 8) —
+    why this policy is in force, in the user's own words. It is
+    printed on load and shown to the agent with the policy it sees,
+    so the boundary reads as a reasoned choice, not an unexplained
+    wall. Absent on old policy files; an old file still loads."""
 
     def __init__(self, allowed_paths=(), allowed_hosts=(), mode="deny",
-                 denied_paths=(), denied_hosts=(), allowed_commands=()):
+                 denied_paths=(), denied_hosts=(), allowed_commands=(),
+                 reason=""):
         self.mode = mode if mode in ("deny", "confine") else "deny"
         self.allowed_paths = tuple(
             _realpath(p) for p in allowed_paths)
@@ -127,6 +148,7 @@ class Policy:
         self.denied_paths = tuple(denied_paths)
         self.denied_hosts = tuple(h.lower() for h in denied_hosts)
         self.allowed_commands = tuple(allowed_commands)
+        self.reason = reason
 
     @classmethod
     def from_file(cls, path):
@@ -142,7 +164,8 @@ class Policy:
                    mode=doc.get("mode", "deny"),
                    denied_paths=doc.get("denied_paths", ()),
                    denied_hosts=doc.get("denied_hosts", ()),
-                   allowed_commands=doc.get("allowed_commands", ()))
+                   allowed_commands=doc.get("allowed_commands", ()),
+                   reason=doc.get("reason", ""))
 
     def _denied_path_rule(self, real, rules):
         """The rule id for a resolved path, or None."""
@@ -162,9 +185,12 @@ class Policy:
             real = _realpath(target)
             rule = self._denied_path_rule(real, rules)
             if rule:
+                why = _rule_reason(rules, rule)
                 return Decision(False, f"{action.kind} of a protected "
                                        f"path: {target!r} resolves to "
-                                       f"{real!r}", rule=rule)
+                                       f"{real!r}"
+                                       + (f" — {why}" if why else ""),
+                                rule=rule)
             if self.mode == "confine":
                 if ".." in Path(target).parts:
                     return Decision(False, "path traversal rejected: "
@@ -184,8 +210,11 @@ class Policy:
             host = _host_of(action.target)
             rule = D.host_rule(host, rules)
             if rule:
+                why = _rule_reason(rules, rule)
                 return Decision(False, f"host {host} denied by "
-                                       f"definitions", rule=rule)
+                                       f"definitions"
+                                       + (f" — {why}" if why else ""),
+                                rule=rule)
             if host in self.denied_hosts:
                 return Decision(False, f"host {host} denied by policy",
                                 rule="DENY-HOST")
@@ -344,16 +373,20 @@ class Gate:
                     continue
                 real = _realpath(tok)
                 if self.policy._denied_path_rule(real, self.rules):
+                    why = _rule_reason(self.rules, D.DENY_EXFIL_ID)
                     return Decision(False, f"exfiltration of a protected "
                                            f"file: {tok!r} resolves to "
-                                           f"{real!r}{wrapped}",
+                                           f"{real!r}{wrapped}"
+                                           + (f" — {why}" if why else ""),
                                     rule=D.DENY_EXFIL_ID)
         rule = D.command_rule(inner, self.rules)
         if rule:
             desc = next((r.get("description", "") for r in self.rules
                          if r["id"] == rule), "")
+            why = _rule_reason(self.rules, rule)
             return Decision(False, f"command denied by definitions "
-                                   f"({desc}): {' '.join(inner)}{wrapped}",
+                                   f"({desc}): {' '.join(inner)}{wrapped}"
+                                   + (f" — {why}" if why else ""),
                             rule=rule)
         return Decision(True, "command not denied")
 
@@ -704,7 +737,10 @@ def default_policy():
     local = Path.cwd() / "fineprint-gate.json"
     if local.exists():
         return Policy.from_file(local), f"policy: {local}"
-    return Policy((".",), (), mode="deny"), (
+    return Policy((".",), (), mode="deny",
+                  reason="the default boundary: credentials, destructive "
+                         "deletes, exfiltration and unapproved deploys "
+                         "stay out of the agent's reach"), (
         "policy: built-in default (protective denylist — normal work "
         "anywhere is allowed, known-dangerous patterns are blocked; "
         "see `fineprint gate definitions`) — run `fineprint init "
@@ -1011,6 +1047,8 @@ def main(argv):
     if policy is None:
         policy, policy_note = default_policy()
         print(policy_note)
+    elif policy.reason:
+        print(f"policy: {policy.reason}")
     if confine:
         policy.mode = "confine"
     log = AuditLog(log_path) if log_path else None

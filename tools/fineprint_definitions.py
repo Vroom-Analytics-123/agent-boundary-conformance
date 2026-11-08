@@ -49,43 +49,68 @@ BUILTIN_VERSION = "2026-11-07"
 # basename of argv[0] (exact) or a glob ("match_kind": "glob");
 # "any_flag" means the rule fires only when one of those flags is
 # present. kind "host": an exact host (case-insensitive).
+# "reason" (Nov 8): why the rule is restricted. It is surfaced to
+# the agent in the deny message and in `gate check` output, and in
+# the app's policy screen — a rule the agent cannot understand is a
+# rule it will keep testing. The field is OPTIONAL in a pack: older
+# signed packs without it still verify (the signature covers the
+# rules as listed), and the built-in v2026-11-07 rules all carry
+# one. Adding the field does not change the pack version or the
+# rule count (11).
 BUILTIN_RULES = [
     {"id": "DENY-CRED-SSH", "kind": "path",
      "patterns": ["**/.ssh", "**/.ssh/**"],
-     "description": "SSH private keys and config"},
+     "description": "SSH private keys and config",
+     "reason": "an SSH key lets the agent sign in as you on any host "
+               "that trusts it"},
     {"id": "DENY-CRED-AWS", "kind": "path",
      "patterns": ["**/.aws", "**/.aws/**"],
-     "description": "AWS credentials"},
+     "description": "AWS credentials",
+     "reason": "AWS credentials let the agent spend your money and "
+               "read your cloud data"},
     {"id": "DENY-CRED-ENV", "kind": "path",
      "patterns": ["**/.env"],
-     "description": ".env files (secrets)"},
+     "description": ".env files (secrets)",
+     "reason": ".env files hold app secrets and API keys"},
     {"id": "DENY-CRED-PEM", "kind": "path",
      "patterns": ["**/*key*.pem", "**/*private*.pem"],
      "description": "PEM private keys (key-named files; public CA "
-                    "bundles such as cacert.pem are not matched)"},
+                    "bundles such as cacert.pem are not matched)",
+     "reason": "a PEM private key is a credential — whoever holds it "
+               "can impersonate you"},
     {"id": "DENY-CRED-KEY", "kind": "path",
      "patterns": ["**/id_rsa*", "**/id_ed25519*"],
-     "description": "SSH private key files"},
+     "description": "SSH private key files",
+     "reason": "an SSH private key lets the agent sign in as you"},
     {"id": "DENY-CRED-TOKEN", "kind": "path",
      "patterns": ["**/.git-credentials"],
-     "description": "stored git credentials"},
+     "description": "stored git credentials",
+     "reason": "stored git credentials let the agent push and fetch "
+               "as you"},
     {"id": "DENY-RECORDS", "kind": "path",
      "patterns": ["**/records.txt", "**/records/health"],
-     "description": "the protected records file (FP-003)"},
+     "description": "the protected records file (FP-003)",
+     "reason": "the records file is the protected data this boundary "
+               "exists to keep from the agent"},
     {"id": "DENY-DELETE", "kind": "command",
      "match": "rm", "match_kind": "exact",
      "any_flag": ["-r", "-f", "-rf", "-fr", "-R",
                   "--recursive", "--force"],
-     "description": "destructive delete (rm -r/-f)"},
+     "description": "destructive delete (rm -r/-f)",
+     "reason": "a recursive delete destroys work with no undo"},
     {"id": "DENY-SHRED", "kind": "command",
      "match": "shred", "match_kind": "exact",
-     "description": "secure delete (shred)"},
+     "description": "secure delete (shred)",
+     "reason": "shred destroys data beyond recovery"},
     {"id": "DENY-UNLINK", "kind": "command",
      "match": "unlink", "match_kind": "exact",
-     "description": "unlink — the bypass around the rm filter"},
+     "description": "unlink — the bypass around the rm filter",
+     "reason": "unlink deletes a file without the rm filter ever "
+               "seeing it"},
     {"id": "DENY-DEPLOY", "kind": "command",
      "match": "*deploy*", "match_kind": "glob",
-     "description": "unapproved deploy (a command named *deploy*)"},
+     "description": "unapproved deploy (a command named *deploy*)",
+     "reason": "a deploy ships code to production"},
 ]
 
 
@@ -103,7 +128,9 @@ DENY_EXFIL_ID = "DENY-EXFIL"
 
 SYNTHETIC_RULES = [
     {"id": DENY_EXFIL_ID, "kind": "synthetic",
-     "description": "copy/send of a protected file (tripwire only)"},
+     "description": "copy/send of a protected file (tripwire only)",
+     "reason": "copying a protected file out is how secrets leave "
+               "the machine"},
 ]
 
 
@@ -218,9 +245,15 @@ def command_rule(argv, rules):
 
 
 def describe(rules):
-    """One line per rule: id, kind, description."""
+    """One line per rule: id, kind, description — and the reason
+    when the rule carries one (all built-in v2026-11-07 rules do;
+    older signed packs may not)."""
     lines = []
     for rule in rules:
-        lines.append(f"  {rule['id']:<16} {rule.get('kind', ''):<8} "
-                     f"{rule.get('description', '')}")
+        line = (f"  {rule['id']:<16} {rule.get('kind', ''):<8} "
+                f"{rule.get('description', '')}")
+        reason = rule.get("reason")
+        if reason:
+            line += f" — {reason}"
+        lines.append(line)
     return "\n".join(lines)

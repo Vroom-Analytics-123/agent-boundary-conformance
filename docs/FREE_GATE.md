@@ -143,6 +143,7 @@ reachable.
 ```json
 {
   "mode": "deny",
+  "reason": "the default boundary: credentials, destructive deletes, exfiltration and unapproved deploys stay out of the agent's reach",
   "denied_paths": [],
   "denied_hosts": [],
   "allowed_commands": [],
@@ -152,6 +153,11 @@ reachable.
 ```
 
 - **mode**: `"deny"` (the default) or `"confine"` (opt-in).
+- **reason** (optional, Nov 8): why this policy is in force, in
+  your own words. It is printed when the gate loads the policy and
+  shown to the agent with the policy it sees, so the boundary reads
+  as a reasoned choice, not an unexplained wall. A policy file
+  without it still loads.
 - **denied_paths / denied_hosts**: your own extra blocks, added to
   the definitions (globs for paths, exact hosts).
 - **allowed_commands**: command patterns that override the denylist
@@ -177,6 +183,16 @@ or a new release). The wall checks for it on every run
 (`fineprint-definitions.json` in the repo, or in your working
 directory) and applies it when it verifies. There is no live network
 update check.
+
+Every rule carries a `reason` (Nov 8) — why it is restricted, in
+plain words ("a recursive delete destroys work with no undo"). The
+reason is shown in `gate definitions` and, when a rule fires, in the
+deny message and in `gate check` output, so the agent is told *why*,
+not just *no* — a rule the agent cannot understand is a rule it
+will keep testing. The field is optional in a pack: older signed
+packs without it still verify (the signature covers the rules as
+listed), and adding it does not change the pack version or the rule
+count (still 11, v2026-11-07).
 
 What is in force right now:
 

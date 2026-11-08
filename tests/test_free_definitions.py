@@ -148,6 +148,40 @@ class TestDefinitions(unittest.TestCase):
         self.assertEqual(len(pack_ids), 11)
         self.assertEqual(D.BUILTIN_VERSION, "2026-11-07")
 
+    def test_every_builtin_rule_has_a_real_reason(self):
+        # Nov 8 (Reddit): a rule carries a reason — why it is
+        # restricted — shown to the agent in the policy it sees and
+        # in the app's policy screen. Every built-in rule needs a
+        # real reason, not a placeholder. The pack stays 11 rules,
+        # v2026-11-07 (the app's real-CLI tests pin both).
+        import fineprint_definitions as D
+        self.assertEqual(len(D.BUILTIN_RULES), 11)
+        self.assertEqual(D.BUILTIN_VERSION, "2026-11-07")
+        for rule in D.BUILTIN_RULES:
+            reason = rule.get("reason", "")
+            self.assertTrue(reason, f"{rule['id']} has no reason")
+            self.assertGreater(len(reason), 10,
+                               f"{rule['id']} reason is too short")
+            self.assertNotIn("TODO", reason)
+            self.assertNotIn("placeholder", reason.lower())
+
+    def test_synthetic_exfil_rule_has_a_reason(self):
+        import fineprint_definitions as D
+        for rule in D.SYNTHETIC_RULES:
+            self.assertTrue(rule.get("reason"),
+                            f"{rule['id']} has no reason")
+
+    def test_describe_shows_the_reason(self):
+        import fineprint_definitions as D
+        text = D.describe(D.builtin_rules())
+        self.assertIn("a recursive delete destroys work with no undo",
+                      text)
+        # A rule without a reason still describes (an older signed
+        # pack has no reason field — the field is optional).
+        self.assertIn("DENY-TEST",
+                      D.describe([{"id": "DENY-TEST", "kind": "path",
+                                   "description": "test rule"}]))
+
 
 if __name__ == "__main__":
     unittest.main()

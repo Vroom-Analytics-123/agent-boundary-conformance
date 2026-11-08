@@ -213,6 +213,13 @@ class AppState {
         image: wall.DOCKER_IMAGE, workdir,
         cliDir: path.dirname(this.cli.path),
         policyFile, logFile, command: cmd,
+        // Auth has to cross the container boundary: the agent inside
+        // needs its own login. Pass API keys through when set on the
+        // host; unset keys are skipped (buildDockerRun drops falsy).
+        env: {
+          ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+          OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+        },
       });
       res = await cli.runCli({ path: 'docker', mode: 'direct' }, argv.slice(1), { cwd: workdir, onData });
     } else if (runtime.kind === 'wsl') {

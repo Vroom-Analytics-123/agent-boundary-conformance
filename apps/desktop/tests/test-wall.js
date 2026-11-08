@@ -73,6 +73,58 @@ test('docker run mounts the folder and the CLI dir, and runs the gate inside', (
   assert.ok(argv.includes('python:3.12-slim'));
 });
 
+test('docker run defaults to the fineprint-wall image and lifts the seccomp block on unshare', () => {
+  const argv = buildDockerRun({
+    workdir: '/Users/ana/work',
+    cliDir: '/Users/ana/fineprint',
+    policyFile: '/Users/ana/work/fineprint-gate.json',
+    logFile: '/Users/ana/work/fineprint-audit.jsonl',
+    command: ['claude', '--help'],
+  });
+  assert.ok(argv.includes('fineprint-wall:latest'), 'custom image is the default');
+  const seccomp = argv.indexOf('--security-opt');
+  assert.ok(seccomp >= 0 && argv[seccomp + 1] === 'seccomp=unconfined',
+    'seccomp=unconfined so the wall can unshare inside the container');
+});
+
+test('docker run passes set API keys through and skips unset ones', () => {
+  const argv = buildDockerRun({
+    workdir: '/w', cliDir: '/c',
+    policyFile: '/w/p.json', logFile: '/w/a.jsonl',
+    command: ['codex'],
+    env: { ANTHROPIC_API_KEY: 'sk-ant-x', OPENAI_API_KEY: '', MISSING_KEY: undefined },
+  });
+  assert.ok(argv.includes('ANTHROPIC_API_KEY=sk-ant-x'), 'set key passed through');
+  assert.ok(!argv.some((a) => a.startsWith('OPENAI_API_KEY=')), 'empty key skipped');
+  assert.ok(!argv.some((a) => a.startsWith('MISSING_KEY=')), 'unset key skipped');
+});
+
+test('docker run mounts agent config dirs read-only when asked', () => {
+  const argv = buildDockerRun({
+    workdir: '/w', cliDir: '/c',
+    policyFile: '/w/p.json', logFile: '/w/a.jsonl',
+    command: ['claude'],
+    authMounts: [{ host: '/Users/ana/.claude', container: '/root/.claude' }],
+  });
+  assert.ok(argv.includes('/Users/ana/.claude:/root/.claude:ro'), 'config dir mounted read-only');
+});
+
+test('docker agent resolution: baked-in agents point at the image, muse-code says why it cannot be', () => {
+  const r = detectRuntime({
+    platform: 'darwin',
+    pathBins: { unshare: false, docker: true, wsl: false },
+    dockerOk: true,
+  });
+  assert.equal(r.kind, 'docker');
+  const codex = resolveAgent('codex', r);
+  assert.equal(codex.found, null, 'in the image if the image was built');
+  assert.match(codex.guidance, /fineprint-wall/);
+  assert.match(codex.guidance, /docker build/);
+  const muse = resolveAgent('muse-code', r);
+  assert.equal(muse.found, false, 'muse cannot be baked into the image');
+  assert.match(muse.guidance, /cannot be baked into the container image/);
+});
+
 test('wsl run passes the gate invocation through', () => {
   const argv = buildWslRun({
     cliFile: '/home/ana/fineprint',

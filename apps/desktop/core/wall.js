@@ -20,12 +20,21 @@ const { execSync, spawnSync } = require('child_process');
 const path = require('path');
 
 const AGENTS = {
-  codex: { id: 'codex', name: 'Codex', bin: 'codex' },
-  'muse-code': { id: 'muse-code', name: 'Muse Code', bin: 'muse' },
-  'claude-code': { id: 'claude-code', name: 'Claude Code', bin: 'claude' },
+  codex: { id: 'codex', name: 'Codex', bin: 'codex', inDockerImage: true },
+  'muse-code': { id: 'muse-code', name: 'Muse Code', bin: 'muse', inDockerImage: false },
+  'claude-code': { id: 'claude-code', name: 'Claude Code', bin: 'claude', inDockerImage: true },
 };
 
-const DOCKER_IMAGE = 'python:3.12-slim';
+// The custom wall image (apps/desktop/docker/Dockerfile): the two
+// npm-installable agent CLIs are pre-installed in it, pinned. Muse
+// Code is NOT in it — it is a launcher that downloads its binary from
+// Meta's API on first run and signs in with a device code, so there is
+// nothing to npm-install and bake in. Build it once from the repo root:
+//   docker build -t fineprint-wall:latest -f apps/desktop/docker/Dockerfile .
+// The image is not published anywhere yet; if it is not built, docker
+// run fails with "unable to find image" and the Wall screen says so.
+const DOCKER_IMAGE = 'fineprint-wall:latest';
+const DOCKER_BUILD_HINT = 'docker build -t fineprint-wall:latest -f apps/desktop/docker/Dockerfile .';
 
 function commandExists(bin, execFn) {
   const run = execFn || ((cmd) => {
@@ -59,7 +68,7 @@ function detectRuntime(overrides = {}) {
       return {
         kind: 'docker',
         label: 'Wall ready — Docker.',
-        detail: 'The wall runs inside a small Linux container. Docker Desktop must be running.',
+        detail: 'The wall runs inside the fineprint-wall Linux container. Build the image once (see apps/desktop/docker/README.md) and keep Docker Desktop running.',
       };
     }
     return {
@@ -94,25 +103,67 @@ function resolveAgent(agentId, runtime, execFn) {
       : { found: false, bin: null, guidance: `${agent.name} (${agent.bin}) was not found on PATH. Install it, or type a custom command that is on PATH.` };
   }
   if (runtime.kind === 'docker') {
-    // Checked lazily by the caller via docker; report what to do.
+    if (!agent.inDockerImage) {
+      // Muse Code cannot be baked into the image: its launcher
+      // downloads the real binary from Meta's API on first run and
+      // signs in with a device code (OAuth). There is nothing to
+      // npm-install, so the image has no `muse` binary.
+      return {
+        found: false, bin: agent.bin,
+        guidance: `${agent.name} cannot be baked into the container image — its launcher downloads the real binary from Meta's API and signs in with a device code, so there is nothing to install in the image. Run it natively on Linux or via WSL2, or type a custom command that is installed in the image.`,
+      };
+    }
+    // Codex / Claude Code are pre-installed in the image — but only if
+    // the image was actually built. `found: null` means "in the image
+    // if the image exists"; a missing image fails at Run time with
+    // "unable to find image", which the Wall screen reports.
     return {
       found: null, bin: agent.bin,
-      guidance: `${agent.name} must exist inside the Linux container. If the Run fails with "command not found", install ${agent.bin} in the container image or pick a custom command that is installed there.`,
+      guidance: `${agent.name} is pre-installed in the ${DOCKER_IMAGE} image. Build it first if you have not: ${DOCKER_BUILD_HINT}. If the Run still fails with "command not found", the image is stale or was never built.`,
     };
   }
   return { found: false, bin: null, guidance: 'The wall is unavailable, so no agent can run inside it yet.' };
 }
 
-/** Build the `docker run` argv that runs the gate inside Linux. */
-function buildDockerRun({ image, workdir, cliDir, policyFile, logFile, command }) {
+/**
+ * Build the `docker run` argv that runs the gate inside Linux.
+ *
+ * `env` is a map of host env vars to pass into the container (falsy
+ * values are skipped) — the app passes ANTHROPIC_API_KEY /
+ * OPENAI_API_KEY through when they are set, because auth has to cross
+ * the container boundary and the agent inside needs its own login.
+ * OAuth-based logins are not passed through by the app; `authMounts`
+ * (array of {host, container}) bind-mounts an agent config dir
+ * read-only (e.g. ~/.claude) for callers that opt into it. Mounting
+ * your agent's config dir gives the container your agent credentials
+ * — the wall protects the guarded folder, not the agent's own login.
+ *
+ * `--security-opt seccomp=unconfined`: the wall creates user + mount
+ * namespaces with `unshare` inside the container, and Docker's default
+ * seccomp profile is documented as blocking `unshare` with
+ * CLONE_NEWUSER. Whether the flag is strictly needed is contested
+ * between sources (investigation §7.2); the nested-unshare test on a
+ * real machine settles it. Until then the flag stays: if `unshare` is
+ * allowed anyway it is harmless, and if it is blocked the flag is what
+ * lets the wall start at all.
+ */
+function buildDockerRun({ image, workdir, cliDir, policyFile, logFile, command, env = {}, authMounts = [] }) {
   const img = image || DOCKER_IMAGE;
-  return ['docker', 'run', '--rm',
+  const argv = ['docker', 'run', '--rm',
+    '--security-opt', 'seccomp=unconfined',
     '-v', `${workdir}:${workdir}`,
-    '-v', `${cliDir}:${cliDir}`,
-    '-w', workdir,
+    '-v', `${cliDir}:${cliDir}`];
+  for (const [name, value] of Object.entries(env)) {
+    if (value) argv.push('-e', `${name}=${value}`);
+  }
+  for (const m of authMounts) {
+    argv.push('-v', `${m.host}:${m.container}:ro`);
+  }
+  argv.push('-w', workdir,
     img, 'python3', path.join(cliDir, 'fineprint'),
     'gate', 'run', '--policy', policyFile, '--log', logFile,
-    '--', ...command];
+    '--', ...command);
+  return argv;
 }
 
 /** Build the `wsl` argv (Windows). Paths are passed through as-is; the
@@ -130,6 +181,7 @@ function describeRuntime(runtime) {
 module.exports = {
   AGENTS,
   DOCKER_IMAGE,
+  DOCKER_BUILD_HINT,
   commandExists,
   detectRuntime,
   resolveAgent,

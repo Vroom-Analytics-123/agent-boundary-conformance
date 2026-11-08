@@ -105,7 +105,12 @@ Unit + integration + end-to-end, on real flows (see
   through the denylist and nothing else.
 - **Wall runtime detection:** native `unshare` wins; Docker is used
   when `unshare` is missing and Docker works; Docker installed but
-  not running reports "none" with install guidance.
+  not running reports "none" with install guidance. The Docker run
+  uses the custom `fineprint-wall:latest` image
+  (`apps/desktop/docker/Dockerfile` — Codex + Claude Code
+  pre-installed, pinned; Muse Code cannot be baked in, see
+  `apps/desktop/docker/README.md`), passes API keys through, and
+  lifts the seccomp block on `unshare` inside the container.
 - **GUI:** the app launches under Xvfb, renders the Home screen
   (definitions card + empty feed), and the scripted demo flow
   (`electron . --demo`) drives the real UI end to end — see the GIF
@@ -126,6 +131,8 @@ build, and the Linux build. Still needs a human on a real machine:
   .app/.exe are built, not installed).
 - The Docker wall path on macOS/Windows (Docker is not installed in
   this container, so the Docker runtime branch is unit-tested only).
+  The image exists (`apps/desktop/docker/Dockerfile`) but has never
+  been built or run end to end — that needs a real Mac.
 - OS notification rendering in Notification Center / Action Center
   (the app calls the OS notification API; the feed entry is the
   record either way).

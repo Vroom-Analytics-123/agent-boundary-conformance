@@ -136,7 +136,25 @@ Linux-only (`unshare` user+mount+net namespaces). Two modes:
 
 The wall verifies the definitions before running and refuses
 (exit 3) instead of running unprotected when the wall cannot run or
-the definitions do not verify.
+the definitions do not verify. **If `unshare` is missing, the gate
+refuses (exit 3) — it never silently falls back to the tripwire.**
+The refusal message is `wall: the wall needs \`unshare\`
+(util-linux) and it is not on PATH...`; the app shows it as
+"wall-unavailable" with the install guidance.
+
+Honest limits, from the wall itself (`tools/fineprint_wall.py`):
+
+- **The denylist walk is bounded.** It covers the working directory,
+  `/tmp`, `/var/tmp`, and the well-known credential locations in
+  `$HOME` (`~/.ssh`, `~/.aws`, `~/.env`, `~/.git-credentials`,
+  `id_rsa*`, `id_ed25519*` — checked directly, not walked). A
+  protected file in **another project directory is NOT hidden**
+  unless it is under the working directory or `/tmp`, or the user
+  adds it to `denied_paths` or turns on confinement.
+- **The wall enforces scope (paths and hosts), not intent.** An
+  agent that stays inside the scope can still do things the owner
+  would not want — the wall stops it reaching outside the scope,
+  not from acting inside it.
 
 On macOS/Windows the wall runs inside a Linux runtime: Docker
 Desktop or WSL2 (Windows). There is no native macOS/Windows wall.

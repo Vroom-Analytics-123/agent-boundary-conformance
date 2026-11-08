@@ -95,6 +95,20 @@ test('describePolicy states the mode and the own deny list', () => {
   assert.equal(d.allowedCommandsLine, '');
 });
 
+test('describePolicy states the honest limits: bounded walk + scope not intent', () => {
+  const deny = describePolicy(defaultPolicy('/tmp/work'));
+  // Deny mode: the denylist walk covers the folder, /tmp, /var/tmp
+  // and the credential spots in $HOME — a protected file in another
+  // project folder is NOT hidden unless added or confined.
+  assert.match(deny.boundsLine, /Denylist covers: this folder, \/tmp, \/var\/tmp/);
+  assert.match(deny.boundsLine, /not hidden unless you add it to your deny list or turn on confinement/);
+  assert.match(deny.scopeLine, /enforces scope.*not intent/);
+  // Confine mode: the allowlist is the bound, so no bounds line.
+  const conf = describePolicy({ mode: 'confine', allowed_paths: ['/tmp'], allowed_hosts: [] });
+  assert.equal(conf.boundsLine, '');
+  assert.match(conf.scopeLine, /enforces scope.*not intent/);
+});
+
 test('load rejects non-object JSON', () => {
   const dir = tmpdir();
   const file = path.join(dir, 'fineprint-gate.json');

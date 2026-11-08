@@ -149,3 +149,11 @@ in `apps/desktop/docs/RECORDING.md`.
   first-class verdict.
 - No network calls to upstream harnesses, no sign-ins, no
   submissions. The app only talks to the local CLI.
+- The wall's limits are shown in the app, not hidden: the denylist
+  walk covers the working folder, /tmp, /var/tmp, and the usual
+  credential spots in $HOME — a protected file in another project
+  folder is not hidden unless you add it to your deny list or turn
+  on confinement. The wall enforces scope (which folders and hosts
+  the agent can reach), not intent. If the wall cannot run
+  (`unshare` missing), the gate refuses instead of running
+  unprotected, and the app says so plainly.

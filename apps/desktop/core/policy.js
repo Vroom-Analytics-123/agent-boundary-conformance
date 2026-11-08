@@ -159,6 +159,15 @@ function describePolicy(policy, baseDir) {
     allowedCommandsLine: allowedCommands.length
       ? `Always allowed (overrides the denylist): ${allowedCommands.join(', ')}.`
       : '',
+    // Honest limits, from the wall itself (tools/fineprint_wall.py):
+    // the denylist walk is bounded — it covers the working directory,
+    // /tmp, /var/tmp, and the well-known credential spots in $HOME
+    // (checked directly, not walked). A protected file in another
+    // project folder is NOT hidden unless it is added to denied_paths
+    // or confinement is on. And the wall enforces scope (paths and
+    // hosts), not intent.
+    scopeLine: 'The wall enforces scope — which folders and hosts the agent can reach — not intent.',
+    boundsLine: confine ? '' : 'Denylist covers: this folder, /tmp, /var/tmp, and your credential spots in $HOME (~/.ssh, ~/.aws). A protected file in another project folder is not hidden unless you add it to your deny list or turn on confinement.',
   };
 }
 

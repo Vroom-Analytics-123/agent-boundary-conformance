@@ -27,6 +27,7 @@ const {
   definitions,
 } = require('../core/cli');
 const { parseLog, verifyChain } = require('../core/audit');
+const { verdictForGate } = require('../core/verdict');
 
 function tmpdir() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'fp-realcli-'));
@@ -154,4 +155,36 @@ test('real CLI: a real deny log verifies through the app audit module', { skip: 
   assert.equal(entries[0].rule, 'DENY-RECORDS');
   assert.equal(entries[0].deterministic, true);
   assert.deepEqual(verifyChain(entries), { valid: true, brokenAt: -1 });
+});
+
+test('real CLI: without unshare the gate refuses (exit 3) and never runs the command', { skip: !ENABLED }, async (t) => {
+  // The task's rule: if `unshare` is missing the gate refuses (exit 3)
+  // — it never silently falls back to the tripwire. Hide unshare with
+  // a PATH that holds only python3 (the CLI's shebang needs it) and
+  // run an ALLOWABLE command: the tripwire passes it, the wall must
+  // refuse it. The command's output must never appear.
+  const dir = tmpdir();
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const note = path.join(dir, 'note.txt');
+  fs.writeFileSync(note, 'hello-from-note\n');
+  const shim = path.join(dir, 'bin');
+  fs.mkdirSync(shim);
+  fs.symlinkSync('/usr/bin/python3', path.join(shim, 'python3'));
+  const cli = findCli(REAL_CLI);
+  const policy = denyPolicyFile(dir);
+  const log = path.join(dir, 'audit.jsonl');
+  const res = await gateRun(cli, {
+    policy, log, command: ['cat', note], cwd: dir,
+    env: { PATH: shim },
+  });
+  assert.equal(res.code, 3, `expected exit 3 refusal, got ${res.code}: ${res.stdout} ${res.stderr}`);
+  assert.match(res.stdout, /wall needs.*unshare/i);
+  assert.ok(!res.stdout.includes('hello-from-note'), 'the command must not have run');
+  // The app surfaces exactly this refusal as wall-unavailable.
+  assert.equal(verdictForGate(res.code, res.stdout).status, 'wall-unavailable');
+  // No wall ever started: the log has no WALL_START entry.
+  if (fs.existsSync(log)) {
+    const entries = parseLog(fs.readFileSync(log, 'utf8'));
+    assert.ok(!entries.some((e) => e.event === 'WALL_START'));
+  }
 });

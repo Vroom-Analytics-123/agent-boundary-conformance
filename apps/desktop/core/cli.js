@@ -123,7 +123,7 @@ async function check(cli, dir, opts = {}) {
 }
 
 /** Run `fineprint gate run` for one command. Streams output via onData. */
-async function gateRun(cli, { policy, log, command, cwd, noWall = false, confine = false, onData, timeoutMs }) {
+async function gateRun(cli, { policy, log, command, cwd, noWall = false, confine = false, onData, timeoutMs, env }) {
   if (!cli) throw new CliNotFoundError('The fineprint CLI was not found. Go to Setup and point the app at it, or install it first.');
   if (!Array.isArray(command) || command.length === 0) {
     throw new Error('gate run needs a command to run.');
@@ -132,7 +132,7 @@ async function gateRun(cli, { policy, log, command, cwd, noWall = false, confine
   if (noWall) args.push('--no-wall');
   if (confine) args.push('--confine');
   args.push('--', ...command);
-  return runCli(cli, args, { cwd, onData, timeoutMs });
+  return runCli(cli, args, { cwd, onData, timeoutMs, env });
 }
 
 async function gateCheck(cli, { policy, file, host }) {

@@ -256,8 +256,15 @@ class AppState {
     // One OS notification per blocked entry — the run summary below is
     // feed-only, so a single denied run notifies exactly once.
     const notified = notify.notifyBlockedItems(this.showNotification, items);
+    // The run summary counts blocks, not feed items: a second-opinion
+    // allow is a feed item but was not blocked, and a run stopped
+    // only by the second opinion gets a non-deterministic summary.
+    const detBlocked = items.filter((i) => i.kind === 'blocked').length;
+    const s1Blocked = items.filter((i) => i.kind === 'second-opinion-block'
+      || i.kind === 'second-opinion-error').length;
     const summary = feed.itemFromGuardedRun({
-      code: res.code, command: cmd, blockedCount: items.length,
+      code: res.code, command: cmd, blockedCount: detBlocked,
+      secondOpinionBlocked: s1Blocked,
       agent: agent || this.settings.agent,
     });
     if (summary) items.push(summary);

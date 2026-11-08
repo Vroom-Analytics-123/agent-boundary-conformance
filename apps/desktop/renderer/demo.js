@@ -1,11 +1,14 @@
 'use strict';
 /* Scripted demo driver — runs ONLY when the app is launched with
- * --demo (renderer URL carries ?demo=1). It drives the real UI with
- * real clicks and typing against the real CLI:
+ * --demo (renderer URL carries ?demo=1) or --demo-s1 (?demo=s1).
+ * --demo drives the real UI with real clicks and typing against the
+ * real CLI:
  *   Home (definitions) -> Check -> Wall (pick codex, pick folder,
  *   run a command that reads the protected records file) -> the block
  *   (DENY-RECORDS, deny mode — no confinement needed) -> Home (the
  *   feed shows it).
+ * --demo-s1 shows the Home feed seeded from a recorded real gate log
+ * (see runS1 below) — a replay, not a live model run.
  * PACE (Anish, Nov 7): SLOW — roughly 2-3x a normal walkthrough.
  * Every step pauses long enough to read every line, button, and
  * notification on screen before the next one, and the demo ENDS on
@@ -18,12 +21,55 @@
  * See docs/RECORDING.md for how to record the GIF. */
 (function () {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('demo') !== '1') return;
+  const mode = params.get('demo');
+  if (mode !== '1' && mode !== 's1') return;
   const demoDir = params.get('demodir') || '';
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const $ = (id) => document.getElementById(id);
   const log = (...a) => console.log('[fp-demo]', ...a);
+
+  function finish() {
+    document.title = 'FinePrint demo — done';
+    if (window.fineprint && window.fineprint.demoDone) {
+      window.fineprint.demoDone().catch(() => {});
+    }
+  }
+
+  /* Second-opinion demo (?demo=s1): the Home feed, seeded by main.js
+   * from a RECORDED real gate log (assets/demo-second-opinion-log.jsonl
+   * — entries the real gate wrote with the real bekko model). It is a
+   * replay, not a live model run: the model takes ~2 minutes to load.
+   * The screen shows, top to bottom: the feed summary (deterministic
+   * denials counted apart from second-opinion verdicts), a
+   * second-opinion allow (the false-negative candidate), a
+   * second-opinion block (probabilistic label + model + version +
+   * reason), and a deterministic DENY-RECORDS block (rule +
+   * "this will always be blocked") for contrast. PACE (Anish, Nov 7):
+   * SLOW — the feed is held long enough to read every line.
+   * Nothing else is driven: the feed is the demo. */
+  async function runS1() {
+    try {
+      await waitFor(() => document.querySelectorAll('#feedList .feed-item').length > 0, 15000, 'seeded feed items');
+      log('second-opinion feed shown:',
+        document.querySelectorAll('#feedList .feed-item').length, 'items');
+      // Hold the top of the feed (the summary + the newest verdicts)
+      // so every line can be read clearly.
+      await sleep(7000);
+      // The feed is taller than the window: scroll down so the
+      // remaining verdicts (the model block, the deterministic block)
+      // are readable too, then back to the top for the final hold.
+      window.scrollTo(0, document.body.scrollHeight);
+      await sleep(7000);
+      window.scrollTo(0, 0);
+      await sleep(6000);
+      log('demo complete');
+    } catch (e) {
+      log('demo error:', e && e.message);
+    } finally {
+      finish();
+    }
+  }
 
   async function waitFor(fn, timeoutMs, label) {
     const start = Date.now();
@@ -70,15 +116,14 @@
     } catch (e) {
       log('demo error:', e && e.message);
     } finally {
-      document.title = 'FinePrint demo — done';
-      if (window.fineprint && window.fineprint.demoDone) {
-        window.fineprint.demoDone().catch(() => {});
-      }
+      finish();
     }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
+    document.addEventListener('DOMContentLoaded', mode === 's1' ? runS1 : run);
+  } else if (mode === 's1') {
+    runS1();
   } else {
     run();
   }

@@ -9,9 +9,13 @@ const os = require('os');
 const path = require('path');
 const {
   DETERMINISM_LINE,
+  SECOND_OPINION_LABEL,
+  S1_BLOCK_RULE,
+  S1_MODEL_ERROR_RULE,
   itemFromAuditEntry,
   itemFromCheckResult,
   itemFromGuardedRun,
+  summarizeFeed,
   FeedStore,
 } = require('../core/feed');
 const { BUILTIN_RULES } = require('../core/definitions');
@@ -172,7 +176,9 @@ test('summarizeFeed counts by agent when items carry one; empty when none do', (
   ]);
   assert.deepEqual(summarizeFeed([blockedItem({})]).byAgent, []);
   assert.deepEqual(summarizeFeed([]), {
-    total: 0, blocked: 0, byRule: [], byAgent: [],
+    total: 0, blocked: 0,
+    secondOpinion: { total: 0, blocked: 0, errors: 0, allowed: 0 },
+    byRule: [], byAgent: [],
   });
 });
 
@@ -212,4 +218,202 @@ test('a failed canary becomes a blocked feed item; a held canary does not', () =
     { rules: BUILTIN_RULES },
   );
   assert.equal(held, null);
+});
+
+/* Second-opinion verdicts (Nov 8, two-stage gate): the gate logs them
+ * with the real entry shape from tools/fineprint_gate.py — second_opinion,
+ * model + model_version, invariant, reason_seen, model_verdict +
+ * model_reason verbatim, latency_s, deterministic: false, and the
+ * synthetic rule id S1-BLOCK-bekko / S1-MODEL-ERROR. The feed must
+ * render them distinctly — never as a deterministic rule denial —
+ * and must render model allows too (the false-negative candidates).
+ * Fixture entries below are field-for-field that shape. */
+
+const S1_MODEL = 'bekko-system-one-v0-400m';
+const S1_VERSION = 'hotchpotch/bekko-system-one-v0-400m @ 1960df5602bd93cc8d336fdebd9fb68a30926e13';
+const S1_REASON = 'bekko probability_yes=0.547 (threshold 0.5)';
+
+function s1BlockEntry(overrides = {}) {
+  return {
+    action: { kind: 'exec', target: 'rm /tmp/fp-s1-demo/victim.txt' },
+    allowed: false,
+    reason: `second opinion: ${S1_REASON} (model ${S1_MODEL})`,
+    note: 'pre-flight: rm /tmp/fp-s1-demo/victim.txt',
+    deterministic: false,
+    rule: 'S1-BLOCK-bekko',
+    second_opinion: true,
+    model: S1_MODEL,
+    model_version: S1_VERSION,
+    invariant: 'deletion',
+    reason_seen: 'a recursive delete destroys work with no undo',
+    model_verdict: 'block',
+    model_reason: S1_REASON,
+    latency_s: 6.2,
+    ...overrides,
+  };
+}
+
+function s1AllowEntry(overrides = {}) {
+  return {
+    action: { kind: 'exec', target: 'cp /tmp/fp-s1-demo/note.txt /tmp/fp-s1-demo/note-copy.txt' },
+    allowed: true,
+    reason: `second opinion allowed: ${S1_REASON}`,
+    note: 'pre-flight: cp /tmp/fp-s1-demo/note.txt /tmp/fp-s1-demo/note-copy.txt',
+    second_opinion: true,
+    model: S1_MODEL,
+    model_version: S1_VERSION,
+    invariant: 'exfiltration',
+    reason_seen: 'copying a protected file out is how secrets leave the machine',
+    model_verdict: 'allow',
+    model_reason: S1_REASON,
+    latency_s: 5.1,
+    ...overrides,
+  };
+}
+
+function s1ErrorEntry(overrides = {}) {
+  return {
+    action: { kind: 'exec', target: 'rm /tmp/fp-s1-demo/victim.txt' },
+    allowed: false,
+    reason: 'second opinion unavailable (the model did not answer) — blocked fail-closed',
+    note: 'pre-flight: rm /tmp/fp-s1-demo/victim.txt',
+    deterministic: false,
+    rule: 'S1-MODEL-ERROR',
+    second_opinion: true,
+    model_error: true,
+    model: S1_MODEL,
+    model_version: S1_VERSION,
+    invariant: 'deletion',
+    reason_seen: 'a recursive delete destroys work with no undo',
+    error: 'the model did not answer',
+    ...overrides,
+  };
+}
+
+test('a second-opinion block renders distinctly, not as a deterministic rule denial', () => {
+  assert.equal(SECOND_OPINION_LABEL, 'second opinion — probabilistic');
+  assert.equal(S1_BLOCK_RULE, 'S1-BLOCK-bekko');
+  assert.equal(S1_MODEL_ERROR_RULE, 'S1-MODEL-ERROR');
+  const item = itemFromAuditEntry(s1BlockEntry(), { rules: BUILTIN_RULES, agent: 'codex' });
+  assert.ok(item);
+  assert.equal(item.kind, 'second-opinion-block');
+  assert.equal(item.secondOpinion, true);
+  assert.match(item.title, /Second opinion blocked/);
+  assert.match(item.title, /tried to run rm \/tmp\/fp-s1-demo\/victim\.txt/);
+  // The model's reason, verbatim — not the gate's wrapped reason.
+  assert.equal(item.detail, S1_REASON);
+  assert.equal(item.model, S1_MODEL);
+  assert.equal(item.modelVersion, S1_VERSION);
+  assert.equal(item.modelVerdict, 'block');
+  assert.equal(item.invariant, 'deletion');
+  assert.equal(item.latencyS, 6.2);
+  assert.equal(item.secondOpinionLabel, SECOND_OPINION_LABEL);
+  assert.match(item.secondOpinionLine, /second opinion — probabilistic/);
+  assert.match(item.secondOpinionLine, /bekko-system-one-v0-400m/);
+  assert.match(item.secondOpinionLine, /1960df5602bd93cc8d336fdebd9fb68a30926e13/);
+  assert.match(item.secondOpinionLine, /deletion/);
+  // NOT a rule denial: no rule name, no determinism claim.
+  assert.equal(item.rule, null);
+  assert.equal(item.deterministic, false);
+  assert.equal(item.determinismLine, '');
+  assert.doesNotMatch(item.title + item.detail + item.secondOpinionLine, /always be blocked/);
+  assert.equal(item.source, 'wall');
+  assert.equal(item.agent, 'codex');
+});
+
+test('a second-opinion block is recognised by its rule id even without the flag', () => {
+  const { second_opinion, ...noFlag } = s1BlockEntry();
+  const item = itemFromAuditEntry(noFlag, { rules: BUILTIN_RULES });
+  assert.ok(item);
+  assert.equal(item.kind, 'second-opinion-block');
+  assert.equal(item.secondOpinion, true);
+});
+
+test('a second-opinion model error renders distinctly as fail-closed, not a rule denial', () => {
+  const item = itemFromAuditEntry(s1ErrorEntry(), { rules: BUILTIN_RULES });
+  assert.ok(item);
+  assert.equal(item.kind, 'second-opinion-error');
+  assert.equal(item.secondOpinion, true);
+  assert.match(item.title, /fail-closed/);
+  assert.match(item.title, /tried to run rm \/tmp\/fp-s1-demo\/victim\.txt/);
+  assert.match(item.detail, /the model did not answer/);
+  assert.equal(item.model, S1_MODEL);
+  assert.equal(item.modelVersion, S1_VERSION);
+  assert.equal(item.modelVerdict, 'error');
+  assert.equal(item.secondOpinionLabel, SECOND_OPINION_LABEL);
+  assert.match(item.secondOpinionLine, /fail-closed/);
+  assert.equal(item.rule, null);
+  assert.equal(item.deterministic, false);
+  assert.equal(item.determinismLine, '');
+  assert.doesNotMatch(item.title + item.detail, /always be blocked/);
+});
+
+test('a second-opinion allow is a feed item of its own kind, not invisible', () => {
+  const item = itemFromAuditEntry(s1AllowEntry(), { rules: BUILTIN_RULES, agent: 'codex' });
+  assert.ok(item);
+  assert.equal(item.kind, 'second-opinion-allow');
+  assert.equal(item.secondOpinion, true);
+  assert.match(item.title, /Second opinion allowed/);
+  assert.match(item.title, /tried to run cp \/tmp\/fp-s1-demo\/note\.txt/);
+  assert.equal(item.detail, S1_REASON);
+  assert.equal(item.model, S1_MODEL);
+  assert.equal(item.modelVersion, S1_VERSION);
+  assert.equal(item.modelVerdict, 'allow');
+  assert.equal(item.invariant, 'exfiltration');
+  assert.equal(item.secondOpinionLabel, SECOND_OPINION_LABEL);
+  // An allow is a false-negative candidate for review — the feed says so.
+  assert.match(item.secondOpinionLine, /false-negative/);
+  assert.equal(item.rule, null);
+  assert.equal(item.deterministic, false);
+  assert.equal(item.determinismLine, '');
+  assert.equal(item.agent, 'codex');
+  // A plain Stage 1 allow (no second opinion) is still not a feed item.
+  assert.equal(itemFromAuditEntry(
+    { action: { kind: 'exec', target: 'ls /tmp' }, allowed: true, reason: 'ok' },
+    { rules: BUILTIN_RULES },
+  ), null);
+});
+
+test('summarizeFeed counts second-opinion verdicts separately from deterministic denials', () => {
+  const items = [
+    blockedItem({ ruleId: 'DENY-RECORDS', rule: 'Credential theft' }),
+    blockedItem({ ruleId: 'DENY-DELETE', rule: 'Destructive deletes' }),
+    { ...blockedItem(), kind: 'second-opinion-block', title: 'Second opinion blocked: the agent tried to run rm /tmp/x.', rule: null, ruleId: 'S1-BLOCK-bekko', deterministic: false, determinismLine: '' },
+    { ...blockedItem(), kind: 'second-opinion-error', title: 'Blocked fail-closed (second opinion failed).', rule: null, ruleId: 'S1-MODEL-ERROR', deterministic: false, determinismLine: '' },
+    { ...blockedItem(), kind: 'second-opinion-allow', title: 'Second opinion allowed: the agent tried to run cp /tmp/x.', rule: null, ruleId: null, deterministic: false, determinismLine: '' },
+    { ...blockedItem(), kind: 'check-pass', title: 'Check passed' },
+  ];
+  const s = summarizeFeed(items);
+  assert.equal(s.total, 6);
+  // Deterministic denials only — the two layers are never conflated.
+  assert.equal(s.blocked, 2);
+  assert.deepEqual(s.secondOpinion, { total: 3, blocked: 1, errors: 1, allowed: 1 });
+  // byRule covers deterministic denials only — no S1 rule ids in it.
+  assert.deepEqual(s.byRule, [
+    { ruleId: 'DENY-DELETE', rule: 'Destructive deletes', count: 1 },
+    { ruleId: 'DENY-RECORDS', rule: 'Credential theft', count: 1 },
+  ]);
+  assert.deepEqual(summarizeFeed([]), {
+    total: 0, blocked: 0,
+    secondOpinion: { total: 0, blocked: 0, errors: 0, allowed: 0 },
+    byRule: [], byAgent: [],
+  });
+});
+
+test('a run stopped only by the second opinion gets a non-deterministic summary', () => {
+  const s1Only = itemFromGuardedRun({
+    code: 2, command: ['rm', '/tmp/x/victim.txt'],
+    blockedCount: 0, secondOpinionBlocked: 1,
+  });
+  assert.ok(s1Only);
+  assert.equal(s1Only.kind, 'second-opinion-block');
+  assert.match(s1Only.title, /Stopped the agent/);
+  assert.match(s1Only.detail, /1 second-opinion/);
+  assert.equal(s1Only.deterministic, false);
+  assert.equal(s1Only.determinismLine, '');
+  assert.equal(s1Only.secondOpinion, true);
+  // A deterministically blocked run is unchanged.
+  const det = itemFromGuardedRun({ code: 2, command: ['cat', '/tmp/x/records.txt'], blockedCount: 1 });
+  assert.equal(det.kind, 'blocked');
+  assert.equal(det.deterministic, true);
 });

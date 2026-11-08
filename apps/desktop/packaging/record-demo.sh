@@ -45,7 +45,14 @@ XVFB_PID=$!
 sleep 2
 
 echo "== starting capture -> $MP4 =="
-ffmpeg -y -loglevel error -f x11grab -video_size 1280x800 -framerate 10 -i "$DISPLAY" -c:v libx264 -pix_fmt yuv420p "$MP4" &
+# -preset ultrafast: the container has ~1.5 shared CPUs and Electron
+# takes most of them, so the default x264 preset (rc-lookahead ~40
+# frames) encodes slower than realtime and muxes nothing for a long
+# time — a recording came back a 48-byte file with no frames.
+# ultrafast has almost no lookahead, so packets flow promptly.
+# Quality does not matter: the GIF step palette-reduces to 256
+# colours anyway.
+ffmpeg -y -loglevel error -f x11grab -video_size 1280x800 -framerate 10 -i "$DISPLAY" -c:v libx264 -preset ultrafast -pix_fmt yuv420p "$MP4" &
 FF_PID=$!
 sleep 1
 
@@ -75,6 +82,13 @@ sleep 2
 kill "$APP_PID" 2>/dev/null || true
 sleep 1
 kill "$FF_PID" 2>/dev/null || true
+# Wait for ffmpeg to exit before converting: SIGTERM makes it write
+# the moov atom, and converting a still-open file fails with
+# "moov atom not found". A fixed sleep is not enough on a slow box.
+for i in $(seq 1 30); do
+  kill -0 "$FF_PID" 2>/dev/null || break
+  sleep 1
+done
 sleep 1
 
 if [ ! -s "$MP4" ]; then

@@ -7,6 +7,19 @@ reimplement measurement or enforcement.
 
 ![FinePrint desktop demo](assets/fineprint-app-demo.gif)
 
+![FinePrint desktop — second-opinion verdicts in the feed](assets/fineprint-app-demo-second-opinion.gif)
+
+*Second opinion in the feed (23s).* The feed renders the two-stage
+gate's second-opinion verdicts distinctly from deterministic rule
+denials: a model block and a model allow are labelled "second opinion
+— probabilistic" with the model name + version + the model's reason,
+a model error reads as blocked fail-closed, and the summary counts
+the two layers separately. The entries are replayed from a recorded
+real gate log (`assets/demo-second-opinion-log.jsonl` — the real gate
+with the real bekko model; the model takes ~2 minutes to load, so a
+live run cannot be the demo). Record it with
+`bash packaging/record-demo-s1.sh`; see `docs/RECORDING.md`.
+
 ## What it does
 
 - **Home — the notifications feed.** What the agent tried to do,
@@ -91,6 +104,18 @@ Unit + integration + end-to-end, on real flows (see
   before anything runs — the verdict banner, the feed entry (rule +
   "this will always be blocked"), and the OS notification all show
   it. Verified against the real CLI and against the stub.
+- **Second-opinion verdicts in the feed:** a model block
+  (`S1-BLOCK-bekko`), a model error (`S1-MODEL-ERROR`, blocked
+  fail-closed), and a model allow each render as their own kind —
+  model name + version + the model's reason verbatim + the
+  "second opinion — probabilistic" label, never with a rule name or
+  the "this will always be blocked" line. The summary
+  (`fp:feed-summary`) counts second-opinion verdicts separately
+  from deterministic denials. Verified against a real gate log
+  written by the real bekko model (`tests/test-feed-real-log.js`
+  over `assets/demo-second-opinion-log.jsonl`, hash chain verified)
+  as well as hand-built entries in the exact gate shape
+  (`tests/test-feed.js`).
 - **Guarded run, confine mode:** a command inside the allowed scope
   runs; a command outside it is denied; a script that reads a file
   outside the scope without naming it on the command line is stopped
@@ -116,7 +141,10 @@ Unit + integration + end-to-end, on real flows (see
 - **GUI:** the app launches under Xvfb, renders the Home screen
   (definitions card + empty feed), and the scripted demo flow
   (`electron . --demo`) drives the real UI end to end — see the GIF
-  above and `docs/RECORDING.md`.
+  above and `docs/RECORDING.md`. The second-opinion demo
+  (`electron . --demo-s1`, GIF above) shows the Home feed seeded
+  from the recorded real gate log; the recording script is
+  `packaging/record-demo-s1.sh`.
 
 Run the suite: `cd apps/desktop && npm test` (unit + integration,
 stub CLI), and `npm run test:real-cli` (integration against the real

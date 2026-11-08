@@ -82,6 +82,10 @@ label.toggle { display: block; margin: 12px 0; }
   border-radius: 0 6px 6px 0;
 }
 .feed-item.blocked { border-left-color: var(--red); }
+.feed-item.second-opinion-block { border-left-color: var(--amber); }
+.feed-item.second-opinion-error { border-left-color: var(--amber); }
+.feed-item.second-opinion-allow { border-left-color: var(--teal); }
+.feed-item .second-opinion { color: var(--amber); font-weight: 600; }
 .feed-item.check-pass { border-left-color: var(--green); }
 .feed-item.check-blocked { border-left-color: var(--red); }
 .feed-item.check-unknown { border-left-color: var(--amber); }

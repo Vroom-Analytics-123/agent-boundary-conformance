@@ -29,14 +29,22 @@ function verdictHtml(v) {
 }
 
 /** Boundaries under test: which rules fire most, which agents keep
- * testing them. A view on the feed items, not new measurement. */
+ * testing them. A view on the feed items, not new measurement.
+ * The second opinion is a separate layer: its counts are shown
+ * apart from deterministic denials, never folded into them. */
 function summaryHtmlFor(s) {
-  if (!s || !s.blocked) return '';
+  if (!s) return '';
+  const s1 = s.secondOpinion || { total: 0, blocked: 0, errors: 0, allowed: 0 };
+  if (!s.blocked && !s1.total) return '';
   const rules = (s.byRule || []).map((r) => `${esc(r.ruleId || r.rule || 'unknown')} ×${r.count}`).join(', ');
   const agents = (s.byAgent || []).length
     ? ` · by agent: ${(s.byAgent || []).map((a) => `${esc(a.agent)} ×${a.count}`).join(', ')}`
     : ' · no agent recorded';
-  return `<div class="feed-summary"><p><strong>Boundaries under test:</strong> ${s.blocked} blocked attempt${s.blocked === 1 ? '' : 's'}${rules ? ` · ${rules}` : ''}${agents}</p></div>`;
+  const det = s.blocked ? `${s.blocked} blocked attempt${s.blocked === 1 ? '' : 's'}${rules ? ` · ${rules}` : ''}${agents}` : '';
+  const s1line = s1.total
+    ? `Second opinion (probabilistic — not rule denials): ${s1.blocked} blocked, ${s1.errors} fail-closed, ${s1.allowed} allowed`
+    : '';
+  return `<div class="feed-summary"><p><strong>Boundaries under test:</strong>${det ? ` ${det}` : ''}${det && s1line ? ' ·' : ''}${s1line ? ` ${s1line}` : ''}</p></div>`;
 }
 
 function renderFeed() {
@@ -49,9 +57,14 @@ function renderFeed() {
     list.innerHTML = summaryHtmlFor(summary) + items.map((it) => {
       const when = it.ts ? new Date(it.ts).toLocaleString() : '';
       const rule = it.rule ? `<p class="rule">Stopped by: ${esc(it.rule)}${it.catalogue && it.catalogue.length ? ` (${esc(it.catalogue.join(', '))})` : ''}</p>` : '';
+      // A second-opinion verdict shows its own line (label + model +
+      // version + invariant) instead of a rule line and instead of
+      // the determinism line — it is probabilistic, not a rule denial.
+      const s1 = it.secondOpinion && it.secondOpinionLine
+        ? `<p class="second-opinion">${esc(it.secondOpinionLine)}</p>` : '';
       const det = it.determinismLine ? `<p class="determinism">${esc(it.determinismLine)}</p>` : '';
       const detail = it.detail ? `<p>${esc(it.detail)}</p>` : '';
-      return `<div class="feed-item ${esc(it.kind)}"><time>${esc(when)}</time><p><strong>${esc(it.title)}</strong></p>${rule}${det}${detail}</div>`;
+      return `<div class="feed-item ${esc(it.kind)}"><time>${esc(when)}</time><p><strong>${esc(it.title)}</strong></p>${rule}${s1}${det}${detail}</div>`;
     }).join('');
   });
 }

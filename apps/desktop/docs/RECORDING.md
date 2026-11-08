@@ -69,6 +69,55 @@ A cleaner scripted version is `packaging/record-demo.sh` (starts Xvfb,
 launches the app under it, captures with ffmpeg, converts to GIF, and
 checks the demo finished). Run it from `apps/desktop`.
 
+## The second-opinion demo (`--demo-s1`)
+
+The second GIF (embedded near the top of the README) shows the Home
+feed with second-opinion verdicts: a model block, a model allow, and
+a model error (fail-closed), each labelled "second opinion —
+probabilistic" with the model name + version + the model's reason,
+next to a deterministic `DENY-RECORDS` block (rule + "this will
+always be blocked") for contrast, and the summary counting the two
+layers separately.
+
+It is a replay, not a live model run, and the README caption says
+so: the feed is seeded from `assets/demo-second-opinion-log.jsonl`,
+a real hash-chained audit log the real gate wrote with the real
+bekko model (model load ~116 s, so a live run cannot be the demo).
+The seeding goes through the same code path as a live run
+(`audit.parseLogFile` + `feed.itemFromAuditEntry` in `main.js`,
+`--demo-s1`), and `tests/test-feed-real-log.js` verifies the same
+file's chain and rendering. The log was produced by
+`/tmp/make_s1_real_log.py` (not checked in — a scratch script): one
+Python process calling the gate's `run_guarded()` with `--no-wall`
+(a `cat` of the protected records file for the deterministic block,
+an `rm` the model blocked, a `cp` the model allowed, and an `rm`
+with a bogus helper python for the fail-closed entry), with
+`FINEPRINT_SECOND_OPINION_PYTHON` pointing at the venv that has
+torch (`~/workspace/.venvs/s1-eval/bin/python`) and
+`HF_HUB_OFFLINE=1`. Regenerate it the same way if the gate's entry
+shape ever changes — do not hand-edit the file, or its hash chain
+breaks and the test fails on purpose.
+
+```sh
+cd apps/desktop
+bash packaging/record-demo-s1.sh
+# FINEPRINT_CLI=/path/to/fineprint is optional: the feed is seeded,
+# not run, but when given, the definitions card shows the CLI's
+# version in force; otherwise it shows the built-in v2026-11-07 pack.
+```
+
+The script follows the main demo's Xvfb pattern with two fixes
+learned while recording it (also applied to `record-demo.sh`):
+`-preset ultrafast` on the capture (the default x264 preset encodes
+slower than realtime on ~1.5 shared CPUs while Electron runs, and
+the first recording came back a 48-byte file with no frames), and
+waiting for ffmpeg to exit after SIGTERM before converting (the
+moov atom is written on exit; converting a still-open file fails
+with "moov atom not found"). The skip is `-ss 12`, not `-ss 3`:
+under Xvfb Electron takes ~13 s to paint on this box. Check the
+first frames after recording — if they are black, raise the skip;
+if the top of the feed is cut, lower it.
+
 ## What was verified where
 
 - In-container (this repo's Linux container): the full unit +

@@ -8,6 +8,14 @@ Harnesses change under their owners — a new release, a new feature, a new flag
 
 **Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The harness scorecard below covers 16 harnesses; the Index verdict stays NARROW until the consistent re-measurement protocol completes. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md)**.
 
+**Watch it work — the Check (one command, zero config):**
+
+![FinePrint Check demo — install, check, verdict + bundle](assets/fineprint-check-demo.gif)
+
+**And the Wall (the bouncer — it stops the harm the Check only measures):**
+
+![FinePrint Wall demo — the wall denies a script-read the tripwire would miss](assets/fineprint-wall-demo.gif)
+
 ## The harness scorecard
 
 ![FinePrint harness scorecard — combined live-basis view (PROVISIONAL)](framework/visuals/scorecard.svg)
@@ -39,8 +47,6 @@ cd agent-boundary-conformance
 ./fineprint check       # one command: verdict + sealed bundle in fineprint-evidence/
 ```
 
-![FinePrint Check demo — install, check, verdict + bundle](assets/fineprint-check-demo.gif)
-
 What you see: `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Muse Code has no offline decision oracle, so its check reports UNMEASURED (exit 3) instead of a verdict. Full guide, written for a junior dev: [INTEGRATION.md](INTEGRATION.md).
 - **GitHub Action — one workflow file (the peace of mind):** add
   one file and the check runs on every pull request — red means a
@@ -60,8 +66,6 @@ What you see: `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `score
 ./fineprint gate run -- python3 read_key.py  # the wall hides ~/.ssh — the read fails, nothing leaks
 ./fineprint gate log --log audit.jsonl       # tried X → blocked by rule Y → will always be blocked
 ```
-
-![FinePrint Wall demo — the wall denies a script-read the tripwire would miss](assets/fineprint-wall-demo.gif)
 
 See [docs/FREE_GATE.md](docs/FREE_GATE.md) for the mechanism, the
 signed definition packs, and the limits, stated plainly. Upstream

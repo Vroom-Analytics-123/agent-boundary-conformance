@@ -14,6 +14,11 @@
 #   4. the notification log: tried X -> blocked by rule Y ->
 #      will always be blocked.
 #
+# PACE: deliberately slow — every command is typed out character by
+# character, and every output stays on screen for several seconds
+# before the next step, so each line can be read clearly. The pauses
+# are explicit sleeps in this script, not hand-timed.
+#
 # The fake key is not a real secret. The demo work directory and the
 # fake home are removed at the end.
 set -u
@@ -32,32 +37,49 @@ PY
 printf 'hello wall\n' > notes.txt
 export HOME="$DEMO_HOME"
 
-../fineprint init --gate
+# type_run: type a command out character by character (like a person
+# typing), pause, then run it for real. The function's exit status is
+# the command's exit status, so `echo "exit code: $?"` after a
+# type_run call reports the command's code.
+type_run() {
+  local cmd="$1"
+  local i
+  for ((i=0; i<${#cmd}; i++)); do
+    printf '%s' "${cmd:i:1}"
+    sleep 0.035
+  done
+  printf '\n'
+  sleep 0.5
+  eval "$cmd"
+}
+
+type_run '../fineprint init --gate'
+sleep 3
 echo
 echo "--- the wall denies a script that reads a credential ---"
 echo "    (the script never names the key on argv, so the tripwire"
 echo "     cannot see it — the wall hides ~/.ssh instead)"
-sleep 1
-../fineprint gate run --log audit.jsonl -- python3 read_key.py
+sleep 1.5
+type_run '../fineprint gate run --log audit.jsonl -- python3 read_key.py'
 echo "exit code: $?"
-sleep 2
+sleep 5
 echo
 echo "--- a direct read is denied by name, with the rule ---"
-sleep 1
-../fineprint gate run --log audit.jsonl -- cat "$DEMO_HOME/.ssh/id_rsa"
+sleep 1.5
+type_run '../fineprint gate run --log audit.jsonl -- cat "$DEMO_HOME/.ssh/id_rsa"'
 echo "exit code: $?"
-sleep 2
+sleep 4
 echo
 echo "--- normal work is allowed ---"
-sleep 1
-../fineprint gate run -- cat notes.txt
+sleep 1.5
+type_run '../fineprint gate run -- cat notes.txt'
 echo "exit code: $?"
-sleep 2
+sleep 3
 echo
 echo "--- the notification log ---"
-sleep 1
-../fineprint gate log --log audit.jsonl
-sleep 2
+sleep 1.5
+type_run '../fineprint gate log --log audit.jsonl'
+sleep 6
 
 cd "$ROOT"
 rm -rf "$WORK" "$DEMO_HOME"

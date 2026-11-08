@@ -693,7 +693,21 @@ def run_guarded(policy, log, argv, cwd=None, wall=True, confine=False,
                 print("refusing to run: " + " ".join(argv))
                 return EXIT_DENY
     if wall:
-        import fineprint_wall as W
+        # The wall module is what makes this branch free-wall: a
+        # checkout without tools/fineprint_wall.py (free-check-gate,
+        # or a partial install) cannot run a guarded command at all.
+        # Refuse with the branch requirement named, instead of a
+        # traceback — or worse, a misleading "command not found"
+        # from a path that never got to run.
+        try:
+            import fineprint_wall as W
+        except ModuleNotFoundError:
+            print("wall: tools/fineprint_wall.py is missing — this "
+                  "checkout has no wall. `fineprint gate run` needs "
+                  "branch free-wall (free-check-gate has no wall "
+                  "module); switch the checkout to free-wall, or run "
+                  "with --no-wall for a tripwire-only run.")
+            return EXIT_ERROR
         try:
             return W.run_walled(policy, argv, log=log, cwd=cwd,
                                 definitions=gate.definitions,

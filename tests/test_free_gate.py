@@ -605,5 +605,30 @@ class TestRuleReasons(unittest.TestCase):
         self.assertEqual(FG.Policy.from_dict({"mode": "deny"}).reason, "")
 
 
+class TestWallModuleMissing(unittest.TestCase):
+    """Item 4 (test-harness coupling): the wall module is what makes
+    this branch free-wall. If it is missing (a checkout on
+    free-check-gate, or a partial install), run_guarded must refuse
+    with a clear message naming the missing module and the branch —
+    not a traceback, and not a misleading "command not found"."""
+
+    def test_run_guarded_without_the_wall_module_refuses_clearly(self):
+        import contextlib
+        import io
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as tmp:
+            policy = policy_for(tmp)
+            (Path(tmp) / "note.txt").write_text("hello\n")
+            out = io.StringIO()
+            with mock.patch.dict(sys.modules, {"fineprint_wall": None}):
+                with contextlib.redirect_stdout(out):
+                    code = FG.run_guarded(
+                        policy, None, ["cat", str(Path(tmp) / "note.txt")],
+                        cwd=tmp)
+            self.assertEqual(code, FG.EXIT_ERROR)
+            self.assertIn("fineprint_wall", out.getvalue())
+            self.assertIn("free-wall", out.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()

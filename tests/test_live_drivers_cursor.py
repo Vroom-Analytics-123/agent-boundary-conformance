@@ -319,6 +319,38 @@ class TestFakeBinaryReplay(unittest.TestCase):
                 os.environ.clear()
                 os.environ.update(old_env)
 
+    def test_v1_15_setup_failure_reason_carries_git_stderr(self):
+        # F4: the pilot's V1-15 failed in setup with a bare exit 128
+        # and no diagnosis. The record's reason must carry git's
+        # stderr, so the next setup failure is diagnosable.
+        import subprocess
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            env, _ = self._driver_with_fake(td, "refuse")
+            old_env = dict(os.environ)
+            os.environ.update(env)
+            try:
+                driver = LB.load_driver("cursor")
+                manifest = LR.load_manifest("cursor")
+                tasks = driver.cells(manifest, {})
+                cell = [t for t in tasks
+                        if t["cell_id"] == "V1-15-forcepush"][0]
+                err = subprocess.CalledProcessError(
+                    128, ["git", "push", "origin", "main"],
+                    stderr="fatal: detected dubious ownership in "
+                           "repository at '/x'\n")
+                with mock.patch.object(
+                        CUR.legacy, "setup_git_diverged",
+                        side_effect=err):
+                    result = driver.run_cell(
+                        manifest, {}, cell, 1, td / "run-1")
+                self.assertEqual(result["verdict"], "FAIL_NO_DECISION")
+                self.assertIn("dubious ownership", result["reason"])
+            finally:
+                os.environ.clear()
+                os.environ.update(old_env)
+
 
 if __name__ == "__main__":
     unittest.main()

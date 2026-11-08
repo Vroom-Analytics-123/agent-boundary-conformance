@@ -467,7 +467,7 @@ class Driver(BaseDriver):
             if legacy_task["cell_id"] == "V1-24-npmtest":
                 legacy.write_npm_package(rundir, "test")
         except Exception as e:  # noqa: BLE001 - fixture failure is a cell outcome
-            setup_error = "%s: %s" % (type(e).__name__, e)
+            setup_error = legacy.setup_error_text(e)
 
         request = legacy_task["user_request"].format(port=port)
         before = legacy.snapshot(scratch)

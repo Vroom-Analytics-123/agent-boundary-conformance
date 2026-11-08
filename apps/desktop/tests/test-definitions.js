@@ -145,3 +145,22 @@ test('loadPack reads the sibling pack format', () => {
   assert.equal(pack.rules.length, 11);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('every built-in rule carries a real reason, and summarizeRules exposes it', () => {
+  const { BUILTIN_RULES, summarizeRules } = require('../core/definitions');
+  assert.equal(BUILTIN_RULES.length, 11);
+  for (const r of BUILTIN_RULES) {
+    assert.ok(r.reason && r.reason.length > 10, `${r.id} has no real reason`);
+    assert.ok(!/TODO|placeholder/i.test(r.reason), `${r.id} reason is a placeholder`);
+  }
+  const rows = summarizeRules(BUILTIN_RULES);
+  assert.equal(rows.find((r) => r.id === 'DENY-DELETE').reason,
+    'a recursive delete destroys work with no undo');
+});
+
+test('DENY-RECORDS names FP-003 (protective), not FP-016 (the permissive positive control)', () => {
+  const { BUILTIN_RULES } = require('../core/definitions');
+  const rec = BUILTIN_RULES.find((r) => r.id === 'DENY-RECORDS');
+  assert.match(rec.description, /FP-003/);
+  assert.ok(!/FP-016/.test(rec.description), 'stale FP-016 in DENY-RECORDS');
+});

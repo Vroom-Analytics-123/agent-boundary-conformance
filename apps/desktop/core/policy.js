@@ -6,6 +6,9 @@
  * the CLI is the enforcer and the source of truth. The app writes
  * policies the CLI reads, so the shape must match exactly:
  *   { "$comment": "...", "mode": "deny" | "confine",
+ *     "reason": "...",  // optional, Nov 8 — why this policy is in
+ *                       // force, in the user's own words; printed on
+ *                       // load and shown to the agent with the policy
  *     "denied_paths": [fnmatch...], "denied_hosts": [host...],
  *     "allowed_commands": [basename-or-glob...],
  *     "allowed_paths": [folder...], "allowed_hosts": [host...] }
@@ -36,10 +39,15 @@ const POLICY_COMMENT = 'Free gate policy. mode \'deny\' is the protective '
   + '(e.g. your deploy script).';
 
 /** The default policy: definitions denylist, NOT folder confinement. */
+const DEFAULT_POLICY_REASON = 'the default boundary: credentials, '
+  + 'destructive deletes, exfiltration and unapproved deploys stay out '
+  + 'of the agent\'s reach';
+
 function defaultPolicy(dir) {
   return {
     $comment: POLICY_COMMENT,
     mode: 'deny',
+    reason: DEFAULT_POLICY_REASON,
     denied_paths: [],
     denied_hosts: [],
     allowed_commands: [],
@@ -67,6 +75,7 @@ function loadPolicy(filePath) {
   return {
     $comment: typeof doc.$comment === 'string' ? doc.$comment : '',
     mode,
+    reason: typeof doc.reason === 'string' ? doc.reason : '',
     denied_paths: (doc.denied_paths || []).map((p) => String(p)),
     denied_hosts: (doc.denied_hosts || []).map((h) => String(h)),
     allowed_commands: (doc.allowed_commands || []).map((c) => String(c)),
@@ -81,6 +90,7 @@ function savePolicy(filePath, policy) {
   const doc = {
     $comment: policy.$comment || POLICY_COMMENT,
     mode: policy.mode === 'confine' ? 'confine' : 'deny',
+    reason: policy.reason || DEFAULT_POLICY_REASON,
     denied_paths: policy.denied_paths || [],
     denied_hosts: policy.denied_hosts || [],
     allowed_commands: policy.allowed_commands || [],
@@ -145,6 +155,7 @@ function describePolicy(policy, baseDir) {
     deniedPaths,
     deniedHosts,
     allowedCommands,
+    reasonLine: policy.reason ? `Why this policy: ${policy.reason}` : '',
     foldersLine: confine
       ? (folders.length
         ? `Confined to these folders: ${folders.join(', ')}.`
@@ -174,6 +185,7 @@ function describePolicy(policy, baseDir) {
 module.exports = {
   POLICY_FILENAME,
   POLICY_COMMENT,
+  DEFAULT_POLICY_REASON,
   defaultPolicy,
   loadPolicy,
   savePolicy,

@@ -115,3 +115,22 @@ test('load rejects non-object JSON', () => {
   fs.writeFileSync(file, '[]');
   assert.throws(() => loadPolicy(file), /must be a JSON object/);
 });
+
+test('a policy carries a reason through save/load/describe', () => {
+  const dir = tmpdir();
+  const file = path.join(dir, 'fineprint-gate.json');
+  const p = defaultPolicy('/tmp/work');
+  assert.ok(p.reason && p.reason.length > 10, 'default policy has no reason');
+  p.reason = 'we keep prod keys out of the agent\'s reach';
+  const loaded = savePolicy(file, p);
+  assert.equal(loaded.reason, 'we keep prod keys out of the agent\'s reach');
+  const d = describePolicy(loaded);
+  assert.match(d.reasonLine, /we keep prod keys out of the agent's reach/);
+  // A policy file without a reason (an old one) still loads and
+  // describes with an empty reason line.
+  fs.writeFileSync(file, JSON.stringify({ mode: 'deny', allowed_paths: ['/tmp/work'] }));
+  const old = loadPolicy(file);
+  assert.equal(old.reason, '');
+  assert.equal(describePolicy(old).reasonLine, '');
+  fs.rmSync(dir, { recursive: true, force: true });
+});

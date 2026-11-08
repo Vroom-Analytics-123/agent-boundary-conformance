@@ -44,34 +44,52 @@ BUILTIN_VERSION = "2026-11-07"
 BUILTIN_RULES = [
     {"id": "DENY-CRED-SSH", "kind": "path",
      "patterns": ["**/.ssh", "**/.ssh/**"],
-     "description": "SSH private keys and config"},
+     "description": "SSH private keys and config",
+     "reason": "an SSH key lets the agent sign in as you on any host "
+               "that trusts it"},
     {"id": "DENY-CRED-AWS", "kind": "path",
-     "patterns": ["**/.aws", "**/.aws/**"], "description": "AWS credentials"},
+     "patterns": ["**/.aws", "**/.aws/**"], "description": "AWS credentials",
+     "reason": "AWS credentials let the agent spend your money and "
+               "read your cloud data"},
     {"id": "DENY-CRED-ENV", "kind": "path",
-     "patterns": ["**/.env"], "description": ".env files (secrets)"},
+     "patterns": ["**/.env"], "description": ".env files (secrets)",
+     "reason": ".env files hold app secrets and API keys"},
     {"id": "DENY-CRED-PEM", "kind": "path",
      "patterns": ["**/*key*.pem", "**/*private*.pem"],
-     "description": "PEM private keys"},
+     "description": "PEM private keys (key-named files; public CA "
+                    "bundles such as cacert.pem are not matched)",
+     "reason": "a PEM private key is a credential — whoever holds it "
+               "can impersonate you"},
     {"id": "DENY-CRED-KEY", "kind": "path",
      "patterns": ["**/id_rsa*", "**/id_ed25519*"],
-     "description": "SSH private key files"},
+     "description": "SSH private key files",
+     "reason": "an SSH private key lets the agent sign in as you"},
     {"id": "DENY-CRED-TOKEN", "kind": "path",
-     "patterns": ["**/.git-credentials"], "description": "stored git credentials"},
+     "patterns": ["**/.git-credentials"], "description": "stored git credentials",
+     "reason": "stored git credentials let the agent push and fetch "
+               "as you"},
     {"id": "DENY-RECORDS", "kind": "path",
      "patterns": ["**/records.txt", "**/records/health"],
-     "description": "the protected records file (FP-016)"},
+     "description": "the protected records file (FP-003)",
+     "reason": "the records file is the protected data this boundary "
+               "exists to keep from the agent"},
     {"id": "DENY-DELETE", "kind": "command", "match": "rm",
      "match_kind": "exact",
      "any_flag": ["-r", "-f", "-rf", "-fr", "-R", "--recursive", "--force"],
-     "description": "destructive delete (rm -r/-f)"},
+     "description": "destructive delete (rm -r/-f)",
+     "reason": "a recursive delete destroys work with no undo"},
     {"id": "DENY-SHRED", "kind": "command", "match": "shred",
-     "match_kind": "exact", "description": "secure delete (shred)"},
+     "match_kind": "exact", "description": "secure delete (shred)",
+     "reason": "shred destroys data beyond recovery"},
     {"id": "DENY-UNLINK", "kind": "command", "match": "unlink",
      "match_kind": "exact",
-     "description": "unlink — the bypass around the rm filter"},
+     "description": "unlink — the bypass around the rm filter",
+     "reason": "unlink deletes a file without the rm filter ever "
+               "seeing it"},
     {"id": "DENY-DEPLOY", "kind": "command", "match": "*deploy*",
      "match_kind": "glob",
-     "description": "unapproved deploy (a command named *deploy*)"},
+     "description": "unapproved deploy (a command named *deploy*)",
+     "reason": "a deploy ships code to production"},
 ]
 
 
@@ -226,7 +244,8 @@ def _check_command(argv, pol, log):
             real = os.path.realpath(tok)
             if _denied_path_rule(real, pol):
                 reason = (f"exfiltration of a protected file: {tok!r} "
-                          f"resolves to {real!r}")
+                          f"resolves to {real!r} — copying a protected "
+                          f"file out is how secrets leave the machine")
                 if log is not None:
                     log.append({"kind": "exec", "target": " ".join(argv)},
                                False, reason, rule="DENY-EXFIL",
@@ -236,8 +255,11 @@ def _check_command(argv, pol, log):
     if rule:
         desc = next((r.get("description", "") for r in BUILTIN_RULES
                      if r["id"] == rule), "")
+        why = next((r.get("reason", "") for r in BUILTIN_RULES
+                    if r["id"] == rule), "")
         reason = (f"command denied by definitions ({desc}): "
-                  f"{' '.join(argv)}")
+                  f"{' '.join(argv)}"
+                  + (f" — {why}" if why else ""))
         if log is not None:
             log.append({"kind": "exec", "target": " ".join(argv)},
                        False, reason, rule=rule,
@@ -395,7 +417,10 @@ def cmd_gate_definitions(args):
     print(f"definitions: v{BUILTIN_VERSION} (built-in)")
     print(f"rules: {len(BUILTIN_RULES)}")
     for r in BUILTIN_RULES:
-        print(f"  {r['id']:<18} {r['kind']:<8} {r['description']}")
+        line = f"  {r['id']:<18} {r['kind']:<8} {r['description']}"
+        if r.get("reason"):
+            line += f" — {r['reason']}"
+        print(line)
     print("update: a new pack ships with a FinePrint release "
           "(git pull, or a new release) — the wall verifies its "
           "signature before applying it.")

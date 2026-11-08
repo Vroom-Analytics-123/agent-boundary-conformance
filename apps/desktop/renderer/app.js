@@ -95,7 +95,9 @@ function renderStatus() {
 function renderPolicyBox() {
   if (!status || !status.policy) { $('policyBox').textContent = ''; return; }
   const p = status.policy;
-  const lines = [status.protectionLine, p.foldersLine, p.hostsLine, p.deniedLine];
+  const lines = [status.protectionLine];
+  if (p.reasonLine) lines.push(p.reasonLine);
+  lines.push(p.foldersLine, p.hostsLine, p.deniedLine);
   if (p.allowedCommandsLine) lines.push(p.allowedCommandsLine);
   if (p.boundsLine) lines.push(p.boundsLine);
   lines.push(p.scopeLine);

@@ -11,6 +11,10 @@
  *
  * Pack format (fineprint-definitions.json):
  *   { "version": "2026-11-07", "rules": [ ... ], "signature": "<b64>" }
+ * A rule may carry an optional "reason" (Nov 8) — why it is
+ * restricted. The built-in v2026-11-07 rules all carry one; older
+ * signed packs without it still verify (the signature covers the
+ * rules as listed).
  * The signature is Ed25519 over the canonical JSON (sorted keys, no
  * spaces — Python json.dumps with ", " / ": " separators, same as the
  * audit log) of {"version": ..., "rules": ...}, made with the
@@ -35,19 +39,24 @@ const { canonical } = require('./audit');
 const BUILTIN_VERSION = '2026-11-07';
 const DEFINITIONS_PUBLIC_KEY_HEX = '40004a96827ae90e5ad4ae36da1414aa80d83625818668604803ba60f3393326';
 
-// Copied verbatim from tools/fineprint_definitions.py (BUILTIN_RULES).
+// Copied verbatim from tools/fineprint_definitions.py (BUILTIN_RULES),
+// including the "reason" field (Nov 8): why the rule is restricted,
+// surfaced to the agent in the deny message and on the policy
+// screen. A rule in a pack may omit "reason" (older signed packs do)
+// — the field is optional and does not change the pack version or
+// the rule count (11, v2026-11-07).
 const BUILTIN_RULES = [
-  { id: 'DENY-CRED-SSH', kind: 'path', patterns: ['**/.ssh', '**/.ssh/**'], description: 'SSH private keys and config' },
-  { id: 'DENY-CRED-AWS', kind: 'path', patterns: ['**/.aws', '**/.aws/**'], description: 'AWS credentials' },
-  { id: 'DENY-CRED-ENV', kind: 'path', patterns: ['**/.env'], description: '.env files (secrets)' },
-  { id: 'DENY-CRED-PEM', kind: 'path', patterns: ['**/*key*.pem', '**/*private*.pem'], description: 'PEM private keys (key-named files; public CA bundles such as cacert.pem are not matched)' },
-  { id: 'DENY-CRED-KEY', kind: 'path', patterns: ['**/id_rsa*', '**/id_ed25519*'], description: 'SSH private key files' },
-  { id: 'DENY-CRED-TOKEN', kind: 'path', patterns: ['**/.git-credentials'], description: 'stored git credentials' },
-  { id: 'DENY-RECORDS', kind: 'path', patterns: ['**/records.txt', '**/records/health'], description: 'the protected records file (FP-016)' },
-  { id: 'DENY-DELETE', kind: 'command', match: 'rm', match_kind: 'exact', any_flag: ['-r', '-f', '-rf', '-fr', '-R', '--recursive', '--force'], description: 'destructive delete (rm -r/-f)' },
-  { id: 'DENY-SHRED', kind: 'command', match: 'shred', match_kind: 'exact', description: 'secure delete (shred)' },
-  { id: 'DENY-UNLINK', kind: 'command', match: 'unlink', match_kind: 'exact', description: 'unlink — the bypass around the rm filter' },
-  { id: 'DENY-DEPLOY', kind: 'command', match: '*deploy*', match_kind: 'glob', description: 'unapproved deploy (a command named *deploy*)' },
+  { id: 'DENY-CRED-SSH', kind: 'path', patterns: ['**/.ssh', '**/.ssh/**'], description: 'SSH private keys and config', reason: 'an SSH key lets the agent sign in as you on any host that trusts it' },
+  { id: 'DENY-CRED-AWS', kind: 'path', patterns: ['**/.aws', '**/.aws/**'], description: 'AWS credentials', reason: 'AWS credentials let the agent spend your money and read your cloud data' },
+  { id: 'DENY-CRED-ENV', kind: 'path', patterns: ['**/.env'], description: '.env files (secrets)', reason: '.env files hold app secrets and API keys' },
+  { id: 'DENY-CRED-PEM', kind: 'path', patterns: ['**/*key*.pem', '**/*private*.pem'], description: 'PEM private keys (key-named files; public CA bundles such as cacert.pem are not matched)', reason: 'a PEM private key is a credential — whoever holds it can impersonate you' },
+  { id: 'DENY-CRED-KEY', kind: 'path', patterns: ['**/id_rsa*', '**/id_ed25519*'], description: 'SSH private key files', reason: 'an SSH private key lets the agent sign in as you' },
+  { id: 'DENY-CRED-TOKEN', kind: 'path', patterns: ['**/.git-credentials'], description: 'stored git credentials', reason: 'stored git credentials let the agent push and fetch as you' },
+  { id: 'DENY-RECORDS', kind: 'path', patterns: ['**/records.txt', '**/records/health'], description: 'the protected records file (FP-003)', reason: 'the records file is the protected data this boundary exists to keep from the agent' },
+  { id: 'DENY-DELETE', kind: 'command', match: 'rm', match_kind: 'exact', any_flag: ['-r', '-f', '-rf', '-fr', '-R', '--recursive', '--force'], description: 'destructive delete (rm -r/-f)', reason: 'a recursive delete destroys work with no undo' },
+  { id: 'DENY-SHRED', kind: 'command', match: 'shred', match_kind: 'exact', description: 'secure delete (shred)', reason: 'shred destroys data beyond recovery' },
+  { id: 'DENY-UNLINK', kind: 'command', match: 'unlink', match_kind: 'exact', description: 'unlink — the bypass around the rm filter', reason: 'unlink deletes a file without the rm filter ever seeing it' },
+  { id: 'DENY-DEPLOY', kind: 'command', match: '*deploy*', match_kind: 'glob', description: 'unapproved deploy (a command named *deploy*)', reason: 'a deploy ships code to production' },
 ];
 
 /** Rule id -> the plain-language family it belongs to (for the feed + Home). */
@@ -248,6 +257,7 @@ function summarizeRules(rules) {
     id: r.id,
     kind: r.kind,
     description: r.description || '',
+    reason: r.reason || '',
     family: ruleFamily(r.id),
   }));
 }

@@ -18,6 +18,16 @@ against a previous sealed bundle and reports REGRESSIONS — an invariant
 that was satisfied and is now unresolved/not-satisfied, a decision flip,
 or a dropped invariant.
 
+Repeat runs (--repeats N, default 3): each probe runs N times. One
+finding per probe records the per-repeat outcomes ("repeats") and their
+agreement/variance ("repeat_summary"); top-level decision/verdict are
+repeat 1 (the primary repeat), so seal/verify, adjudication, baseline
+diff, and the scorecard read exactly what a single run produced.
+Non-attempt attribution (tools/attribution.py) is recorded per repeat
+when the adapter reports an observed effect; check-run adapters never
+observe effects, so their findings omit the attribution fields rather
+than inventing one. A non-attempt is never a hold.
+
 Exit codes: 0 = run ok, no regressions; 1 = usage/runtime error;
             2 = regressions found (--baseline mode).
 
@@ -25,7 +35,7 @@ Usage:
   python3 tools/fineprint_check.py --harness codex \\
       --policy fixtures/policies/default.rules \\
       [--domain-pack FILE ...] [--org-overlay FILE] \\
-      [--bindings FILE] [--only FP-001,FP-002] \\
+      [--bindings FILE] [--only FP-001,FP-002] [--repeats N] \\
       [--out DIR] [--label NAME] [--public-only] [--sign] \\
       [--baseline <bundle.json>]
   python3 tools/fineprint_check.py --list-adapters
@@ -52,6 +62,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
+import attribution as AT  # noqa: E402
 import catalogue_loader as CL  # noqa: E402
 import check_adapters as AD  # noqa: E402
 import check_bundle as CB  # noqa: E402
@@ -69,7 +80,7 @@ def parse_args(argv):
     a = {"domain_pack": [], "org_overlay": None, "bindings": None,
          "only": None, "out": None, "label": "check", "baseline": None,
          "public_only": False, "sign": False, "list_adapters": False,
-         "harness": None, "policy": None}
+         "harness": None, "policy": None, "repeats": 3}
     i = 0
     while i < len(argv):
         t = argv[i]
@@ -77,6 +88,14 @@ def parse_args(argv):
             a["harness"] = argv[i + 1]; i += 2
         elif t == "--policy":
             a["policy"] = argv[i + 1]; i += 2
+        elif t == "--repeats":
+            try:
+                a["repeats"] = int(argv[i + 1])
+            except (ValueError, IndexError):
+                sys.exit("--repeats must be an integer >= 1")
+            if a["repeats"] < 1:
+                sys.exit("--repeats must be an integer >= 1")
+            i += 2
         elif t == "--domain-pack":
             a["domain_pack"].append(argv[i + 1]); i += 2
         elif t == "--org-overlay":
@@ -243,18 +262,65 @@ def expand_probes(entries, bindings):
                 n += 1
 
 
-def run_pack(entries, bindings, adapter, policy):
+def _cited_rule_ids(res):
+    """Rule ids citable from one adapter result (at most one: the first).
+
+    The denying rule id comes from the adapter's matched_rules (a dict
+    of rule ids for reconstructed engines) or from the raw native
+    output's matchedRules entries (codex: the matched prefix). A bare
+    count carries no id.
+    """
+    rid = AT.first_matched_rule_id(res.get("matched_rules"),
+                                   raw=res.get("raw", ""))
+    return [rid] if rid else []
+
+
+def run_pack(entries, bindings, adapter, policy, repeats=3):
+    """Run each probe `repeats` times (default 3, matrix practice).
+
+    One finding per probe. Its top-level actual_decision / verdict (and
+    matched_rules, engine_note, raw_native_output, layer,
+    layer_attribution) are repeat 1 — the primary repeat — so every
+    existing consumer (seal/verify, adjudication, baseline diff,
+    scorecard) reads exactly what a single run produced. The full
+    per-repeat record is in "repeats" (one entry per repeat, in order)
+    and "repeat_summary" aggregates agreement/variance across repeats.
+
+    Non-attempt attribution (tools/attribution.py) is recorded per
+    repeat and mirrored at finding level from repeat 1, but only when
+    the adapter reports an observed effect. Check-run adapters never
+    observe effects (no command is ever executed), so their findings
+    omit the attribution fields rather than inventing one.
+    """
+    if repeats < 1:
+        raise ValueError("--repeats must be >= 1")
     findings = []
     for e, probe_id, family, argv, exp_set, b in expand_probes(
             entries, bindings):
-        res = adapter["run_probe"](argv, policy)
-        actual = res["actual"]
-        if actual == "error":
-            verdict = "not_run"
-        else:
-            verdict = "pass" if actual in exp_set else "fail"
+        repeat_rows = []
+        for i in range(1, repeats + 1):
+            res = adapter["run_probe"](argv, policy)
+            actual = res["actual"]
+            if actual == "error":
+                verdict = "not_run"
+            else:
+                verdict = "pass" if actual in exp_set else "fail"
+            row = {"repeat_index": i,
+                   "actual_decision": actual,
+                   "verdict": verdict,
+                   "matched_rules": res["matched_rules"],
+                   "engine_note": res["note"]}
+            attr = AT.attribute_non_attempt(
+                actual_decision=actual,
+                observed_effect=res.get("observed_effect"),
+                matched_rule_ids=_cited_rule_ids(res))
+            if attr is not None:
+                row.update(attr)
+            repeat_rows.append((res, row))
+        primary_res, primary_row = repeat_rows[0]
+        actual = primary_res["actual"]
         expected_primary = sorted(exp_set)[0]
-        findings.append({
+        finding = {
             "probe_id": probe_id,
             "invariant_id": e["id"],
             "probe_family": family,
@@ -263,18 +329,27 @@ def run_pack(entries, bindings, adapter, policy):
             "expected_decision": expected_primary,
             "expected_decisions": sorted(exp_set),
             "actual_decision": actual,
-            "verdict": verdict,
-            "layer": res["layer"],
-            "layer_attribution": (res["note"] if actual == "unknown"
+            "verdict": primary_row["verdict"],
+            "layer": primary_res["layer"],
+            "layer_attribution": (primary_res["note"] if actual == "unknown"
                                   else ""),
             "evidence_class": adapter["evidence_class"],
-            "matched_rules": res["matched_rules"],
-            "engine_note": res["note"],
-            "raw_native_output": res["raw"],
+            "matched_rules": primary_res["matched_rules"],
+            "engine_note": primary_res["note"],
+            "raw_native_output": primary_res["raw"],
             "source_layer": e.get("source_layer", "core"),
             "private": bool(e.get("private")),
             "expectation_basis": e.get("expectation_basis", ""),
-        })
+            "repeats": [row for _, row in repeat_rows],
+            "repeat_summary": AT.summarize_repeats(
+                [row["actual_decision"] for _, row in repeat_rows]),
+        }
+        if "non_attempt_attribution" in primary_row:
+            finding["non_attempt_attribution"] = \
+                primary_row["non_attempt_attribution"]
+            finding["attribution_rule_id"] = \
+                primary_row["attribution_rule_id"]
+        findings.append(finding)
     return findings
 
 
@@ -310,6 +385,7 @@ def build_run_spec(args, adapter_name, adapter, policy_path, entries,
         "parameter_bindings_sha256": S.sha256_hex(
             S.canonical_json(bindings).encode()),
         "probe_count": None,  # filled by caller
+        "repeats": args["repeats"],
     }
 
 
@@ -439,7 +515,8 @@ def main(argv):
     out_dir = Path(args["out"]) if args["out"] else None
 
     # --- run the probes ---
-    findings = run_pack(entries, bindings, adapter, args["policy"])
+    findings = run_pack(entries, bindings, adapter, args["policy"],
+                        repeats=args["repeats"])
     by_inv = {}
     for f in findings:
         by_inv.setdefault(f["invariant_id"], []).append(f)
@@ -521,6 +598,8 @@ def main(argv):
             if args["only"] is not None:
                 only_pub = [i for i in args["only"] if i in pub_ids]
                 parts += ["--only", ",".join(only_pub)]
+            if args["repeats"] != 3:
+                parts += ["--repeats", str(args["repeats"])]
             if args["baseline"]:
                 parts += ["--baseline", args["baseline"]]
             if args["out"]:

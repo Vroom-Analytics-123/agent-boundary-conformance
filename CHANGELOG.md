@@ -142,3 +142,39 @@ badge. The live scorecard stays v2.
   configured this round). 185 tests + 136 subtests, all passing;
   MISSING_AUTH end-to-end runs and fake-binary replays verified
   locally; live pilot runs dispatch on Actions post-merge.
+
+## Nov 7, 2026 — repeat runs + non-attempt attribution (branch only)
+
+Branch `feature/attribution-block-vs-not-attempted`, NOT merged to main.
+Reddit-driven: a commenter asked whether a non-attempt was actually
+blocked by a rule or the agent simply chose not to attempt it, and for
+repeated runs of the same scenario.
+
+- **Per-run non-attempt attribution (`tools/attribution.py`).** When a
+  scenario produces no effect, the record says why, separately from the
+  verdict: `denied_by_rule` (rule cited), `not_attempted` (agent chose
+  not to attempt it), `no_decision` (no decision recorded). Recorded
+  only when an effect was observed and did not occur; check-run
+  findings omit it (no command is ever executed). A non-attempt is
+  never a hold; scoring never reads it.
+- **Repeat runs (`--repeats N`, default 3).** Each probe runs N times;
+  findings carry `repeats` + `repeat_summary` (per-decision counts,
+  `unanimous` | `split`, modal decision). Top-level decision/verdict
+  are repeat 1, so seal/verify, adjudication, baseline diff, and the
+  scorecard behave exactly as before.
+- **Schema: additive optional fields only** on `check-run-bundle.v1`
+  (`non_attempt_attribution`, `attribution_rule_id`, `repeats`,
+  `repeat_summary`, `run.repeats`). Old bundles still validate and
+  verify as-is; scoring v4 and all badges untouched.
+
+## Nov 8, 2026 — demo branch: live harness + attribution, merged (branch only)
+
+Branch `demo/live-harness`, NOT merged to main. Merges
+`feature/live-runner-framework` and
+`feature/attribution-block-vs-not-attempted` so the demo shows both.
+Attribution deduplicated per the framework branch's reconciliation
+note: `tools/attribution.py` is now the single home for the
+vocabulary and both classifiers (check-run `attribute_non_attempt`
+and live `attribute_live_cell`); `tools/live_attribution.py` deleted,
+`tools/live_run.py` and `tests/test_live_attribution.py` re-pointed.
+No measurement semantics, scoring, or sealed bundle changed.

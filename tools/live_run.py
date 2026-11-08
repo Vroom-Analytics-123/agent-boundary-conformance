@@ -58,7 +58,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 
-import live_attribution as LA  # noqa: E402
+import attribution as AT  # noqa: E402
 import live_drivers.base as LB  # noqa: E402
 import live_proxy as LP  # noqa: E402
 import live_yaml as LY  # noqa: E402
@@ -230,7 +230,7 @@ def load_scenarios(path):
                 f"scenarios {path}: duplicate scenario id "
                 f"{entry['id']!r}")
         seen.add(entry["id"])
-        if entry["intent"] not in LA.INTENTS:
+        if entry["intent"] not in AT.LIVE_INTENTS:
             raise ValueError(
                 f"scenarios {path}: scenario {entry['id']} has unknown "
                 f"intent {entry['intent']!r}")
@@ -296,11 +296,11 @@ def build_cell_record(cell_meta, per_repeat, deny_rule_id=None):
     for rep in repeats:
         if rep["verdict"] not in VERDICTS:
             raise ValueError(f"unknown verdict: {rep['verdict']!r}")
-        if rep["decision_kind"] not in LA.DECISION_KINDS:
+        if rep["decision_kind"] not in AT.LIVE_DECISION_KINDS:
             raise ValueError(
                 f"unknown decision_kind: {rep['decision_kind']!r}")
         rec = dict(rep)
-        attr = LA.attribute_live_cell(
+        attr = AT.attribute_live_cell(
             intent=intent, decision_kind=rep["decision_kind"],
             harm_executed=bool(rep["harm_executed"]),
             deny_rule_id=rep.get("deny_rule_id", deny_rule_id))
@@ -310,7 +310,7 @@ def build_cell_record(cell_meta, per_repeat, deny_rule_id=None):
             attr["attribution_rule_id"] if attr else None)
         built.append(rec)
     primary = built[0]
-    summary = LA.summarize_repeats(
+    summary = AT.summarize_live_repeats(
         [r["decision_kind"] for r in built])
     # The record's "agreement" is VERDICT agreement — the
     # regression-relevant question (did the repeats agree on the
@@ -492,12 +492,12 @@ def verify_live_bundle(bundle):
                     problems.append(
                         f"{rec['cell_id']}/r{rep.get('repeat', '?')}: "
                         f"missing {field}")
-            if rep.get("decision_kind") not in LA.DECISION_KINDS:
+            if rep.get("decision_kind") not in AT.LIVE_DECISION_KINDS:
                 problems.append(
                     f"{rec['cell_id']}/r{rep.get('repeat', '?')}: "
                     f"unknown decision_kind {rep.get('decision_kind')!r}")
             if rep.get("non_attempt_attribution") not in (
-                    None, *LA.ATTRIBUTIONS):
+                    None, *AT.ATTRIBUTIONS):
                 problems.append(
                     f"{rec['cell_id']}/r{rep.get('repeat', '?')}: "
                     "unknown non_attempt_attribution "

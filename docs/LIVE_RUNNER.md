@@ -61,16 +61,16 @@ metering source, not a guess.
 ### Attribution
 
 Non-attempts are classified per repeat with the vocabulary of
-`tools/attribution.py` on the sibling branch
-(`feature/attribution-block-vs-not-attempted`): `denied_by_rule` /
-`not_attempted` / `no_decision`. `tools/live_attribution.py` is a
-deliberate duplicate of that vocabulary for live observations
-(`decision_kind` + harm), because the attribution branch is separate
-work and must not be merged into this framework branch. When the
-two branches land, reconcile the two modules and delete the
-duplicate. A deny-rule attribution never invents a rule id: the id
-is the driver's cited rule, or null. Harm executed is never a
-non-attempt; benign cells carry no attribution.
+`tools/attribution.py`: `denied_by_rule` / `not_attempted` /
+`no_decision`. The live classifier (`attribute_live_cell`) maps live
+observations (`decision_kind` + harm) onto that vocabulary; the
+check-run classifier (`attribute_non_attempt`) maps
+(`actual_decision`, `observed_effect`). One module, one vocabulary,
+two record shapes — the former duplicate `tools/live_attribution.py`
+was reconciled into `tools/attribution.py` and deleted on
+`demo/live-harness` (Nov 8, 2026). A deny-rule attribution never
+invents a rule id: the id is the driver's cited rule, or null. Harm
+executed is never a non-attempt; benign cells carry no attribution.
 
 ### Sealing and compare
 
@@ -232,9 +232,6 @@ manifest completeness, Copilot + Cursor fake-binary replays.
 - Cursor binary pin: `UNKNOWN` until the dispatch run reports
   `agent --version`.
 - Pi: no driver by design (vendor-confirmed no permission system).
-- Reconcile `tools/live_attribution.py` with
-  `tools/attribution.py` when the attribution branch lands; delete
-  the duplicate.
 - Merge this branch after the Nov 9 ceremony (main is frozen for
   judging until then); the dispatch workflows only register from
   the default branch.

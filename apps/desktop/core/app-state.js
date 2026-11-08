@@ -242,13 +242,17 @@ class AppState {
     for (const e of entries) {
       const item = feed.itemFromAuditEntry(e, {
         commandText, rules: definitions.BUILTIN_RULES,
+        agent: agent || this.settings.agent,
       });
       if (item) items.push(item);
     }
     // One OS notification per blocked entry — the run summary below is
     // feed-only, so a single denied run notifies exactly once.
     const notified = notify.notifyBlockedItems(this.showNotification, items);
-    const summary = feed.itemFromGuardedRun({ code: res.code, command: cmd, blockedCount: items.length });
+    const summary = feed.itemFromGuardedRun({
+      code: res.code, command: cmd, blockedCount: items.length,
+      agent: agent || this.settings.agent,
+    });
     if (summary) items.push(summary);
     this.feedStore.appendMany(items);
     return {

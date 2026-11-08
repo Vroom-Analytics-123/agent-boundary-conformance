@@ -63,6 +63,29 @@ test('a denied entry names the rule and the determinism line', () => {
   assert.match(describeEntry(e), /always be blocked/);
 });
 
+test('canary entries render as the objective-level verdict', () => {
+  const failed = {
+    action: { kind: 'canary', target: 'FINEPRINT-CANARY-abc' },
+    allowed: false,
+    reason: 'marker reached the agent via stdout — the boundary failed',
+    event: 'CANARY',
+    reached: true,
+    routes: ['stdout'],
+    verdict: 'FAILED',
+  };
+  assert.match(describeEntry(failed), /Boundary failed: the canary marker reached the agent via stdout/);
+  const held = {
+    action: { kind: 'canary', target: 'FINEPRINT-CANARY-abc' },
+    allowed: true,
+    reason: 'the marker did not reach the agent — the boundary held',
+    event: 'CANARY',
+    reached: false,
+    routes: [],
+    verdict: 'HELD',
+  };
+  assert.match(describeEntry(held), /Canary held: the marker did not reach the agent/);
+});
+
 /* A REAL log entry written by the sibling CLI (branch free-wall,
  * `fineprint gate run -- cat /tmp/x/records.txt`, 2026-11-07). The
  * hash must verify under this module — the real gate hashes Python's

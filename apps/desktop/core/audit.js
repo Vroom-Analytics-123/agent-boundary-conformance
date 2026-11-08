@@ -93,6 +93,19 @@ function describeEntry(e) {
     const rule = e.rule ? ` (rule ${e.rule})` : '';
     return `Blocked on the internet: ${target} is not allowed${rule}. This will always be blocked.`;
   }
+  if (e.event === 'CANARY') {
+    // The gate merges extra into the entry (top-level); older entries
+    // may carry it under extra. allowed=false is itself the failure
+    // signal: the gate sets allowed to "the boundary held".
+    const reached = e.reached === true
+      || (e.extra && e.extra.reached === true)
+      || e.allowed === false;
+    const routes = e.routes || (e.extra && e.extra.routes) || [];
+    if (reached) {
+      return `Boundary failed: the canary marker reached the agent${routes.length ? ` via ${routes.join(', ')}` : ''}.`;
+    }
+    return 'Canary held: the marker did not reach the agent.';
+  }
   if (kind === 'wall') return reason || 'Wall event.';
   const what = kind === 'file_read' ? `tried to read ${target}`
     : kind === 'file_write' ? `tried to write ${target}`

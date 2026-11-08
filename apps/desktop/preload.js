@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld('fineprint', {
   setConfinement: (confine, folders) => ipcRenderer.invoke('fp:set-confinement', confine, folders),
   checkDefinitions: () => ipcRenderer.invoke('fp:check-definitions'),
   feed: () => ipcRenderer.invoke('fp:feed'),
+  feedSummary: () => ipcRenderer.invoke('fp:feed-summary'),
   clearFeed: () => ipcRenderer.invoke('fp:clear-feed'),
   pickFolder: () => ipcRenderer.invoke('fp:pick-folder'),
   pickCli: () => ipcRenderer.invoke('fp:pick-cli'),

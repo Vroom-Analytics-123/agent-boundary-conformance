@@ -17,6 +17,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { AppState } = require('./core/app-state');
+const feed = require('./core/feed');
 
 let state = null;
 let mainWindow = null;
@@ -79,6 +80,7 @@ function wireIpc() {
   ipcMain.handle('fp:set-confinement', async (_e, confine, folders) => state.setConfinement(confine, folders));
   ipcMain.handle('fp:check-definitions', async () => state.checkDefinitions());
   ipcMain.handle('fp:feed', () => state.getFeed());
+  ipcMain.handle('fp:feed-summary', () => feed.summarizeFeed(state.getFeed()));
   ipcMain.handle('fp:clear-feed', () => state.clearFeed());
   ipcMain.handle('fp:pick-folder', async () => {
     const r = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] });

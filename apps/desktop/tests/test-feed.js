@@ -116,3 +116,100 @@ test('FeedStore appends, lists newest first, and persists across instances', () 
   assert.deepEqual(reopened.list(), []);
   assert.deepEqual(new FeedStore(file).list(), []);
 });
+
+/* Boundaries under test (Nov 8): the feed aggregates, it does not just list. */
+
+function blockedItem(overrides = {}) {
+  return {
+    id: `i-${Math.random().toString(36).slice(2, 8)}`,
+    ts: '2026-11-08T10:00:00.000Z',
+    kind: 'blocked',
+    title: 'Blocked: the agent tried to read /tmp/x/records.txt.',
+    detail: '',
+    rule: 'Credential theft',
+    ruleId: 'DENY-RECORDS',
+    rulePlain: '',
+    catalogue: [],
+    deterministic: true,
+    determinismLine: DETERMINISM_LINE,
+    source: 'wall',
+    agent: null,
+    ...overrides,
+  };
+}
+
+test('summarizeFeed counts blocked items by rule, most-blocked first', () => {
+  const { summarizeFeed } = require('../core/feed');
+  const items = [
+    blockedItem({ ruleId: 'DENY-CRED-ENV', rule: 'Credential theft' }),
+    blockedItem({ ruleId: 'DENY-CRED-ENV', rule: 'Credential theft' }),
+    blockedItem({ ruleId: 'DENY-CRED-ENV', rule: 'Credential theft' }),
+    blockedItem({ ruleId: 'DENY-DELETE', rule: 'Destructive deletes' }),
+    { ...blockedItem({ ruleId: null, rule: null }), kind: 'check-pass', title: 'Check passed' },
+  ];
+  const s = summarizeFeed(items);
+  assert.equal(s.total, 5);
+  assert.equal(s.blocked, 4);
+  assert.deepEqual(s.byRule, [
+    { ruleId: 'DENY-CRED-ENV', rule: 'Credential theft', count: 3 },
+    { ruleId: 'DENY-DELETE', rule: 'Destructive deletes', count: 1 },
+  ]);
+  assert.deepEqual(s.byAgent, []);
+});
+
+test('summarizeFeed counts by agent when items carry one; empty when none do', () => {
+  const { summarizeFeed } = require('../core/feed');
+  const items = [
+    blockedItem({ agent: 'codex' }),
+    blockedItem({ agent: 'codex' }),
+    blockedItem({ agent: 'claude' }),
+    blockedItem({}),
+  ];
+  const s = summarizeFeed(items);
+  assert.deepEqual(s.byAgent, [
+    { agent: 'codex', count: 2 },
+    { agent: 'claude', count: 1 },
+  ]);
+  assert.deepEqual(summarizeFeed([blockedItem({})]).byAgent, []);
+  assert.deepEqual(summarizeFeed([]), {
+    total: 0, blocked: 0, byRule: [], byAgent: [],
+  });
+});
+
+test('feed items carry the agent when the run knows it', () => {
+  const item = itemFromAuditEntry(
+    { action: { kind: 'file_read', target: '/tmp/x/records.txt' }, allowed: false, deterministic: true, rule: 'DENY-RECORDS', reason: 'file_read of a protected path' },
+    { rules: BUILTIN_RULES, commandText: 'cat /tmp/x/records.txt', agent: 'codex' },
+  );
+  assert.ok(item);
+  assert.equal(item.agent, 'codex');
+  const summary = itemFromGuardedRun({ code: 2, command: ['cat', '/tmp/x/records.txt'], blockedCount: 1, agent: 'codex' });
+  assert.equal(summary.agent, 'codex');
+  // Without an agent the field stays null — the feed never invents one.
+  const noAgent = itemFromAuditEntry(
+    { action: { kind: 'file_read', target: '/tmp/x/records.txt' }, allowed: false, deterministic: true, rule: 'DENY-RECORDS', reason: 'x' },
+    { rules: BUILTIN_RULES, commandText: 'cat /tmp/x/records.txt' },
+  );
+  assert.equal(noAgent.agent, null);
+});
+
+/* Canary entries in the feed (Nov 8): a FAILED canary is the objective-level
+ * failure and must read as one; a HELD canary is not feed-worthy. */
+
+test('a failed canary becomes a blocked feed item; a held canary does not', () => {
+  const failed = itemFromAuditEntry(
+    { action: { kind: 'canary', target: 'FINEPRINT-CANARY-abc' }, allowed: false, reason: 'marker reached the agent via stdout — the boundary failed', event: 'CANARY', reached: true, routes: ['stdout'] },
+    { rules: BUILTIN_RULES, agent: 'codex' },
+  );
+  assert.ok(failed);
+  assert.equal(failed.kind, 'blocked');
+  assert.match(failed.title, /Boundary failed/);
+  assert.match(failed.title, /stdout/);
+  assert.match(failed.detail, /canary marker reached the agent/);
+  assert.equal(failed.agent, 'codex');
+  const held = itemFromAuditEntry(
+    { action: { kind: 'canary', target: 'FINEPRINT-CANARY-abc' }, allowed: true, reason: 'the marker did not reach the agent — the boundary held', event: 'CANARY', reached: false, routes: [] },
+    { rules: BUILTIN_RULES },
+  );
+  assert.equal(held, null);
+});

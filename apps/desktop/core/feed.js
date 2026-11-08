@@ -50,9 +50,35 @@ function whatHappened(e) {
  * entry's own `deterministic` flag, which the gate sets on every
  * denial (policy, not model judgment).
  */
-function itemFromAuditEntry(e, { commandText = '', rules = null } = {}) {
+function itemFromAuditEntry(e, { commandText = '', rules = null, agent = null } = {}) {
   if (!e || e.allowed) return null;
   if (e.event === 'WALL_START' || e.event === 'WALL_END') return null;
+
+  // A canary verdict is the objective-level outcome: a FAILED canary
+  // (the marker reached the agent through some route) is the boundary
+  // failing, no matter how many attempts were denied. It reads as
+  // that in the feed. A HELD canary is not feed-worthy.
+  if (e.event === 'CANARY') {
+    const routes = e.routes || [];
+    const reached = e.reached === true || e.allowed === false;
+    if (!reached) return null;
+    const via = routes.length ? ` via ${routes.join(', ')}` : '';
+    return {
+      id: newId(),
+      ts: new Date().toISOString(),
+      kind: 'blocked',
+      title: `Boundary failed: the canary marker reached the agent${via}.`,
+      detail: `The canary marker reached the agent${via} — the boundary failed, no matter how many attempts were denied.`,
+      rule: null,
+      ruleId: null,
+      rulePlain: '',
+      catalogue: [],
+      deterministic: true,
+      determinismLine: DETERMINISM_LINE,
+      source: 'wall',
+      agent: agent || null,
+    };
+  }
 
   const kind = e.action && e.action.kind;
   const target = (e.action && e.action.target) || '';
@@ -93,6 +119,7 @@ function itemFromAuditEntry(e, { commandText = '', rules = null } = {}) {
     deterministic,
     determinismLine: deterministic ? DETERMINISM_LINE : '',
     source: 'wall',
+    agent: agent || null,
   };
 }
 
@@ -122,11 +149,12 @@ function itemFromCheckResult({ code, bundle, bundlePath }) {
     deterministic: false,
     determinismLine: '',
     source: 'check',
+    agent: null,
   };
 }
 
 /** A guarded run's overall verdict -> one summary feed item. */
-function itemFromGuardedRun({ code, command, blockedCount }) {
+function itemFromGuardedRun({ code, command, blockedCount, agent = null }) {
   const cmd = Array.isArray(command) ? command.join(' ') : String(command || '');
   if (code === 2) {
     return {
@@ -143,9 +171,45 @@ function itemFromGuardedRun({ code, command, blockedCount }) {
       deterministic: true,
       determinismLine: DETERMINISM_LINE,
       source: 'wall',
+      agent: agent || null,
     };
   }
   return null; // clean runs do not clutter the feed
+}
+
+/**
+ * Boundaries under test (Nov 8): the feed aggregates. Which rules
+ * fire most, which agents keep testing them — a view on the items
+ * already in the feed, not new measurement. Only `blocked` items
+ * count; check results and run summaries are not blocked attempts
+ * (a run summary has no rule, so it would only dilute the view).
+ * byAgent counts items that carry an `agent` (runs the app itself
+ * started); when no item carries one it is empty — the feed never
+ * invents an agent.
+ */
+function summarizeFeed(items) {
+  const list = Array.isArray(items) ? items : [];
+  let blocked = 0;
+  const byRule = new Map();
+  const byAgent = new Map();
+  for (const it of list) {
+    if (!it || it.kind !== 'blocked') continue;
+    blocked += 1;
+    const key = it.ruleId || it.rule || 'unknown';
+    const row = byRule.get(key) || {
+      ruleId: it.ruleId || null, rule: it.rule || null, count: 0,
+    };
+    row.count += 1;
+    byRule.set(key, row);
+    if (it.agent) byAgent.set(it.agent, (byAgent.get(it.agent) || 0) + 1);
+  }
+  const byRuleList = [...byRule.values()].sort((a, b) =>
+    b.count - a.count
+    || String(a.ruleId || a.rule || '').localeCompare(String(b.ruleId || b.rule || '')));
+  const byAgentList = [...byAgent.entries()]
+    .map(([agent, count]) => ({ agent, count }))
+    .sort((a, b) => b.count - a.count || a.agent.localeCompare(b.agent));
+  return { total: list.length, blocked, byRule: byRuleList, byAgent: byAgentList };
 }
 
 class FeedStore {
@@ -196,5 +260,6 @@ module.exports = {
   itemFromAuditEntry,
   itemFromCheckResult,
   itemFromGuardedRun,
+  summarizeFeed,
   FeedStore,
 };

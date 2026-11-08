@@ -28,14 +28,25 @@ function verdictHtml(v) {
   return `<div class="verdict ${esc(v.status)}"><h3>${esc(v.title)}</h3><p>${esc(v.detail)}</p></div>`;
 }
 
+/** Boundaries under test: which rules fire most, which agents keep
+ * testing them. A view on the feed items, not new measurement. */
+function summaryHtmlFor(s) {
+  if (!s || !s.blocked) return '';
+  const rules = (s.byRule || []).map((r) => `${esc(r.ruleId || r.rule || 'unknown')} ×${r.count}`).join(', ');
+  const agents = (s.byAgent || []).length
+    ? ` · by agent: ${(s.byAgent || []).map((a) => `${esc(a.agent)} ×${a.count}`).join(', ')}`
+    : ' · no agent recorded';
+  return `<div class="feed-summary"><p><strong>Boundaries under test:</strong> ${s.blocked} blocked attempt${s.blocked === 1 ? '' : 's'}${rules ? ` · ${rules}` : ''}${agents}</p></div>`;
+}
+
 function renderFeed() {
-  fp.feed().then((items) => {
+  Promise.all([fp.feed(), fp.feedSummary()]).then(([items, summary]) => {
     const list = $('feedList');
     if (!items.length) {
       list.innerHTML = '<p class="muted">Nothing yet — run a check or run your agent inside the wall.</p>';
       return;
     }
-    list.innerHTML = items.map((it) => {
+    list.innerHTML = summaryHtmlFor(summary) + items.map((it) => {
       const when = it.ts ? new Date(it.ts).toLocaleString() : '';
       const rule = it.rule ? `<p class="rule">Stopped by: ${esc(it.rule)}${it.catalogue && it.catalogue.length ? ` (${esc(it.catalogue.join(', '))})` : ''}</p>` : '';
       const det = it.determinismLine ? `<p class="determinism">${esc(it.determinismLine)}</p>` : '';

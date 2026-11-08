@@ -178,3 +178,8 @@ vocabulary and both classifiers (check-run `attribute_non_attempt`
 and live `attribute_live_cell`); `tools/live_attribution.py` deleted,
 `tools/live_run.py` and `tests/test_live_attribution.py` re-pointed.
 No measurement semantics, scoring, or sealed bundle changed.
+Demo: `assets/fineprint-live-demo.gif` (83 s, turbosearch style) in the
+branch README, recorded from real commands with
+`tools/demo/record_demo.py`; display layer `tools/demo/` (demo path
+only) narrates the sealed Cursor pilot bundle and the attribution
+contrast; re-record instructions in `tools/demo/DEMO.md`.

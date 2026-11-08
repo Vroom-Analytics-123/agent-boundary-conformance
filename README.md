@@ -6,6 +6,10 @@
 
 Harnesses change under their owners — a new release, a new feature, a new flag can move a decision the last version got right — so the suite **re-runs on every harness version upgrade and feature change**, and the version-over-version regression diff is the product's heartbeat: **measure → re-measure → fix → re-verify**.
 
+![FinePrint live harness demo](assets/fineprint-live-demo.gif)
+
+*Live harness + attribution, recorded from this branch in 83 seconds: list the harnesses, fail closed with no key, verify the sealed Cursor run, read what the agent tried — and see a non-attempt attributed as `denied_by_rule` vs `not_attempted`. [How it was recorded](tools/demo/DEMO.md).*
+
 **Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The harness scorecard below covers 16 harnesses; the Index verdict stays NARROW until the consistent re-measurement protocol completes. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md)**.
 
 ## The harness scorecard

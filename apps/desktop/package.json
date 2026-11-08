@@ -1,0 +1,47 @@
+{
+  "author": "Vroom Analytics",
+  "description": "FinePrint desktop app \u2014 the free wall without a terminal. A GUI around the fineprint CLI; it never reimplements measurement or enforcement.",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "electron-packager": "^17.1.2"
+  },
+  "license": "Apache-2.0",
+  "main": "main.js",
+  "name": "fineprint-desktop",
+  "scripts": {
+    "package:linux": "electron-packager . FinePrint --platform=linux --arch=x64 --out=dist --overwrite",
+    "package:mac": "bash packaging/build-mac.sh",
+    "package:win": "bash packaging/build-win.sh",
+    "record-demo": "bash packaging/record-demo.sh",
+    "start": "electron .",
+    "test": "node --test tests/test-*.js",
+    "test:real-cli": "FINEPRINT_REAL_CLI=1 node --test tests/test-real-cli.js"
+  },
+  "build": {
+    "appId": "com.vroomanalytics.fineprint",
+    "productName": "FinePrint",
+    "files": [
+      "main.js",
+      "preload.js",
+      "core/**/*",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.developer-tools"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "version": "0.1.0"
+}

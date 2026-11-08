@@ -52,3 +52,8 @@ evidence/cross-tier-2026-10-22/amp_t2_fidelity_heldout.local.json
 .env.*.local
 *.pem
 *.key
+
+# FinePrint desktop app (apps/desktop)
+apps/desktop/node_modules/
+apps/desktop/dist/
+apps/desktop/*.log

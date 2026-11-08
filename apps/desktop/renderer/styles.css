@@ -1,0 +1,92 @@
+/* FinePrint desktop — colours match the repo scorecard palette. */
+:root {
+  --canvas: #0f1b2d;
+  --panel: #1b2a42;
+  --card: #223452;
+  --text: #e8edf3;
+  --muted: #aab4c4;
+  --teal: #2aa5a0;
+  --green: #3fa46a;
+  --red: #d95d4e;
+  --amber: #e8a838;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text);
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+header { padding: 18px 24px 0; }
+header h1 { margin: 0; font-size: 26px; }
+.protection { color: var(--teal); font-weight: 600; margin: 4px 0 0; }
+nav { display: flex; gap: 8px; padding: 14px 24px; }
+.nav-btn, button {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #33507a;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.nav-btn.active, button:hover { border-color: var(--teal); }
+button.quiet { opacity: 0.75; }
+main { padding: 0 24px 32px; }
+.view.hidden, .hidden { display: none; }
+.card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.card h2 { margin: 0 0 8px; font-size: 19px; }
+.card h3 { margin: 16px 0 6px; font-size: 15px; }
+.muted { color: var(--muted); }
+.row { display: flex; gap: 8px; margin: 10px 0; align-items: center; flex-wrap: wrap; }
+input[type="text"] {
+  background: var(--canvas);
+  color: var(--text);
+  border: 1px solid #33507a;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+label.toggle { display: block; margin: 12px 0; }
+.policy-box {
+  background: var(--panel);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin: 12px 0;
+  white-space: pre-wrap;
+}
+.output {
+  background: #0a1220;
+  border-radius: 6px;
+  padding: 12px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+.verdict { border-radius: 6px; padding: 12px 14px; margin: 12px 0; }
+.verdict.pass, .verdict.allowed { background: #123626; border: 1px solid var(--green); }
+.verdict.blocked, .verdict.denied { background: #3d1713; border: 1px solid var(--red); }
+.verdict.unknown, .verdict.error, .verdict.wall-unavailable { background: #3a2f10; border: 1px solid var(--amber); }
+.verdict h3 { margin: 0 0 4px; }
+.feed-item {
+  border-left: 4px solid var(--muted);
+  padding: 8px 12px;
+  margin: 8px 0;
+  background: var(--panel);
+  border-radius: 0 6px 6px 0;
+}
+.feed-item.blocked { border-left-color: var(--red); }
+.feed-item.check-pass { border-left-color: var(--green); }
+.feed-item.check-blocked { border-left-color: var(--red); }
+.feed-item.check-unknown { border-left-color: var(--amber); }
+.feed-item .rule { color: var(--amber); font-weight: 600; }
+.feed-item .determinism { color: var(--teal); font-style: italic; }
+.feed-item time { color: var(--muted); font-size: 12px; }
+.agent-btn.selected { border-color: var(--teal); background: #14333a; }
+code { background: var(--panel); padding: 1px 5px; border-radius: 4px; }

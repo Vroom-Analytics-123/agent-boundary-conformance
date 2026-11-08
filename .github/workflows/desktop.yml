@@ -1,0 +1,68 @@
+name: FinePrint desktop
+
+# Native builds + tests on every push to the free-wall-app branch.
+# The macOS .dmg and Windows installer are built on their own runners
+# (electron-packager can assemble a macOS .app on Linux, but the .dmg
+# and the signed installers need the native toolchains).
+on:
+  push:
+    branches: [free-wall-app]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Unit + integration tests (stub CLI)
+        run: |
+          cd apps/desktop
+          npm test
+      - name: Real-CLI integration tests
+        run: |
+          cd apps/desktop
+          FINEPRINT_REAL_CLI=1 FINEPRINT_REAL_CLI_PATH="$GITHUB_WORKSPACE/fineprint" npm run test:real-cli
+        # The real CLI is this repo's own free-check-gate work: when the
+        # workflow runs on a checkout that has it, the test runs against
+        # it; otherwise it is skipped by the test itself.
+
+  build:
+    needs: test
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install
+        run: |
+          cd apps/desktop
+          npm ci
+      - name: Package (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd apps/desktop
+          bash packaging/build-mac.sh
+      - name: Package (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd apps/desktop
+          bash packaging/build-win.sh
+      - name: Package (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd apps/desktop
+          npm run package:linux
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: fineprint-desktop-${{ matrix.os }}
+          path: apps/desktop/dist/
+          if-no-files-found: warn

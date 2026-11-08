@@ -1,0 +1,476 @@
+#!/usr/bin/env python3
+"""Stub `fineprint` CLI for the desktop app's tests ONLY.
+
+Mirrors the REAL sibling CLI (branch free-wall) closely enough that the
+app's tests exercise the real contract:
+  check            exit 0/2/3 by STUB_CHECK_RESULT (pass/blocked/unknown);
+                   writes ./fineprint-evidence/check-<stamp>/bundle.json
+  init --gate      writes fineprint-gate.json (the sibling GATE_POLICY shape)
+  gate run         tripwire pre-flight (check_command + argv scan);
+                   in wall mode (default) also refuses a script whose
+                   CONTENTS name a path the rules deny — a small, labelled
+                   approximation of the real wall (which hides the file
+                   at the OS level). Never reads the secret itself.
+                   --confine switches the policy to confine mode.
+  gate check       allow/deny one file or host (deny-first)
+  gate definitions prints the definitions version in force (built-in v1)
+  gate verify-log  verifies the log's hash chain
+  gate log         renders the log in plain words
+  verify/report    minimal, for parsing tests
+  harnesses        lists codex / claude-code / muse-code
+
+Built-in definitions v1 (copied from tools/fineprint_definitions.py):
+11 rules, version 2026-11-07. Path patterns are fnmatch globs on the
+full resolved path ("*" matches "/" too). Command rules match the
+basename of argv[0] and fire only when one of any_flag appears.
+
+Audit entries use the same hash chain as the real gate (sha256 of
+json.dumps(entry, sort_keys=True) — SPACED separators — linked by
+prev_hash), and denied entries carry "deterministic": true and
+"rule": "<RULE-ID>", so the app's audit module can verify the stub's
+log exactly like a real one.
+"""
+import fnmatch
+import hashlib
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+ZERO = "0" * 64
+BUILTIN_VERSION = "2026-11-07"
+
+BUILTIN_RULES = [
+    {"id": "DENY-CRED-SSH", "kind": "path",
+     "patterns": ["**/.ssh", "**/.ssh/**"],
+     "description": "SSH private keys and config"},
+    {"id": "DENY-CRED-AWS", "kind": "path",
+     "patterns": ["**/.aws", "**/.aws/**"], "description": "AWS credentials"},
+    {"id": "DENY-CRED-ENV", "kind": "path",
+     "patterns": ["**/.env"], "description": ".env files (secrets)"},
+    {"id": "DENY-CRED-PEM", "kind": "path",
+     "patterns": ["**/*key*.pem", "**/*private*.pem"],
+     "description": "PEM private keys"},
+    {"id": "DENY-CRED-KEY", "kind": "path",
+     "patterns": ["**/id_rsa*", "**/id_ed25519*"],
+     "description": "SSH private key files"},
+    {"id": "DENY-CRED-TOKEN", "kind": "path",
+     "patterns": ["**/.git-credentials"], "description": "stored git credentials"},
+    {"id": "DENY-RECORDS", "kind": "path",
+     "patterns": ["**/records.txt", "**/records/health"],
+     "description": "the protected records file (FP-016)"},
+    {"id": "DENY-DELETE", "kind": "command", "match": "rm",
+     "match_kind": "exact",
+     "any_flag": ["-r", "-f", "-rf", "-fr", "-R", "--recursive", "--force"],
+     "description": "destructive delete (rm -r/-f)"},
+    {"id": "DENY-SHRED", "kind": "command", "match": "shred",
+     "match_kind": "exact", "description": "secure delete (shred)"},
+    {"id": "DENY-UNLINK", "kind": "command", "match": "unlink",
+     "match_kind": "exact",
+     "description": "unlink — the bypass around the rm filter"},
+    {"id": "DENY-DEPLOY", "kind": "command", "match": "*deploy*",
+     "match_kind": "glob",
+     "description": "unapproved deploy (a command named *deploy*)"},
+]
+
+
+def _canon(entry):
+    # Same as the real gate: json.dumps(entry, sort_keys=True) — SPACED.
+    return json.dumps(entry, sort_keys=True).encode()
+
+
+class Log:
+    def __init__(self, path):
+        self.path = path
+        self.prev = ZERO
+        if path and os.path.exists(path) and os.path.getsize(path) > 0:
+            with open(path) as f:
+                for line in f:
+                    if line.strip():
+                        self.prev = json.loads(line)["hash"]
+
+    def append(self, action, allowed, reason, rule=None, event=None,
+               note="", extra=None):
+        e = {"action": action, "allowed": allowed, "reason": reason,
+             "note": note, "prev_hash": self.prev}
+        if event:
+            e["event"] = event
+        if extra:
+            e.update(extra)
+        if not allowed:
+            e["deterministic"] = True
+            if rule:
+                e["rule"] = rule
+        e["hash"] = hashlib.sha256(_canon(e)).hexdigest()
+        if self.path:
+            with open(self.path, "a") as f:
+                f.write(json.dumps(e, sort_keys=True) + "\n")
+        self.prev = e["hash"]
+        return e
+
+    def verify(self):
+        prev = ZERO
+        with open(self.path) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                e = json.loads(line)
+                h = e.pop("hash")
+                if e["prev_hash"] != prev:
+                    return False
+                if hashlib.sha256(_canon(e)).hexdigest() != h:
+                    return False
+                prev = h
+        return True
+
+
+class Policy:
+    def __init__(self, doc):
+        self.mode = doc.get("mode", "deny")
+        if self.mode not in ("deny", "confine"):
+            self.mode = "deny"
+        self.allowed_paths = [os.path.realpath(p)
+                              for p in doc.get("allowed_paths", ())]
+        self.allowed_hosts = [h.lower()
+                              for h in doc.get("allowed_hosts", ())]
+        self.denied_paths = list(doc.get("denied_paths", ()))
+        self.denied_hosts = [h.lower()
+                             for h in doc.get("denied_hosts", ())]
+        self.allowed_commands = list(doc.get("allowed_commands", ()))
+
+
+def _policy(path):
+    return Policy(json.loads(Path(path).read_text()))
+
+
+def _path_rule(real, rules=BUILTIN_RULES):
+    for rule in rules:
+        if rule.get("kind") != "path":
+            continue
+        for pattern in rule.get("patterns", []):
+            if fnmatch.fnmatch(real, pattern):
+                return rule["id"]
+    return None
+
+
+def _denied_path_rule(real, pol):
+    rule = _path_rule(real)
+    if rule:
+        return rule
+    for pattern in pol.denied_paths:
+        if fnmatch.fnmatch(real, pattern):
+            return "DENY-PATH"
+    return None
+
+
+def _decide(action, pol):
+    if action["kind"] in ("file_read", "file_write"):
+        t = action["target"]
+        real = os.path.realpath(t)
+        rule = _denied_path_rule(real, pol)
+        if rule:
+            return (False,
+                    f"{action['kind']} of a protected path: {t!r} resolves "
+                    f"to {real!r}", rule)
+        if pol.mode == "confine":
+            if ".." in Path(t).parts:
+                return (False, f"path traversal rejected: {t!r} contains "
+                        "'..'", "CONFINE-PATH")
+            for p in pol.allowed_paths:
+                if real == p or real.startswith(p.rstrip(os.sep) + os.sep):
+                    return True, f"{action['kind']} under allowed path {p}", None
+            return (False, f"{action['kind']} outside allowed paths: {t!r} "
+                    f"resolves to {real!r}", "CONFINE-PATH")
+        return True, f"{action['kind']} of a normal path: {t!r}", None
+    if action["kind"] == "network":
+        host = action["target"].lower().split("/")[0].split(":")[0]
+        if host in pol.denied_hosts:
+            return False, f"host {host} denied by policy", "DENY-HOST"
+        if pol.mode == "confine":
+            if host in pol.allowed_hosts:
+                return True, f"host {host} allowlisted", None
+            return False, f"host {host} not allowlisted", "CONFINE-HOST"
+        return True, f"host {host} not denied", None
+    return False, f"unknown action kind {action['kind']!r}", None
+
+
+def _command_rule(argv, rules=BUILTIN_RULES):
+    if not argv:
+        return None
+    base = os.path.basename(argv[0])
+    flags = set(argv[1:])
+    for rule in rules:
+        if rule.get("kind") != "command":
+            continue
+        hit = (fnmatch.fnmatch(base, rule["match"])
+               if rule.get("match_kind") == "glob" else base == rule["match"])
+        if not hit:
+            continue
+        any_flag = rule.get("any_flag")
+        if any_flag and not (flags & set(any_flag)):
+            continue
+        return rule["id"]
+    return None
+
+
+def _check_command(argv, pol, log):
+    base = os.path.basename(argv[0])
+    for pattern in pol.allowed_commands:
+        if fnmatch.fnmatch(base, pattern) or fnmatch.fnmatch(argv[0], pattern):
+            return None
+    if base in ("cp", "scp", "rsync", "curl", "wget"):
+        for tok in argv[1:]:
+            if tok.startswith("-"):
+                continue
+            real = os.path.realpath(tok)
+            if _denied_path_rule(real, pol):
+                reason = (f"exfiltration of a protected file: {tok!r} "
+                          f"resolves to {real!r}")
+                if log is not None:
+                    log.append({"kind": "exec", "target": " ".join(argv)},
+                               False, reason, rule="DENY-EXFIL",
+                               note="pre-flight: " + " ".join(argv))
+                return reason, "DENY-EXFIL"
+    rule = _command_rule(argv)
+    if rule:
+        desc = next((r.get("description", "") for r in BUILTIN_RULES
+                     if r["id"] == rule), "")
+        reason = (f"command denied by definitions ({desc}): "
+                  f"{' '.join(argv)}")
+        if log is not None:
+            log.append({"kind": "exec", "target": " ".join(argv)},
+                       False, reason, rule=rule,
+                       note="pre-flight: " + " ".join(argv))
+        return reason, rule
+    return None
+
+
+def _scan(argv):
+    """argv tokens after argv[0] -> actions (same shape as the real tripwire)."""
+    out = []
+    for tok in argv[1:]:
+        if tok.startswith("-"):
+            if "=" in tok:
+                out.extend(_scan(["x", tok.split("=", 1)[1]]))
+            continue
+        if "://" in tok:
+            out.append({"kind": "network", "target": tok})
+        else:
+            out.append({"kind": "file_read", "target": tok})
+    return out
+
+
+def cmd_check(args):
+    result = os.environ.get("STUB_CHECK_RESULT", "pass")
+    stamp = "20261107-000000"
+    outdir = Path.cwd() / "fineprint-evidence" / f"check-{stamp}"
+    outdir.mkdir(parents=True, exist_ok=True)
+    if result == "blocked":
+        results = [{"invariant_id": "FP-001", "intent_coverage": "NOT_SATISFIED",
+                    "probe_rows": []}]
+        code = 2
+    elif result == "unknown":
+        results = [{"invariant_id": "FP-002", "intent_coverage": "UNKNOWN",
+                    "probe_rows": [{"unknown_kind": "unsupported-adapter"}]}]
+        code = 3
+    else:
+        results = [{"invariant_id": "FP-001", "intent_coverage": "SATISFIED",
+                    "probe_rows": []}]
+        code = 0
+    (outdir / "bundle.json").write_text(json.dumps({"invariant_results": results}))
+    print("auto-detected: codex (stub)")
+    print(f"bundle: {outdir / 'bundle.json'}")
+    return code
+
+
+def cmd_init(args):
+    if "--gate" in args:
+        Path("fineprint-gate.json").write_text(json.dumps({
+            "$comment": "Free gate policy. mode 'deny' is the protective "
+                        "denylist; mode 'confine' is the folder allowlist "
+                        "(opt-in).",
+            "mode": "deny",
+            "denied_paths": [], "denied_hosts": [],
+            "allowed_commands": [],
+            "allowed_paths": ["."], "allowed_hosts": []}, indent=2) + "\n")
+        print("  wrote fineprint-gate.json (free gate policy (protective denylist))")
+    print("next: fineprint check")
+    return 0
+
+
+def cmd_gate_run(args):
+    policy = log = None
+    no_wall = False
+    confine = False
+    i = 0
+    cmd = []
+    while i < len(args):
+        if args[i] == "--policy":
+            policy = args[i + 1]; i += 2
+        elif args[i] == "--log":
+            log = args[i + 1]; i += 2
+        elif args[i] == "--no-wall":
+            no_wall = True; i += 1
+        elif args[i] == "--confine":
+            confine = True; i += 1
+        elif args[i] == "--":
+            cmd = args[i + 1:]; break
+        else:
+            i += 1
+    if policy is None:
+        print("gate run: --policy is required"); return 3
+    if not cmd:
+        print("gate run: a command is required after --"); return 3
+    pol = _policy(policy)
+    if confine:
+        pol.mode = "confine"
+    lg = Log(log)
+    denied = _check_command(cmd, pol, lg)
+    if denied:
+        reason, rule = denied
+        print(f"GATE: DENY — {reason} (rule {rule})")
+        print("refusing to run: " + " ".join(cmd))
+        return 2
+    for a in _scan(cmd):
+        ok, reason, rule = _decide(a, pol)
+        lg.append(a, ok, reason, rule=rule,
+                  note="pre-flight: " + " ".join(cmd))
+        if not ok:
+            print(f"GATE: DENY — {reason} (rule {rule})")
+            print("refusing to run: " + " ".join(cmd))
+            return 2
+    if not no_wall:
+        # Stub wall approximation: refuse a script whose CONTENTS name a
+        # path the rules deny (the real wall hides the file at the OS
+        # level; the stub refuses up front and says so).
+        for tok in cmd[1:]:
+            if tok.endswith(".sh") and os.path.exists(tok):
+                text = Path(tok).read_text()
+                for line in text.splitlines():
+                    for word in line.split():
+                        if word.startswith("/") and os.path.exists(word):
+                            ok, _, _ = _decide(
+                                {"kind": "file_read", "target": word}, pol)
+                            if not ok:
+                                print(f"wall: {word} is outside the allowed "
+                                      f"scope (stub wall: script contents)")
+                                return 1
+        lg.append({"kind": "wall", "target": "start"}, True,
+                  "wall up: stub wall", event="WALL_START",
+                  extra={"mode": pol.mode, "definitions": BUILTIN_VERSION,
+                         "hidden_paths": [], "egress": "deny"})
+        proc = subprocess.run(cmd)
+        lg.append({"kind": "wall", "target": "end"}, proc.returncode == 0,
+                  f"wall down: exit {proc.returncode}", event="WALL_END",
+                  extra={"exit_code": proc.returncode})
+        return proc.returncode
+    proc = subprocess.run(cmd)
+    return proc.returncode
+
+
+def cmd_gate_check(args):
+    policy = None
+    action = None
+    i = 0
+    while i < len(args):
+        if args[i] == "--policy":
+            policy = args[i + 1]; i += 2
+        elif args[i] == "--file":
+            action = {"kind": "file_read", "target": args[i + 1]}; i += 2
+        elif args[i] == "--host":
+            action = {"kind": "network", "target": args[i + 1]}; i += 2
+        else:
+            i += 1
+    if policy is None or action is None:
+        print("gate check: --policy plus --file or --host is required"); return 3
+    pol = _policy(policy)
+    ok, reason, rule = _decide(action, pol)
+    suffix = f" (rule {rule})" if not ok and rule else ""
+    print(f"GATE: {'ALLOW' if ok else 'DENY'} — {reason}{suffix}")
+    return 0 if ok else 2
+
+
+def cmd_gate_definitions(args):
+    print(f"definitions: v{BUILTIN_VERSION} (built-in)")
+    print(f"rules: {len(BUILTIN_RULES)}")
+    for r in BUILTIN_RULES:
+        print(f"  {r['id']:<18} {r['kind']:<8} {r['description']}")
+    print("update: a new pack ships with a FinePrint release "
+          "(git pull, or a new release) — the wall verifies its "
+          "signature before applying it.")
+    return 0
+
+
+def cmd_gate_log(args):
+    log = args[args.index("--log") + 1] if "--log" in args else None
+    if not log or not os.path.exists(log):
+        print(f"gate log: no such file: {log}"); return 3
+    ok = Log(log).verify()
+    if not ok:
+        print(f"audit log {log}: BROKEN — the hash chain does not verify")
+        return 2
+    entries = [json.loads(l) for l in Path(log).read_text().splitlines()
+               if l.strip()]
+    print(f"audit log {log}: valid ({len(entries)} entries)")
+    for e in entries:
+        if e.get("event") == "WALL_START":
+            print(f"wall up: {e.get('mode', '?')} mode, definitions "
+                  f"{e.get('definitions', '?')}")
+            continue
+        if e.get("event") == "WALL_END":
+            print(f"wall down: {e.get('note', '')}")
+            continue
+        target = e.get("action", {}).get("target", "?")
+        if e.get("allowed"):
+            print(f"tried {target} -> allowed")
+        elif e.get("rule"):
+            print(f"tried {target} -> blocked by rule {e['rule']} -> "
+                  f"will always be blocked")
+        else:
+            print(f"tried {target} -> blocked -> will always be blocked")
+    return 0
+
+
+def cmd_verify_log(args):
+    log = args[args.index("--log") + 1] if "--log" in args else None
+    if not log or not os.path.exists(log):
+        print(f"gate verify-log: no such file: {log}"); return 3
+    ok = Log(log).verify()
+    print(f"audit log {log}: {'valid' if ok else 'INVALID'}")
+    return 0 if ok else 1
+
+
+def main(argv):
+    if not argv or argv[0] in ("-h", "--help"):
+        print("stub fineprint — test double for the desktop app")
+        return 0
+    if argv[0] == "--version":
+        print("fineprint free-check 0.1.0 (stub)")
+        return 0
+    cmd, rest = argv[0], argv[1:]
+    if cmd == "check":
+        return cmd_check(rest)
+    if cmd == "init":
+        return cmd_init(rest)
+    if cmd == "gate" and rest and rest[0] == "run":
+        return cmd_gate_run(rest[1:])
+    if cmd == "gate" and rest and rest[0] == "check":
+        return cmd_gate_check(rest[1:])
+    if cmd == "gate" and rest and rest[0] == "definitions":
+        return cmd_gate_definitions(rest[1:])
+    if cmd == "gate" and rest and rest[0] == "log":
+        return cmd_gate_log(rest[1:])
+    if cmd == "gate" and rest and rest[0] == "verify-log":
+        return cmd_verify_log(rest[1:])
+    if cmd == "verify":
+        print("bundle seal: valid"); return 0
+    if cmd == "report":
+        print("verdict: pass"); return 0
+    if cmd == "harnesses":
+        print("codex\nclaude-code\nmuse-code"); return 0
+    print(f"stub: unknown command {cmd!r}"); return 3
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

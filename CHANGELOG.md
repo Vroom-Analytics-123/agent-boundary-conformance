@@ -124,3 +124,21 @@ badge. The live scorecard stays v2.
   provider 503 high demand, auth working, sentinel intact both times.
   No badge change; no policy verdict claimed.
 - **Nov 3 — tag v0.1.1** on main (at `cc5c7faf`).
+- **Nov 7 — live-runner framework** (branch
+  `feature/live-runner-framework`, unmerged; main frozen for judging
+  until the Nov 9 ceremony). One CLI (`tools/live_run.py`), driver
+  plugins (`tools/live_drivers/`), one record schema
+  (`schemas/live_run_record.v1.schema.json`), proxy lifecycle
+  (`tools/live_proxy.py`), Merkle sealing, and `compare` against the
+  sealed Nov 4 bundles as regression oracles. Simplicity bar: a first
+  verdict is one command naming the harness
+  (`live_run.py copilot-cli`), no config file, no flags. 16 live
+  manifests (`adapters/*.live.yaml`); the Claude, Gemini, and
+  Omnigent proxies vendored into the repo (`tools/proxies/`).
+  Pilots: Copilot driver (reuses the sealed full-matrix runner;
+  model observed per cell from stdout metrics) and Cursor driver
+  (`CURSOR_API_KEY` landed in repo secrets 2026-11-08T00:28:27Z;
+  `agent -p --force --output-format stream-json`; no deny rule
+  configured this round). 185 tests + 136 subtests, all passing;
+  MISSING_AUTH end-to-end runs and fake-binary replays verified
+  locally; live pilot runs dispatch on Actions post-merge.

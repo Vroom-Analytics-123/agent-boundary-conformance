@@ -1,0 +1,43 @@
+# Live manifest: Goose
+harness: goose
+display_name: Goose
+status: live
+driver: null
+binary:
+  name: goose
+  version_pin: "1.57.0"
+  install_recipe: "UNKNOWN"
+  unknown_settled_by: "The goose install recipe (installer URL / package) is not recorded in the repo. Settle from the Nov 4 goose run notes."
+auth:
+  method: dummy+proxy
+  secret_name: null
+  account: null
+  status: "dummy key + localhost proxy; no real credential in the agent env"
+model:
+  pinned: beam-free
+  pinned_note: "Beam model via the cheaper arm proxy."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy:
+  script: tools/live_proxy.py
+  port: 8891
+  args:
+    - serve
+    - --port
+    - "8891"
+    - --arm
+    - cheaper
+    - --model
+    - beam-free
+  health_path: /health
+workflow: "UNKNOWN"
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/goose-live/bundle.json
+  merkle: 3b49c461229bc0a45cb3cd2afb9596c67cb2ba1a958464bd8a3bc46959edaf0c
+caveats:
+  - "72 cells (24 variants x 3 repeats)."
+  - "No vendor policy by default."

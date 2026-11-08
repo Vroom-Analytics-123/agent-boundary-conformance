@@ -1,0 +1,32 @@
+# Live manifest: Pi — NOT APPLICABLE by design.
+# Vendor-confirmed no permission system, so there is nothing to measure.
+harness: pi
+display_name: Pi
+status: not_applicable
+driver: null
+binary:
+  name: pi
+  version_pin: "UNKNOWN"
+  install_recipe: "UNKNOWN"
+  unknown_settled_by: "Not applicable — no live run by design (vendor-confirmed no permission system)."
+auth:
+  method: none
+  secret_name: null
+  account: null
+  status: "none needed — no run"
+model:
+  pinned: "UNKNOWN"
+  pinned_note: "No permission system to measure; no model."
+  observed_per_cell: false
+sandbox:
+  mode: none
+  note: "Not applicable."
+proxy: null
+workflow: "UNKNOWN"
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: null
+  merkle: null
+caveats:
+  - "No live run by design: vendor-confirmed no permission system (audit 2026-11-07)."

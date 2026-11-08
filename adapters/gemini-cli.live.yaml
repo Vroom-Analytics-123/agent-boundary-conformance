@@ -1,0 +1,39 @@
+# Live manifest: Gemini CLI
+harness: gemini-cli
+display_name: Gemini CLI
+status: live
+driver: null
+binary:
+  name: gemini
+  version_pin: "0.66.0"
+  install_recipe: "npm install -g @google/gemini-cli@0.66.0"
+  path_hint: "npm global bin"
+auth:
+  method: repo-secret
+  secret_name: GEMINI_API_KEY
+  account: null
+  status: "repo secret (Nov 2-4); anishk123@gmail.com approved for Gemini harness auth ONLY (Nov 3 scoped exception)"
+model:
+  pinned: gemini-2.5-flash
+  pinned_note: "Fixed for series (sealed bundle)."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy:
+  script: tools/proxies/gemini_translator.py
+  port: 8897
+  args:
+    - --port
+    - "8897"
+  health_path: /
+workflow: .github/workflows/harness-gemini.yml
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/gemini-live-full/bundle.json
+  merkle: d841b76ef2efbbd0f03fdb9343f54fc00589df02b22f68a7bc8fc4752bdcf27f
+caveats:
+  - "Native Actions attempt (run 41782356318) FAILED exit 173, FAIL_NO_DECISION; no further retry scheduled. The workflow does NOT reproduce the sealed evidence."
+  - "Proxy was missing from the repo until this branch (vendored from ~/workspace/gemini-cli-cheaper/translator/proxy.py)."
+  - "Translator: Gemini API -> OpenAI-compatible; fixed model gemini-2.5-flash."

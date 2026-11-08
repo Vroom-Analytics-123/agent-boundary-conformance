@@ -1,0 +1,37 @@
+# Live manifest: Amp
+# Sealed Nov 4 bundle is the regression oracle; this manifest records
+# the live-run path as established by docs/live-runs-audit-2026-11-07.md.
+# A pin is either concrete (from a sealed bundle) or UNKNOWN with a
+# settle note. Never guess a pin.
+harness: amp
+display_name: Amp
+status: live
+driver: null
+binary:
+  name: amp
+  version_pin: "0.0.1793793640-g2084a9"
+  install_recipe: "UNKNOWN"
+  unknown_settled_by: "The Nov 4 run used a local amp binary; the install recipe (package manager + package name) is not recorded in the repo. Settle from the amp-live-v1 package notes."
+auth:
+  method: subscription-login
+  secret_name: null
+  account: "ChatGPT subscription (mode medium)"
+  status: "owner login; cannot verify non-interactively"
+model:
+  pinned: "UNKNOWN"
+  pinned_note: "Model unobservable in the Nov 4 run (mode medium, ChatGPT subscription); no per-cell model recorded."
+  observed_per_cell: false
+  unknown_settled_by: "The amp CLI exposes no model flag in the Nov 4 run notes; a per-cell model observation needs a session transcript the run did not capture."
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy: null
+workflow: "UNKNOWN"
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/amp-live/bundle.json
+  merkle: 1b2bea1c72cc4fc00815cfe3fa17aa60f0cc16f67b6dd35c212e03fc2a34eba5
+caveats:
+  - "No live/session evidence — row rests on vendor oracle + paper adapter; no session driver exists (audit 2026-11-07)."
+  - "Amp live test was stopped: owner has no ampcode.com account and has not authorized creating one."

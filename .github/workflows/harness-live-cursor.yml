@@ -1,0 +1,64 @@
+# Cursor live pilot — runs the Cursor matrix on the live-runner
+# framework (tools/live_run.py) with CURSOR_API_KEY from repo secrets.
+#
+# Dispatch-only. Runs ONLY after this branch merges (workflows are
+# registered from the default branch) — or by dispatching this file
+# on the branch ref via the API. There is NO sealed baseline for
+# Cursor yet, so there is no compare step: the pilot run BECOMES the
+# baseline. The framework fails closed here too: with no key the run
+# records MISSING_AUTH for every cell and never invokes the CLI.
+name: harness-live-cursor
+
+on:
+  workflow_dispatch:
+    inputs:
+      repeats:
+        description: "Repeats per variant (Nov 4 standard: 2)"
+        required: false
+        default: "2"
+      out:
+        description: "Output dir for the pilot run"
+        required: false
+        default: "framework/scorecard/cursor-pilot-v1"
+
+permissions:
+  contents: write
+
+jobs:
+  pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Cursor CLI
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Show Cursor CLI version (recorded, not pinned)
+        run: agent --version || cursor-agent --version
+      - name: Pilot run (live-runner framework)
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+        run: |
+          python3 tools/live_run.py run --harness cursor \
+            --repeats "${{ inputs.repeats }}" \
+            --out "${{ inputs.out }}" --label cursor-pilot-v1
+      - name: Verify the fresh bundle
+        run: |
+          python3 tools/live_run.py verify \
+            --bundle "${{ inputs.out }}/bundle.json"
+      - name: Upload pilot bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: cursor-pilot-v1
+          path: ${{ inputs.out }}
+      - name: Commit pilot records to the branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${{ inputs.out }}"
+          git diff --cached --quiet || git commit -m "Cursor pilot run on the live-runner framework (run ${{ github.run_id }})"
+          git push

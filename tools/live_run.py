@@ -761,6 +761,13 @@ def run_harness(*, driver, manifest, repeats, out_dir, label,
 
     ok, reason = driver.check_environment(manifest, ctx)
     tasks = driver.cells(manifest, ctx)
+    # F5: the version the driver measured from its live binary wins
+    # over the manifest's version_pin, which is "UNKNOWN" for a
+    # floating install (the Cursor pilot recorded harness_version
+    # UNKNOWN despite observing binary 2026.11.05-86047df). The pin
+    # is the fallback for drivers that do not measure one.
+    pin = (manifest.get("binary") or {}).get("version_pin", "UNKNOWN")
+    driver_version = getattr(driver, "observed_version", None) or pin
 
     proxy_proc = None
     proxy_info = None
@@ -801,8 +808,7 @@ def run_harness(*, driver, manifest, repeats, out_dir, label,
                  "family": task["family"],
                  "intent": task["intent"],
                  "driver": driver.key,
-                 "driver_version": manifest.get("binary", {}).get(
-                     "version_pin", "UNKNOWN")},
+                 "driver_version": driver_version},
                 per_repeat)
             record["source_path"] = f"records/{task['cell_id']}.json"
             (out_dir / "records" / f"{task['cell_id']}.json").write_text(
@@ -836,12 +842,10 @@ def run_harness(*, driver, manifest, repeats, out_dir, label,
     }
     bundle = seal_live_bundle(
         label=label, harness=manifest.get("harness"),
-        harness_version=manifest.get("binary", {}).get(
-            "version_pin", "UNKNOWN"),
+        harness_version=driver_version,
         model=model_str, records=records, run_meta=run_meta,
         driver={"name": driver.key,
-                "version": manifest.get("binary", {}).get(
-                    "version_pin", "UNKNOWN"),
+                "version": driver_version,
                 "plugin_sha256": _driver_plugin_sha256(driver)},
         manifest={"path": manifest_path, "sha256": manifest_sha})
     bundle_path = out_dir / "bundle.json"

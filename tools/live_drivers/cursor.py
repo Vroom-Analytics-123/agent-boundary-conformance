@@ -193,6 +193,7 @@ class Driver(BaseDriver):
         self._bin = None
         self._bin_name = None
         self._version = None
+        self.observed_version = None
         self._stop_invoking = False
 
     def check_environment(self, manifest, ctx):
@@ -218,6 +219,11 @@ class Driver(BaseDriver):
             self._version = text[0].strip() if text else "unknown"
         except Exception as exc:  # noqa: BLE001 - version is advisory
             self._version = f"unknown ({exc})"
+        # F5: publish the measured binary version for the bundle.
+        # Only a real measurement counts: "unknown" must never
+        # overwrite the manifest pin.
+        if self._version and not self._version.startswith("unknown"):
+            self.observed_version = self._version
         if not legacy.env_present(TOKEN_NAME):
             return False, (
                 f"{TOKEN_NAME} not present in the environment "

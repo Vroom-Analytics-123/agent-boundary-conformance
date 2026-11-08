@@ -50,6 +50,10 @@ class DriverError(Exception):
 class BaseDriver:
     key = None            # registry key, e.g. "copilot"
     display_name = None   # human name, e.g. "Copilot CLI"
+    # Version measured from the live binary by check_environment
+    # (e.g. "2026.11.05-86047df"). None when the driver does not
+    # measure one. live_run.py prefers this over the manifest's
+    # version_pin, which is "UNKNOWN" for a floating install (F5).
 
     def check_environment(self, manifest, ctx):
         raise NotImplementedError

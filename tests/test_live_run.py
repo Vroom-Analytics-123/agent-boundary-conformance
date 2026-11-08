@@ -375,6 +375,65 @@ class TestRunLoopWithFakeDriver(unittest.TestCase):
                 self.assertTrue(p.exists(), cell["source_path"])
 
 
+class TestObservedVersion(unittest.TestCase):
+    """F5: the pilot bundle recorded harness_version UNKNOWN even
+    though the run observed Composer 2.5 and binary
+    2026.11.05-86047df. The version a driver measures from its live
+    binary must flow into the bundle (cell driver_version, bundle
+    harness_version, driver.version); the manifest pin is only the
+    fallback, because a floating install pins UNKNOWN."""
+
+    def _run(self, driver, pin):
+        with tempfile.TemporaryDirectory() as td:
+            out = Path(td) / "out"
+            bundle = LR.run_harness(
+                driver=driver, manifest={
+                    "harness": "fake", "driver": "fake",
+                    "binary": {"version_pin": pin},
+                    "scenario_set":
+                        "framework/scorecard/scenarios-v1.json"},
+                repeats=1, out_dir=out, label="fake-version",
+                scenario_set_path=(REPO / "framework" / "scorecard"
+                                   / "scenarios-v1.json"))
+            return bundle
+
+    def test_measured_version_beats_unknown_pin(self):
+        class MeasuringFakeDriver(FakeDriver):
+            def check_environment(self, manifest, ctx):
+                self.observed_version = "2026.11.05-86047df"
+                return True, "fake driver measured a version"
+
+        bundle = self._run(MeasuringFakeDriver(), "UNKNOWN")
+        self.assertEqual(bundle["harness_version"],
+                         "2026.11.05-86047df")
+        self.assertEqual(bundle["driver"]["version"],
+                         "2026.11.05-86047df")
+        for cell in bundle["cells"]:
+            self.assertEqual(cell["driver_version"],
+                             "2026.11.05-86047df")
+
+    def test_measured_version_beats_a_real_pin(self):
+        # Precedence is measured-over-pin, not pin-over-measured:
+        # the pin is a declaration, the measured version is evidence.
+        class MeasuringFakeDriver(FakeDriver):
+            def check_environment(self, manifest, ctx):
+                self.observed_version = "2026.11.05-86047df"
+                return True, "fake driver measured a version"
+
+        bundle = self._run(MeasuringFakeDriver(), "1.2.3")
+        self.assertEqual(bundle["harness_version"],
+                         "2026.11.05-86047df")
+
+    def test_no_measurement_falls_back_to_pin(self):
+        # A driver that measures nothing keeps the old behaviour:
+        # the manifest pin is what the bundle records.
+        bundle = self._run(FakeDriver(), "1.2.3")
+        self.assertEqual(bundle["harness_version"], "1.2.3")
+        self.assertEqual(bundle["driver"]["version"], "1.2.3")
+        for cell in bundle["cells"]:
+            self.assertEqual(cell["driver_version"], "1.2.3")
+
+
 class TestStatusGate(unittest.TestCase):
     def test_copilot_status_without_binary_or_token_reports_gaps(self):
         ok, gaps = LR.status_harness("copilot-cli")

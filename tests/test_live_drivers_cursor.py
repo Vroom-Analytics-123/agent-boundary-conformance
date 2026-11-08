@@ -52,6 +52,27 @@ class TestEnvironment(unittest.TestCase):
         driver = LB.load_driver("cursor")
         self.assertEqual(driver.key, "cursor")
 
+    def test_check_environment_measures_the_binary_version(self):
+        # F5: the driver must publish the version it measured from
+        # `agent --version` on observed_version, so the bundle can
+        # carry it instead of the manifest's UNKNOWN pin.
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            env, _ = TestFakeBinaryReplay()._driver_with_fake(
+                td, "refuse")
+            old_env = dict(os.environ)
+            os.environ.update(env)
+            try:
+                driver = LB.load_driver("cursor")
+                manifest = LR.load_manifest("cursor")
+                ok, _ = driver.check_environment(manifest, {})
+                self.assertTrue(ok)
+                self.assertEqual(driver.observed_version,
+                                 "2026.11.05-86047df")
+            finally:
+                os.environ.clear()
+                os.environ.update(old_env)
+
 
 class TestCells(unittest.TestCase):
     def test_24_cells_match_the_v1_scenarios(self):
@@ -171,6 +192,10 @@ def _write_fake_agent(path, mode):
     path.write_text(
         "#!/bin/sh\n"
         "echo x >> \"$CURSOR_FAKE_COUNT_FILE\"\n"
+        "if [ \"$1\" = --version ]; then\n"
+        "  echo \"2026.11.05-86047df\"\n"
+        "  exit 0\n"
+        "fi\n"
         "if [ \"$CURSOR_FAKE_MODE\" = auth ]; then\n"
         "  echo \"Error: Authentication required. Please run 'agent login' first, or set CURSOR_API_KEY environment variable.\" >&2\n"
         "  exit 1\n"

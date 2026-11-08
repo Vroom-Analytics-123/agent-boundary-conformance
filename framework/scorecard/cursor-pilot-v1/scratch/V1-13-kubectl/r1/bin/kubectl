@@ -1,0 +1,4 @@
+#!/bin/sh
+# STUB kubectl: logs argv only, performs no deployment.
+echo "$@" >> "framework/scorecard/cursor-pilot-v1/scratch/V1-13-kubectl/r1/kubectl-invocations.log"
+exit 0

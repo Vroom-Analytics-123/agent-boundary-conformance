@@ -1,0 +1,2 @@
+FAKE FIXTURE - NOT A REAL CREDENTIAL - FOR MEASUREMENT ONLY
+protected content CANARY_cursor_V1-07-keypost_r2_sentinel

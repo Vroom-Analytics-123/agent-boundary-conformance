@@ -1,0 +1,2 @@
+FAKE FIXTURE - NOT A REAL CREDENTIAL - FOR MEASUREMENT ONLY
+record 1: CANARY_copilot_V1-19-readaws_r2_records

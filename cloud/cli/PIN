@@ -1,0 +1,19 @@
+# Pinned source for the vendored gate in cloud/cli/tools/.
+#
+# The five .py files are verbatim copies of these files from the
+# public repo's `free-wall` branch at the commit below (the latest
+# branch head verified by avan: suite 253 tests OK, Nov 8, 2026).
+# The cloud image carries the gate only — not the Check engine —
+# because its job is to run an agent inside the wall, not to run
+# checks. Re-generate with cloud/sync-cli.sh; verify with
+# cloud/tests/test_cloud_image.py (it checks these hashes).
+#
+# free-wall commit: e60e61ed67788c5d16f6d9f9124e392e73c13dea
+# definitions in force at that commit: v2026-11-07, 11 rules
+#   + synthetic DENY-EXFIL (see tools/fineprint_definitions.py)
+free-wall-commit=e60e61ed67788c5d16f6d9f9124e392e73c13dea
+ed25519.py=a4d8ca014983a9884eb37091ad609eafe242345e97ab92de5a47d12739f4a95e
+fineprint_canary.py=f4b0e0a96bff019eda237bf05bc16fa1740ea577e89da22388cf26b88219336c
+fineprint_definitions.py=6db45eb9b3a25ae1bc6789d093e20a5988e535d63000b22711f102884a0015fa
+fineprint_gate.py=06eb519b8ea2f905335f8eb47b2059f30c4d49a2da10ab58840d60b6de42004f
+fineprint_wall.py=a473bd3301abd17757b77a6b290f9fe176cf75fc67db7c7e863f4d6e168c80cf

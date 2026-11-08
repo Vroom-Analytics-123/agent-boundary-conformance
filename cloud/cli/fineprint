@@ -1,0 +1,21 @@
+#!/bin/sh
+# `fineprint` inside the cloud image — the gate command surface only.
+#
+# The full Check engine (the `fineprint` script at the repo root) is
+# intentionally NOT in this image: it imports the whole measurement
+# apparatus, and the image's job is to run an agent inside the wall,
+# not to run checks. This shim gives the exact laptop command shape —
+# `fineprint gate run -- <agent command>` — backed by the vendored
+# gate module in /opt/fineprint/tools.
+#
+# Supported subcommands (all of fineprint_gate.py): run, check,
+# definitions, log, verify-log, canary. Anything else prints the
+# gate's usage and exits 3.
+set -e
+# FINEPRINT_GATE overrides the gate path (testing only — the image
+# always uses /opt/fineprint/tools/fineprint_gate.py).
+GATE="${FINEPRINT_GATE:-/opt/fineprint/tools/fineprint_gate.py}"
+if [ "$1" = "gate" ]; then
+    shift
+fi
+exec python3 "$GATE" "$@"

@@ -25,6 +25,13 @@ The image is **not published anywhere yet** — there is no
 built, `docker run` fails with "unable to find image" and the Wall
 screen says so. Publishing (GHCR/Docker Hub) is a later step.
 
+**Cloud use:** the same image is the base for the cloud base image
+(`fineprint-wall:cloud`), which adds the gate CLI + the gate
+entrypoint so the container starts inside the wall. See
+`cloud/README.md` — and run `cloud/nested-unshare-test.sh` on a real
+Docker host before deploying anywhere: it decides whether the wall
+works inside a default container at all.
+
 The `fineprint` CLI itself is **not** in the image: the app
 bind-mounts it from the host checkout at run time, so the CLI version
 always tracks the app.

@@ -1,0 +1,64 @@
+{
+  "_comment": [
+    "FinePrint on ECS Fargate \u2014 the wall baked into the task image.",
+    "UNVERIFIED (investigation doc \u00a77.3): whether `unshare` works inside",
+    "a Fargate task container is unverified \u2014 no source confirms or denies",
+    "it \u2014 and Fargate gives you NO knob to turn: no privileged containers,",
+    "only CAP_SYS_PTRACE addable, no seccomp=unconfined. Run the wall's",
+    "smoke test as a Fargate task first (cloud/nested-unshare-test.sh,",
+    "adapted to a task). If it fails, Fargate cannot run the wall, full",
+    "stop \u2014 there is nothing to relax.",
+    "",
+    "Notes:",
+    "- Replace ACCOUNT_ID / REGION and the secret ARNs. Never put a key",
+    "  in `environment` \u2014 use Secrets Manager (shown) or SSM Parameter",
+    "  Store, and give the task role read access to it.",
+    "- `command` is the agent command (the image's ENTRYPOINT is the",
+    "  gate, so [\"claude\"] runs `fineprint gate run -- claude`).",
+    "- The task needs a VPC with egress for the agent's API calls; the",
+    "  wall's egress proxy controls what the agent can reach in deny",
+    "  mode, and confine mode with no hosts allowlisted gives it no",
+    "  network at all. The agent's API host must be reachable or the",
+    "  agent cannot work.",
+    "- The audit log: set FINEPRINT_LOG to a path inside the container",
+    "  and ship it to CloudWatch (see logConfiguration) or an EFS",
+    "  volume if you want the log out. Without it, the log is not",
+    "  written and the run leaves no audit trail.",
+    "- The image is NOT published anywhere yet \u2014 push it to your own",
+    "  ECR repository first (no GHCR / Docker Hub push)."
+  ],
+  "containerDefinitions": [
+    {
+      "command": [
+        "claude"
+      ],
+      "environment": [],
+      "essential": true,
+      "image": "ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/fineprint-wall:cloud",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fineprint-agent",
+          "awslogs-region": "REGION",
+          "awslogs-stream-prefix": "agent"
+        }
+      },
+      "name": "agent",
+      "secrets": [
+        {
+          "name": "ANTHROPIC_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:anthropic-api-key"
+        }
+      ]
+    }
+  ],
+  "cpu": "1024",
+  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "family": "fineprint-agent",
+  "memory": "2048",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/fineprint-agent-task-role"
+}

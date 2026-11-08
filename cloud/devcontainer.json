@@ -1,0 +1,48 @@
+{
+  // FinePrint cloud base image as a devcontainer.
+  //
+  // Copy this file into your repo as .devcontainer/devcontainer.json
+  // (with cloud/ alongside it, or point "dockerfile" at the Dockerfile
+  // in this repo). Codespaces and local VS Code devcontainers build the
+  // image from the Dockerfile, so no registry is needed — the image is
+  // NOT published anywhere yet.
+  //
+  // UNVERIFIED — the nested-unshare question (investigation doc §7.2):
+  // the wall creates user + mount namespaces with `unshare` INSIDE the
+  // container, and whether that works in a Codespaces container is
+  // contested between sources. Run cloud/nested-unshare-test.sh on a
+  // real Docker host first; if it fails there, the wall needs
+  // --security-opt seccomp=unconfined, which you CANNOT set on
+  // Codespaces. Until that test runs, this devcontainer is a
+  // best-effort shape, not a verified one. If the wall cannot start,
+  // the gate refuses (exit 3) rather than running the agent
+  // unprotected — you will see that, not a silent pass.
+  //
+  // The agent inside the container needs its own login. Codespaces
+  // secrets can carry the API key as an env var (preferred — env vars
+  // are not files the wall needs to hide). Do not bake a key into the
+  // image, and do not commit one into this file.
+  "name": "FinePrint walled agent",
+  "build": {
+    "context": ".",
+    "dockerfile": "cloud/Dockerfile"
+  },
+  // The container's command is the agent command (the image's
+  // ENTRYPOINT is the gate). Override per project, e.g. "claude".
+  "overrideCommand": false,
+  "remoteEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
+    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}"
+  },
+  // The workspace is the guarded folder: mount it at /work (the
+  // image's WORKDIR) so the agent runs inside the wall with the
+  // project as its world. The default policy is the protective
+  // denylist; add a fineprint-gate.json to the workspace to see it
+  // and edit it (`fineprint init --gate` writes one).
+  "workspaceFolder": "/work",
+  "customizations": {
+    "vscode": {
+      "extensions": []
+    }
+  }
+}

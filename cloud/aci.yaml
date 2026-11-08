@@ -1,0 +1,45 @@
+# FinePrint on Azure Container Instances — the wall baked into the image.
+#
+# Deploy with:
+#   az container create --resource-group RG --file cloud/aci.yaml
+#
+# UNVERIFIED (investigation doc §7.3): whether `unshare` works inside
+# an ACI container is unverified. Microsoft's docs state it plainly:
+# "ACI doesn't allow privileged container operations". There is no knob
+# for seccomp on ACI. Deploy once, run the wall's smoke test as a
+# container (cloud/nested-unshare-test.sh, adapted), and accept the
+# answer: if it fails, ACI cannot run the wall.
+#
+# Notes:
+# - Replace ACR_LOGIN_SERVER, the secret reference, and the resource
+#   group. The image is NOT published anywhere yet — push it to your
+#   own Azure Container Registry first (no GHCR / Docker Hub push).
+# - `command` is the agent command (the image's ENTRYPOINT is the
+#   gate, so ["claude"] runs `fineprint gate run -- claude`).
+# - The agent needs egress to its API host; the wall's egress proxy
+#   controls what it can reach in deny mode, and confine mode with no
+#   hosts allowlisted gives it no network at all.
+# - The audit log: set FINEPRINT_LOG and mount an Azure Files volume
+#   if you want the log out. Without it the run leaves no audit trail.
+# - restartPolicy Never: the agent runs once, to completion. A
+#   long-running agent wants a container group that stays up, not a
+#   one-shot task — adjust for your use.
+apiVersion: 2019-12-01
+location: eastus
+name: fineprint-agent
+properties:
+  containers:
+    - name: agent
+      properties:
+        image: ACR_LOGIN_SERVER.azurecr.io/fineprint-wall:cloud
+        command:
+          - claude
+        environmentVariables:
+          - name: FINEPRINT_LOG
+            value: /work/gate.log
+        resources:
+          requests:
+            cpu: 1
+            memoryInGB: 2
+  osType: Linux
+  restartPolicy: Never

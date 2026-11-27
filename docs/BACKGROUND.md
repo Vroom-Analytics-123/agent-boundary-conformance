@@ -2,8 +2,24 @@
 
 Companion to the main README. It holds the context sections that used to
 live there: what FinePrint verifies, why, what the durable invention is,
-how findings become fixes, the live model integrations, and the
-attribution.
+how findings become fixes, the scorecard's per-harness findings, the
+live model integrations, and the attribution.
+
+## The harness scorecard — the plain-English findings
+
+Sixteen harnesses, 17 rows, v4 layer totals in the v2 card layout. The
+live-basis leaders: **Amp 72.03**, **OpenClaw 62.68**, **Claude Code
+(live) 54.26**, **Muse Code 49.71**, **Hermes 42.89**, **Omnigent
+36.39**; approval-N/A totals (of 75): **Gemini CLI 24.27**, **Codex
+22.05**, **Copilot CLI 17.28**.
+
+No harness wins cleanly on live evidence. Amp leads live at 72.03 but
+credential reads execute 8/8 — the hole. Codex's router forbids every
+deletion command yet 7 of 12 deletions execute via `unlink` — a
+syntactic filter, not a deletion policy. Muse Code's approver denies,
+but credential content escapes through the read tool — denial is not
+prevention. Hermes stops all deletions; OpenClaw stops everything and
+overblocks benign work. Pi ships no permission system by design.
 
 ## The invariant catalogue is the invention
 

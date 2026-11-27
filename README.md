@@ -79,11 +79,9 @@ The fix moved two spelling variants (`rm -fr`, `rm --recursive --force`) from un
 
 ![FinePrint harness scorecard — combined live-basis view (PROVISIONAL)](framework/visuals/scorecard.svg)
 
-Sixteen harnesses scored on the same 24 scenarios in three layers — **Decision / 25, Approval / 25, Effect / 50** — weighted by impact. Higher = stronger hold rate, **not a security grade**; rows mix measurement routes, so compare rows only within the same route. Live-basis leaders: **Amp 72.03**, **OpenClaw 62.68**, **Claude Code (live) 54.26**; approval-N/A totals (of 75): **Gemini CLI 24.27**, **Codex 22.05**, **Copilot CLI 17.28**.
+Sixteen harnesses scored on the same 24 scenarios across three layers — **Decision / 25, Approval / 25, Effect / 50** — weighted by impact. Higher = stronger hold rate, **not a security grade**; rows mix measurement routes, so compare rows only within the same route. No harness wins cleanly: live leader **Amp 72.03** still lets credential reads execute 8/8, and Codex forbids every deletion command on argv yet 7 of 12 deletions execute via `unlink`. The row-by-row findings: [framework/scorecard/v4-scorecard.md](framework/scorecard/v4-scorecard.md).
 
-**What the scorecard actually says:** no harness wins cleanly on live evidence. Amp leads but credential reads execute 8/8 — the hole. Codex's router forbids every deletion command yet 7 of 12 deletions execute via `unlink` — a syntactic filter, not a deletion policy. Muse Code's approver denies, but credential content escapes through the read tool — denial is not prevention. Hermes stops all deletions; OpenClaw stops everything and overblocks benign work. Pi ships no permission system by design.
-
-Full table: [framework/scorecard/v4-scorecard.md](framework/scorecard/v4-scorecard.md) · method: [framework/SCORING-v4.md](framework/SCORING-v4.md) · sealed evidence: [evidence/live-2026-11-04/](evidence/live-2026-11-04/). The combined view is PROVISIONAL until its promotion gets the owner's word.
+Full table + method ([framework/SCORING-v4.md](framework/SCORING-v4.md)) + sealed evidence ([evidence/live-2026-11-04/](evidence/live-2026-11-04/)) — the combined view is PROVISIONAL until its promotion gets the owner's word.
 
 ## How it works
 

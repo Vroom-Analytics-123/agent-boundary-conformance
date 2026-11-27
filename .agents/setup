@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Orb setup: mirrors .github/workflows/ci.yml (Python 3.12 + pytest, pinned
+# Codex oracle binary restored and SHA-256 verified). Idempotent; fast when warm.
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+step() { echo "==> $1"; SECONDS=0; }
+done_step() { echo "    (${SECONDS}s)"; }
+
+step "Python 3.12 venv with pytest (.venv)"
+if [ ! -x .venv/bin/python ] || ! .venv/bin/python -c 'import sys; assert sys.version_info[:2] == (3, 12)' 2>/dev/null; then
+  uv venv --quiet --python 3.12 .venv
+fi
+if ! .venv/bin/python -m pytest --version >/dev/null 2>&1; then
+  uv pip install --quiet --python .venv/bin/python pytest
+fi
+done_step
+
+step "Put .venv/bin on PATH for login shells"
+profile_marker="# agent-boundary-conformance venv"
+if ! grep -Fqx "$profile_marker" "$HOME/.bash_profile" 2>/dev/null; then
+  cat >> "$HOME/.bash_profile" <<EOF
+
+$profile_marker
+case ":\$PATH:" in *":$repo_root/.venv/bin:"*) ;; *) export PATH="$repo_root/.venv/bin:\$PATH" ;; esac
+EOF
+fi
+done_step
+
+step "Pinned Codex oracle binary (tools/vendor/codex/0.149.0)"
+if bash tools/setup_harness.sh status codex | grep -q '^codex: ready'; then
+  echo "    already present and verified"
+else
+  bash tools/setup_harness.sh restore-codex
+fi
+done_step

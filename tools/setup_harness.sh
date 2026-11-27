@@ -58,7 +58,7 @@ cmd_check() {
 cmd_restore_codex() {
   # Verified recipe (SETUP.md Part A + tools/vendor/codex/0.149.0/VENDORED.md).
   local tmp; tmp="$(mktemp -d)"
-  trap 'rm -rf "$tmp"' EXIT
+  trap "rm -rf '$tmp'" EXIT
   cd "$tmp"
   npm pack "@openai/codex@0.149.0-linux-x64"
   mkdir lin && tar -xzf openai-codex-0.149.0-linux-x64.tgz -C lin

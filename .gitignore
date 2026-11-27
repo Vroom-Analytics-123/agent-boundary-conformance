@@ -52,3 +52,7 @@ evidence/cross-tier-2026-10-22/amp_t2_fidelity_heldout.local.json
 .env.*.local
 *.pem
 *.key
+
+# Orb setup: Python venv and Amp portal metadata.
+.venv/
+.amp/portals/*

@@ -25,11 +25,78 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
+import attribution as AT  # noqa: E402
 import schemas_v1 as S  # noqa: E402
 import bundle_signing  # noqa: E402
 
 SCHEMA_VERSION = "check-run-bundle.v1"
 UNKNOWN_ATTRIBUTION_MIN = 20
+
+
+def _check_attribution_and_repeats(f):
+    """Validate the additive Nov-2026 finding fields. Returns [problems].
+
+    Old bundles carry none of these fields and pass trivially; new
+    bundles must carry them consistently: the attribution value from
+    the fixed enum, and a repeat_summary that re-derives exactly from
+    the recorded repeats.
+    """
+    problems = []
+    pid = f.get("probe_id", "?")
+    attr = f.get("non_attempt_attribution")
+    if attr is not None:
+        if attr not in AT.ATTRIBUTIONS:
+            problems.append(
+                f"{pid}: bad non_attempt_attribution {attr!r} "
+                f"(want one of {AT.ATTRIBUTIONS})")
+        rid = f.get("attribution_rule_id")
+        if rid is not None and not isinstance(rid, str):
+            problems.append(
+                f"{pid}: attribution_rule_id must be a string or null, "
+                f"got {type(rid).__name__}")
+    repeats = f.get("repeats")
+    summary = f.get("repeat_summary")
+    if repeats is not None:
+        if not isinstance(repeats, list) or not repeats:
+            problems.append(f"{pid}: repeats must be a non-empty list")
+        else:
+            for i, row in enumerate(repeats):
+                if not isinstance(row, dict):
+                    problems.append(f"{pid}: repeat {i} is not an object")
+                    continue
+                if row.get("repeat_index") != i + 1:
+                    problems.append(
+                        f"{pid}: repeat_index {row.get('repeat_index')!r} "
+                        f"!= {i + 1}")
+                if row.get("actual_decision") not in AT.DECISIONS:
+                    problems.append(
+                        f"{pid}: repeat {i + 1} bad actual_decision "
+                        f"{row.get('actual_decision')!r}")
+                if row.get("verdict") not in ("pass", "fail", "not_run"):
+                    problems.append(
+                        f"{pid}: repeat {i + 1} bad verdict "
+                        f"{row.get('verdict')!r}")
+                rattr = row.get("non_attempt_attribution")
+                if rattr is not None and rattr not in AT.ATTRIBUTIONS:
+                    problems.append(
+                        f"{pid}: repeat {i + 1} bad "
+                        f"non_attempt_attribution {rattr!r}")
+    if summary is not None:
+        if repeats is None:
+            problems.append(f"{pid}: repeat_summary without repeats")
+        else:
+            try:
+                want = AT.summarize_repeats(
+                    [r.get("actual_decision") for r in repeats
+                     if isinstance(r, dict)])
+            except ValueError as e:
+                problems.append(f"{pid}: repeat_summary not derivable: {e}")
+            else:
+                if summary != want:
+                    problems.append(
+                        f"{pid}: repeat_summary {summary!r} != re-derived "
+                        f"{want!r}")
+    return problems
 
 
 def _utcnow():
@@ -71,6 +138,7 @@ def seal_check_bundle(*, label, run_spec, findings, invariant_results,
             if len(attr) < UNKNOWN_ATTRIBUTION_MIN:
                 problems.append(f"{f['probe_id']}: unknown without layer "
                                 "attribution (INV-004)")
+        problems.extend(_check_attribution_and_repeats(f))
 
     verdicts = {"pass": 0, "fail": 0, "not_run": 0}
     for f in findings:
@@ -188,6 +256,7 @@ def verify_check_bundle(bundle):
         if f["actual_decision"] == "unknown" and len(
                 f.get("layer_attribution") or "") < UNKNOWN_ATTRIBUTION_MIN:
             problems.append(f"{f['probe_id']}: unknown without attribution")
+        problems.extend(_check_attribution_and_repeats(f))
 
     # Privacy self-check: public_mode bundles must name no private entry.
     privacy = bundle.get("privacy", {})

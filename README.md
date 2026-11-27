@@ -12,6 +12,9 @@ Harnesses change under their owners — a new release, a new feature, a new flag
 
 **Status:** the method stands — verdict **NARROW**. FinePrint measures two vendor-confirmed Decision-layer routes (Codex + Amp) today, with its limitations stated on its face; it is not yet a multi-harness Index. The harness scorecard below covers 16 harnesses; the Index verdict stays NARROW until the consistent re-measurement protocol completes. The dated history lives in **[CHANGELOG.md](CHANGELOG.md)**. The living status page is **[docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md)**.
 
+**Watch it work — the Check (one command, zero config):**
+
+![FinePrint Check demo — install, check, verdict + bundle](assets/fineprint-check-demo.gif)
 
 ## Drift fixtures — does compliance drift over a long task?
 
@@ -24,7 +27,6 @@ Four long tasks (8–12 steps each) in [`fixtures/drift/`](fixtures/drift/) — 
 ![Gate-proof acceptance campaign — dry-run](framework/scorecard/acceptance/demo.gif)
 
 Runbook: [framework/scorecard/acceptance/RUNBOOK.md](framework/scorecard/acceptance/RUNBOOK.md) · Expectation table: [framework/scorecard/acceptance/EXPECTATIONS.md](framework/scorecard/acceptance/EXPECTATIONS.md) · Recording script: [framework/scorecard/acceptance/record-demo.sh](framework/scorecard/acceptance/record-demo.sh)
-
 
 ## The harness scorecard
 
@@ -43,7 +45,17 @@ Live badges still reflect scoring v2 ([framework/SCORING.md](framework/SCORING.m
 ## 🚀 Try it
 
 - **Fastest — live demo:** [fineprint.vroomanalytics.com](https://fineprint.vroomanalytics.com/) — watch the attacks, try a command, apply a one-click fix. Nothing executes; it runs in your browser.
-- **In about a minute, locally:**
+- **Free Check — one command, zero config:** the `fineprint` CLI wraps the engine. No account, no key, no config for a first verdict — it finds your harness on its own and checks it against the 16 built-in rules (Catalogue v1), writing a sealed evidence bundle:
+
+```bash
+git clone https://github.com/Vroom-Analytics-123/agent-boundary-conformance.git
+cd agent-boundary-conformance
+./fineprint init        # writes starter policy files (skip if you already have one)
+./fineprint check       # one command: verdict + sealed bundle in fineprint-evidence/
+```
+
+What you see: `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Muse Code has no offline decision oracle, so its check reports UNMEASURED (exit 3) instead of a verdict. Full guide, written for a junior dev: [INTEGRATION.md](INTEGRATION.md). GitHub Action — one workflow file, red/green in the Actions tab, verdict summary on the PR: [docs/FREE_CHECK_ACTION.md](docs/FREE_CHECK_ACTION.md). Free gate — one wrapper command, defaults on: [docs/FREE_GATE.md](docs/FREE_GATE.md). Upstream fix loop — measure, fix locally, patch upstream: [docs/UPSTREAM_FIX_LOOP.md](docs/UPSTREAM_FIX_LOOP.md).
+- **In about a minute, locally (Codex / oracle-backed runs):**
 
 ```bash
 git clone https://github.com/Vroom-Analytics-123/agent-boundary-conformance.git
@@ -55,6 +67,7 @@ cd agent-boundary-conformance
 cd /tmp && mkdir codex-restore && cd codex-restore
 npm pack "@openai/codex@0.149.0-linux-x64"
 mkdir lin && tar -xzf openai-codex-0.149.0-linux-x64.tgz -C lin
+mkdir -p <repo>/tools/vendor/codex/0.149.0/bin   # bin/ is git-ignored; it does not exist in a fresh clone
 cp lin/package/vendor/x86_64-unknown-linux-musl/bin/codex <repo>/tools/vendor/codex/0.149.0/bin/codex
 # sha256 must print bbc3341e44c9ead340ed9570c17be936e37870f570751a941699ffd04d672827
 cd <repo>

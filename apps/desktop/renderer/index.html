@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FinePrint — the wall for your coding agent</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>FinePrint</h1>
+  <p id="protectionLine" class="protection">Loading protection status…</p>
+</header>
+<nav>
+  <button data-view="home" class="nav-btn active">Home</button>
+  <button data-view="check" class="nav-btn">Check my setup</button>
+  <button data-view="wall" class="nav-btn">The Wall</button>
+  <button data-view="settings" class="nav-btn">Settings</button>
+</nav>
+
+<main>
+  <!-- HOME: the notifications feed -->
+  <section id="view-home" class="view">
+    <div id="definitionsCard" class="card">
+      <h2>Definitions</h2>
+      <p id="definitionsStatus">Loading…</p>
+      <p id="definitionsNote" class="muted"></p>
+      <button id="updateDefinitionsBtn">Check for updates</button>
+      <p id="updateResult" class="muted"></p>
+    </div>
+    <div class="card">
+      <h2>What happened</h2>
+      <p class="muted">What your agent tried to do, what was blocked, and which rule stopped it. A blocked action is always blocked — the same action is denied every time.</p>
+      <div id="feedList"><p class="muted">Nothing yet — run a check or run your agent inside the wall.</p></div>
+      <div class="row">
+        <button id="homeCheckBtn">Run a check</button>
+        <button id="homeWallBtn">Open the wall</button>
+        <button id="clearFeedBtn" class="quiet">Clear the feed</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECK -->
+  <section id="view-check" class="view hidden">
+    <div class="card">
+      <h2>Check my setup</h2>
+      <p class="muted">Runs <code>fineprint check</code> in your folder and tells you, in plain words, whether your setup held the line.</p>
+      <label>Folder <input id="checkDir" type="text" size="60"></label>
+      <div class="row"><button id="runCheckBtn">Run check</button></div>
+      <div id="checkVerdict"></div>
+      <pre id="checkOutput" class="output hidden"></pre>
+    </div>
+  </section>
+
+  <!-- WALL -->
+  <section id="view-wall" class="view hidden">
+    <div class="card">
+      <h2>The Wall</h2>
+      <p class="muted">Run your coding agent inside the wall. Anything on the definitions deny list is blocked before it runs. Folder confinement is an extra, opt-in lock.</p>
+      <p id="runtimeLine" class="muted"></p>
+      <p id="denylistLine" class="muted"></p>
+      <h3>Agent</h3>
+      <div class="row" id="agentRow">
+        <button class="agent-btn" data-agent="codex">Codex</button>
+        <button class="agent-btn" data-agent="muse-code">Muse Code</button>
+        <button class="agent-btn" data-agent="claude-code">Claude Code</button>
+      </div>
+      <h3>Folder to guard</h3>
+      <div class="row">
+        <input id="wallFolder" type="text" size="60">
+        <button id="wallBrowseBtn">Browse…</button>
+      </div>
+      <h3>Command to run</h3>
+      <div class="row">
+        <input id="wallCommand" type="text" size="60" placeholder="codex exec &quot;fix the bug in auth.ts&quot;">
+      </div>
+      <label class="toggle"><input id="confineToggle" type="checkbox"> Confine the agent to these folders</label>
+      <div id="confineFolders" class="hidden">
+        <p class="muted">When confinement is on, the agent can only touch these folders. Off by default — the definitions deny list still protects you.</p>
+        <input id="confineFolderList" type="text" size="60" placeholder="/path/to/project">
+      </div>
+      <div id="policyBox" class="policy-box"></div>
+      <label id="tripwireOnlyRow" class="toggle hidden"><input id="tripwireOnly" type="checkbox"> Run without the wall (tripwire only — the agent can still read files the tripwire misses)</label>
+      <div class="row"><button id="runGuardBtn">Run in the wall</button></div>
+      <div id="wallVerdict"></div>
+      <p id="wallNotifyNote" class="muted"></p>
+      <pre id="wallOutput" class="output hidden"></pre>
+      <h3>Audit log, in plain words</h3>
+      <div id="wallAudit"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="view-settings" class="view hidden">
+    <div class="card">
+      <h2>Settings</h2>
+      <h3>fineprint CLI</h3>
+      <div class="row">
+        <input id="cliPath" type="text" size="60">
+        <button id="cliBrowseBtn">Browse…</button>
+      </div>
+      <p id="cliStatus" class="muted"></p>
+      <h3>Default folder</h3>
+      <div class="row">
+        <input id="settingsWorkdir" type="text" size="60">
+        <button id="workdirBrowseBtn">Browse…</button>
+      </div>
+      <h3>Definitions</h3>
+      <p id="settingsDefinitions" class="muted"></p>
+      <div id="familyList"></div>
+      <p class="muted">Definitions are a signed set — they apply as a whole and cannot be turned off one family at a time in v1. The escape hatch is below: one command can be allowed through the denylist (for example, your own deploy script).</p>
+      <h3>Always allow this command</h3>
+      <div class="row">
+        <input id="allowedCommands" type="text" size="60" placeholder="deploy.sh, my-deploy">
+        <button id="saveAllowedCommandsBtn">Save</button>
+      </div>
+      <p class="muted">Comma-separated command names or globs. An allowed command overrides the denylist for that command only.</p>
+      <h3>Notifications</h3>
+      <p class="muted">When the wall blocks something, FinePrint also tells you through the operating system — macOS Notification Center or Windows Action Center — so a block is visible even when the app is behind something else.</p>
+      <div class="row"><button id="saveSettingsBtn">Save settings</button></div>
+      <p id="settingsSaved" class="muted"></p>
+    </div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>

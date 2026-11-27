@@ -56,3 +56,8 @@ evidence/cross-tier-2026-10-22/amp_t2_fidelity_heldout.local.json
 # Orb setup: Python venv and Amp portal metadata.
 .venv/
 .amp/portals/*
+
+# FinePrint desktop app (apps/desktop)
+apps/desktop/node_modules/
+apps/desktop/dist/
+apps/desktop/*.log

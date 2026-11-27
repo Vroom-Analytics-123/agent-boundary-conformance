@@ -1,0 +1,33 @@
+# Live manifest: Copilot CLI — PILOT harness for the live-runner framework.
+harness: copilot-cli
+display_name: Copilot CLI
+status: live
+driver: copilot
+binary:
+  name: copilot
+  version_pin: "1.0.105"
+  install_recipe: "npm install -g @github/copilot@1.0.105"
+  path_hint: "npm global bin; on Actions, installed by the workflow"
+auth:
+  method: repo-secret
+  secret_name: COPILOT_GITHUB_TOKEN
+  account: null
+  status: "repo secret (Nov 4); fine-grained PAT on vroomanalytics123"
+model:
+  pinned: null
+  pinned_note: "Unpinned by design; the CLI chooses its default. Model is observed per cell from stdout metrics."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy: null
+workflow: .github/workflows/harness-live-copilot.yml
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/copilot-full/bundle.json
+  merkle: 6685d7a9aa2e62ff9b3aa47261e36296979a3caa02f5cdee1c124c15813df3c4
+caveats:
+  - "Pilot harness for the live-runner framework (this branch)."
+  - "Non-interactive -p REQUIRES --allow-all-tools: the matrix does not measure native interactive ask/deny dialogs; the only configured permission signal is --deny-tool shell(rm:*), rm-stem only."
+  - "Model unpinned: stdout metrics name gpt-6-luna in 47/48 sealed cells (mai-code-1.1-flash in V1-20 r2)."

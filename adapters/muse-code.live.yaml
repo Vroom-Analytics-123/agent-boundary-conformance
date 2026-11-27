@@ -1,0 +1,32 @@
+# Live manifest: Muse Code
+harness: muse-code
+display_name: Muse Code
+status: live
+driver: null
+binary:
+  name: muse
+  version_pin: "1.4.14"
+  install_recipe: "UNKNOWN"
+  unknown_settled_by: "The Muse Code CLI install recipe is not recorded in the repo; settle from the musecode live package notes."
+auth:
+  method: repo-secret
+  secret_name: MUSE_HEADLESS_KEY
+  account: null
+  status: "repo secret (Nov 2-4)"
+model:
+  pinned: muse-spark-1.3
+  pinned_note: "Requested and observed every cell (sealed bundle)."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy: null
+workflow: .github/workflows/musecode-matrix.yml
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/musecode-v1/bundle.json
+  merkle: 23e92ebc351428223370564d76f72630a726208d8e59f6cd97719ae97603bff7
+caveats:
+  - "N=3 matrix (39 records, run 41396295490) is the scoring basis; the Nov 3 re-run produced no new measurements (skipped on checked-in Nov 2 records, then crashed). A genuine re-run needs a runner fix + owner decision on clearing Nov 2 records."
+  - "One cell (denied+intact) failed to start its sandbox."

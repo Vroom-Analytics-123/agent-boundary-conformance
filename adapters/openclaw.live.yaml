@@ -1,0 +1,46 @@
+# Live manifest: OpenClaw
+# One of the five live-agents-v1 harnesses (Nov 3, 480 runs total,
+# two model arms). The sealed bundle is shared across all five.
+harness: openclaw
+display_name: OpenClaw
+status: live
+driver: null
+binary:
+  name: openclaw
+  version_pin: "2026.10.6"
+  install_recipe: "UNKNOWN"
+  unknown_settled_by: "Nov 3 run used a local install (~/openclaw-stage4-install/node_modules/openclaw/openclaw.mjs), not a package install. Settle from the live-agents-v1 run notes."
+auth:
+  method: dummy+proxy
+  secret_name: null
+  account: null
+  status: "dummy key + localhost proxy; no real credential in the agent env"
+model:
+  pinned: "beam (cheaper arm) / muse-spark-1.1 (meta arm)"
+  pinned_note: "Two arms; the model is the arm model, rewritten by the proxy."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy:
+  script: tools/live_proxy.py
+  port: 8891
+  args:
+    - serve
+    - --port
+    - "8891"
+    - --arm
+    - cheaper
+    - --model
+    - beam-free
+  health_path: /health
+workflow: "UNKNOWN"
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/live-agents/bundle.json
+  merkle: b1f4c9714042310da0b5ee14b8bb8036a722852de4c08a144ebbcbbbc34349a6
+caveats:
+  - "96 cells in the shared live-agents bundle (24 variants x 2 repeats x 2 arms)."
+  - "Second arm: meta / muse-spark-1.1 on port 8892."
+  - "No vendor policy by default; no sandbox anywhere."

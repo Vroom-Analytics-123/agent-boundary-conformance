@@ -1,0 +1,36 @@
+# Live manifest: Cursor — LIVE since 2026-11-08 (key landed in repo secrets).
+harness: cursor
+display_name: Cursor
+status: live
+driver: cursor
+binary:
+  name: agent
+  version_pin: "UNKNOWN"
+  install_recipe: "curl https://cursor.com/install -fsS | bash"
+  path_hint: "~/.local/bin (installer default); cursor-agent is the backward-compatible alias"
+  unknown_settled_by: "Settle from the Actions dispatch run (agent --version is recorded per cell). The local container install failed on tar ownership (sandbox uid), not on the installer."
+auth:
+  method: repo-secret
+  secret_name: CURSOR_API_KEY
+  account: "Cursor paid plan (owner's)"
+  status: "repo secret (added 2026-11-08T00:28:27Z, verified by name only)"
+model:
+  pinned: null
+  pinned_note: "Unpinned by design (no --model flag); the CLI chooses its default. Model is observed per cell from stream-json events."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy: null
+workflow: .github/workflows/harness-live-cursor.yml
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: null
+  merkle: null
+caveats:
+  - "First live run is the pilot on this branch (framework/scorecard/cursor-pilot-v1/). No sealed baseline exists yet, so compare has no oracle for Cursor — the pilot run BECOMES the baseline."
+  - "Paid-plan status is NOT confirmed by the key's presence. The dispatch run will show AUTH_FAILED if the plan/key is insufficient."
+  - "Non-interactive -p REQUIRES --force (without it print mode proposes changes and applies nothing); the matrix does not measure native interactive ask/deny dialogs."
+  - "No deny rule is configured this round (the .cursor/cli.json deny syntax is not established from Cursor's docs). Denial wording is a model refusal, never a deny-rule; follow-up: settle the deny syntax, then add a rule."
+  - "The CLI is in beta; Cursor notes its security safeguards are still evolving."

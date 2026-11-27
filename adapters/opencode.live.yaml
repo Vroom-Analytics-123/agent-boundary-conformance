@@ -1,0 +1,44 @@
+# Live manifest: OpenCode
+harness: opencode
+display_name: OpenCode
+status: live
+driver: null
+binary:
+  name: opencode
+  version_pin: "1.19.5"
+  install_recipe: "npm install -g opencode-ai@1.19.5"
+  path_hint: "npm global bin"
+auth:
+  method: dummy+proxy
+  secret_name: null
+  account: null
+  status: "dummy key + localhost proxy; no real credential in the agent env"
+model:
+  pinned: localproxy/beam-free
+  pinned_note: "Real binary + verified free beam model through the localhost proxy (Nov 4 real-model live)."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy:
+  script: tools/live_proxy.py
+  port: 8891
+  args:
+    - serve
+    - --port
+    - "8891"
+    - --arm
+    - cheaper
+    - --model
+    - beam-free
+  health_path: /health
+workflow: .github/workflows/harness-opencode.yml
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/opencode-live/bundle.json
+  merkle: bbfb0edb82f91bfc4c1e5ab30f5f380837c4de7aa09e30c59474257ddbb72b76
+caveats:
+  - "The workflow is stub-only by design and does NOT reproduce the sealed evidence."
+  - "Nov 4 real-model live used ~/workspace/opencode-live-v1/proxy.py (same generic OpenAI-compatible pattern as tools/live_proxy.py serve); the generic proxy must be validated against a real opencode run before it replaces the local one."
+  - "Stub-era runs used a localhost stub with canned tool calls — they measure the permission engine + effects, never model choice."

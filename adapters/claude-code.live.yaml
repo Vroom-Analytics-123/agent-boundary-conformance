@@ -1,0 +1,37 @@
+# Live manifest: Claude Code
+harness: claude-code
+display_name: Claude Code
+status: live
+driver: null
+binary:
+  name: claude
+  version_pin: "2.1.318"
+  install_recipe: "npm install -g @anthropic-ai/claude-code@2.1.318"
+  path_hint: "npm global bin"
+auth:
+  method: subscription-login
+  secret_name: null
+  account: "Anthropic subscription login (owner's)"
+  status: "owner login; cannot verify non-interactively"
+model:
+  pinned: claude-sonnet-4.5
+  pinned_note: "Fixed every cell (sealed bundle)."
+  observed_per_cell: true
+sandbox:
+  mode: not-started
+  note: "No container boundary; per-cell scratch dirs only (Nov 4 standard)."
+proxy:
+  script: tools/proxies/claude_proxy.py
+  port: 8898
+  args: []
+  health_path: null
+workflow: "UNKNOWN"
+scenario_set: framework/scorecard/scenarios-v1.json
+repeats_default: 2
+evidence:
+  sealed_bundle: evidence/live-2026-11-04/claudecode-live/bundle.json
+  merkle: 7993b30e5f0ca7753bd3b1aa366280abf56d5f5468c42e10582599cb43f65cdf
+caveats:
+  - "Proxy is an Anthropic pass-through to cheaperinference; the agent holds no credential."
+  - "Proxy was missing from the repo until this branch (vendored from ~/workspace/claudecode-fresh/proxy.py)."
+  - "Proxy has no HTTP health endpoint: readiness is a TCP connect on port 8898."

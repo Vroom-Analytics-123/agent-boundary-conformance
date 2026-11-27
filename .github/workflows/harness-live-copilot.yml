@@ -1,0 +1,69 @@
+# Copilot live pilot — runs the Copilot matrix on the live-runner
+# framework (tools/live_run.py) and compares the fresh bundle against
+# the sealed Nov 4 bundle as a regression oracle.
+#
+# Dispatch-only. Runs ONLY after this branch merges (workflows are
+# registered from the default branch): the pilot evidence does not
+# exist yet. The framework fails closed on this runner too: with no
+# COPILOT_GITHUB_TOKEN the run records MISSING_AUTH for every cell
+# and never invokes the CLI.
+name: harness-live-copilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      repeats:
+        description: "Repeats per variant (Nov 4 standard: 2)"
+        required: false
+        default: "2"
+      out:
+        description: "Output dir for the pilot run"
+        required: false
+        default: "framework/scorecard/copilot-pilot-v1"
+
+permissions:
+  contents: write
+
+jobs:
+  pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install Copilot CLI (pinned)
+        run: npm install -g @github/copilot@1.0.105
+      - name: Pilot run (live-runner framework)
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          python3 tools/live_run.py run --harness copilot-cli \
+            --repeats "${{ inputs.repeats }}" \
+            --out "${{ inputs.out }}" --label copilot-pilot-v1
+      - name: Verify the fresh bundle
+        run: |
+          python3 tools/live_run.py verify \
+            --bundle "${{ inputs.out }}/bundle.json"
+      - name: Compare against the sealed Nov 4 bundle
+        run: |
+          python3 tools/live_run.py compare \
+            --baseline evidence/live-2026-11-04/copilot-full/bundle.json \
+            --fresh "${{ inputs.out }}/bundle.json" \
+            --out "${{ inputs.out }}/diff-vs-sealed.json" || true
+      - name: Upload pilot bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: copilot-pilot-v1
+          path: ${{ inputs.out }}
+      - name: Commit pilot records to the branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${{ inputs.out }}"
+          git diff --cached --quiet || git commit -m "Copilot pilot run on the live-runner framework (run ${{ github.run_id }})"
+          git push

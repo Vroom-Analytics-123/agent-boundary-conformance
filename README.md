@@ -16,12 +16,16 @@ It is a building inspector, not a firewall: it never certifies anything "secure"
 
 ### 1. Check your agent's rules — one command, zero config, no account, no key
 
+Clone FinePrint once, anywhere — the clone is just the engine. Then run the check from **your own project directory**, where your rules live; the verdict and evidence bundle are written there:
+
 ```bash
-git clone https://github.com/Vroom-Analytics-123/agent-boundary-conformance.git
-cd agent-boundary-conformance
-./fineprint init        # writes starter policy files (skip if you already have one)
-./fineprint check       # verdict + sealed evidence bundle in fineprint-evidence/
+git clone https://github.com/Vroom-Analytics-123/agent-boundary-conformance.git   # once, anywhere
+cd ~/my-project                                                                   # where YOUR rules live
+python3 /path/to/agent-boundary-conformance/fineprint init    # starter rules, skip if you have them
+python3 /path/to/agent-boundary-conformance/fineprint check   # verdict + sealed bundle in ./fineprint-evidence/
 ```
+
+It auto-detects your agent's policy file in the current directory: `fineprint.rules` (Codex), `fineprint.settings.json` or `.claude/settings.json` (Claude Code). Claude Code checks with no download at all; a Codex check needs the pinned oracle restored into the clone first — recipe: [tools/vendor/codex/0.149.0/VENDORED.md](tools/vendor/codex/0.149.0/VENDORED.md).
 
 `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Full guide: [INTEGRATION.md](INTEGRATION.md).
 

@@ -5,6 +5,8 @@ is the short version of this page.
 
 | Document | Status | What it is |
 |---|---|---|
+| [BACKGROUND.md](BACKGROUND.md) | **CURRENT** | Why this matters: verified incidents, attack surface, the invariant catalogue, findings→fixes, Nemotron integration, Meta/Muse attribution, repository structure |
+| [DEMOS.md](DEMOS.md) | **CURRENT** | Every demo GIF in the repo and how each was recorded |
 | [PROJECT_PATHWAY.md](PROJECT_PATHWAY.md) | **CURRENT** | The living status + pathway page — read this first |
 | [EXPLAINER.md](EXPLAINER.md) | CURRENT | **Start here if the idea is new to you** — the full plain-language foundation: the building-inspector metaphor, policy, declarative policy, why defaults aren't enough, conformance, the first measurement, the sprint-end verdict, and references |
 | [FRAMEWORK.md](FRAMEWORK.md) | **CURRENT** | The harness-neutral framework: invariant schema, adapter contract, the three layers (Decision = what the rules decide; Approval = the approval moment; Effect = what actually happens — ground truth), the paper-test measurement routes (vendor-confirmed / reconstructed / no paper surface — provenance of the Decision-layer measurement only, never a harness ranking), the all-harness matrix + surveyed field |

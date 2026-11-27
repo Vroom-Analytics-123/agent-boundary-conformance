@@ -5,6 +5,31 @@ used to carry: the sprint timeline, the pre/post-fix numbers, and the
 milestones after the sprint. Sealed bundles are never edited; corrections
 land as new bundles.
 
+## Nov 27, 2026 — branch consolidation + README restructure
+
+- **Completed work merged to main** from nine branch tips (re-measurement
+  write-up, approval cross-tab, scorecard-v3 draft tables, drift fixtures,
+  live-runner framework F1–F5, gate-proof acceptance campaign prep,
+  live-harness demo, and the free-tier chain: check CLI + gate, wall,
+  second opinion, desktop app). The "branch-only / unmerged" labels on
+  the Nov 3–8 sections below describe their state at the time of writing;
+  the branches named there are merged as of this entry, except
+  `feature/attribution-block-vs-not-attempted` (its own tip says
+  "branch-only, no merge" — its code rides with the demo branch that
+  depends on it) and `musecode-smoke` (raw records stay off main by
+  design). `harness-scorecard`'s smoke re-run records merged separately
+  on the owner's request; `copilot-full-nov4` was already in main.
+- **Post-merge fixes:** PyYAML added to the test env; the wall-dependent
+  tests now skip (never fail) where the runner refuses user namespaces
+  (`fineprint_gate.wall_can_run_here()`, the F6 convention); the
+  fineprint-check workflow checks the starter policy (the bare default
+  fails its own FP-016 positive control) and pre-flights `unshare`.
+- **README restructured** for clarity: one what-this-is paragraph, one
+  demo, a five-path "Use it" section, then results and the scorecard.
+  The demo GIFs moved to [docs/DEMOS.md](docs/DEMOS.md); the context
+  sections (incidents, attack surface, catalogue, fixes, Nemotron,
+  attribution, repo structure) moved to [docs/BACKGROUND.md](docs/BACKGROUND.md).
+
 ## Nov 7–8, 2026 — free Check / Action / gate (branch `free-check-gate`, unmerged)
 
 - **Free Check CLI (`fineprint`, repo root).** A thin wrapper around

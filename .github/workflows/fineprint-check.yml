@@ -64,12 +64,20 @@ jobs:
     # Explicit form: pin the harness + policy. Codex needs the pinned
     # oracle binary first (restored here with the documented recipe,
     # SHA-256-verified — never run oracle work on an unpinned binary).
+    #
+    # The policy is the repo's own starter policy (`fineprint init
+    # --harness codex` writes it): fixtures/policies/default.rules plus
+    # the benign-read allow the positive control (FP-016) needs. The
+    # bare default.rules fails its own check on FP-016 by design — the
+    # starter policy is the checked-in answer, not a workaround.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: write the starter policy (default.rules + the FP-016 allow)
+        run: python3 fineprint init --harness codex
       - name: restore pinned oracle
         run: |
           mkdir -p /tmp/codex-restore tools/vendor/codex/0.149.0/bin
@@ -81,7 +89,7 @@ jobs:
       - uses: ./
         with:
           harness: codex
-          policy: fixtures/policies/default.rules
+          policy: fineprint.rules
 
   gate:
     # The free gate, now enforced by the wall (antivirus for agents):
@@ -96,23 +104,45 @@ jobs:
     # deny steps are expected to fail, so they run with
     # continue-on-error and the log shows the denial. The last step
     # verifies the audit log's hash chain.
+    #
+    # The wall needs user namespaces (`unshare`); a hosted runner may
+    # refuse them. The pre-flight step probes exactly what the wall
+    # probes; when it says no, the wall steps are skipped with a
+    # notice (the same condition the test suite skips on) and the
+    # tripwire steps still run — the gate refuses exit 3 rather than
+    # running unprotected, so skipping is the honest result.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: wall pre-flight — can this runner unshare?
+        id: wall
+        run: |
+          if python3 fineprint gate probe >/dev/null 2>&1; then
+            echo "available=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=no" >> "$GITHUB_OUTPUT"
+            echo "::notice::This runner cannot unshare (no user namespaces), so the wall steps are skipped — the gate refuses (exit 3) rather than running unprotected. The tripwire steps still run. Locally, ./fineprint gate probe explains what is missing."
+          fi
       - name: gate allows a normal file
         run: python3 fineprint gate check --file README.md
       - name: gate denies a credential read (denylist)
         continue-on-error: true
         run: python3 fineprint gate check --file ~/.ssh/id_rsa
       - name: gate denies a file outside the scope (confinement)
+        if: steps.wall.outputs.available == 'yes'
         continue-on-error: true
         run: python3 fineprint gate run --confine -- cat /etc/passwd
-      - name: gate guards a whole command
+      - name: gate guards a whole command (wall)
+        if: steps.wall.outputs.available == 'yes'
         run: python3 fineprint gate run -- cat README.md
+      - name: gate guards a whole command (tripwire fallback, no wall)
+        if: steps.wall.outputs.available == 'no'
+        run: python3 fineprint gate check --file README.md
       - name: wall denies a script that reads the SSH key
+        if: steps.wall.outputs.available == 'yes'
         continue-on-error: true
         run: |
           mkdir -p "$HOME/.ssh"
@@ -120,4 +150,5 @@ jobs:
           printf 'import os\nprint(open(os.path.expanduser("~/.ssh/id_rsa")).read())\n' > read_key.py
           python3 fineprint gate run --log audit.jsonl -- python3 read_key.py
       - name: audit log verifies
+        if: steps.wall.outputs.available == 'yes'
         run: python3 fineprint gate verify-log --log audit.jsonl

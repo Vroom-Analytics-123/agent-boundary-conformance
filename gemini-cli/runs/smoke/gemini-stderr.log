@@ -1,147 +1,95 @@
 Warning: 256-color support not detected. Using a terminal with at least 256-color support is recommended for a better visual experience.
 Ripgrep is not available. Falling back to GrepTool.
+[STARTUP] Phase 'cleanup_ops' was started but never ended. Skipping metrics.
+[STARTUP] Cannot measure phase 'cleanup_ops': start mark 'startup:cleanup_ops:start' not found (likely cleared by reset).
 Attempt 1 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
+    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
+    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
+    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
+    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
+    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
   status: 503
 }
-Attempt 2 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
+Attempt 2 failed. Retrying with backoff... Error: exception TypeError: fetch failed sending request
+    at file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267760:13
+    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
+    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
+    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
+    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24)
+    at async GeminiClient.processTurn (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349109:22)
+    at async GeminiClient.sendMessageStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349206:14)
+Attempt 3 failed. Retrying with backoff... Error: exception TypeError: fetch failed sending request
+    at file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267760:13
+    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
+    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
+    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
+    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24)
+    at async GeminiClient.processTurn (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349109:22)
+    at async GeminiClient.sendMessageStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349206:14)
+Attempt 4 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"The service is currently unavailable.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
+    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
-  status: 503
-}
-Attempt 3 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
-  status: 503
-}
-Attempt 4 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
+    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
+    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
+    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
+    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
   status: 503
 }
 Attempt 5 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
+    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
+    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
+    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
+    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
+    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
   status: 503
 }
-Attempt 6 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
+Error when talking to Gemini API Full report available at: /tmp/gemini-client-error-Turn.run-sendMessageStream-2026-11-04T06-01-15-618Z.json TerminalQuotaError: You have exhausted your daily quota on this model.
+    at classifyGoogleError (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:308580:16)
+    at retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309300:29)
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
-  status: 503
-}
-Attempt 7 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
-  status: 503
-}
-Attempt 8 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
-  status: 503
-}
-Attempt 9 failed with status 503. Retrying with backoff... _ApiError: {"error":{"message":"{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n","code":503,"status":"Service Unavailable"}}
-    at throwErrorIfNotOK (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267922:24)
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:267685:7
-    at async Models.generateContentStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:268781:16)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:312891:19
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:289124:23
-    at async retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309277:23)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24) {
-  status: 503
-}
-Attempt 10 failed: This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.. Max attempts reached
-Error when talking to Gemini API Full report available at: /tmp/gemini-client-error-Turn.run-sendMessageStream-2026-11-04T03-00-23-274Z.json RetryableQuotaError: This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
-    at classifyGoogleError (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:308569:14)
-    at retryWithBackoff (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:309300:29)
-    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
-    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
-    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
-    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24)
-    at async GeminiClient.processTurn (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349109:22)
-    at async GeminiClient.sendMessageStream (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349206:14)
-    at async file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/gemini-22EOGL6O.js:12219:26
-    at async main (file:///opt/hostedtoolcache/node/24.22.1/x64/lib/node_modules/@google/gemini-cli/bundle/gemini-22EOGL6O.js:17833:5) {
+    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334390:28)
+    at async GeminiChat.streamWithRetries (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:334085:29)
+    at async Turn.run (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:335129:24)
+    at async GeminiClient.processTurn (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349109:22)
+    at async GeminiClient.sendMessageStream (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/chunk-RZ3ZVTZB.js:349206:14)
+    at async file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/gemini-22EOGL6O.js:12219:26
+    at async main (file:///opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/@google/gemini-cli/bundle/gemini-22EOGL6O.js:17833:5) {
   cause: {
-    code: 503,
-    message: 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.',
-    details: []
+    code: 429,
+    message: 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n' +
+      '* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash, description: Generate content requests per day limit exceeded on Free Tier. See https://ai.google.dev/gemini-api/docs/rate-limits.\n' +
+      'Please retry in 1h58m44.400078616s.',
+    details: [ [Object], [Object], [Object] ]
   },
   retryDelayMs: undefined,
-  status: 503
+  reason: undefined,
+  status: 429
 }
 {
-  "session_id": "7f76d6e6-3e2d-422c-a163-decaf9087def",
+  "session_id": "2c4d3953-25b0-483c-ade1-3405c65e2b2c",
   "error": {
     "type": "Error",
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "code": 503
+    "message": "You have exhausted your daily quota on this model.",
+    "code": 429
   }
 }

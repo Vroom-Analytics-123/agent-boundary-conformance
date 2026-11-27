@@ -32,6 +32,9 @@ Commands:
   fineprint report BUNDLE     print a bundle as a readable verdict table
   fineprint gate ...          the free wrapper guard (see `fineprint gate --help`)
   fineprint harnesses         list the harnesses this CLI knows
+  fineprint doctor            what can run on this machine — policy file,
+                              pinned oracle, wall preconditions, python;
+                              by name, with the remedy for each gap
 
 Power is behind flags, never in front of the first run: --harness,
 --policy, --rules, --only, --out, --baseline, --bindings, --no-smoke.
@@ -482,6 +485,79 @@ def cmd_harnesses(args):
     return 0
 
 
+def cmd_doctor(args):
+    """Report, by name, what can run on this machine — and the remedy
+    for each gap. Diagnostic only: it changes nothing and checks
+    nothing (that is `check`'s job). Exit 0 unless something is
+    actually broken (python too old, or a restored oracle fails its
+    pin); a MISSING line is a gap with a remedy, not a failure."""
+    import fineprint_gate as FG  # noqa: E402
+    import pin  # noqa: E402
+
+    fail = False
+    print("fineprint doctor — what can run on this machine\n")
+
+    v = sys.version_info
+    if v >= (3, 10):
+        print(f"  python   OK       {v.major}.{v.minor}.{v.micro} (needs 3.10+)")
+    else:
+        print(f"  python   FAIL     {v.major}.{v.minor} is too old (needs 3.10+)")
+        fail = True
+
+    cwd = Path.cwd()
+    policy = None
+    for harness, path in (("codex", cwd / "fineprint.rules"),
+                          ("claude-code", cwd / "fineprint.settings.json"),
+                          ("claude-code", cwd / ".claude" / "settings.json")):
+        if path.exists():
+            policy = f"{harness}: {path.name} (in this directory)"
+            break
+    if policy:
+        print(f"  policy   FOUND    {policy}")
+    elif shutil.which("muse"):
+        print("  policy   FOUND    muse-code on PATH; Muse Code has no local "
+              "policy file — a check reports what could not be measured")
+    else:
+        print("  policy   NONE     no rules file in this directory — "
+              "run `fineprint init` from your project directory first")
+
+    oracle = None
+    for candidate in (pin.VENDORED_CODEX, pin.HOST_CODEX):
+        if candidate.exists():
+            oracle = candidate
+            break
+    if oracle is None:
+        print("  oracle   MISSING  the pinned codex-cli "
+              f"{pin.PINNED_CODEX_VERSION} binary is not restored — "
+              "Codex-route checks need it. Restore with the recipe in "
+              "tools/vendor/codex/0.149.0/VENDORED.md; Claude Code checks "
+              "do not need it.")
+    else:
+        if pin.sha256_file(oracle) == pin.PINNED_CODEX_SHA256:
+            print("  oracle   OK       pinned codex-cli "
+                  f"{pin.PINNED_CODEX_VERSION} found, sha256 matches the pin")
+        else:
+            print("  oracle   FAIL     the oracle on disk fails its pin "
+                  f"(sha256 != pinned value) — nothing oracle-based will "
+                  f"run; restore from tools/vendor/codex/"
+                  f"{pin.PINNED_CODEX_VERSION}/VENDORED.md")
+            fail = True
+
+    if FG.wall_can_run_here():
+        print("  wall     OK       user namespaces work — `fineprint gate "
+              "run` can enforce here")
+    else:
+        print("  wall     MISSING  user namespaces unavailable — "
+              "`fineprint gate run` will refuse here (exit 3) rather than "
+              "run unprotected. The check and the CI Action still work; "
+              "`fineprint gate probe` names the failing step.")
+    print()
+    print("verdict: " + ("a gap needs attention (FAIL above)"
+                          if fail else
+                          "nothing broken — MISSING lines name their remedy"))
+    return EXIT_UNKNOWN if fail else EXIT_PASS
+
+
 # --------------------------------------------------------------------------
 # argument parsing (no flags required for `check`; empty = unset)
 # --------------------------------------------------------------------------
@@ -550,6 +626,8 @@ def main(argv):
         return cmd_report({"bundle": positional[0]})
     if cmd == "harnesses":
         return cmd_harnesses(args)
+    if cmd == "doctor":
+        return cmd_doctor(args)
     print(f"unknown command {cmd!r}\n")
     print(__doc__)
     return EXIT_UNKNOWN

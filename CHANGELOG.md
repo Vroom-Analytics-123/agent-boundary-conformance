@@ -29,6 +29,20 @@ land as new bundles.
   The demo GIFs moved to [docs/DEMOS.md](docs/DEMOS.md); the context
   sections (incidents, attack surface, catalogue, fixes, Nemotron,
   attribution, repo structure) moved to [docs/BACKGROUND.md](docs/BACKGROUND.md).
+- **User journey rewrite** (later the same day): the "Use it" section now
+  follows the journey a user actually takes — check → read the
+  UNRESOLVEDs → wall + audit log → keep it green → MCP, with the
+  reproduce path under a researcher heading; step 1 documents the
+  real flow (the clone is the engine; the check runs from your own
+  project directory) and names which harnesses check with zero
+  download. New [docs/USER_GUIDE.md](docs/USER_GUIDE.md) walks the
+  same journey with real captured output, exit codes, and
+  troubleshooting; new `fineprint doctor` reports, by name, what can
+  run on this machine (policy file, pinned oracle, wall
+  preconditions) with the remedy for each gap (exit 0 unless
+  something is actually broken, e.g. a restored oracle failing its
+  pin); the desktop app gets one README line as the no-terminal wall
+  feed.
 
 ## Nov 7–8, 2026 — free Check / Action / gate (branch `free-check-gate`, unmerged)
 

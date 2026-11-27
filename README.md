@@ -29,27 +29,43 @@ It auto-detects your agent's policy file in the current directory: `fineprint.ru
 
 `PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Full guide: [INTEGRATION.md](INTEGRATION.md).
 
-### 2. Stop the harm while the agent works — the wall
+### 2. 13 UNRESOLVED? That is the honest result — and the wall is the answer
+
+A policy cannot see inside wrapped shells or unnamed paths, so some probes come
+back `UNRESOLVED` — reported, never treated as allow. Two honest moves: write
+rules for the situations you care about, and let the wall carry what a policy
+never can. The walk-through: [docs/USER_GUIDE.md](docs/USER_GUIDE.md).
+
+### 3. Stop the harm while the agent works — the wall, then the log
 
 The check measures; the wall enforces. The default is a protective denylist: credential reads, destructive deletes, exfiltration of protected files, and unapproved deploys are blocked; normal work anywhere is allowed. Folder confinement is opt-in (`--confine`).
 
 ```bash
 ./fineprint gate run -- cat notes.txt        # allows, exit 0
+./fineprint gate run -- rm -rf notes.txt     # blocked, exit 2 (rule DENY-DELETE)
 ./fineprint gate run -- python3 read_key.py  # the wall hides ~/.ssh — the read fails, nothing leaks
 ./fineprint gate log --log audit.jsonl       # tried X → blocked by rule Y → will always be blocked
 ```
 
-Mechanism, signed definition packs, and the limits stated plainly: [docs/FREE_GATE.md](docs/FREE_GATE.md).
+A wall denial looks like a plain `FileNotFoundError` — the wall hides, it does
+not scold; `gate log` is where the story is. Mechanism, signed definition packs,
+and the limits stated plainly: [docs/FREE_GATE.md](docs/FREE_GATE.md). No
+terminal? The [desktop app](apps/desktop/README.md) is the wall's live feed.
 
-### 3. Keep it green in CI — one workflow file
+### 4. Keep it green
 
-Add [one file](docs/FREE_CHECK_ACTION.md) and the check runs on every pull request — red means a rule broke, the evidence bundle is downloadable from the run. No terminal needed.
+`fineprint doctor` reports in one command what can run on this machine — policy
+file, pinned oracle, wall preconditions — with the remedy for each gap. Add
+[one CI file](docs/FREE_CHECK_ACTION.md) and the check runs on every pull
+request — red means a rule broke, the evidence bundle is downloadable from the
+run. And re-run the check after every agent release: a new version can move a
+decision the last one got right.
 
-### 4. From your agent — the MCP server
+### 5. From your agent — the MCP server
 
 `python3 mcp/server.py` (stdio) gives Claude Code, Codex, and any MCP client four tools — `check_command`, `list_invariants`, `measurement_routes`, `run_check`. See [mcp/README.md](mcp/README.md) and the [skill](mcp/SKILL.md).
 
-### 5. Reproduce the measurements
+### 6. Reproduce the measurements (researchers)
 
 ```bash
 # Restore the pinned oracle first: the 258 MB codex-cli 0.149.0 binary is
@@ -110,6 +126,7 @@ The method was proven in depth on two harnesses (Codex, Claude Code) before spre
 | [docs/EXTENDING.md](docs/EXTENDING.md) | How to add a harness or framework target |
 | [docs/catalogue/](docs/catalogue/) | The invariant catalogue: 16 parameterized invariants with per-target translations |
 | [INTEGRATION.md](INTEGRATION.md) | The Check CLI, written for a junior dev |
+| [docs/USER_GUIDE.md](docs/USER_GUIDE.md) | **The user journey, step by step** — check → UNRESOLVEDs → wall → log → keep it green, with real captured output |
 | [docs/DOCUMENT_MAP.md](docs/DOCUMENT_MAP.md) | Every doc, its status, and what it holds |
 
 ## License

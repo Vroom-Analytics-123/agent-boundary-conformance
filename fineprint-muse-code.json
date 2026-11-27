@@ -1,0 +1,6 @@
+{
+  "harness": "muse-code",
+  "policy_kind": "no local policy file",
+  "note": "Muse Code has no local policy file and no offline decision oracle: permission profiles are select-never-create and approvals route through an LLM reviewer (adapters/muse-code-assessment.md, 2026-10-22). This file records that fact so a check run can name what it examined. Nothing here is a policy and nothing here is measured.",
+  "live_route": "Live Approval/Effect measurement runs through the musecode-smoke workflow (approver + muse serve, your own MUSE_HEADLESS_KEY secret) \u2014 see INTEGRATION.md."
+}

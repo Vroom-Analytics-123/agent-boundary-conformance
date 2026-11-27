@@ -10,6 +10,7 @@ docs/FREE_GATE.md.
 Stdlib only (unittest under pytest).
 """
 
+import functools
 import json
 import subprocess
 import sys
@@ -29,6 +30,20 @@ def policy_for(tmp, hosts=()):
     return FG.Policy(allowed_paths=(str(tmp),), allowed_hosts=tuple(hosts),
                      mode="confine")
 
+
+@functools.lru_cache(maxsize=None)
+def _wall_ok():
+    import fineprint_gate as G
+    return G.wall_can_run_here()
+
+
+# The wall needs user namespaces; a sandboxed runner may refuse them and
+# the gate itself refuses (exit 3) rather than running unprotected. The
+# wall-dependent tests skip there with the reason named — a skip, not a
+# fail (the F6 convention from the desktop app's workflow).
+requires_wall = unittest.skipUnless(
+    _wall_ok(), "the wall cannot run here (no user namespaces); "
+    "see `fineprint gate probe`")
 
 class TestDecisions(unittest.TestCase):
     def test_allow_inside(self):
@@ -136,6 +151,7 @@ class TestGateRun(unittest.TestCase):
              "allowed_hosts": []}))
         return str(path)
 
+    @requires_wall
     def test_run_allows_in_scope_command(self):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "hello.txt"
@@ -173,6 +189,7 @@ class TestGateRun(unittest.TestCase):
             self.assertIn("not allowlisted",
                           (proc.stdout + proc.stderr).lower())
 
+    @requires_wall
     def test_run_passes_through_child_exit_code(self):
         # Deny mode: the `python3 -c` code string is a bare argv token
         # (a file_read) — confinement would deny it, the denylist
@@ -207,6 +224,7 @@ class TestGateRun(unittest.TestCase):
             self.assertEqual(bad.returncode, 2, bad.stdout)
             self.assertIn("DENY-CRED-ENV", bad.stdout)
 
+    @requires_wall
     def test_gate_run_no_policy_uses_default(self):
         # Zero config: the denylist default allows a normal file and
         # denies a protected one (a .env), without executing it.
@@ -637,6 +655,7 @@ class TestProbe(unittest.TestCase):
     wall's own precondition, because each step runs the real `unshare`
     binary — the same primitive the wall uses."""
 
+    @requires_wall
     def test_probe_passes_where_the_wall_runs(self):
         # Live: unshare + mount work in this container (the wall
         # tests prove it), so the probe must pass here.
@@ -651,6 +670,7 @@ class TestProbe(unittest.TestCase):
                       "namespaces): PASS", out)
         self.assertIn("probe: PASS", out)
 
+    @requires_wall
     def test_probe_reports_the_cap_drop(self):
         proc = subprocess.run(
             [sys.executable, str(FINEPRINT), "gate", "probe"],

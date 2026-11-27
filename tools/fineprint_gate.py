@@ -1362,6 +1362,29 @@ def cmd_probe():
     return EXIT_ALLOW
 
 
+def wall_can_run_here():
+    """True when the wall's own preconditions hold — the same three
+    syscalls `gate probe` checks, without the printing.
+
+    The test suite and the fineprint-check workflow derive their
+    wall-or-skip decision from this, so a runner that refuses user
+    namespaces gets an honest skip (the gate itself refuses, exit 3,
+    rather than running unprotected), never a fake pass.
+    """
+    if shutil.which("unshare") is None or shutil.which("mount") is None:
+        return False
+    for _name, argv in (
+        ("1", ["unshare", "--user", "true"]),
+        ("2", ["unshare", "--user", "--mount", "true"]),
+        ("3", ["unshare", "--user", "--map-root-user", "--mount",
+               "sh", "-c", "mount --make-rprivate /"]),
+    ):
+        passed, _detail = _probe_step(_name, argv)
+        if not passed:
+            return False
+    return True
+
+
 def _render_log_entry(entry):
     """One readable line: tried X -> blocked by rule Y -> will always
     be blocked. Wall events render as what the wall did."""

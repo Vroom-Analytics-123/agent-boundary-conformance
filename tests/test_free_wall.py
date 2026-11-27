@@ -10,6 +10,7 @@ enforcement. A command that bypasses argv scanning (a script that reads
 a protected file without naming it) must still be denied by the wall.
 """
 
+import functools
 import json
 import os
 import subprocess
@@ -35,6 +36,20 @@ def run_cli(args, cwd, env=None, timeout=120):
 def write_script(path, body):
     Path(path).write_text(body)
 
+
+@functools.lru_cache(maxsize=None)
+def _wall_ok():
+    import fineprint_gate as G
+    return G.wall_can_run_here()
+
+
+# The wall needs user namespaces; a sandboxed runner may refuse them and
+# the gate itself refuses (exit 3) rather than running unprotected. The
+# wall-dependent tests skip there with the reason named — a skip, not a
+# fail (the F6 convention from the desktop app's workflow).
+requires_wall = unittest.skipUnless(
+    _wall_ok(), "the wall cannot run here (no user namespaces); "
+    "see `fineprint gate probe`")
 
 class WallTestCase(unittest.TestCase):
     """A temp home (with a fake SSH key + .env) and a temp project dir."""
@@ -108,6 +123,7 @@ class TestDenylistDefault(WallTestCase):
         self.assertEqual(r.returncode, 2)
         self.assertIn("DENY-EXFIL", r.stdout + r.stderr)
 
+    @requires_wall
     def test_tripwire_allows_normal_work_anywhere(self):
         # Normal work anywhere is allowed by default — even outside
         # the project directory.
@@ -120,6 +136,7 @@ class TestDenylistDefault(WallTestCase):
         self.assertEqual(r.returncode, 0)
         self.assertIn("just a normal file", r.stdout)
 
+    @requires_wall
     def test_allowed_command_override(self):
         # A deploy the user explicitly allows is allowed.
         policy = {"mode": "deny", "allowed_commands": ["deploy.sh"]}
@@ -146,6 +163,7 @@ class TestDenylistDefault(WallTestCase):
         self.assertNotEqual(r.returncode, 0)
         self.assertNotIn("FAKE-PRIVATE-KEY-123", r.stdout + r.stderr)
 
+    @requires_wall
     def test_wall_allows_normal_file_anywhere(self):
         # The denylist default does NOT confine: a script reading a
         # normal file outside the project still works.
@@ -205,6 +223,7 @@ class TestConfineMode(WallTestCase):
         self.assertNotEqual(r.returncode, 0)
         self.assertNotIn("TOPSECRET", r.stdout + r.stderr)
 
+    @requires_wall
     def test_wall_allows_in_scope_command(self):
         r = run_cli(["gate", "run", "--confine", "--", "cat", "notes.txt"],
                     cwd=self.proj, env=self.env)
@@ -342,6 +361,7 @@ class TestWallNetwork(WallTestCase):
         self.assertNotEqual(r.returncode, 0)
         server.shutdown()
 
+    @requires_wall
     def test_denylist_allows_network_by_default(self):
         # Denylist default: no network namespace, so a normal fetch
         # to a local server works.
@@ -361,6 +381,7 @@ class TestWallNetwork(WallTestCase):
         self.assertEqual(r.returncode, 0)
         server.shutdown()
 
+    @requires_wall
     def test_wall_proxy_allows_allowlisted_host_denies_other(self):
         # Confine mode with hosts: the proxy forwards the allowlisted
         # host and 403s the other.
@@ -404,6 +425,7 @@ class TestWallNetwork(WallTestCase):
 
 
 class TestWallAuditLog(WallTestCase):
+    @requires_wall
     def test_wall_start_and_end_logged_and_chain_verifies(self):
         import fineprint_gate as G
         log = self.proj / "audit.jsonl"
@@ -420,6 +442,7 @@ class TestWallAuditLog(WallTestCase):
         self.assertIn("definitions", start)
         self.assertTrue(G.AuditLog.verify(str(log)))
 
+    @requires_wall
     def test_gate_verify_log_command(self):
         log = self.proj / "audit.jsonl"
         r = run_cli(["gate", "run", "--confine", "--log", str(log), "--",
@@ -444,6 +467,7 @@ class TestGateLog(WallTestCase):
         self.assertIn("blocked by rule DENY-DELETE", r.stdout)
         self.assertIn("will always be blocked", r.stdout)
 
+    @requires_wall
     def test_gate_log_reports_broken_chain(self):
         log = self.proj / "audit.jsonl"
         r = run_cli(["gate", "run", "--log", str(log), "--",

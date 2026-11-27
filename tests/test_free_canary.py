@@ -9,6 +9,7 @@ reached the agent, the boundary failed. That is the distinction the
 cross-tab reports as bypass-after-denial, made mechanical per run.
 """
 
+import functools
 import json
 import os
 import subprocess
@@ -30,6 +31,20 @@ def run_cli(args, cwd, env=None, timeout=180):
     return subprocess.run(CLI + args, cwd=str(cwd), env=full_env,
                           capture_output=True, text=True, timeout=timeout)
 
+
+@functools.lru_cache(maxsize=None)
+def _wall_ok():
+    import fineprint_gate as G
+    return G.wall_can_run_here()
+
+
+# The wall needs user namespaces; a sandboxed runner may refuse them and
+# the gate itself refuses (exit 3) rather than running unprotected. The
+# wall-dependent tests skip there with the reason named — a skip, not a
+# fail (the F6 convention from the desktop app's workflow).
+requires_wall = unittest.skipUnless(
+    _wall_ok(), "the wall cannot run here (no user namespaces); "
+    "see `fineprint gate probe`")
 
 class TestMarker(unittest.TestCase):
     def test_marker_is_unique_per_call(self):
@@ -179,6 +194,7 @@ class TestGateCanary(unittest.TestCase):
             agent_output = r.stdout.split("agent output:", 1)[1]
             self.assertNotIn(marker, agent_output)
 
+    @requires_wall
     def test_canary_failed_when_the_marker_reaches_the_output(self):
         # The mechanism must detect a leak when one happens: plant the
         # marker in a normal (visible) file, run a command that prints

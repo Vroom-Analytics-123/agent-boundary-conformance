@@ -4,9 +4,9 @@
 
 ## What this is
 
-FinePrint measures whether an AI coding agent's *enforced* limits match its *stated* limits. You write security rules for your agent ("never silently delete", "deploys ask first"); FinePrint asks the agent's **own policy checker** what it actually decides, compares that with what a human is asked and what actually happens, and reports **pass / fail / unknown** with sealed, replayable evidence.
+FinePrint measures whether an AI coding agent's *enforced* limits match its *stated* limits. You write security rules for your agent ("never silently delete", "deploys ask first"); FinePrint asks the agent's **own rule checker** what it actually decides, compares that with what a human is asked and what actually happens, and reports **pass / fail / unknown** with sealed, replayable evidence.
 
-It is a building inspector, not a firewall: it never certifies anything "secure", never blocks anything itself, and it re-runs on every harness release, because a new version can move a decision the last one got right.
+It is a building inspector, not a firewall: it never certifies anything "secure", never blocks anything itself, and it re-runs on every agent release, because a new version can move a decision the last one got right.
 
 **Status: the method is proven, the verdict is deliberately NARROW** — two vendor-confirmed decision routes (Codex + Amp), limitations stated on their face ([docs/LIMITATIONS.md](docs/LIMITATIONS.md)). The living status page is [docs/PROJECT_PATHWAY.md](docs/PROJECT_PATHWAY.md).
 
@@ -25,16 +25,16 @@ python3 /path/to/agent-boundary-conformance/fineprint init    # starter rules, s
 python3 /path/to/agent-boundary-conformance/fineprint check   # verdict + sealed bundle in ./fineprint-evidence/
 ```
 
-It auto-detects your agent's policy file in the current directory: `fineprint.rules` (Codex), `fineprint.settings.json` or `.claude/settings.json` (Claude Code). Claude Code checks with no download at all; a Codex check needs the pinned oracle restored into the clone first — recipe: [tools/vendor/codex/0.149.0/VENDORED.md](tools/vendor/codex/0.149.0/VENDORED.md).
+It auto-detects your agent's rules file in the current directory: `fineprint.rules` (Codex), `fineprint.settings.json` or `.claude/settings.json` (Claude Code). Claude Code checks with no download at all; a Codex check needs the pinned oracle restored into the clone first — recipe: [tools/vendor/codex/0.149.0/VENDORED.md](tools/vendor/codex/0.149.0/VENDORED.md).
 
-`PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the policy, re-run). `UNRESOLVED` means the policy does not answer that probe — reported, not hidden. Full guide: [INTEGRATION.md](INTEGRATION.md).
+`PASS` (exit 0) or `BLOCKED` (exit 2 — a rule broke; open `scorecard.html` in the evidence directory, fix the rules, re-run). `UNRESOLVED` means your rules do not answer that probe — reported, not hidden. Full guide: [INTEGRATION.md](INTEGRATION.md).
 
 ### 2. 13 UNRESOLVED? That is the honest result — and the wall is the answer
 
-A policy cannot see inside wrapped shells or unnamed paths, so some probes come
+Your rules cannot see inside wrapped shells or unnamed paths, so some probes come
 back `UNRESOLVED` — reported, never treated as allow. Two honest moves: write
-rules for the situations you care about, and let the wall carry what a policy
-never can. The walk-through: [docs/USER_GUIDE.md](docs/USER_GUIDE.md).
+rules for the situations you care about, and let the wall carry what rules
+alone never can. The walk-through: [docs/USER_GUIDE.md](docs/USER_GUIDE.md).
 
 ### 3. Stop the harm while the agent works — the wall, then the log
 
@@ -54,8 +54,9 @@ terminal? The [desktop app](apps/desktop/README.md) is the wall's live feed.
 
 ### 4. Keep it green
 
-`fineprint doctor` reports in one command what can run on this machine — policy
-file, pinned oracle, wall preconditions — with the remedy for each gap. Add
+`fineprint doctor` reports in one command what can run on this machine — your
+rules file, the pinned oracle, the wall's preconditions — with the remedy for
+each gap. Add
 [one CI file](docs/FREE_CHECK_ACTION.md) and the check runs on every pull
 request — red means a rule broke, the evidence bundle is downloadable from the
 run. And re-run the check after every agent release: a new version can move a
@@ -86,14 +87,14 @@ Without the binary, the 3 oracle tests fail closed with a pinned-oracle mismatch
 
 ## What it found
 
-41 probe commands replayed against Codex's own policy checker (pinned codex-cli 0.149.0). The question is how often the rulebook answers at all:
+41 probe commands replayed against Codex's own rule checker (pinned codex-cli 0.149.0). The question is how often the rulebook answers at all:
 
 | | allow | prompt | forbidden | unknown |
 |---|---|---|---|---|
 | Before the fix | 6 | 4 | 9 | 22 |
 | After the fix | 6 | 4 | 11 | 20 |
 
-The fix moved two spelling variants (`rm -fr`, `rm --recursive --force`) from unknown to forbidden, sealed as `evidence/postfix-2026-10-22/bundle.json` (Merkle root `5a974fe6…`). **"Unknown" is NOT a bypass** — it means the written policy doesn't decide it; the agent's approval prompts and sandbox still govern what happens. And the corpus is deliberately weighted toward tricky variants: 54% unknown is a property of this probe set, never a real-world rate.
+The fix moved two spelling variants (`rm -fr`, `rm --recursive --force`) from unknown to forbidden, sealed as `evidence/postfix-2026-10-22/bundle.json` (Merkle root `5a974fe6…`). **"Unknown" is NOT a bypass** — it means the written rules don't decide it; the agent's approval prompts and sandbox still govern what happens. And the corpus is deliberately weighted toward tricky variants: 54% unknown is a property of this probe set, never a real-world rate.
 
 ## The harness scorecard
 
@@ -107,11 +108,11 @@ Full table + method ([framework/SCORING-v4.md](framework/SCORING-v4.md)) + seale
 
 1. **The problem** — an agent must never do X: delete, exfiltrate, deploy, whatever you forbade. But does it actually stop?
 2. **The rule** — you write the rule as an invariant, a statement of intent in plain words ("never silently delete").
-3. **The probe** — FinePrint replays probe commands against the harness's own checker. Never a re-implementation.
-4. **The three layers, compared not chained** — Decision (what the policy decides), Approval (does a human gate intervene), Effect (what actually happened — ground truth). A disagreement between any two is a finding; silence is reported as unknown, never as allow.
+3. **The probe** — FinePrint replays probe commands against the agent's own checker. Never a re-implementation.
+4. **The three layers, compared not chained** — Decision (what the rules decide), Approval (does a human gate intervene), Effect (what actually happened — ground truth). A disagreement between any two is a finding; silence is reported as unknown, never as allow.
 5. **Finding → fix → re-measure** — every finding ships with a drafted fix, and the fix only closes when the suite re-runs and re-verifies it.
 
-The method was proven in depth on two harnesses (Codex, Claude Code) before spreading across sixteen; adding a target follows [docs/EXTENDING.md](docs/EXTENDING.md).
+The method was proven in depth on two agents (Codex, Claude Code) before spreading across sixteen; adding a target follows [docs/EXTENDING.md](docs/EXTENDING.md).
 
 ## Docs
 

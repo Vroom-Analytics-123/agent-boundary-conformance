@@ -3,12 +3,13 @@
 You wrote rules for your AI coding agent — "never silently delete", "deploys ask
 first". This guide walks the journey from that question to a working boundary,
 in five steps. Every output below is captured from a real run, not invented.
-Jargon, when it appears: the **agent** (also called a harness) is the coding
-agent you use; the **policy** is the file of rules you wrote for it.
+Words used here: **your agent** is the coding agent you use (deeper docs call
+it a *harness*); **your rules** are the rules you wrote for it (the rules file;
+deeper docs call it a *policy*).
 
-The one insight to carry through all five steps: **a written policy answers only
-part of the question, and that is normal.** The starter policy answers 3 of 16
-situations cleanly and leaves 13 `UNRESOLVED`. The check's job is to report that
+The one insight to carry through all five steps: **written rules answer only
+part of the question, and that is normal.** The starter rules answer 3 of 16
+situations cleanly and leave 13 `UNRESOLVED`. The check's job is to report that
 truthfully; the wall's job is to cover the holes while the agent works.
 
 ## Step 1 — Check: do my rules hold?
@@ -38,13 +39,13 @@ smoke: live decision source answered; bundle verifies
 PASS: no rule broken. intent: SATISFIED=1 UNRESOLVED=13 (UNRESOLVED = the policy does not answer that probe — reported, not hidden).
 ```
 
-The check found the policy file on its own, asked the agent's **own policy
+The check found your rules file on its own, asked the agent's **own rule
 checker** (never a re-implementation) 16 built-in questions, and wrote a sealed,
 replayable evidence bundle in your directory. No account, no key, no network.
 
-What each harness needs, said up front:
+What each agent needs, said up front:
 
-| Harness | Zero download? | Note |
+| Your agent | Zero download? | Note |
 | --- | --- | --- |
 | Claude Code | **Yes** — nothing to restore | reads `.claude/settings.json` or `fineprint.settings.json` |
 | Codex | No — restore the 258 MB pinned oracle first | recipe: [tools/vendor/codex/0.149.0/VENDORED.md](../tools/vendor/codex/0.149.0/VENDORED.md) |
@@ -55,7 +56,7 @@ the full contract: [INTEGRATION.md](../INTEGRATION.md).
 
 ## Step 2 — Read the UNRESOLVEDs. There will be some.
 
-`PASS` next to 13 `UNRESOLVED` is the honest result, not a failure: the policy
+`PASS` next to 13 `UNRESOLVED` is the honest result, not a failure: your rules
 cannot see inside wrapped shells or unnamed paths, and `unknown` is **reported,
 never treated as allow**. See exactly what was decided per rule:
 
@@ -80,7 +81,7 @@ bundle valid: fineprint-check-20261127-090011-847983 (65 findings, Merkle root a
 
 Two honest moves from here: **write rules for the situations you care about**
 ([INTEGRATION.md](../INTEGRATION.md) shows how; new rules arrive `UNMEASURED`
-until a run measures them), and accept that a policy can never decide
+until a run measures them), and accept that rules can never decide
 everything — then make the wall carry the rest. That is step 3.
 
 ## Step 3 — The wall: cover the holes while the agent works
@@ -170,7 +171,7 @@ tamper detection is pinned by tests.
 | --- | --- | --- |
 | 0 | PASS — no rule broken (unknowns reported, not hidden) | ran; the child's exit code is passed through |
 | 2 | BLOCKED — a rule broke, or a re-check regressed | refused — a denylist rule denied the command |
-| 3 | could not measure anything (bad harness name, missing file) | the wall cannot run here (no user namespaces) — it refuses rather than run unprotected |
+| 3 | could not measure anything (unknown agent, missing file) | the wall cannot run here (no user namespaces) — it refuses rather than run unprotected |
 
 ## Troubleshooting
 
@@ -180,7 +181,7 @@ tamper detection is pinned by tests.
 | Codex-route check errors about the oracle | The pinned binary is not restored into the clone (fresh clones do not ship it). Recipe: [tools/vendor/codex/0.149.0/VENDORED.md](../tools/vendor/codex/0.149.0/VENDORED.md). |
 | `oracle FAIL` from `fineprint doctor` | The restored binary fails its sha256 pin — restore it again; nothing oracle-based will run until the hash matches (fail closed, by design). |
 | The check says "no harness config found here" | You ran it outside a project with rules. `cd` to your project directory, or `fineprint init` to scaffold starters. |
-| Muse Code shows UNMEASURED | By design — Muse Code has no local policy file or offline oracle; the live route is the musecode-smoke workflow ([INTEGRATION.md](../INTEGRATION.md)). |
+| Muse Code shows UNMEASURED | By design — Muse Code has no local rules file or offline oracle; the live route is the musecode-smoke workflow ([INTEGRATION.md](../INTEGRATION.md)). |
 
 Deep dives: the check in full is [INTEGRATION.md](../INTEGRATION.md); the wall's
 mechanism, signed definition packs, and stated limits are

@@ -6,6 +6,44 @@ for it. A **check** asks the harness's own policy checker what it
 decides for each of 16 built-in rules (Catalogue v1) and tells you
 which ones held and which ones broke. **BLOCKED** means a rule broke.
 
+## Never opened a terminal? This is your surface
+
+You do not need a terminal, and you do not need to install anything.
+The GitHub Action is the free tier for people who never open a
+terminal:
+
+1. Open your repo on github.com.
+2. Click **Add file → Create new file**.
+3. Name it `.github/workflows/fineprint-check.yml`.
+4. Paste the contents of the example file from this repo (same path:
+   `.github/workflows/fineprint-check.yml`).
+5. Click **Commit changes**.
+
+That is all. The check now runs on every pull request, by itself.
+
+**What you will see:** on the pull request, a green check or a red
+cross next to the FinePrint check. Green means no rule broke. Red
+means a rule broke — click the red cross, and the failing step names
+the rule (for example `BLOCKED: 1 rule(s) broken: FP-001`). A
+comment titled "FinePrint check" also appears on the pull request
+with the counts.
+
+**What red means:** one of your agent's own rules was broken by the
+policy it was given. It does not mean your code is broken, and it
+does not mean anything was deleted. It means the guard failed the
+test — the agent would have been allowed to do something it should
+not have.
+
+**What to do:** ask the person who wrote the policy (or the coding
+agent, with the step output pasted in) to fix the policy file so the
+rule is forbidden or asks first, then push again. A green run after
+a red one is the fix working. If you want the detail, download the
+`fineprint-evidence` artifact on the run and open `scorecard.html`
+in a browser — it is a readable table of every rule.
+
+A desktop one-click installer (no GitHub, no files at all) is a
+later phase — it is not in this branch.
+
 ## Add it to your repo (two steps, no config)
 
 1. Copy `.github/workflows/fineprint-check.yml` from this repo into

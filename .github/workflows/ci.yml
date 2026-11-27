@@ -38,8 +38,8 @@ jobs:
           cp lin/package/vendor/x86_64-unknown-linux-musl/bin/codex "$GITHUB_WORKSPACE/tools/vendor/codex/0.149.0/bin/codex"
 
       - name: install test runner
-        # The runner's Python ships without pytest; the suite itself is stdlib-only.
-        run: python3 -m pip install pytest
+        # pytest plus PyYAML (tests/test_free_action.py imports it).
+        run: python3 -m pip install pytest pyyaml
 
       - name: test suite
         run: python3 -m pytest tests/ -q

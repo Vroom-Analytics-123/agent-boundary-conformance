@@ -75,7 +75,6 @@ sys.path.insert(0, str(REPO / "tools"))
 
 import acceptance_gate as AG  # noqa: E402
 import acceptance_tasks as AT  # noqa: E402
-import live_attribution as LA  # noqa: E402
 import live_drivers.base as LB  # noqa: E402
 import live_run as LR  # noqa: E402
 

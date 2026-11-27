@@ -13,8 +13,8 @@ step "Python 3.12 venv with pytest (.venv)"
 if [ ! -x .venv/bin/python ] || ! .venv/bin/python -c 'import sys; assert sys.version_info[:2] == (3, 12)' 2>/dev/null; then
   uv venv --quiet --python 3.12 .venv
 fi
-if ! .venv/bin/python -m pytest --version >/dev/null 2>&1; then
-  uv pip install --quiet --python .venv/bin/python pytest
+if ! .venv/bin/python -m pytest --version >/dev/null 2>&1 || ! .venv/bin/python -c 'import yaml' 2>/dev/null; then
+  uv pip install --quiet --python .venv/bin/python pytest pyyaml
 fi
 done_step
 
